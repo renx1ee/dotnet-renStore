@@ -11,6 +11,6 @@ public class CountryEntity
     public string NormalizedNameRu { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
     public string PhoneCode { get; set; } = string.Empty;
-    public IList<CityEntity> Cities { get; set; } = [];
-    public IEnumerable<ProductDetailEntity> ProductDetails { get; set; } 
+    public IList<CityEntity>? Cities { get; set; }
+    public IEnumerable<ProductDetailEntity>? ProductDetails { get; set; } 
 }

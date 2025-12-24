@@ -9,6 +9,7 @@ public class ProductEntity
     public SellerEntity? Seller { get; set; }
     public int CategoryId { get; set; }
     public CategoryEntity? Category { get; set; }
-    public IEnumerable<ProductVariantEntity> ProductVariants { get; set; } 
+    public IEnumerable<ProductVariantEntity>? ProductVariants { get; set; } 
     public ProductClothEntity? ProductCloth { get; set; }
+    public IEnumerable<ShoppingCartItemEntity>? CartItems { get; set; }
 }

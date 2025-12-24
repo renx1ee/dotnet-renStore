@@ -8,9 +8,11 @@ public class CityConfiguration : IEntityTypeConfiguration<CityEntity>
 {
     public void Configure(EntityTypeBuilder<CityEntity> builder)
     {
-        builder.ToTable("cities");
+        builder
+            .ToTable("cities");
         
-        builder.HasKey(x => x.Id);
+        builder
+            .HasKey(x => x.Id);
         
         builder
             .Property(x => x.Id)

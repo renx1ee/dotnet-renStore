@@ -8,7 +8,8 @@ public class SellerConfiguration : IEntityTypeConfiguration<SellerEntity>
 {
     public void Configure(EntityTypeBuilder<SellerEntity> builder)
     {
-        builder.ToTable("sellers");
+        builder
+            .ToTable("sellers");
         
         builder
             .HasKey(seller => seller.Id);

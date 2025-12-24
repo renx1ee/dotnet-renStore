@@ -12,5 +12,5 @@ public class ProductClothEntity
     public TheCut? TheCut { get; set; }
     public Guid ProductId { get; set; }
     public ProductEntity? Product { get; set; }
-    public IEnumerable<ProductClothSizeEntity> ClothSizes { get; set; }
+    public IEnumerable<ProductClothSizeEntity>? ClothSizes { get; set; }
 }

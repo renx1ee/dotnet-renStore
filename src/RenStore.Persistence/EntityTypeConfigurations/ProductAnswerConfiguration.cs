@@ -1,4 +1,4 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Domain.Entities;
 
@@ -35,7 +35,7 @@ public class ProductAnswerConfiguration : IEntityTypeConfiguration<ProductAnswer
             .Property(x => x.ModeratedDate)
             .HasColumnName("moderated_date")
             .HasDefaultValue( DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified))
-            .IsRequired(false);#1#
+            .IsRequired(false);*/
         
         builder
             .Property(x => x.IsApproved)
@@ -59,7 +59,5 @@ public class ProductAnswerConfiguration : IEntityTypeConfiguration<ProductAnswer
         builder
             .Property(x => x.QuestionId)
             .HasColumnName("question_id");
-
-
     }
-}*/
+}

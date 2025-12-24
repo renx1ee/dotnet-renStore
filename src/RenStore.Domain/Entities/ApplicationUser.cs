@@ -14,9 +14,11 @@ public class ApplicationUser : IdentityUser, IUser<string>
     public bool? IsActive { get; set; } 
     public DateTime CreatedDate { get; set; }
     public SellerEntity? Seller { get; set; }
-    /*public IEnumerable<UserImageEntity> Images { get; set; }*/
-    /*public IEnumerable<ProductQuestionEntity> ProductQuestions { get; set; }*/
-    /*public IEnumerable<Review>? Reviews { get; set; }
-    public IEnumerable<ShoppingCartItem>? ShoppingCartItems { get; set; }
-    public IEnumerable<Order>? Orders { get; set; }*/
+    public Guid CartId { get; set; }
+    public ShoppingCartEntity? Cart { get; set; }
+    public IEnumerable<ReviewEntity>? Reviews { get; set; }
+    public IEnumerable<UserImageEntity>? Images { get; set; }
+    public IEnumerable<ProductQuestionEntity>? ProductQuestions { get; set; }
+    public IEnumerable<ShoppingCartItemEntity>? ShoppingCartItems { get; set; }
+    /*public IEnumerable<Order>? Orders { get; set; }*/
 }

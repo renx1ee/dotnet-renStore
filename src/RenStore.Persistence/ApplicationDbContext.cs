@@ -16,7 +16,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new CityConfiguration());
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
-        
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());
         modelBuilder.ApplyConfiguration(new ProductDetailConfiguration());
@@ -24,12 +23,14 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ProductClothSizeConfiguration());
         modelBuilder.ApplyConfiguration(new ProductAttributeConfiguration());
         modelBuilder.ApplyConfiguration(new ProductPriceHistoryConfiguration());
-        /*modelBuilder.ApplyConfiguration(new ProductQuestionConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductAnswerConfiguration());*/
-        
-        /*modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
-        modelBuilder.ApplyConfiguration(new SellerImageConfiguration());*/
-        /*modelBuilder.ApplyConfiguration(new UserImageConfiguration());*/
+        modelBuilder.ApplyConfiguration(new ShoppingCartConfiguration());
+        modelBuilder.ApplyConfiguration(new ShoppingCartItemConfiguration());
+        modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+        modelBuilder.ApplyConfiguration(new ProductQuestionConfiguration());
+        modelBuilder.ApplyConfiguration(new ProductAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+        modelBuilder.ApplyConfiguration(new SellerImageConfiguration());
+        modelBuilder.ApplyConfiguration(new UserImageConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }
@@ -48,12 +49,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductClothEntity> ProductClothes { get; set; }
     public DbSet<ProductClothSizeEntity> ProductClothSizes { get; set; }
     public DbSet<ProductAttributeEntity> ProductAttributes { get; set; }
-    /*public DbSet<ProductQuestionEntity> ProductQuestions { get; set; }
-    public DbSet<ProductAnswerEntity> ProductAnswers { get; set; }*/
+    public DbSet<ProductQuestionEntity> ProductQuestions { get; set; }
+    public DbSet<ProductAnswerEntity> ProductAnswers { get; set; }
     public DbSet<ProductPriceHistoryEntity> PriceHistories { get; set; }
     public DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
     public DbSet<ShoppingCartItemEntity> ShoppingCartItems { get; set; }
-    /*public DbSet<ProductImageEntity> ProductImages { get; set; }
-    public DbSet<SellerImageEntity> SellerImages { get; set; }*/
-    /*public DbSet<UserImageEntity> UserImages { get; set; }*/
+    public DbSet<ReviewEntity> Reviews { get; set; }
+    public DbSet<ProductImageEntity> ProductImages { get; set; }
+    public DbSet<SellerImageEntity> SellerImages { get; set; }
+    public DbSet<UserImageEntity> UserImages { get; set; }
 }

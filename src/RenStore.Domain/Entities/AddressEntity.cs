@@ -18,8 +18,7 @@ public class AddressEntity
     public int CityId { get; set; }
     public CityEntity? City { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-    /*public IList<Order> Orders { get; set; } = [];*/
-    // TODO:
+    /*public IList<Order> Orders { get; set; } */
     /*public Guid DeliveryId { get; set; }
     public Delivery? Delivery { get; set;}*/
 }

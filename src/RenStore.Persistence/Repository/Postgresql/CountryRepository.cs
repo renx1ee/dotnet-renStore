@@ -38,27 +38,21 @@ public class CountryRepository : ICountryRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
 
-    public async Task<int> CreateAsync(
-        CountryEntity country, 
-        CancellationToken cancellationToken)
+    public async Task<int> CreateAsync(CountryEntity country, CancellationToken cancellationToken)
     {
         var result = await _context.Countries.AddAsync(country, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;
     }
     
-    public async Task UpdateAsync(
-        CountryEntity country, 
-        CancellationToken cancellationToken)
+    public async Task UpdateAsync(CountryEntity country, CancellationToken cancellationToken)
     {
         var countryExists = await this.GetByIdAsync(country.Id, cancellationToken);
         _context.Countries.Update(country);
         await _context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task DeleteAsync(
-        int id, 
-        CancellationToken cancellationToken)
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var country = await this.GetByIdAsync(id, cancellationToken);
         _context.Countries.Remove(country);

@@ -1,14 +1,15 @@
-/*using System.Text;
+using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class ProductAnswerRepository
+public class ProductAnswerRepository : IProductAnswerRepository
 
 {
     private readonly ApplicationDbContext _context;
@@ -195,4 +196,4 @@ public class ProductAnswerRepository
         return await this.FindBySellerIdAsync(userId, cancellationToken)
             ?? throw new NotFoundException(typeof(ProductAnswerEntity), userId);
     }   
-}*/
+}

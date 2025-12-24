@@ -8,9 +8,11 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
 {
     public void Configure(EntityTypeBuilder<ProductVariantEntity> builder)
     {
-        builder.ToTable("product_variants");
+        builder
+            .ToTable("product_variants");
 
-        builder.HasKey(v => v.Id);
+        builder
+            .HasKey(v => v.Id);
 
         builder
             .Property(v => v.Id)

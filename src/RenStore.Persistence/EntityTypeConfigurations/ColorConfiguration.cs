@@ -8,7 +8,8 @@ public class ColorConfiguration : IEntityTypeConfiguration<ColorEntity>
 {
     public void Configure(EntityTypeBuilder<ColorEntity> builder)
     {
-        builder.ToTable("colors");
+        builder
+            .ToTable("colors");
         
         builder
             .HasKey(c => c.Id)
