@@ -1,3 +1,4 @@
+using RenStore.Domain.DTOs.Product.FullPage;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 
@@ -69,4 +70,11 @@ public interface IProductRepository
     /// <returns>The product entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product is not found.</exception>
     Task<ProductEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    /// <summary>
+    /// Get a full product page by ID.
+    /// </summary>
+    /// <param name="id">Product unique identifier.</param>
+    /// <param name="cancellationToken">Cancellation Token.</param>
+    /// <returns>The <see cref="ProductFullDto"/> if entity if found.</returns>
+    Task<ProductFullDto?> FindFullAsync(Guid id, CancellationToken cancellationToken);
 }

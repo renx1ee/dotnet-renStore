@@ -1,4 +1,4 @@
-namespace RenStore.Domain.Entities;
+/*namespace RenStore.Domain.Entities;
 
 public class ProductQuestionEntity
 {
@@ -14,4 +14,4 @@ public class ProductQuestionEntity
     public ProductAnswerEntity? Answer { get; set; }
     public Guid AnswerId { get; set; }
     // public int ModerationStatusId { get; set; }
-}
+}*/

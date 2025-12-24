@@ -1,12 +1,11 @@
 using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Application.Common.Exceptions;
-using RenStore.Domain.DTOs;
 using RenStore.Domain.DTOs.Product.FullPage;
 using RenStore.Domain.Entities;
-using RenStore.Domain.Enums;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Domain.Repository;
 
@@ -16,6 +15,8 @@ public class ProductRepository : IProductRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
+    // TODO: make logging
+    private readonly ILogger<ProductRepository> _logger;
 
     private readonly Dictionary<ProductSortBy, string> _sortColumnMapping = new()
     {
@@ -153,8 +154,7 @@ public class ProductRepository : IProductRepository
         return await this.FindByIdAsync(id, cancellationToken)
             ?? throw new NotFoundException(typeof(ProductEntity), id);
     }
-
-    /*
+    
     public async Task<ProductFullDto?> FindFullAsync(Guid id, CancellationToken cancellationToken)
     {
         try
@@ -162,157 +162,168 @@ public class ProductRepository : IProductRepository
             await using var connection = new NpgsqlConnection(this._connectionString);
             await connection.OpenAsync(cancellationToken);
 
-            const string sql =
-                @"
-                    SELECT 
-                        -- products
-                        p.""product_id""               AS ProductId, 
-                        p.""is_blocked""               AS IsBlocked, 
-                        p.""overall_rating""           AS OverallRating, 
-                        p.""seller_id""                AS SellerId, 
-                        p.""category_id""              AS CategoryId,
-                        -- cloth
-                        pc.""product_cloth_id""        AS ClothId,
-                        pc.""gender""                  AS Gender,
-                        pc.""season""                  AS Season,
-                        pc.""neckline""                AS Neckline,
-                        pc.""the_cut""                 AS TheCut,
-                        -- cloth sizes
-                        pcs.""cloth_size_id""          AS ClothSizeId,
-                        pcs.""amount""                 AS Amount,
-                        pcs.""cloth_size""             AS ClothesSizes,
-                        pcs.""product_cloth_id""       AS ProductClothId,
-                        -- price history
-                        ph.""price_history_id""        AS PriceHistoryId,
-                        ph.""price""                   AS Price,
-                        ph.""old_price""               AS OldPrice,
-                        ph.""discount_price""          AS DiscountPrice,
-                        ph.""discount_percent""        AS DiscountPercent,
-                        ph.""start_date""              AS StartDate,
-                        ph.""end_date""                AS EndDate,
-                        ph.""changed_by""              AS ChangedBy,
-                        -- variant
-                        pv.""product_variant_id""      AS VariantId,
-                        pv.""variant_name""            AS Name,
-                        pv.""normalized_variant_name"" AS NormalizedName,
-                        pv.""rating""                  AS Rating,
-                        pv.""article""                 AS Article,
-                        pv.""in_stock""                AS InStock,
-                        pv.""is_available""            AS IsAvailable,
-                        pv.""created_date""            AS CreatedDate,
-                        pv.""url""                     AS Url,
-                        pv.""product_id""              AS ProductId,
-                        pv.""color_id""                AS ColorId,
-                        -- detail
-                        pd.""product_detail_id""       AS DetailId,
-                        pd.""description""             AS Description,
-                        pd.""model_features""          AS ModelFeatures,
-                        pd.""decorative_elements""     AS DecorativeElements,
-                        pd.""equipment""               AS Equipment,
-                        pd.""composition""             AS Composition,
-                        pd.""caring_of_things""        AS CaringOfThings,
-                        pd.""type_of_packing""         AS TypeOfPacking,
-                        pd.""country_id""              AS CountryOfManufactureId,
-                        pd.""product_variant_id""      AS ProductVariantId,
-                        -- country
-                        ct.""country_name""            AS Name,
-                        -- attribute
-                        pa.""attribute_id""            AS AttributeId,
-                        pa.""attribute_name""          AS Name,
-                        pa.""attribute_value""         AS Value,
-                        pa.""product_variant_id""      AS ProductVariantId,
-                        -- seller
-                        s.""seller_id""                AS SellerId,
-                        s.""seller_name""              AS Name,
-                        s.""url""                      AS Url
-                    FROM 
-                        ""products"" p
-                    INNER JOIN ""product_variants"" pv       ON pv.""product_id"" = p.""product_id""
-                    LEFT JOIN ""product_clothes"" pc         ON pc.""product_id"" = p.""product_id""
-                    LEFT JOIN ""product_cloth_sizes"" pcs    ON pcs.""product_cloth_id"" = pc.""product_cloth_id""
-                    LEFT JOIN ""product_price_histories"" ph ON ph.""product_variant_id"" = pv.""product_variant_id""
-                    LEFT JOIN ""product_details"" pd         ON pd.""product_variant_id"" = pv.""product_variant_id""
-                    LEFT JOIN ""product_attributes"" pa      ON pa.""product_variant_id"" = pv.""product_variant_id""
-                    LEFT JOIN ""sellers"" s                  ON s.""seller_id"" = p.""seller_id""
-                    LEFT JOIN ""countries"" ct               ON ct.""country_id"" = pd.""country_id"" 
-                    WHERE 
-                        p.""product_id"" = @Id
-                    ORDER BY 
-                        -- cloth size
-                        pcs.""amount"" ASC,
-                        -- price history
-                        ph.""start_date"" ASC;
-                ";
+            string sql = GetFullProductSql();
 
-            var lookupPrice      = new Dictionary<Guid, ProductPriceHistoryDto>(); 
-            var lookupClothSize  = new Dictionary<Guid, ProductClothSizeDto>(); 
-            var lookupAttributes = new Dictionary<Guid, ProductAttributeDto>();
-            var productVariants  = new Dictionary<Guid, ProductVariantDto>();
-            
-            ProductFullDto? fullProduct = null;
-            
-            return await connection.QueryAsync<ProductFullDto>(
-                sql: sql,
-                param: new  { Id = id },
-                map: (
-                    ProductDto product, 
-                    ProductVariantDto variant, 
-                    ProductClothDto cloth, 
-                    ProductDetailDto detail, 
-                    SellerDto seller, 
-                    ProductClothSizeDto clothSize, 
-                    ProductAttributeDto attribute, 
-                    ProductPriceHistoryDto priceHistory
-                    ) =>
-                {
-                    if (!lookupPrice.ContainsKey(priceHistory.PriceHistoryId))
-                        lookupPrice[priceHistory.PriceHistoryId] = priceHistory;
-                    
-                    if (!lookupClothSize.ContainsKey(clothSize.ClothSizeId))
-                        lookupClothSize[clothSize.ClothSizeId] = clothSize;
-                    
-                    if (!lookupAttributes.ContainsKey(attribute.AttributeId))
-                        lookupAttributes[attribute.AttributeId] = attribute;
-                    
-                    if(!productVariants.ContainsKey(variant.VariantId))
-                        productVariants[variant.VariantId] = variant;
+            await using var result = await connection.QueryMultipleAsync(sql, new { Id = id }, commandTimeout: 30);
 
-                    fullProduct ??= new ProductFullDto
-                    {
-                        Product = product,
-                        Detail = detail,
-                        Cloth = cloth,
-                        Seller = seller,
-                        Variants = productVariants.ToList(),
-                        ClothSizes = lookupClothSize.Values.ToList(),
-                        Prices = lookupPrice.Values.ToList(),
-                        Attributes = lookupAttributes.Values.ToList()
-                    };
-                        /*Product: product, 
-                        Detail: detail,
-                        Cloth: cloth, 
-                        Seller: seller,
-                        Variants: productVariants.ToList(),
-                        ClothSizes: lookupClothSize.Values.ToList(), 
-                        Prices: lookupPrice.Values.ToList(),
-                        Attributes: lookupAttributes.Values.ToList());#1#
-                    
+            var product = await result.ReadFirstOrDefaultAsync<ProductDto>();
+            if (product is null) return null;
 
-                    return fullProduct;
-                },
-                splitOn: "VariantId,ClothId,DetailId,SellerId,ClothSizeId,AttributeId,PriceHistoryId",
-                buffered: false,
-                commandTimeout: 30);
+            var fullProduct = new ProductFullDto()
+            {
+                Product = product,
+                Variants = (await result.ReadAsync<ProductVariantDto>()).ToList(),
+                Details = (await result.ReadAsync<ProductDetailDto>()).ToList(),
+                Cloth = await result.ReadFirstOrDefaultAsync<ProductClothDto>(),
+                ClothSizes = (await result.ReadAsync<ProductClothSizeDto>()).ToList(),
+                Attributes = (await result.ReadAsync<ProductAttributeDto>()).ToList(),
+                Prices = (await result.ReadAsync<ProductPriceHistoryDto>()).ToList(),
+                Seller = await result.ReadFirstOrDefaultAsync<SellerDto>(),
+            };
+
+            fullProduct.Details ??= new List<ProductDetailDto>();
+            fullProduct.ClothSizes ??= new List<ProductClothSizeDto>();
+            fullProduct.Variants ??= new List<ProductVariantDto>();
+            fullProduct.Attributes ??= new List<ProductAttributeDto>();
+            fullProduct.Prices ??= new List<ProductPriceHistoryDto>();
+
+            return fullProduct;
         }
         catch (PostgresException e)
         {
-            throw new Exception($"Database error occured: {e.Message}");
+            throw new InvalidOperationException($"Database error occured: {e.Message}");
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException($"Error occured: {e.Message}");
         }
     }
-
-    public async Task<ProductFullDto?> GetFullAsync(Guid id, CancellationToken cancellationToken)
+    
+    private static string GetFullProductSql()
     {
-        return await this.FindFullAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductFullDto), id);
-    }*/
+        const string productSql = 
+            @"
+                SELECT 
+                    p.""product_id""               AS Id, 
+                    p.""is_blocked""               AS IsBlocked, 
+                    p.""overall_rating""           AS OverallRating, 
+                    p.""seller_id""                AS SellerId, 
+                    p.""category_id""              AS CategoryId
+                FROM ""products""                  AS p
+                WHERE p.""product_id"" = @Id;
+            ";
+            
+        const string variantSql = 
+            @"
+                SELECT
+                    pv.""product_variant_id""      AS VariantId,
+                    pv.""variant_name""            AS Name,
+                    pv.""normalized_variant_name"" AS NormalizedName,
+                    pv.""rating""                  AS Rating,
+                    pv.""article""                 AS Article,
+                    pv.""in_stock""                AS InStock,
+                    pv.""is_available""            AS IsAvailable,
+                    pv.""created_date""            AS CreatedDate,
+                    pv.""url""                     AS Url,
+                    pv.""product_id""              AS ProductId,
+                    pv.""color_id""                AS ColorId
+                FROM ""product_variants""          AS pv
+                WHERE ""product_id"" = @Id
+                ORDER BY ""created_date"";
+            ";
+        
+        const string detailSql = 
+            @"
+                SELECT
+                    pd.""product_detail_id""       AS DetailId,
+                    pd.""description""             AS Description,
+                    pd.""model_features""          AS ModelFeatures,
+                    pd.""decorative_elements""     AS DecorativeElements,
+                    pd.""equipment""               AS Equipment,
+                    pd.""composition""             AS Composition,
+                    pd.""caring_of_things""        AS CaringOfThings,
+                    pd.""type_of_packing""         AS TypeOfPacking,
+                    pd.""country_id""              AS CountryOfManufactureId,
+                    pd.""product_variant_id""      AS ProductVariantId,
+                    countries.""country_name""     AS Name
+                FROM ""product_details""           AS pd
+                LEFT JOIN ""countries""
+                    ON ""countries"".""country_id"" = pd.""country_id""
+                INNER JOIN ""product_variants""    AS pv
+                    ON pv.""product_variant_id"" = pd.""product_variant_id""
+                WHERE pv.""product_id"" = @Id; 
+            ";
+        
+        const string clothSql = 
+            @"
+                SELECT
+                    pc.""product_cloth_id""        AS ClothId,
+                    pc.""gender""                  AS Gender,
+                    pc.""season""                  AS Season,
+                    pc.""neckline""                AS Neckline,
+                    pc.""the_cut""                 AS TheCut
+                FROM ""product_clothes""           AS pc                                 
+                WHERE pc.""product_id"" = @Id;   
+            ";
+        
+        const string clothSizeSql = 
+            @"
+                SELECT
+                    pcs.""cloth_size_id""          AS ClothSizeId,
+                    pcs.""amount""                 AS Amount,
+                    pcs.""cloth_size""             AS ClothSize,
+                    pcs.""product_cloth_id""       AS ProductClothId
+                FROM ""product_cloth_sizes""       AS pcs                  
+                INNER JOIN ""product_clothes""     AS pc
+                    ON pc.product_cloth_id = pcs.product_cloth_id                              
+                WHERE pc.""product_id"" = @Id;
+            ";
+        
+        const string attributeSql = 
+            @"
+                SELECT 
+                    pa.""attribute_id""            AS AttributeId,
+                    pa.""attribute_name""          AS Name,
+                    pa.""attribute_value""         AS Value,
+                    pa.""product_variant_id""      AS ProductVariantId
+                FROM ""product_attributes""        AS pa
+                INNER JOIN ""product_variants""    AS pv
+                    ON pv.""product_variant_id"" = pa.""product_variant_id""
+                WHERE pv.""product_id"" = @Id;
+            ";
+        
+        const string priceSql = 
+            @"
+                SELECT
+                    ph.""price_history_id""        AS PriceHistoryId,
+                    ph.""price""                   AS Price,
+                    ph.""old_price""               AS OldPrice,
+                    ph.""discount_price""          AS DiscountPrice,
+                    ph.""discount_percent""        AS DiscountPercent,
+                    ph.""start_date""              AS StartDate,
+                    ph.""end_date""                AS EndDate,
+                    ph.""changed_by""              AS ChangedBy,
+                    ph.""product_variant_id""      AS ProductVariantId
+                FROM ""product_price_histories""   AS ph
+                INNER JOIN ""product_variants""    AS pv
+                    ON pv.""product_variant_id"" = ph.""product_variant_id""
+                WHERE pv.""product_id"" = @Id
+                ORDER BY ph.""start_date"" DESC;
+            ";
+        
+        const string sellerSql = 
+            @"
+                SELECT 
+                    s.""seller_id""                AS SellerId,
+                    s.""seller_name""              AS Name,
+                    s.""url""                      AS Url
+                FROM ""sellers""                   AS s
+                WHERE ""seller_id"" = (
+                    SELECT ""seller_id""
+                    FROM ""products""
+                    WHERE ""product_id"" = @Id);
+            ";
+        
+        return string.Join("\n", productSql, variantSql, detailSql, clothSql, clothSizeSql, attributeSql, priceSql, sellerSql);
+    }
 }

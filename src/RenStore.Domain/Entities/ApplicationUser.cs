@@ -13,11 +13,9 @@ public class ApplicationUser : IdentityUser, IUser<string>
     public double? Balance { get; set; } 
     public bool? IsActive { get; set; } 
     public DateTime CreatedDate { get; set; }
-    public string? ImagePath { get; set; } 
-    public string? ImageFooterPath { get; set; } 
     public SellerEntity? Seller { get; set; }
-    public IEnumerable<UserImageEntity> Images { get; set; }
-    public IEnumerable<ProductQuestionEntity> ProductQuestions { get; set; }
+    /*public IEnumerable<UserImageEntity> Images { get; set; }*/
+    /*public IEnumerable<ProductQuestionEntity> ProductQuestions { get; set; }*/
     /*public IEnumerable<Review>? Reviews { get; set; }
     public IEnumerable<ShoppingCartItem>? ShoppingCartItems { get; set; }
     public IEnumerable<Order>? Orders { get; set; }*/

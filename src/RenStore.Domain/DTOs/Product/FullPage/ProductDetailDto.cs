@@ -3,15 +3,15 @@ using RenStore.Domain.Enums;
 namespace RenStore.Domain.DTOs.Product.FullPage;
 
 public record ProductDetailDto
-(
-    Guid DetailId,
-    string Description,
-    string ModelFeatures,
-    string DecorativeElements,
-    string Equipment,
-    string Composition,
-    string CaringOfThings,
-    TypeOfPackaging? TypeOfPacking,
-    int CountryId,
-    Guid ProductVariantId
-);
+{
+    public Guid DetailId { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public string ModelFeatures { get; set; } = string.Empty;
+    public string DecorativeElements { get; set; } = string.Empty;
+    public string Equipment { get; set; } = string.Empty;
+    public string Composition { get; set; } = string.Empty;
+    public string CaringOfThings { get; set; } = string.Empty;
+    public TypeOfPackaging? TypeOfPacking { get; set; }
+    public int CountryOfManufactureId { get; set; }
+    public Guid ProductVariantId { get; set; }
+}

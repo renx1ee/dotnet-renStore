@@ -1,9 +1,9 @@
 namespace RenStore.Domain.DTOs.Product.FullPage;
 
 public record ProductAttributeDto
-(
-    Guid AttributeId,
-    string Name,
-    string Value,
-    Guid ProductVariantId
-);
+{
+    public Guid AttributeId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
+    public Guid ProductVariantId { get; set; }
+}

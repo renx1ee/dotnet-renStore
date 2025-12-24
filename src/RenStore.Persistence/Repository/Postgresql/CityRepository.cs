@@ -26,7 +26,7 @@ public class CityRepository : ICityRepository
     {
         this._context = context;
         this._connectionString = connectionString 
-            ?? throw new ArgumentNullException(nameof(connectionString));;
+            ?? throw new ArgumentNullException(nameof(connectionString));
     }
     
     public CityRepository(

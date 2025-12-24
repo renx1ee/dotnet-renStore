@@ -1,4 +1,4 @@
-using System.Text;
+/*using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -195,4 +195,4 @@ public class ProductAnswerRepository
         return await this.FindBySellerIdAsync(userId, cancellationToken)
             ?? throw new NotFoundException(typeof(ProductAnswerEntity), userId);
     }   
-}
+}*/

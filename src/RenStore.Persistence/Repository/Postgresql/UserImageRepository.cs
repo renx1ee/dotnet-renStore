@@ -1,4 +1,4 @@
-using Dapper;
+/*using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using RenStore.Application.Common.Exceptions;
@@ -159,4 +159,4 @@ public class UserImageRepository
         return await this.FindByIdAsync(id, cancellationToken)
             ?? throw new NotFoundException(typeof(UserImageEntity), id);
     }
-}
+}*/

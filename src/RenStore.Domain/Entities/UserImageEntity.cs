@@ -1,4 +1,4 @@
-namespace RenStore.Domain.Entities;
+/*namespace RenStore.Domain.Entities;
 
 public class UserImageEntity
 {
@@ -13,4 +13,4 @@ public class UserImageEntity
     public int Height { get; set; }
     public Guid UserId { get; set; }
     public ApplicationUser? User { get; set; }
-}
+}*/

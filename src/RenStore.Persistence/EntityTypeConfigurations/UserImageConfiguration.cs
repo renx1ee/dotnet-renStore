@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Domain.Entities;
 
@@ -61,13 +61,13 @@ public class UserImageConfiguration : IEntityTypeConfiguration<UserImageEntity>
             .HasColumnName("height")
             .IsRequired();
 
-        builder
+        /*builder
             .HasOne(x => x.User)
             .WithMany(x => x.Images)
-            .HasForeignKey(x => x.UserId);
+            .HasForeignKey(x => x.UserId);#1#
 
         builder
             .Property(x => x.UserId)
             .HasColumnName("user_id");
     }
-}
+}*/

@@ -19,5 +19,5 @@ public class ProductVariantEntity
     public IEnumerable<ProductAttributeEntity> ProductAttributes { get; set; } 
     public IEnumerable<ProductPriceHistoryEntity> PriceHistories { get; set; }
     public IEnumerable<ProductImageEntity> Images { get; set; }
-    public IEnumerable<ProductQuestionEntity> ProductQuestions { get; set; }
+    /*public IEnumerable<ProductQuestionEntity> ProductQuestions { get; set; }*/
 }

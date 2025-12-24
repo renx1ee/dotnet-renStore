@@ -2,7 +2,7 @@ namespace RenStore.Domain.DTOs.Product.FullPage;
 
 public record ProductDto
 (
-    Guid ProductId,
+    Guid Id,
     bool IsBlocked,
     decimal OverallRating,
     long SellerId,

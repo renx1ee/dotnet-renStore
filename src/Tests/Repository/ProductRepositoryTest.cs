@@ -5,13 +5,21 @@ using RenStore.Domain.Enums.Sorting;
 using RenStore.Persistence;
 using RenStore.Persistence.Repository.Postgresql;
 using Tests.Common;
+using Xunit.Abstractions;
 
 namespace Tests.Repository;
 
 public class ProductRepositoryTest
 {
+    private readonly ITestOutputHelper testOutputHelper;
     private ApplicationDbContext _context;
     private ProductRepository _productRepository;
+
+    public ProductRepositoryTest(ITestOutputHelper testOutputHelper)
+    {
+        this.testOutputHelper = testOutputHelper;
+    }
+
     #region Create Update Delete
     [Fact]
     public async Task CreateProductAsync_Success_Test()
@@ -378,7 +386,7 @@ public class ProductRepositoryTest
     }
     #endregion
     #region Full Page
-    /*[Fact]
+    [Fact]
     public async Task FindFullProductPageById_Success_Test()
     {
         _context = DatabaseFixture.CreateReadyContext();
@@ -389,13 +397,31 @@ public class ProductRepositoryTest
         var result = await _productRepository.FindFullAsync(
             productId,
             CancellationToken.None);
-
         // Assert
+        Assert.NotNull(result);
         Assert.NotNull(result.Product);
-        Assert.NotNull(result.Detail);
         Assert.NotNull(result.Variants);
+        Assert.NotNull(result.Seller);
         Assert.NotNull(result.Cloth);
         Assert.NotNull(result.ClothSizes);
-    }*/
+        Assert.NotNull(result.Details);
+        Assert.NotNull(result.Attributes);
+        Assert.NotNull(result.Prices);
+    }
+    
+    [Fact]
+    public async Task FindFullProductPageById_FailOnWrongId_Test()
+    {
+        _context = DatabaseFixture.CreateReadyContext();
+        _productRepository = new ProductRepository(_context, DatabaseFixture.ConnectionString);
+        // Arrange
+        var productId = Guid.NewGuid();
+        // Act
+        var result = await _productRepository.FindFullAsync(
+            productId,
+            CancellationToken.None);
+        // Assert
+        Assert.Null(result);
+    }
     #endregion
 }
