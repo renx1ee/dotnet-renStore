@@ -33,7 +33,7 @@ public static class TestDataConstants
     public static readonly string UserIdForGettingSeller5        = Guid.NewGuid().ToString();
     public static readonly string UserIdForGettingSeller6        = Guid.NewGuid().ToString();
     // Sellers
-    public static readonly long SellerIdForCreate                = 12; 
+    public static readonly long SellerIdForCreate                = 155552; 
     public static readonly long SellerIdForUpdate                = 1232; 
     public static readonly long SellerIdForDelete                = 3422; 
     public static readonly long SellerIdForGetting1              = 1842; 

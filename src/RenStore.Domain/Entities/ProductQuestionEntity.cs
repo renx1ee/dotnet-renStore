@@ -4,12 +4,12 @@ public class ProductQuestionEntity
 {
     public Guid Id { get; set; }
     public string Message { get; set; } = string.Empty;
-    public DateTime CreatedDate { get; set; } = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
+    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime? ModeratedDate { get; set; } = null;
     public bool? IsApproved { get; set; } = null;
     public Guid ProductVariantId { get; set; }
     public ProductVariantEntity? ProductVariant { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public ApplicationUser? User { get; set; }
     public ProductAnswerEntity? Answer { get; set; }
     public Guid AnswerId { get; set; }

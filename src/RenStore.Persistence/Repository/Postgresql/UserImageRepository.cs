@@ -4,10 +4,11 @@ using Npgsql;
 using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class UserImageRepository
+public class UserImageRepository : IUserImageRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
@@ -36,9 +37,7 @@ public class UserImageRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
     
-    public async Task<Guid> CreateAsync(
-        UserImageEntity image, 
-        CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(UserImageEntity image, CancellationToken cancellationToken)
     {
         var result = await _context.UserImages.AddAsync(image, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -46,9 +45,7 @@ public class UserImageRepository
         return result.Entity.Id;
     }
 
-    public async Task UpdateAsync(
-        UserImageEntity image,
-        CancellationToken cancellationToken)
+    public async Task UpdateAsync(UserImageEntity image, CancellationToken cancellationToken)
     {
         var existingAttribute = await this.GetByIdAsync(image.Id, cancellationToken);
 

@@ -28,13 +28,13 @@ public class ProductAnswerConfiguration : IEntityTypeConfiguration<ProductAnswer
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasDefaultValue( DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified))
+            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
         
         /*builder
             .Property(x => x.ModeratedDate)
             .HasColumnName("moderated_date")
-            .HasDefaultValue( DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified))
+            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired(false);*/
         
         builder

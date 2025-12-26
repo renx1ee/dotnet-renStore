@@ -1,4 +1,4 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
@@ -27,7 +27,7 @@ public class SellerImageRepositoryTests
            FileSizeBytes = 500,
            IsMain = false,
            SortOrder = 1,
-           UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+           UploadedAt = DateTime.UtcNow,
            Weight = 500,
            Height = 500,
            SellerId = TestDataConstants.SellerIdForGetting1
@@ -262,7 +262,7 @@ public class SellerImageRepositoryTests
        Assert.Equal(TestDataConstants.SellerIdForGetting2, result[2].Id);
        Assert.Equal(TestDataConstants.SellerIdForDelete, result[3].Id);
        Assert.Equal(TestDataConstants.SellerIdForGetting1, result[4].Id);
-       Assert.Equal(TestDataConstants.SellerIdForUpdate, result[5].Id);#1#
+       Assert.Equal(TestDataConstants.SellerIdForUpdate, result[5].Id);*/
     }
     #endregion
     #region By Id
@@ -330,4 +330,4 @@ public class SellerImageRepositoryTests
                    CancellationToken.None));
     }
     #endregion
-}*/
+}

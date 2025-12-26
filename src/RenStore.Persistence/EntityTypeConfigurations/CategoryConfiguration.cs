@@ -71,8 +71,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasColumnType("timestamp")
-            .HasDefaultValueSql("now()")
+            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
         
         builder

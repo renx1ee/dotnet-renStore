@@ -4,10 +4,11 @@ using Npgsql;
 using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class ProductImageRepository
+public class ProductImageRepository : IProductImageRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;

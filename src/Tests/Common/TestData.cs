@@ -96,7 +96,7 @@ public static class TestData
             PhoneNumber = "0888888881",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         // For Update
         new ApplicationUser()
@@ -108,7 +108,7 @@ public static class TestData
             PhoneNumber = "0888888882",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         // For Delete
         new ApplicationUser()
@@ -120,7 +120,7 @@ public static class TestData
             PhoneNumber = "0888888883",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         new ApplicationUser
         {
@@ -131,7 +131,7 @@ public static class TestData
             PhoneNumber = "5323620243",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -142,7 +142,7 @@ public static class TestData
             PhoneNumber = "0888888888",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -153,7 +153,7 @@ public static class TestData
             PhoneNumber = "0888888884",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -164,7 +164,7 @@ public static class TestData
             PhoneNumber = "0888888885",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -175,7 +175,7 @@ public static class TestData
             PhoneNumber = "0888888886",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow.AddHours(1),
+            CreatedDate = DateTime.UtcNow
         }
     };
 
@@ -415,7 +415,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForUpdate.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -426,7 +426,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForDelete.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -437,7 +437,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -448,7 +448,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting2.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -459,7 +459,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting3.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -470,7 +470,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting4.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -481,7 +481,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting5.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -492,7 +492,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting6.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
         new CategoryEntity()
         {
@@ -503,7 +503,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting7.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         },
     };
     
@@ -518,7 +518,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForUpdate.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForUpdate,
         },
         new SubCategoryEntity()
@@ -530,7 +530,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForDelete.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForDelete,
         },
         new SubCategoryEntity()
@@ -542,7 +542,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting1,
         },
         new SubCategoryEntity()
@@ -554,7 +554,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting2.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting2,
         },
         new SubCategoryEntity()
@@ -566,7 +566,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting3.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting3,
         },
         new SubCategoryEntity()
@@ -578,7 +578,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting4.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting4,
         },
         new SubCategoryEntity()
@@ -590,7 +590,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting5.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting5,
         },
         new SubCategoryEntity()
@@ -602,7 +602,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting6.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting6,
         },
         new SubCategoryEntity()
@@ -614,7 +614,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting7.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting7,
         },
     };
@@ -1319,7 +1319,7 @@ public static class TestData
             OldPrice = 5000,
             DiscountPrice = 1000,
             DiscountPercent = 0,
-            StartDate = DateTime.UtcNow.AddHours(8),
+            StartDate = DateTime.UtcNow,
             EndDate = null,
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting6
@@ -1337,7 +1337,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate
@@ -1351,7 +1351,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete
@@ -1364,7 +1364,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
@@ -1377,7 +1377,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2
@@ -1390,7 +1390,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3
@@ -1403,7 +1403,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting4
@@ -1416,7 +1416,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting5
@@ -1429,7 +1429,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting6
@@ -1442,7 +1442,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting7
@@ -1460,7 +1460,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             SellerId = TestDataConstants.SellerIdForUpdate
@@ -1474,7 +1474,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             SellerId = TestDataConstants.SellerIdForDelete
@@ -1487,7 +1487,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             SellerId = TestDataConstants.SellerIdForGetting1
@@ -1500,7 +1500,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             SellerId = TestDataConstants.SellerIdForGetting2
@@ -1513,7 +1513,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             SellerId = TestDataConstants.SellerIdForGetting3
@@ -1526,7 +1526,7 @@ public static class TestData
             FileSizeBytes = 500,
             IsMain = true,
             SortOrder = 1,
-            UploadedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            UploadedAt = DateTime.UtcNow,
             Weight = 500,
             Height = 500,
             SellerId = TestDataConstants.SellerIdForGetting4

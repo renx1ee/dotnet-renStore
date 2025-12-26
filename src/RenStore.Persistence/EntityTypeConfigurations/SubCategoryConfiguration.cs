@@ -71,7 +71,6 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategoryEnti
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasColumnType("timestamp")
             .HasDefaultValueSql("now()")
             .IsRequired();
         

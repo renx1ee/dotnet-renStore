@@ -31,7 +31,7 @@ public class CategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.UtcNow
         };
         // Act
         await _categoryRepository.CreateAsync(category, CancellationToken.None);

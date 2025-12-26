@@ -31,7 +31,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         };
         // Act
@@ -68,7 +68,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         };
         // Act & Assert
@@ -95,7 +95,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
             CategoryId = 634737
         };
         // Act & Assert
@@ -122,7 +122,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+            CreatedDate = DateTime.UtcNow,
         };
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async () => 

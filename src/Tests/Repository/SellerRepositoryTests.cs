@@ -32,7 +32,6 @@ public class SellerRepositoryTests : IDisposable
             NormalizedName = Guid.NewGuid().ToString().ToUpper(),
             CreatedDate = DateTime.UtcNow,
             IsBlocked = false,
-            ApplicationUser = user,
             ApplicationUserId = TestDataConstants.UserIdForCreateSeller
         };
         // Act

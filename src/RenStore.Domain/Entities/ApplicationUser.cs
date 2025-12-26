@@ -12,7 +12,7 @@ public class ApplicationUser : IdentityUser, IUser<string>
     public string? City { get; set; } 
     public double? Balance { get; set; } 
     public bool? IsActive { get; set; } 
-    public DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public SellerEntity? Seller { get; set; }
     public Guid CartId { get; set; }
     public ShoppingCartEntity? Cart { get; set; }

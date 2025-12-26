@@ -11,6 +11,6 @@ public class UserImageEntity
     public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
     public int Weight { get; set; }
     public int Height { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public ApplicationUser? User { get; set; }
 }

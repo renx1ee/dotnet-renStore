@@ -47,8 +47,7 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImageEn
         builder
             .Property(x => x.UploadedAt)
             .HasColumnName("uploaded_date")
-            .HasColumnType("TIMESTAMP")
-            .HasDefaultValue(DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified))
+            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
 
         builder
