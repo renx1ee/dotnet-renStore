@@ -12,12 +12,11 @@ public class ProductImageRepository : IProductImageRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    
     private readonly Dictionary<ProductImageSortBy, string> _sortColumnMapping = new() 
-        {
-            { ProductImageSortBy.Id, "product_image_id"},
-            { ProductImageSortBy.UploadedAt, "uploaded_date"}
-        };
+    {
+        { ProductImageSortBy.Id, "product_image_id"},
+        { ProductImageSortBy.UploadedAt, "uploaded_date"}
+    };
 
     public ProductImageRepository(
         ApplicationDbContext context,

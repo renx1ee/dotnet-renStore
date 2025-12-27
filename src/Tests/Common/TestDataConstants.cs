@@ -294,4 +294,29 @@ public static class TestDataConstants
     public static readonly Guid SellerImageIdForGetting2         = Guid.NewGuid();
     public static readonly Guid SellerImageIdForGetting3         = Guid.NewGuid();
     public static readonly Guid SellerImageIdForGetting4         = Guid.NewGuid();
+    // Shopping Cart
+    public static readonly int OverallShoppingCartsCount         = 5;
+    public static readonly Guid ShoppingCartIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid ShoppingCartIdForDelete          = Guid.NewGuid();
+    public static readonly Guid ShoppingCartIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid ShoppingCartIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid ShoppingCartIdForGetting3        = Guid.NewGuid();
+    // Shopping Cart Items
+    public static readonly int OverallShoppingCartItemsCount         = 7;
+    public static readonly Guid ShoppingCartItemIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid ShoppingCartItemIdForDelete          = Guid.NewGuid();
+    public static readonly Guid ShoppingCartItemIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid ShoppingCartItemIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid ShoppingCartItemIdForGetting3        = Guid.NewGuid();
+    public static readonly Guid ShoppingCartItemIdForGetting4        = Guid.NewGuid();
+    public static readonly Guid ShoppingCartItemIdForGetting5        = Guid.NewGuid();
+    // Answer Complains
+    public static readonly int OverallAnswerComplainsCount         = 7;
+    public static readonly Guid AnswerComplainIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid AnswerComplainIdForDelete          = Guid.NewGuid();
+    public static readonly Guid AnswerComplainIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid AnswerComplainIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid AnswerComplainIdForGetting3        = Guid.NewGuid();
+    public static readonly Guid AnswerComplainIdForGetting4        = Guid.NewGuid();
+    public static readonly Guid AnswerComplainIdForGetting5        = Guid.NewGuid();
 }

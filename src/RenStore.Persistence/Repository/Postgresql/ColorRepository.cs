@@ -13,8 +13,7 @@ public class ColorRepository : IColorRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<ColorSortBy, string> _sortColumnMapping =
-        new()
+    private readonly Dictionary<ColorSortBy, string> _sortColumnMapping = new()
         {
             { ColorSortBy.Id, "color_id" },
             { ColorSortBy.NormalizedName, "normalized_color_name" }

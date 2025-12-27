@@ -16,30 +16,25 @@ public class ShoppingCartItemRepository : IShoppingCartItemRepository
     private readonly ApplicationDbContext _context;
     private readonly ILogger<ShoppingCartItemRepository> _logger;
     
-    private readonly Dictionary<ShoppingCartItemSortBy, string> _sorcColumnMapping =
-        new()
-        {
-            { ShoppingCartItemSortBy.Id, "cart_item_id" }
-        };
+    private readonly Dictionary<ShoppingCartItemSortBy, string> _sorcColumnMapping = new()
+    {
+        { ShoppingCartItemSortBy.Id, "cart_item_id" }
+    };
 
     public ShoppingCartItemRepository(
         ApplicationDbContext context,
-        string connectionString,
-        ILogger<ShoppingCartItemRepository> logger)
+        string connectionString)
     {
         this._context = context;
-        this._logger = logger;
         this._connectionString = connectionString 
                                  ?? throw new ArgumentNullException(nameof(connectionString));;
     }
     
     public ShoppingCartItemRepository(
         ApplicationDbContext context,
-        IConfiguration configuration,
-        ILogger<ShoppingCartItemRepository> logger)
+        IConfiguration configuration)
     {
         this._context = context;
-        this._logger = logger;
         this._connectionString = configuration.GetConnectionString("DefaultConnection")
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
@@ -130,7 +125,7 @@ public class ShoppingCartItemRepository : IShoppingCartItemRepository
                     FROM
                         ""cart_items"" 
                     WHERE
-                        ""cart_id"" = @Id;
+                        ""cart_item_id"" = @Id;
             ";
         
             return await connection

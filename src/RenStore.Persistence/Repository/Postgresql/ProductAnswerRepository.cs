@@ -14,8 +14,7 @@ public class ProductAnswerRepository : IProductAnswerRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<ProductAnswerSortBy, string> _sortColumnMapping = 
-        new()
+    private readonly Dictionary<ProductAnswerSortBy, string> _sortColumnMapping = new()
         {
             { ProductAnswerSortBy.Id, "answer_id" },
             { ProductAnswerSortBy.CreatedDate, "created_date" }

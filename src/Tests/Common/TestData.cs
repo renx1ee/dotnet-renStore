@@ -1532,4 +1532,114 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting4
         }
     };
+
+    public static readonly IList<ShoppingCartEntity> ShoppingCarts = new[]
+    {
+        new ShoppingCartEntity()
+        {
+            Id = TestDataConstants.ShoppingCartIdForUpdate,
+            TotalPrice = 23542,
+            CreatedAt = DateTime.UtcNow,
+            UserId = TestDataConstants.UserIdForUpdateSeller
+        },
+        new ShoppingCartEntity()
+        {
+            Id = TestDataConstants.ShoppingCartIdForDelete,
+            TotalPrice = 2534,
+            CreatedAt = DateTime.UtcNow,
+            UserId = TestDataConstants.UserIdForDeleteSeller
+        },
+        new ShoppingCartEntity()
+        {
+            Id = TestDataConstants.ShoppingCartIdForGetting1,
+            TotalPrice = 854,
+            CreatedAt = DateTime.UtcNow,
+            UserId = TestDataConstants.UserIdForGettingSeller1
+        },
+        new ShoppingCartEntity()
+        {
+            Id = TestDataConstants.ShoppingCartIdForGetting2,
+            TotalPrice = 21456,
+            CreatedAt = DateTime.UtcNow,
+            UserId = TestDataConstants.UserIdForGettingSeller2
+        },
+        new ShoppingCartEntity()
+        {
+            Id = TestDataConstants.ShoppingCartIdForGetting3,
+            TotalPrice = 8795,
+            CreatedAt = DateTime.UtcNow,
+            UserId = TestDataConstants.UserIdForGettingSeller3
+        },
+    };
+
+    public static readonly IList<ShoppingCartItemEntity> ShoppingCartItems = new[]
+    {
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForUpdate,
+            Quantity = 1,
+            Price = 3632,
+            CartId = TestDataConstants.ShoppingCartIdForUpdate,
+            ProductId = TestDataConstants.ProductIdForUpdate
+        },
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForDelete,
+            Quantity = 1,
+            Price = 32526,
+            CartId = TestDataConstants.ShoppingCartIdForDelete,
+            ProductId = TestDataConstants.ProductIdForDelete
+        },
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForGetting1,
+            Quantity = 1,
+            Price = 7474,
+            CartId = TestDataConstants.ShoppingCartIdForGetting1,
+            ProductId = TestDataConstants.ProductIdForGetting1
+        },
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForGetting2,
+            Quantity = 1,
+            Price = 235,
+            CartId = TestDataConstants.ShoppingCartIdForGetting2,
+            ProductId = TestDataConstants.ProductIdForGetting2
+        },
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForGetting3,
+            Quantity = 1,
+            Price = 747,
+            CartId = TestDataConstants.ShoppingCartIdForGetting3,
+            ProductId = TestDataConstants.ProductIdForGetting3
+        },
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForGetting4,
+            Quantity = 1,
+            Price = 353253,
+            CartId = TestDataConstants.ShoppingCartIdForGetting3,
+            ProductId = TestDataConstants.ProductIdForGetting4
+        },
+        new ShoppingCartItemEntity()
+        {
+            Id = TestDataConstants.ShoppingCartItemIdForGetting5,
+            Quantity = 1,
+            Price = 325326,
+            CartId = TestDataConstants.ShoppingCartIdForGetting3,
+            ProductId = TestDataConstants.ProductIdForGetting5
+        },
+    };
+    // Todo:
+    public static readonly IList<AnswerComplainEntity> AnswerComplains = new[]
+    {
+        new AnswerComplainEntity()
+        {
+            Id = TestDataConstants.AnswerComplainIdForUpdate,
+            CustomReason = Guid.NewGuid().ToString(),
+            Comment = Guid.NewGuid().ToString(),
+            CreatedDate = DateTime.UtcNow,
+        }
+    };
 }

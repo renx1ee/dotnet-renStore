@@ -12,7 +12,6 @@ public class SellerImageRepository : ISellerImageRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
     private readonly Dictionary<SellerImageSortBy, string> _sortColumnMapping = new()
     {
         { SellerImageSortBy.Id, "seller_image_id" },

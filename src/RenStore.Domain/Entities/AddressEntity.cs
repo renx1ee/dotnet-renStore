@@ -1,5 +1,7 @@
 namespace RenStore.Domain.Entities;
-
+/// <summary>
+/// 
+/// </summary>
 public class AddressEntity
 {
     public Guid Id { get; set; }

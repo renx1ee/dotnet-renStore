@@ -12,7 +12,6 @@ public class ProductDetailRepository : IProductDetailRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
     private readonly Dictionary<ProductDetailSortBy, string> _sortColumnMapping = new()
     {
         { ProductDetailSortBy.Id, "product_detail_id" }

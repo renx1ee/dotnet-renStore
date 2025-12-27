@@ -13,13 +13,12 @@ public class CategoryRepository : ICategoryRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<CategorySortBy, string> _sortColumnMapping =
-        new()
-        {
-            { CategorySortBy.Id, "category_id" },
-            { CategorySortBy.Name, "normalized_category_name" },
-            { CategorySortBy.NameRu, "normalized_category_name_ru" },
-        };
+    private readonly Dictionary<CategorySortBy, string> _sortColumnMapping = new()
+    {
+        { CategorySortBy.Id, "category_id" },
+        { CategorySortBy.Name, "normalized_category_name" },
+        { CategorySortBy.NameRu, "normalized_category_name_ru" },
+    };
     
     public CategoryRepository(
         ApplicationDbContext context,

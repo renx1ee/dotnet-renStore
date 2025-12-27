@@ -12,9 +12,7 @@ public class CityRepository : ICityRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
-    private readonly Dictionary<CitySortBy, string> _sortColumnMapping =
-        new ()
+    private readonly Dictionary<CitySortBy, string> _sortColumnMapping = new ()
         {
             { CitySortBy.Id, "city_id" },
             { CitySortBy.Name, "city_name" }

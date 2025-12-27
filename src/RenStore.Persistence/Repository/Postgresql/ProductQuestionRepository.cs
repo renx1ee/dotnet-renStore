@@ -14,12 +14,11 @@ public class ProductQuestionRepository : IProductQuestionRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<ProductQuestionSortBy, string> _sortColumnMapping = 
-        new()
-        {
-            { ProductQuestionSortBy.Id, "question_id" },
-            { ProductQuestionSortBy.CreatedDate, "created_date" }
-        };
+    private readonly Dictionary<ProductQuestionSortBy, string> _sortColumnMapping = new()
+    {
+        { ProductQuestionSortBy.Id, "question_id" },
+        { ProductQuestionSortBy.CreatedDate, "created_date" }
+    };
 
     public ProductQuestionRepository(
         ApplicationDbContext context,

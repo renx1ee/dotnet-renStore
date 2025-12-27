@@ -12,13 +12,12 @@ public class SubCategoryRepository : ISubCategoryRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<SubCategorySortBy, string> _sortColumnMapping =
-        new()
-        {
-            { SubCategorySortBy.Id, "sub_category_id" },
-            { SubCategorySortBy.Name, "normalized_sub_category_name" },
-            { SubCategorySortBy.NameRu, "normalized_sub_category_name_ru" },
-        };
+    private readonly Dictionary<SubCategorySortBy, string> _sortColumnMapping = new()
+    {
+        { SubCategorySortBy.Id, "sub_category_id" },
+        { SubCategorySortBy.Name, "normalized_sub_category_name" },
+        { SubCategorySortBy.NameRu, "normalized_sub_category_name_ru" },
+    };
     
     public SubCategoryRepository(
         ApplicationDbContext context,

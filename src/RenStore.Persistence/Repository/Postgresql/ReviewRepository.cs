@@ -12,12 +12,11 @@ public class ReviewRepository : IReviewRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<ReviewSortBy, string> _sortColumnMapping =
-        new()
-        {
-            { ReviewSortBy.Id, "review_id" },
-            { ReviewSortBy.CreatedDate, "created_date" }
-        };
+    private readonly Dictionary<ReviewSortBy, string> _sortColumnMapping = new()
+    {
+        { ReviewSortBy.Id, "review_id" },
+        { ReviewSortBy.CreatedDate, "created_date" }
+    };
     
     public ReviewRepository(
         ApplicationDbContext context,

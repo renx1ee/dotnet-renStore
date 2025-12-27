@@ -12,7 +12,6 @@ public class ProductAttributeRepository : IProductAttributeRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
     private readonly Dictionary<ProductAttributeSortBy, string> _sortColumnMapping = new()
     {
         { ProductAttributeSortBy.Id, "attribute_id" }

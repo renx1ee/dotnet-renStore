@@ -15,9 +15,7 @@ public class ProductRepository : IProductRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    // TODO: make logging
     private readonly ILogger<ProductRepository> _logger;
-
     private readonly Dictionary<ProductSortBy, string> _sortColumnMapping = new()
     {
         { ProductSortBy.Id, "product_id" }

@@ -13,13 +13,12 @@ public class SellerRepository : ISellerRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<SellerSortBy, string> _sortColumnMapping = 
-        new()
-        {
-            { SellerSortBy.Id, "seller_id" },
-            { SellerSortBy.Name, "seller_name" },
-            { SellerSortBy.CreatedDate, "created_date" }
-        };
+    private readonly Dictionary<SellerSortBy, string> _sortColumnMapping = new()
+    {
+        { SellerSortBy.Id, "seller_id" },
+        { SellerSortBy.Name, "seller_name" },
+        { SellerSortBy.CreatedDate, "created_date" }
+    };
 
     public SellerRepository(
         ApplicationDbContext context,

@@ -38,10 +38,11 @@ public class ShoppingCartItemConfiguration : IEntityTypeConfiguration<ShoppingCa
         builder
             .Property(x => x.CartId)
             .HasColumnName("cart_id");
-        
+
         builder
             .Property(x => x.ProductId)
-            .HasColumnName("product_id");
+            .HasColumnName("product_id")
+            .IsRequired();
         
         builder
             .HasOne(x => x.Product)

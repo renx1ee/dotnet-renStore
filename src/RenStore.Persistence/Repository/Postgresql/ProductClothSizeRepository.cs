@@ -12,7 +12,6 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
     private readonly Dictionary<ProductClothSizeSortBy, string> _sortColumnMapping = new()
     {
         { ProductClothSizeSortBy.Id, "cloth_size_id" }

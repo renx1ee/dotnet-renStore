@@ -12,7 +12,6 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
     private readonly Dictionary<ProductPriceHistorySortBy, string> _sortColumnMapping = new()
     {
         { ProductPriceHistorySortBy.Id, "price_history_id" }

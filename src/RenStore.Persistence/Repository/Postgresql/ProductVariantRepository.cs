@@ -13,13 +13,11 @@ public class ProductVariantRepository : IProductVariantRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
-    private readonly Dictionary<ProductVariantSortBy, string> _sortColumnMapping =
-        new()
-        {
-            { ProductVariantSortBy.Id, "product_variant_id" },
-            { ProductVariantSortBy.Name, "normalized_variant_name" }
-        };
+    private readonly Dictionary<ProductVariantSortBy, string> _sortColumnMapping = new()
+    {
+        { ProductVariantSortBy.Id, "product_variant_id" },
+        { ProductVariantSortBy.Name, "normalized_variant_name" }
+    };
 
     public ProductVariantRepository(
         ApplicationDbContext context,

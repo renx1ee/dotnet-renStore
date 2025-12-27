@@ -12,7 +12,6 @@ public class UserImageRepository : IUserImageRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-
     private readonly Dictionary<UserImageSortBy, string> _sortColumnMapping = new()
     {
         { UserImageSortBy.Id, "user_image_id" },

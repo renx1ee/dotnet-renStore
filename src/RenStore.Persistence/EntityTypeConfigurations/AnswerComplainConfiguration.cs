@@ -82,6 +82,5 @@ public class AnswerComplainConfiguration : IEntityTypeConfiguration<AnswerCompla
             .Property(x => x.UserId)
             .HasColumnName("user_id")
             .IsRequired();
-
     }
 }
