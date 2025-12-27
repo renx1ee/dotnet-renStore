@@ -20,5 +20,11 @@ public class ApplicationUser : IdentityUser, IUser<string>
     public IEnumerable<UserImageEntity>? Images { get; set; }
     public IEnumerable<ProductQuestionEntity>? ProductQuestions { get; set; }
     public IEnumerable<ShoppingCartItemEntity>? ShoppingCartItems { get; set; }
-    /*public IEnumerable<Order>? Orders { get; set; }*/
+    public IEnumerable<AnswerComplainEntity>? AnswerComplains { get; set; }
+    public IEnumerable<QuestionComplainEntity>? QuestionComplains { get; set; }
+    public IEnumerable<ProductVariantComplainEntity>? ProductVariantComplains { get; set; }
+    public IEnumerable<ReviewComplainEntity>? ReviewComplains { get; set; }
+    public IEnumerable<SellerComplainEntity>? SellerComplains { get; set; }
+    // public IEnumerable<PromoCodeUserLimit>? PromoCodeUserLimits { get; set; }
+    // public IEnumerable<OrderEntity>? Orders { get; set; }
 }

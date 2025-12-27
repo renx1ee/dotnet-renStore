@@ -87,10 +87,10 @@ public class ShoppingCartItemRepository : IShoppingCartItemRepository
                 @"
                     SELECT
                         ""cart_item_id"" AS Id,
-                        ""quantity"" AS Quantity,
-                        ""price"" AS Price,
-                        ""cart_id"" AS CartId,
-                        ""product_id"" AS ProductId
+                        ""quantity""     AS Quantity,
+                        ""price""        AS Price,
+                        ""cart_id""      AS CartId,
+                        ""product_id""   AS ProductId
                     FROM
                         ""cart_items"" 
                 ");
@@ -123,10 +123,10 @@ public class ShoppingCartItemRepository : IShoppingCartItemRepository
                 @"
                     SELECT
                         ""cart_item_id"" AS Id,
-                        ""quantity"" AS Quantity,
-                        ""price"" AS Price,
-                        ""cart_id"" AS CartId,
-                        ""product_id"" AS ProductId
+                        ""quantity""     AS Quantity,
+                        ""price""        AS Price,
+                        ""cart_id""      AS CartId,
+                        ""product_id""   AS ProductId
                     FROM
                         ""cart_items"" 
                     WHERE
@@ -174,10 +174,10 @@ public class ShoppingCartItemRepository : IShoppingCartItemRepository
                 @"
                     SELECT
                         ""cart_item_id"" AS Id,
-                        ""quantity"" AS Quantity,
-                        ""price"" AS Price,
-                        ""cart_id"" AS CartId,
-                        ""product_id"" AS ProductId
+                        ""quantity""     AS Quantity,
+                        ""price""        AS Price,
+                        ""cart_id""      AS CartId,
+                        ""product_id""   AS ProductId
                     FROM
                         ""cart_items"" 
                     WHERE ""cart_id"" = @CartId

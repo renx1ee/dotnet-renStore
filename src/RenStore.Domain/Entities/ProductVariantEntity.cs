@@ -15,10 +15,13 @@ public class ProductVariantEntity
     public ProductEntity? Product { get; set; }
     public int ColorId { get; set; }
     public ColorEntity? Color { get; set; }
+    public Guid ProductDetailId { get; set; }
     public ProductDetailEntity? ProductDetails { get; set; }
+    public Guid ComplainId { get; set; }
     public IEnumerable<ProductAttributeEntity>? ProductAttributes { get; set; } 
     public IEnumerable<ProductPriceHistoryEntity>? PriceHistories { get; set; }
     public IEnumerable<ProductImageEntity>? Images { get; set; }
     public IEnumerable<ReviewEntity>? Reviews { get; set; }
     public IEnumerable<ProductQuestionEntity>? ProductQuestions { get; set; }
+    public IEnumerable<ProductVariantComplainEntity>? Complains { get; set; }
 }

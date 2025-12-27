@@ -32,6 +32,8 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new SellerImageConfiguration());
         modelBuilder.ApplyConfiguration(new UserImageConfiguration());
         
+        modelBuilder.ApplyConfiguration(new UserImageConfiguration());
+        
         base.OnModelCreating(modelBuilder);
     }
     
@@ -58,4 +60,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductImageEntity> ProductImages { get; set; }
     public DbSet<SellerImageEntity> SellerImages { get; set; }
     public DbSet<UserImageEntity> UserImages { get; set; }
+    public DbSet<AnswerComplainEntity> AnswerComplains { get; set; }
+    public DbSet<QuestionComplainEntity> QuestionComplains { get; set; }
+    public DbSet<ProductVariantComplainEntity> VariantComplains { get; set; }
+    public DbSet<ReviewComplainEntity> ReviewComplains { get; set; }
+    public DbSet<SellerComplainEntity> SellerComplains { get; set; }
 }

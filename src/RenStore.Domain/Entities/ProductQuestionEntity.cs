@@ -11,7 +11,9 @@ public class ProductQuestionEntity
     public ProductVariantEntity? ProductVariant { get; set; }
     public string UserId { get; set; }
     public ApplicationUser? User { get; set; }
-    public ProductAnswerEntity? Answer { get; set; }
     public Guid AnswerId { get; set; }
+    public ProductAnswerEntity? Answer { get; set; }
     // public int ModerationStatusId { get; set; }
+    public Guid ComplainId { get; set; }
+    public QuestionComplainEntity? Complain { get; set; }
 }

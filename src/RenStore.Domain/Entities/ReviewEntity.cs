@@ -17,4 +17,5 @@ public class ReviewEntity
     public string UserId { get; set; }
     public ProductVariantEntity? ProductVariant { get; set; }
     public Guid ProductVariantId { get; set; }
+    public IEnumerable<ReviewComplainEntity>? Complains { get; set; }
 }

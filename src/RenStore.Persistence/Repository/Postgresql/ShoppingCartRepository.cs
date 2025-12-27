@@ -86,11 +86,11 @@ public class ShoppingCartRepository : IShoppingCartRepository
             var sql = new StringBuilder(
                 @"
                     SELECT
-                        ""cart_id"" AS Id,
-                        ""total_price"" AS TotalPrice,
+                        ""cart_id""      AS Id,
+                        ""total_price""  AS TotalPrice,
                         ""created_date"" AS CreatedAt,
                         ""updated_date"" AS UpdatedAt,
-                        ""user_id"" AS UserId
+                        ""user_id""      AS UserId
                     FROM
                         ""shopping_carts"" 
                 ");
@@ -122,11 +122,11 @@ public class ShoppingCartRepository : IShoppingCartRepository
             const string sql = 
                 @"
                     SELECT
-                        ""cart_id"" AS Id,
-                        ""total_price"" AS TotalPrice,
+                        ""cart_id""      AS Id,
+                        ""total_price""  AS TotalPrice,
                         ""created_date"" AS CreatedAt,
                         ""updated_date"" AS UpdatedAt,
-                        ""user_id"" AS UserId
+                        ""user_id""      AS UserId
                     FROM
                         ""shopping_carts"" 
                     WHERE
@@ -173,11 +173,11 @@ public class ShoppingCartRepository : IShoppingCartRepository
             var sql = new StringBuilder(
                 @"
                     SELECT
-                        ""cart_id"" AS Id,
-                        ""total_price"" AS TotalPrice,
+                        ""cart_id""      AS Id,
+                        ""total_price""  AS TotalPrice,
                         ""created_date"" AS CreatedAt,
                         ""updated_date"" AS UpdatedAt,
-                        ""user_id"" AS UserId
+                        ""user_id""      AS UserId
                     FROM
                         ""shopping_carts"" 
                     WHERE ""user_id"" = @UserId

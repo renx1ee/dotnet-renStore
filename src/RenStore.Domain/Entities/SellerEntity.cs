@@ -14,6 +14,7 @@ public class SellerEntity
     public IEnumerable<ProductEntity>? Products { get; set; }
     public IEnumerable<SellerImageEntity>? SellerImages { get; set; }
     public IEnumerable<ProductAnswerEntity>? ProductAnswers { get; set; }
+    public IEnumerable<SellerComplainEntity>? Complains { get; set; }
     /*public long SellerFooterImageId { get; set; }
     public SellerFooterImage? SellerFooterImage { get; set; }*/
 }
