@@ -9,17 +9,17 @@ using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class AnswerComplainRepository : IAnswerComplainRepository
+public class ProductVariantComplainRepository : IProductVariantComplainRepository
 {
-    private readonly ILogger<AnswerComplainRepository> _logger;
+    private readonly ILogger<ProductVariantComplainRepository> _logger;
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<AnswerComplainSortBy, string> _sortColumnMapping = new()
-        {
-            { AnswerComplainSortBy.Id, "answer_complain_id" }
-        };
-    
-    public AnswerComplainRepository(
+    private readonly Dictionary<ProductVariantComplainSortBy, string> _sortColumnMapping = new()
+    {
+        { ProductVariantComplainSortBy.Id, "product_variant_complain_id" }
+    };
+
+    public ProductVariantComplainRepository(
         ApplicationDbContext context,
         string connectionString)
     {
@@ -28,7 +28,7 @@ public class AnswerComplainRepository : IAnswerComplainRepository
                                  ?? throw new ArgumentNullException(nameof(connectionString));
     }
     
-    public AnswerComplainRepository(
+    public ProductVariantComplainRepository(
         ApplicationDbContext context,
         IConfiguration configuration)
     {
@@ -37,31 +37,31 @@ public class AnswerComplainRepository : IAnswerComplainRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
     
-    public async Task<Guid> CreateAsync(AnswerComplainEntity complain, CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(ProductVariantComplainEntity complain, CancellationToken cancellationToken)
     {
-        var result = await this._context.AnswerComplains.AddAsync(complain, cancellationToken);
+        var result = await this._context.ProductVariantComplains.AddAsync(complain, cancellationToken);
         await this._context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;
     }
-    
-    public async Task UpdateAsync(AnswerComplainEntity complain, CancellationToken cancellationToken)
+
+    public async Task UpdateAsync(ProductVariantComplainEntity complain, CancellationToken cancellationToken)
     {
         var existingComplain = await this.GetByIdAsync(complain.Id, cancellationToken);
         
-        _context.AnswerComplains.Update(complain);
+        _context.ProductVariantComplains.Update(complain);
         await this._context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var complain = await this.GetByIdAsync(id, cancellationToken);
-        this._context.AnswerComplains.Remove(complain);
+        this._context.ProductVariantComplains.Remove(complain);
         await this._context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<AnswerComplainEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductVariantComplainEntity>> FindAllAsync(
         CancellationToken cancellationToken,
-        AnswerComplainSortBy sortBy = AnswerComplainSortBy.Id,
+        ProductVariantComplainSortBy sortBy = ProductVariantComplainSortBy.Id,
         uint pageCount = 25,
         uint page = 1,
         bool descending = false)
@@ -74,31 +74,31 @@ public class AnswerComplainRepository : IAnswerComplainRepository
             pageCount = Math.Min(pageCount, 1000);
             uint offset = (page - 1) * pageCount;
             var direction = descending ? "DESC" : "ASC";
-            var columnName = _sortColumnMapping.GetValueOrDefault(sortBy, "answer_complain_id");
+            var columnName = _sortColumnMapping.GetValueOrDefault(sortBy, "product_variant_complain_id");
 
             string sql =
                 @$"
                     SELECT
-                        ""answer_complain_id"" AS Id,
-                        ""reason""             AS Reason,
-                        ""custom_reason""      AS CustomReason,
-                        ""comment""            AS Comment,
-                        ""created_date""       AS CreatedDate,
-                        ""status""             AS Status,
-                        ""resolved_date""      AS ResolvedAt,
-                        ""moderator_comment""  AS ModeratorComment,
-                        ""moderator_id""       AS ModeratorId,
-                        ""product_answer_id""  AS ProductAnswerId,
-                        ""user_id""            AS UserId
+                        ""product_variant_complain_id"" AS Id,
+                        ""reason""                      AS Reason,
+                        ""custom_reason""               AS CustomReason,
+                        ""comment""                     AS Comment,
+                        ""created_date""                AS CreatedDate,
+                        ""status""                      AS Status,
+                        ""resolved_date""               AS ResolvedAt,
+                        ""moderator_comment""           AS ModeratorComment,
+                        ""moderator_id""                AS ModeratorId,
+                        ""product_variant_id""          AS ProductVariantId,
+                        ""user_id""                     AS UserId
                     FROM
-                        ""answer_complains""
+                        ""product_variant_complains""
                     ORDER BY {columnName} {direction}
                     LIMIT @Count
                     OFFSET @Offset;
                 ";
 
             return await connection
-                .QueryAsync<AnswerComplainEntity>(
+                .QueryAsync<ProductVariantComplainEntity>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -111,7 +111,7 @@ public class AnswerComplainRepository : IAnswerComplainRepository
         }
     }
 
-    public async Task<AnswerComplainEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductVariantComplainEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -121,25 +121,25 @@ public class AnswerComplainRepository : IAnswerComplainRepository
             const string sql =
                 @"
                     SELECT 
-                        ""answer_complain_id"" AS Id,
-                        ""reason""             AS Reason,
-                        ""custom_reason""      AS CustomReason,
-                        ""comment""            AS Comment,
-                        ""created_date""       AS CreatedDate,
-                        ""status""             AS Status,
-                        ""resolved_date""      AS ResolvedAt,
-                        ""moderator_comment""  AS ModeratorComment,
-                        ""moderator_id""       AS ModeratorId,
-                        ""product_answer_id""  AS ProductAnswerId,
-                        ""user_id""            AS UserId
+                        ""product_variant_complain_id"" AS Id,
+                        ""reason""                      AS Reason,
+                        ""custom_reason""               AS CustomReason,
+                        ""comment""                     AS Comment,
+                        ""created_date""                AS CreatedDate,
+                        ""status""                      AS Status,
+                        ""resolved_date""               AS ResolvedAt,
+                        ""moderator_comment""           AS ModeratorComment,
+                        ""moderator_id""                AS ModeratorId,
+                        ""product_variant_id""          AS ProductVariantId,
+                        ""user_id""                     AS UserId
                     FROM
-                        ""answer_complains""
+                        ""product_variant_complains""
                     WHERE 
-                        ""answer_complain_id"" = @Id
+                        ""product_variant_complain_id"" = @Id
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<AnswerComplainEntity>(
+                .QueryFirstOrDefaultAsync<ProductVariantComplainEntity>(
                     sql, new
                     {
                         Id = id
@@ -151,16 +151,16 @@ public class AnswerComplainRepository : IAnswerComplainRepository
         }
     }
 
-    public async Task<AnswerComplainEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductVariantComplainEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(cancellationToken: cancellationToken, id: id)
-               ?? throw new NotFoundException(typeof(AnswerComplainEntity), id);
+               ?? throw new NotFoundException(typeof(ProductVariantComplainEntity), id);
     }
     
-    public async Task<IEnumerable<AnswerComplainEntity?>> FindByUserIdAsync(
+    public async Task<IEnumerable<ProductVariantComplainEntity?>> FindByUserIdAsync(
         string userId, 
         CancellationToken cancellationToken,
-        AnswerComplainSortBy sortBy = AnswerComplainSortBy.Id,
+        ProductVariantComplainSortBy sortBy = ProductVariantComplainSortBy.Id,
         uint pageCount = 25,
         uint page = 1,
         bool descending = false)
@@ -176,24 +176,24 @@ public class AnswerComplainRepository : IAnswerComplainRepository
             pageCount = Math.Min(pageCount, 1000);
             uint offset = (page - 1) * pageCount;
             var direction = descending ? "DESC" : "ASC";
-            string columnName = _sortColumnMapping.GetValueOrDefault(sortBy, "answer_complain_id");
+            string columnName = _sortColumnMapping.GetValueOrDefault(sortBy, "product_variant_complain_id");
         
             string sql = 
                 $@"
                     SELECT
-                        ""answer_complain_id"" AS Id,
-                        ""reason""             AS Reason,
-                        ""custom_reason""      AS CustomReason,
-                        ""comment""            AS Comment,
-                        ""created_date""       AS CreatedDate,
-                        ""status""             AS Status,
-                        ""resolved_date""      AS ResolvedAt,
-                        ""moderator_comment""  AS ModeratorComment,
-                        ""moderator_id""       AS ModeratorId,
-                        ""product_answer_id""  AS ProductAnswerId,
-                        ""user_id""            AS UserId
+                        ""product_variant_complain_id"" AS Id,
+                        ""reason""                      AS Reason,
+                        ""custom_reason""               AS CustomReason,
+                        ""comment""                     AS Comment,
+                        ""created_date""                AS CreatedDate,
+                        ""status""                      AS Status,
+                        ""resolved_date""               AS ResolvedAt,
+                        ""moderator_comment""           AS ModeratorComment,
+                        ""moderator_id""                AS ModeratorId,
+                        ""product_variant_id""          AS ProductVariantId,
+                        ""user_id""                     AS UserId
                     FROM
-                        ""answer_complains""
+                        ""product_variant_complains""
                     WHERE
                         ""user_id"" = @UserId
                     ORDER BY {columnName} {direction} 
@@ -202,7 +202,7 @@ public class AnswerComplainRepository : IAnswerComplainRepository
                 ";
         
             return await connection
-                .QueryAsync<AnswerComplainEntity>(
+                .QueryAsync<ProductVariantComplainEntity>(
                     sql, new
                     {
                         UserId = userId,
@@ -216,10 +216,10 @@ public class AnswerComplainRepository : IAnswerComplainRepository
         }
     }
 
-    public async Task<IEnumerable<AnswerComplainEntity?>> GetByUserIdAsync(
+    public async Task<IEnumerable<ProductVariantComplainEntity?>> GetByUserIdAsync(
         string userId, 
         CancellationToken cancellationToken,
-        AnswerComplainSortBy sortBy = AnswerComplainSortBy.Id,
+        ProductVariantComplainSortBy sortBy = ProductVariantComplainSortBy.Id,
         uint pageCount = 25,
         uint page = 1,
         bool descending = false)
@@ -227,7 +227,7 @@ public class AnswerComplainRepository : IAnswerComplainRepository
         var result = await this.FindByUserIdAsync(userId, cancellationToken, sortBy, pageCount, page, descending);
         
         if (result is null || !result.Any())
-            throw new NotFoundException(typeof(AnswerComplainEntity), userId);
+            throw new NotFoundException(typeof(ProductVariantComplainEntity), userId);
         
         return result;
     }

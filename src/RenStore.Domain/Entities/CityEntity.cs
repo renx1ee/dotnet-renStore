@@ -9,4 +9,5 @@ public class CityEntity
     public string NormalizedNameRu { get; set; } = string.Empty;
     public int CountryId { get; set; }
     public CountryEntity? Country { get; set; }
+    public IEnumerable<AddressEntity>? Addresses { get; set; }
 }

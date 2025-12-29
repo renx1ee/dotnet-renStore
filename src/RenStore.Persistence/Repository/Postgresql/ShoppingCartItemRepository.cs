@@ -204,13 +204,17 @@ public class ShoppingCartItemRepository : IShoppingCartItemRepository
         uint page = 1,
         bool descending = false)
     {
-        return await this.FindByCartIdAsync(
+        var result = await this.FindByCartIdAsync(
                    cartId: cartId,
                    cancellationToken: cancellationToken,
                    sortBy: sortBy,
                    pageCount: pageCount,
                    page: page,
-                   descending: descending) 
-               ?? throw new NotFoundException(typeof(ShoppingCartItemEntity), cartId);
+                   descending: descending);
+            
+        if(result is null || !result.Any())
+               throw new NotFoundException(typeof(ShoppingCartItemEntity), cartId);
+
+        return result;
     }
 }

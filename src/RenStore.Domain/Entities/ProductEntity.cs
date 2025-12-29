@@ -12,4 +12,5 @@ public class ProductEntity
     public IEnumerable<ProductVariantEntity>? ProductVariants { get; set; } 
     public ProductClothEntity? ProductCloth { get; set; }
     public IEnumerable<ShoppingCartItemEntity>? CartItems { get; set; }
+    public IEnumerable<OrderItemEntity>? OrderItems { get; set; }
 }

@@ -1642,4 +1642,166 @@ public static class TestData
             CreatedDate = DateTime.UtcNow,
         }
     };
+
+    public static readonly IList<ProductVariantComplainEntity> ProductVariantComplains = new[]
+    {
+        new ProductVariantComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForUpdate,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ProductComplainStatus.New,
+            ProductVariantId = TestDataConstants.ProductVariantIdForUpdate,
+            UserId = TestDataConstants.UserIdForUpdateSeller
+        },
+        new ProductVariantComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForDelete,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ProductComplainStatus.New,
+            ProductVariantId = TestDataConstants.ProductVariantIdForDelete,
+            UserId = TestDataConstants.UserIdForDeleteSeller
+        },
+        new ProductVariantComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForGetting1,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ProductComplainStatus.New,
+            ProductVariantId = TestDataConstants.ProductVariantIdForGetting1,
+            UserId = TestDataConstants.UserIdForGettingSeller1
+        },
+        new ProductVariantComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForGetting2,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ProductComplainStatus.New,
+            ProductVariantId = TestDataConstants.ProductVariantIdForGetting2,
+            UserId = TestDataConstants.UserIdForGettingSeller2
+        },
+        new ProductVariantComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForGetting3,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ProductComplainStatus.New,
+            ProductVariantId = TestDataConstants.ProductVariantIdForGetting3,
+            UserId = TestDataConstants.UserIdForGettingSeller3
+        },
+    };
+
+    public static readonly IList<SellerComplainEntity> SellerComplains = new[]
+    {
+        new SellerComplainEntity
+        {
+            Id = TestDataConstants.SellerComplainIdForUpdate,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = SellerComplainStatus.New,
+            SellerId = TestDataConstants.SellerIdForUpdate,
+            UserId = TestDataConstants.UserIdForUpdateSeller
+        },
+        new SellerComplainEntity
+        {
+            Id = TestDataConstants.SellerComplainIdForDelete,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = SellerComplainStatus.New,
+            SellerId = TestDataConstants.SellerIdForDelete,
+            UserId = TestDataConstants.UserIdForDeleteSeller
+        },
+        new SellerComplainEntity
+        {
+            Id = TestDataConstants.SellerComplainIdForGetting1,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = SellerComplainStatus.New,
+            SellerId = TestDataConstants.SellerIdForGetting1,
+            UserId = TestDataConstants.UserIdForGettingSeller1
+        },
+        new SellerComplainEntity
+        {
+            Id = TestDataConstants.SellerComplainIdForGetting2,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = SellerComplainStatus.New,
+            SellerId= TestDataConstants.SellerIdForGetting2,
+            UserId = TestDataConstants.UserIdForGettingSeller2
+        },
+        new SellerComplainEntity
+        {
+            Id = TestDataConstants.SellerComplainIdForGetting3,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = SellerComplainStatus.New,
+            SellerId = TestDataConstants.SellerIdForGetting3,
+            UserId = TestDataConstants.UserIdForGettingSeller3
+        },
+    };
+    
+    /*public static readonly IList<ReviewComplainEntity> ReviewComplains = new[]
+    {
+        new ReviewComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForUpdate,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ReviewComplainStatus.New,
+            ReviewId = TestDataConstants.SellerIdForUpdate,
+            UserId = TestDataConstants.UserIdForUpdateSeller
+        },
+        new ReviewComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForDelete,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ReviewComplainStatus.New,
+            ReviewId = TestDataConstants.SellerIdForDelete,
+            UserId = TestDataConstants.UserIdForDeleteSeller
+        },
+        new ReviewComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForGetting1,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ReviewComplainStatus.New,
+            ReviewId = TestDataConstants.SellerIdForGetting1,
+            UserId = TestDataConstants.UserIdForGettingSeller1
+        },
+        new ReviewComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForGetting2,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ReviewComplainStatus.New,
+            ReviewId= TestDataConstants.SellerIdForGetting2,
+            UserId = TestDataConstants.UserIdForGettingSeller2
+        },
+        new ReviewComplainEntity
+        {
+            Id = TestDataConstants.ProductVariantComplainIdForGetting3,
+            CustomReason = "fewfawfa",
+            Comment = "wfwafaw",
+            CreatedDate = DateTime.UtcNow,
+            Status = ReviewComplainStatus.New,
+            ReviewId = TestDataConstants.SellerIdForGetting3,
+            UserId = TestDataConstants.UserIdForGettingSeller3
+        },
+    };*/
 }

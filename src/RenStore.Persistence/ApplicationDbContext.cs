@@ -68,4 +68,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductVariantComplainEntity> ProductVariantComplains { get; set; }
     public DbSet<ReviewComplainEntity> ReviewComplains { get; set; }
     public DbSet<SellerComplainEntity> SellerComplains { get; set; }
+    public DbSet<DeliveryOrderEntity> DeliveryOrders { get; set; }
+    public DbSet<DeliveryTariffEntity> DeliveryTariffs { get; set; }
 }

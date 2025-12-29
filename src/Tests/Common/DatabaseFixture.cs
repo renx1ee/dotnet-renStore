@@ -46,6 +46,8 @@ public class DatabaseFixture : IDisposable
         context.SellerImages.AddRange(TestData.SellerImages);
         context.ShoppingCarts.AddRange(TestData.ShoppingCarts);
         context.ShoppingCartItems.AddRange(TestData.ShoppingCartItems);
+        context.SellerComplains.AddRange(TestData.SellerComplains);
+        context.ProductVariantComplains.AddRange(TestData.ProductVariantComplains);
     }
     
     public void Dispose() { }

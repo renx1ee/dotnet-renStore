@@ -317,6 +317,32 @@ public static class TestDataConstants
     public static readonly Guid AnswerComplainIdForGetting1        = Guid.NewGuid();
     public static readonly Guid AnswerComplainIdForGetting2        = Guid.NewGuid();
     public static readonly Guid AnswerComplainIdForGetting3        = Guid.NewGuid();
-    public static readonly Guid AnswerComplainIdForGetting4        = Guid.NewGuid();
-    public static readonly Guid AnswerComplainIdForGetting5        = Guid.NewGuid();
+    // Answer Complains
+    public static readonly int OverallQuestionComplainsCount         = 7;
+    public static readonly Guid QuestionComplainIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid QuestionComplainIdForDelete          = Guid.NewGuid();
+    public static readonly Guid QuestionComplainIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid QuestionComplainIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid QuestionComplainIdForGetting3        = Guid.NewGuid();
+    // Product Variant Complains
+    public static readonly int OverallProductVariantComplainsCount         = 5;
+    public static readonly Guid ProductVariantComplainIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid ProductVariantComplainIdForDelete          = Guid.NewGuid();
+    public static readonly Guid ProductVariantComplainIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid ProductVariantComplainIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid ProductVariantComplainIdForGetting3        = Guid.NewGuid();
+    // Answer Complains
+    public static readonly int OverallReviewComplainsCount         = 7;
+    public static readonly Guid ReviewComplainIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid ReviewComplainIdForDelete          = Guid.NewGuid();
+    public static readonly Guid ReviewComplainIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid ReviewComplainIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid ReviewComplainIdForGetting3        = Guid.NewGuid();
+    // Answer Complains
+    public static readonly int OverallSellerComplainsCount         = 5;
+    public static readonly Guid SellerComplainIdForUpdate          = Guid.NewGuid();
+    public static readonly Guid SellerComplainIdForDelete          = Guid.NewGuid();
+    public static readonly Guid SellerComplainIdForGetting1        = Guid.NewGuid();
+    public static readonly Guid SellerComplainIdForGetting2        = Guid.NewGuid();
+    public static readonly Guid SellerComplainIdForGetting3        = Guid.NewGuid();
 }
