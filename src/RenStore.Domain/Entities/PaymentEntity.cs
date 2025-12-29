@@ -29,8 +29,3 @@ public class PaymentEntity
     public OrderEntity? Order { get; set; }
 }
 
-public enum Currency
-{
-    RUB
-}
-

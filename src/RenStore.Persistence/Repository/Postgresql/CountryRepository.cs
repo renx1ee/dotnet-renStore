@@ -12,12 +12,11 @@ public class CountryRepository : ICountryRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<CountrySortBy, string> _sortColumnMapping =
-        new ()
-        {
-            { CountrySortBy.Id, "country_id" },
-            { CountrySortBy.Name, "country_name" }
-        };
+    private readonly Dictionary<CountrySortBy, string> _sortColumnMapping = new ()
+    {
+        { CountrySortBy.Id, "country_id" },
+        { CountrySortBy.Name, "country_name" }
+    };
 
     public CountryRepository(
         ApplicationDbContext context,
@@ -25,7 +24,7 @@ public class CountryRepository : ICountryRepository
     {
         this._context = context;
         this._connectionString = connectionString 
-            ?? throw new ArgumentNullException(nameof(connectionString));
+                                 ?? throw new ArgumentNullException(nameof(connectionString));
     }
     
     public CountryRepository(

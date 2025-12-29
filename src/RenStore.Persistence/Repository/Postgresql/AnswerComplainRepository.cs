@@ -15,9 +15,9 @@ public class AnswerComplainRepository : IAnswerComplainRepository
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
     private readonly Dictionary<AnswerComplainSortBy, string> _sortColumnMapping = new()
-        {
-            { AnswerComplainSortBy.Id, "answer_complain_id" }
-        };
+    {
+        { AnswerComplainSortBy.Id, "answer_complain_id" }
+    };
     
     public AnswerComplainRepository(
         ApplicationDbContext context,

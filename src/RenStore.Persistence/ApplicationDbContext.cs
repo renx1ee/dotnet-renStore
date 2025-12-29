@@ -70,4 +70,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<SellerComplainEntity> SellerComplains { get; set; }
     public DbSet<DeliveryOrderEntity> DeliveryOrders { get; set; }
     public DbSet<DeliveryTariffEntity> DeliveryTariffs { get; set; }
+    public DbSet<DeliveryTrackingEntity> DeliveryTrackingHistory { get; set; }
+    public DbSet<OrderEntity> Orders { get; set; }
+    public DbSet<OrderItemEntity> OrderItems { get; set; }
+    public DbSet<PaymentEntity> Payments { get; set; }
+    
 }
