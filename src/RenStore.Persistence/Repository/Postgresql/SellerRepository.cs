@@ -2,9 +2,9 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -85,7 +85,7 @@ public class SellerRepository : ISellerRepository
                     ""seller_name""            AS Name,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
-                    ""created_date""           AS CreatedDate,
+                    ""created_date""           AS CreatedAt,
                     ""is_blocked""             AS IsBlocked,
                     ""user_id""                AS UserId
                 FROM
@@ -129,7 +129,7 @@ public class SellerRepository : ISellerRepository
                     ""seller_name""            AS Name,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
-                    ""created_date""           AS CreatedDate,
+                    ""created_date""           AS CreatedAt,
                     ""is_blocked""             AS IsBlocked,
                     ""user_id""                AS UserId
                 FROM
@@ -183,7 +183,7 @@ public class SellerRepository : ISellerRepository
                         ""seller_name""            AS Name,
                         ""normalized_seller_name"" AS NormalizedName,
                         ""seller_description""     AS Description,
-                        ""created_date""           AS CreatedDate,
+                        ""created_date""           AS CreatedAt,
                         ""is_blocked""             AS IsBlocked,
                         ""user_id""                AS UserId
                     FROM
@@ -243,7 +243,7 @@ public class SellerRepository : ISellerRepository
                     ""seller_name""            AS Name,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
-                    ""created_date""           AS CreatedDate,
+                    ""created_date""           AS CreatedAt,
                     ""is_blocked""             AS IsBlocked,
                     ""user_id""                AS UserId
                 FROM

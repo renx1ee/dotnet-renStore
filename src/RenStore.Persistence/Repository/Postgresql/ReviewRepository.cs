@@ -1,9 +1,9 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -80,7 +80,7 @@ public class ReviewRepository : IReviewRepository
                         ""review_id"" AS Id,
                         ""message"" AS Message,
                         ""rating"" AS ReviewRating,
-                        ""created_date"" AS CreatedDate,
+                        ""created_date"" AS CreatedAt,
                         ""last_updated_date"" AS LastUpdatedDate,
                         ""is_updated"" AS IsUpdated,
                         ""moderated_date"" AS ModeratedDate,
@@ -123,7 +123,7 @@ public class ReviewRepository : IReviewRepository
                         ""review_id"" AS Id,
                         ""message"" AS Message,
                         ""rating"" AS ReviewRating,
-                        ""created_date"" AS CreatedDate,
+                        ""created_date"" AS CreatedAt,
                         ""last_updated_date"" AS LastUpdatedDate,
                         ""is_updated"" AS IsUpdated,
                         ""moderated_date"" AS ModeratedDate,
@@ -177,7 +177,7 @@ public class ReviewRepository : IReviewRepository
                         ""review_id"" AS Id,
                         ""message"" AS Message,
                         ""rating"" AS ReviewRating,
-                        ""created_date"" AS CreatedDate,
+                        ""created_date"" AS CreatedAt,
                         ""last_updated_date"" AS LastUpdatedDate,
                         ""is_updated"" AS IsUpdated,
                         ""moderated_date"" AS ModeratedDate,
@@ -253,7 +253,7 @@ public class ReviewRepository : IReviewRepository
                         ""review_id"" AS Id,
                         ""message"" AS Message,
                         ""rating"" AS ReviewRating,
-                        ""created_date"" AS CreatedDate,
+                        ""created_date"" AS CreatedAt,
                         ""last_updated_date"" AS LastUpdatedDate,
                         ""is_updated"" AS IsUpdated,
                         ""moderated_date"" AS ModeratedDate,

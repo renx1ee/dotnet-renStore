@@ -2,9 +2,9 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -83,7 +83,7 @@ public class ProductQuestionRepository : IProductQuestionRepository
                     SELECT
                        ""question_id""        AS Id,
                        ""message""            AS Message,
-                       ""created_date""       AS CreatedDate,
+                       ""created_date""       AS CreatedAt,
                        ""moderated_date""     AS ModeratedDate,
                        ""is_approved""        AS IsApproved,
                        ""product_variant_id"" AS ProductVariantId,
@@ -127,7 +127,7 @@ public class ProductQuestionRepository : IProductQuestionRepository
                     SELECT
                        ""question_id""        AS Id,
                        ""message""            AS Message,
-                       ""created_date""       AS CreatedDate,
+                       ""created_date""       AS CreatedAt,
                        ""moderated_date""     AS ModeratedDate,
                        ""is_approved""        AS IsApproved,
                        ""product_variant_id"" AS ProductVariantId,
@@ -166,7 +166,7 @@ public class ProductQuestionRepository : IProductQuestionRepository
                     SELECT
                        ""question_id""        AS Id,
                        ""message""            AS Message,
-                       ""created_date""       AS CreatedDate,
+                       ""created_date""       AS CreatedAt,
                        ""moderated_date""     AS ModeratedDate,
                        ""is_approved""        AS IsApproved,
                        ""product_variant_id"" AS ProductVariantId,

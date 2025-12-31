@@ -1758,7 +1758,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForUpdate,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForUpdate,
             UserId = TestDataConstants.UserIdForUpdateSeller
@@ -1768,7 +1768,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForDelete,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForDelete,
             UserId = TestDataConstants.UserIdForDeleteSeller
@@ -1778,7 +1778,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting1,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForGetting1,
             UserId = TestDataConstants.UserIdForGettingSeller1
@@ -1788,7 +1788,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting2,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId= TestDataConstants.SellerIdForGetting2,
             UserId = TestDataConstants.UserIdForGettingSeller2
@@ -1798,7 +1798,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting3,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForGetting3,
             UserId = TestDataConstants.UserIdForGettingSeller3

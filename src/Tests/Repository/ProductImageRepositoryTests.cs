@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Persistence;
 using RenStore.Persistence.Repository.Postgresql;
 using Tests.Common;

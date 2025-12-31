@@ -3,10 +3,10 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.DTOs.Product.FullPage;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -221,7 +221,7 @@ public class ProductRepository : IProductRepository
                     pv.""article""                 AS Article,
                     pv.""in_stock""                AS InStock,
                     pv.""is_available""            AS IsAvailable,
-                    pv.""created_date""            AS CreatedDate,
+                    pv.""created_date""            AS CreatedAt,
                     pv.""url""                     AS Url,
                     pv.""product_id""              AS ProductId,
                     pv.""color_id""                AS ColorId

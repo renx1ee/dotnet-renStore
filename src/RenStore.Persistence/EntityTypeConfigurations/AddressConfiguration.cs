@@ -12,11 +12,27 @@ public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
             .ToTable("addresses");
 
         builder
+            .HasQueryFilter(x => !x.IsDeleted);
+
+        builder
+            .HasIndex(x => x.ApplicationUserId);
+        
+        builder
+            .HasIndex(x => x.CityId);
+        
+        builder
+            .HasIndex(x => x.CountryId);
+        
+        builder
+            .HasIndex(x => x.IsDeleted);
+
+        builder
             .HasKey(x => x.Id);
 
         builder
             .Property(x => x.Id)
-            .HasColumnName("address_id");
+            .HasColumnName("address_id")
+            .HasColumnType("uuid");
 
         builder
             .Property(x => x.HouseCode)
@@ -66,10 +82,21 @@ public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
             .IsRequired();
         
         builder
-            .Property(x => x.CreatedDate)
+            .Property(x => x.CreatedAt)
             .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
+            .HasDefaultValueSql("now()")
             .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+
+        builder
+            .Property(x => x.IsDeleted)
+            .HasDefaultValue(false)
+            .HasColumnName("is_deleted")
+            .IsRequired(false);
 
         builder
             .HasOne(x => x.ApplicationUser)

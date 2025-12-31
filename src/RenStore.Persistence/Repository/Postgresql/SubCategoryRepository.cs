@@ -1,9 +1,9 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -86,7 +86,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedDate,
+                        ""created_date""                    AS CreatedAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories"" 
@@ -128,7 +128,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedDate,
+                        ""created_date""                    AS CreatedAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories""
@@ -184,7 +184,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedDate,
+                        ""created_date""                    AS CreatedAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories""
@@ -261,7 +261,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedDate,
+                        ""created_date""                    AS CreatedAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories""

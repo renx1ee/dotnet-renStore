@@ -1,4 +1,4 @@
-﻿namespace RenStore.Application.Common.Exceptions;
+﻿namespace RenStore.Domain.Exceptions;
 
 public class NotFoundException : Exception
 {

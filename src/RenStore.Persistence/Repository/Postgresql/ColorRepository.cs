@@ -2,9 +2,9 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;

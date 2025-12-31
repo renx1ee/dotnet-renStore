@@ -2,9 +2,9 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -84,7 +84,7 @@ public class SellerComplainRepository : ISellerComplainRepository
                         ""reason""             AS Reason,
                         ""custom_reason""      AS CustomReason,
                         ""comment""            AS Comment,
-                        ""created_date""       AS CreatedDate,
+                        ""created_date""       AS CreatedAt,
                         ""status""             AS Status,
                         ""resolved_date""      AS ResolvedAt,
                         ""moderator_comment""  AS ModeratorComment,
@@ -126,7 +126,7 @@ public class SellerComplainRepository : ISellerComplainRepository
                         ""reason""             AS Reason,
                         ""custom_reason""      AS CustomReason,
                         ""comment""            AS Comment,
-                        ""created_date""       AS CreatedDate,
+                        ""created_date""       AS CreatedAt,
                         ""status""             AS Status,
                         ""resolved_date""      AS ResolvedAt,
                         ""moderator_comment""  AS ModeratorComment,
@@ -186,7 +186,7 @@ public class SellerComplainRepository : ISellerComplainRepository
                         ""reason""             AS Reason,
                         ""custom_reason""      AS CustomReason,
                         ""comment""            AS Comment,
-                        ""created_date""       AS CreatedDate,
+                        ""created_date""       AS CreatedAt,
                         ""status""             AS Status,
                         ""resolved_date""      AS ResolvedAt,
                         ""moderator_comment""  AS ModeratorComment,

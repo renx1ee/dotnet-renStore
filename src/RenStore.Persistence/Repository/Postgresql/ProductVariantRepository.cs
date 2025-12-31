@@ -2,9 +2,9 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -92,7 +92,7 @@ public class ProductVariantRepository : IProductVariantRepository
                         ""article""                 AS Article,
                         ""in_stock""                AS InStock,
                         ""is_available""            AS IsAvailable,
-                        ""created_date""            AS CreatedDate,
+                        ""created_date""            AS CreatedAt,
                         ""product_id""              AS ProductId,
                         ""color_id""                AS ColorId
                     FROM
@@ -140,7 +140,7 @@ public class ProductVariantRepository : IProductVariantRepository
                         ""article""                 AS Article,
                         ""in_stock""                AS InStock,
                         ""is_available""            AS IsAvailable,
-                        ""created_date""            AS CreatedDate,
+                        ""created_date""            AS CreatedAt,
                         ""product_id""              AS ProductId,
                         ""color_id""                AS ColorId
                     FROM

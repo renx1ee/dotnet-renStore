@@ -2,9 +2,9 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -92,8 +92,8 @@ public class PaymentRepository : IPaymentRepository
                         ""method_details""  AS MethodDetails,
                         ""status""          AS Status,
                         ""error_code""      AS ErrorCode,
-                        ""created_date""    AS CreatedDate,
-                        ""updated_date""    AS UpdatedDate,
+                        ""created_date""    AS CreatedAt,
+                        ""updated_date""    AS UpdatedAt,
                         ""payment_date""    AS PaymentDate,
                         ""authorized_date"" AS AuthorizedDate,
                         ""captured_date""   AS CapturedDate,
@@ -144,8 +144,8 @@ public class PaymentRepository : IPaymentRepository
                         ""method_details""  AS MethodDetails,
                         ""status""          AS Status,
                         ""error_code""      AS ErrorCode,
-                        ""created_date""    AS CreatedDate,
-                        ""updated_date""    AS UpdatedDate,
+                        ""created_date""    AS CreatedAt,
+                        ""updated_date""    AS UpdatedAt,
                         ""payment_date""    AS PaymentDate,
                         ""authorized_date"" AS AuthorizedDate,
                         ""captured_date""   AS CapturedDate,
@@ -211,8 +211,8 @@ public class PaymentRepository : IPaymentRepository
                         ""method_details""  AS MethodDetails,
                         ""status""          AS Status,
                         ""error_code""      AS ErrorCode,
-                        ""created_date""    AS CreatedDate,
-                        ""updated_date""    AS UpdatedDate,
+                        ""created_date""    AS CreatedAt,
+                        ""updated_date""    AS UpdatedAt,
                         ""payment_date""    AS PaymentDate,
                         ""authorized_date"" AS AuthorizedDate,
                         ""captured_date""   AS CapturedDate,

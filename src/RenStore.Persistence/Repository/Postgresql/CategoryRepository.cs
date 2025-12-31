@@ -2,9 +2,9 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using RenStore.Application.Common.Exceptions;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
@@ -87,7 +87,7 @@ public class CategoryRepository : ICategoryRepository
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
                         ""category_description""        AS Description,
                         ""is_active""                   AS IsActive,
-                        ""created_date""                AS CreatedDate
+                        ""created_date""                AS CreatedAt
                     FROM
                         ""categories"" 
                     ORDER BY {columnName} {direction} 
@@ -128,7 +128,7 @@ public class CategoryRepository : ICategoryRepository
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
                         ""category_description""        AS Description,
                         ""is_active""                   AS IsActive,
-                        ""created_date""                AS CreatedDate
+                        ""created_date""                AS CreatedAt
                     FROM
                         ""categories""
                     WHERE
@@ -183,7 +183,7 @@ public class CategoryRepository : ICategoryRepository
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
                         ""category_description""        AS Description,
                         ""is_active""                   AS IsActive,
-                        ""created_date""                AS CreatedDate
+                        ""created_date""                AS CreatedAt
                     FROM
                         ""categories""
                     WHERE
