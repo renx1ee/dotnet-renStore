@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Abstractions\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="Features\Category\Commands\Delete\" />
     <Folder Include="Features\Category\Commands\Update\" />

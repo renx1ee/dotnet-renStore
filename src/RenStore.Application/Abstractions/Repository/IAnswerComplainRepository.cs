@@ -1,7 +1,7 @@
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 
-namespace RenStore.Domain.Repository;
+namespace RenStore.Application.Abstractions.Repository;
 
 public interface IAnswerComplainRepository
 {

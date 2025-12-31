@@ -1,4 +1,4 @@
-namespace RenStore.Domain.Enums.Sorting;
+namespace RenStore.Application.Features.Address.Queries;
 
 public enum AddressSortBy
 {

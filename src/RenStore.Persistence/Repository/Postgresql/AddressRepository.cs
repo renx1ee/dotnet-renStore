@@ -1,156 +1,92 @@
-using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Text;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Domain.Criteries;
+using RenStore.Application.Abstractions.Repository;
+using RenStore.Application.Features.Address.Queries;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Domain.Exceptions;
+using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
-
-public interface IAddressRepository
+/// <remarks>
+/// This repository supports optional ambient EF Core transactions.
+/// Dapper queries participate in the current transaction if present, 
+/// but will not see uncommitted EF Core changes until SaveChanges is called.
+/// </remarks>
+internal sealed class AddressRepository(
+    ILogger<AddressRepository> logger,
+    ApplicationDbContext context)
+    : IAddressRepository
 {
-    Task<Guid> AddAsync(
-        AddressEntity address,
-        CancellationToken cancellationToken);
-
-    Task AddRangeAsync(
-        IEnumerable<AddressEntity> addresses,
-        CancellationToken cancellationToken);
-
-    Task UpdateAsync(
-        AddressEntity address,
-        CancellationToken cancellationToken);
-
-    Task UpdateDetachedUnsafeAsync(
-        AddressEntity address,
-        CancellationToken cancellationToken);
-
-    Task UpdateRangeAsync(
-        IEnumerable<AddressEntity> addresses,
-        CancellationToken cancellationToken);
-
-    Task UpdateDetachedRangeUnsafeAsync(
-        IEnumerable<AddressEntity> addresses,
-        CancellationToken cancellationToken);
-
-    Task DeleteAsync(
-        Guid id,
-        CancellationToken cancellationToken);
-
-    Task DeleteHardAsync(
-        Guid id,
-        CancellationToken cancellationToken);
-
-    Task DeleteRangeAsync(
-        IEnumerable<AddressEntity> addresses,
-        CancellationToken cancellationToken);
-
-    Task DeleteRangeAsync(
-        IEnumerable<Guid> ids,
-        CancellationToken cancellationToken);
-
-    Task DeleteHardRangeAsync(
-        IEnumerable<AddressEntity> addresses,
-        CancellationToken cancellationToken);
-
-    Task DeleteHardRangeAsync(
-        IEnumerable<Guid> ids,
-        CancellationToken cancellationToken);
-
-    Task<int> CommitAsync(
-        CancellationToken cancellationToken);
-    
-    
-}
-
-public class AddressRepository : IAddressRepository
-{
-    // TODO:
-    // ❌ _connectionString в репозитории
-    // ❌ IConfiguration в конструкторе
-    private readonly ILogger<AddressRepository> _logger;
-    private readonly ApplicationDbContext _context;
-    private readonly string _connectionString;
     private const uint MaxPageSize = 1000;
-    private readonly Dictionary<AddressSortBy, string> _sortColumnMapping = new()
+    private const int CommandTimeoutSeconds = 30;
+    
+    private const string BaseSqlQuery = 
+        """
+            SELECT
+                ""address_id""       AS Id,
+                ""house_code""       AS HouseCode,
+                ""street""           AS Street,
+                ""building_number""  AS BuildingNumber,
+                ""apartment_number"" AS ApartmentNumber,
+                ""entrance""         AS Entrance,
+                ""floor""            AS Floor,
+                ""flat_number""      AS FlatNumber,
+                ""full_address""     AS FullAddress,
+                ""created_date""     AS CreatedAt,
+                ""updated_date""     AS UpdatedAt,
+                ""is_deleted""       AS IsDeleted,
+                ""user_id""          AS ApplicationUserId,
+                ""country_id""       AS CountryId,
+                ""city_id""          AS CityId
+            FROM
+                "addresses"
+        """;
+    
+    private static readonly Dictionary<AddressSortBy, string> _sortColumnMapping = new()
     {
         { AddressSortBy.Id, "address_id" },
         { AddressSortBy.HouseCode, "house_code" },
         { AddressSortBy.FlatNumber, "flat_number" }
     };
     
-    public AddressRepository(
-        ILogger<AddressRepository> logger,
-        ApplicationDbContext context,
-        string connectionString)
-    {
-        this._logger           = logger 
-                                 ?? throw new ArgumentNullException(nameof(logger));
-        this._context          = context 
-                                 ?? throw new ArgumentNullException(nameof(context));
-        this._connectionString = connectionString  
-                                 ?? throw new ArgumentNullException(nameof(connectionString));
-    }
-    
-    public AddressRepository(
-        ILogger<AddressRepository> logger,
-        ApplicationDbContext context,
-        IConfiguration configuration)
-    {
-        this._logger           = logger 
-                                 ?? throw new ArgumentNullException(nameof(logger));
-        this._context          = context 
-                                 ?? throw new ArgumentNullException(nameof(context));
-        this._connectionString = configuration.GetConnectionString("DefaultConnection")
-                                 ?? throw new InvalidOperationException(nameof(configuration));
-    }
+    private readonly ILogger<AddressRepository> _logger = logger 
+                                                          ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ApplicationDbContext _context      = context 
+                                                          ?? throw new ArgumentNullException(nameof(context));
 
+    private DbTransaction? CurrentTransaction => 
+        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    
     public async Task<Guid> AddAsync(
         AddressEntity address, 
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Adding new address.");
-
-        if (address == null)
-        {
-            this._logger.LogDebug("{Parameter} is null.", nameof(address));
-            throw new ArgumentNullException(nameof(address));
-        }
+        ArgumentNullException.ThrowIfNull(address);
         
         address.Id = Guid.NewGuid();
         address.CreatedAt = DateTime.UtcNow;
         
         await this._context.Addresses.AddAsync(address, cancellationToken);
         
-        _logger.LogInformation("Address added to context with {AddressId}.", address.Id);
         return address.Id;
     }
 
     public async Task AddRangeAsync(
-        IEnumerable<AddressEntity> addresses, 
+        IReadOnlyCollection<AddressEntity> addresses, 
         CancellationToken cancellationToken)
     {
-        if (addresses == null)
-        {
-            this._logger.LogDebug("{Parameter} is null.", nameof(addresses));
-            throw new ArgumentNullException(nameof(addresses));
-        }
+        ArgumentNullException.ThrowIfNull(addresses);
         
         var addressesList = addresses as IList<AddressEntity> ?? addresses.ToList();
 
-        if (!addressesList.Any())
-        {
-            this._logger.LogWarning("CreateRangeAsync method called with empty address collection.");
-            return;
-        }
-        
-        _logger.LogInformation("Adding {Count} addresses.", addressesList.Count());
+        if (!addressesList.Any()) return;
 
         var utcNow = DateTime.UtcNow;
         
@@ -159,26 +95,18 @@ public class AddressRepository : IAddressRepository
             address.Id = Guid.NewGuid();
             address.CreatedAt = utcNow;
         }
-        await this._context.Addresses.AddRangeAsync(addresses, cancellationToken);
+        
+        await this._context.Addresses.AddRangeAsync(addressesList, cancellationToken);
     }
     
     public Task UpdateAsync(
         AddressEntity address, 
         CancellationToken cancellationToken)
     {
-        if (address == null)
-        {
-            this._logger.LogDebug("{Parameter} is null.", nameof(address));
-            throw new ArgumentNullException(nameof(address));
-        }
+        ArgumentNullException.ThrowIfNull(address);
 
         if (address.IsDeleted)
-        {
-            this._logger.LogWarning("Cannot update IsDeleted entity: {Parameter}.", nameof(address));
             throw new InvalidOperationException("Cannot update address that is marked as deleted.");
-        }
-        
-        this._logger.LogInformation("Update tracked address {AddressId}", address.Id);
         
         address.UpdatedAt = DateTime.UtcNow;
         
@@ -193,19 +121,10 @@ public class AddressRepository : IAddressRepository
         AddressEntity address,
         CancellationToken cancellationToken)
     {
-        if (address == null)
-        {
-            this._logger.LogDebug("{Parameter} is null.", nameof(address));
-            throw new ArgumentNullException(nameof(address));
-        }
+        ArgumentNullException.ThrowIfNull(address);
         
         if (address.IsDeleted)
-        {
-            this._logger.LogWarning("Cannot update IsDeleted entity: {Parameter}.", nameof(address));
             throw new InvalidOperationException("Cannot update address that is marked as deleted.");
-        }
-        
-        this._logger.LogInformation("Update detracked address {AddressId}", address.Id);
         
         address.UpdatedAt = DateTime.UtcNow;
 
@@ -216,38 +135,21 @@ public class AddressRepository : IAddressRepository
     }
 
     public Task UpdateRangeAsync(
-        IEnumerable<AddressEntity> addresses, 
+        IReadOnlyCollection<AddressEntity> addresses, 
         CancellationToken  cancellationToken)
     {
-        if (addresses == null)
-        {
-            this._logger.LogDebug(
-                "{Parameter} is null.", nameof(addresses));
-            throw new ArgumentNullException(nameof(addresses));
-        }
+        ArgumentNullException.ThrowIfNull(addresses);
 
         var addressesList = addresses as IList<AddressEntity> ?? addresses.ToList();
 
         if (!addressesList.Any())
-        {
-            this._logger.LogWarning(
-                "UpdateRangeAsync method called with empty address collection.");
             return Task.CompletedTask;
-        }
-
+        
         var deletedCount = addressesList.Count(a => a.IsDeleted);
 
         if (deletedCount > 0)
-        {
-            this._logger.LogWarning(
-                "UpdateRangeAsync contains {DeletedCount} deleted entities.",
-                deletedCount);
-            
             throw new InvalidOperationException(
                 "Cannot update one or more addresses that is marked as deleted.");
-        }
-        
-        _logger.LogInformation("Updating {Count} tracked addresses.", addressesList.Count);
 
         var utcNow = DateTime.UtcNow;
 
@@ -262,38 +164,22 @@ public class AddressRepository : IAddressRepository
     /// Use ONLY when all fields are fully populated.
     /// </summary>
     public Task UpdateDetachedRangeUnsafeAsync(
-        IEnumerable<AddressEntity> addresses,
+        IReadOnlyCollection<AddressEntity> addresses,
         CancellationToken cancellationToken)
     {
-        if (addresses == null)
-        {
-            this._logger.LogDebug(
-                "{Parameter} is null.", nameof(addresses));
-            throw new ArgumentNullException(nameof(addresses));
-        }
+        ArgumentNullException.ThrowIfNull(addresses);
 
         var addressesList = addresses as IList<AddressEntity> ?? addresses.ToList();
 
         if (!addressesList.Any())
-        {
-            this._logger.LogWarning(
-                "UpdateRangeAsync method called with empty address collection.");
             return Task.CompletedTask;
-        }
+        
 
         var deletedCount = addressesList.Count(a => a.IsDeleted);
 
         if (deletedCount > 0)
-        {
-            this._logger.LogWarning(
-                "UpdateRangeAsync contains {DeletedCount} deleted entities.",
-                deletedCount);
-            
             throw new InvalidOperationException(
                 "Cannot update one or more addresses that is marked as deleted.");
-        }
-        
-        _logger.LogInformation("Updating {Count} detached addresses.", addressesList.Count);
 
         var utcNow = DateTime.UtcNow;
 
@@ -313,23 +199,11 @@ public class AddressRepository : IAddressRepository
         CancellationToken cancellationToken)
     {
         if (id == Guid.Empty)
-        {
-            _logger.LogDebug("Address ID cannot be empty!");
-            throw new ArgumentException(
-                "Address ID cannot be empty!",
-                nameof(id));
-        }
+            throw new ArgumentException("Address ID cannot be empty!", nameof(id));
         
         var address = await this.GetByIdAsync(id, cancellationToken);
 
-        if (address.IsDeleted)
-        {
-            this._logger.LogWarning(
-                "Attempt to delete already deleted address {AddressId}.", id);
-            return;
-        }
-        
-        this._logger.LogInformation("Soft deleting address {AddressId}", id);
+        if (address.IsDeleted) return;
 
         address.IsDeleted = true;
         address.UpdatedAt = DateTime.UtcNow;
@@ -340,48 +214,26 @@ public class AddressRepository : IAddressRepository
         CancellationToken cancellationToken)
     {
         if (id == Guid.Empty)
-        {
-            _logger.LogDebug("Address ID cannot be empty!");
-            throw new ArgumentException(
-                "Address ID cannot be empty!",
-                nameof(id));
-        }
+            throw new ArgumentException("Address ID cannot be empty!", nameof(id));
         
         var address = await this.GetByIdAsync(id, cancellationToken);
-        
-        this._logger.LogInformation("Hard deleting address {AddressId}", id);
         
         this._context.Addresses.Remove(address);
     }
 
     public Task DeleteRangeAsync(
-        IEnumerable<AddressEntity> addresses, 
+        IReadOnlyCollection<AddressEntity> addresses, 
         CancellationToken cancellationToken)
     {
-        if (addresses == null)
-        {
-            _logger.LogDebug("Address cannot be null.");
-            throw new ArgumentNullException(nameof(addresses));
-        }
+        ArgumentNullException.ThrowIfNull(addresses);
 
         var addressesList = addresses as IList<AddressEntity> ?? addresses.ToList();
 
         if (!addressesList.Any())
-        {
-            _logger.LogWarning("DeleteRangeAsync: called with empty addresses collection");
             return Task.CompletedTask;
-        }
 
         if (addressesList.Any(a => a.Id == Guid.Empty))
-        {
-            _logger.LogWarning(
-                "DeleteRangeAsync: called with empty address IDs collection");
-            throw new ArgumentException(
-                "One or more address IDs are empty.",
-                nameof(addresses));
-        }
-        
-        this._logger.LogInformation("Soft deleting addresses {AddressId}", addressesList);
+            throw new ArgumentException("One or more address IDs are empty.", nameof(addresses));
 
         var utcNow = DateTime.UtcNow;
 
@@ -394,41 +246,23 @@ public class AddressRepository : IAddressRepository
             this._context.Entry(address).Property(a => a.IsDeleted).IsModified = true;
             this._context.Entry(address).Property(a => a.UpdatedAt).IsModified = true;
         }
-        
-        this._logger.LogInformation(
-            "Soft deleted {DeletedCount} of {TotalCount} addresses.",
-            addressesList.Count(a => a.IsDeleted),
-            addressesList.Count);
 
         return Task.CompletedTask;
     }
 
     public Task DeleteRangeAsync(
-        IEnumerable<Guid> ids,
+        IReadOnlyCollection<Guid> ids,
         CancellationToken cancellationToken)
     {
-        if (ids == null)
-        {
-            _logger.LogDebug("IDs cannot be null!");
-            throw new ArgumentNullException(nameof(ids));
-        }
+        ArgumentNullException.ThrowIfNull(ids);
 
         var idsList = ids as IList<Guid> ?? ids.ToList();
 
         if (!idsList.Any())
-        {
-            _logger.LogWarning("DeleteRangeAsync: called with empty addresses collection");
             return Task.CompletedTask;
-        }
 
         if (idsList.Any(id => id == Guid.Empty))
-        {
-            _logger.LogWarning(
-                "DeleteRangeAsync: called with empty address IDs collection");
-            throw new ArgumentException(
-                "One or more address IDs are empty.",
-                nameof(idsList));
-        }
+            throw new ArgumentException("One or more address IDs are empty.", nameof(idsList));
 
         var utcNow = DateTime.UtcNow;
 
@@ -438,126 +272,84 @@ public class AddressRepository : IAddressRepository
             {
                 Id = id,
                 IsDeleted = true,
-                CreatedAt = utcNow
+                UpdatedAt = utcNow
             };
 
             this._context.Attach(stubAddress);
             this._context.Entry(stubAddress).Property(a => a.IsDeleted).IsModified = true;
             this._context.Entry(stubAddress).Property(a => a.UpdatedAt).IsModified = true;
         }
-
-        this._logger.LogInformation(
-            "Soft deleted {Count} addresses (stub addresses)",
-            idsList.Count);
         
         return Task.CompletedTask;
     }
     
     public Task DeleteHardRangeAsync(
-        IEnumerable<AddressEntity> addresses, 
+        IReadOnlyCollection<AddressEntity> addresses, 
         CancellationToken cancellationToken)
     {
-        if (addresses == null)
-        {
-            _logger.LogDebug("Address cannot be null.");
-            throw new ArgumentNullException(nameof(addresses));
-        }
-
+        ArgumentNullException.ThrowIfNull(addresses);
+        
         var addressesList = addresses as IList<AddressEntity> ?? addresses.ToList();
 
         if (!addressesList.Any())
-        {
-            _logger.LogWarning("DeleteHardRangeAsync: called with empty addresses collection");
             return Task.CompletedTask;
-        }
 
         if (addressesList.Any(a => a.Id == Guid.Empty))
-        {
-            _logger.LogWarning(
-                "DeleteHardRangeAsync: called with empty address IDs collection");
-            throw new ArgumentException(
-                "One or more address IDs are empty.",
-                nameof(addresses));
-        }
-        
-        this._logger.LogInformation("Soft deleting addresses {AddressId}", addressesList);
+            throw new ArgumentException("One or more address IDs are empty.", nameof(addresses));
 
         _context.Addresses.RemoveRange(addressesList);
-        
-        this._logger.LogInformation(
-            "Hard deleted {DeletedCount} of {TotalCount} addresses.",
-            addressesList.Count(a => a.IsDeleted),
-            addressesList.Count);
 
         return Task.CompletedTask;
     }
     
     public Task DeleteHardRangeAsync(
-        IEnumerable<Guid> ids,
+        IReadOnlyCollection<Guid> ids,
         CancellationToken cancellationToken)
     {
-        if (ids == null)
-        {
-            _logger.LogDebug("IDs cannot be null!");
-            throw new ArgumentNullException(nameof(ids));
-        }
+        ArgumentNullException.ThrowIfNull(ids);
 
         var idsList = ids as IList<Guid> ?? ids.ToList();
 
         if (!idsList.Any())
-        {
-            _logger.LogWarning("DeleteHardRangeAsync: called with empty addresses collection");
             return Task.CompletedTask;
-        }
 
         if (idsList.Any(id => id == Guid.Empty))
-        {
-            _logger.LogWarning(
-                "DeleteHardRangeAsync: called with empty address IDs collection");
-            throw new ArgumentException(
-                "One or more address IDs are empty.",
-                nameof(idsList));
-        }
+            throw new ArgumentException("One or more address IDs are empty.", nameof(idsList));
 
         var addresses = idsList
             .Select(id => new AddressEntity() { Id = id });
 
         this._context.RemoveRange(addresses);
-
-        this._logger.LogInformation(
-            "Hard deleted {Count} addresses (stub addresses)",
-            idsList.Count);
         
         return Task.CompletedTask;
     }
 
-    public async Task<int> CommitAsync(CancellationToken cancellationToken)
+    public async Task<int> CommitAsync(
+        CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Commit changes with standalone mode");
         try
         {
             int result = await this._context.SaveChangesAsync(cancellationToken);
-            this._logger.LogInformation("Changes commited successfully. Affected rows: {Count}", result);
             return result;
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
-            this._logger.LogError("Commit operation wac cancelled." );
+            this._logger.LogInformation("Commit operation was cancelled." );
             throw;
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException e)
         {
-            this._logger.LogError(ex, "Concurrency conflict during commit." );
-            throw new ConcurrencyException("Data was notified by another user. Please retry the operation.", ex);
+            this._logger.LogError(e, "Concurrency conflict during commit." );
+            throw new ConcurrencyException("Data was notified by another user. Please retry the operation.", e);
         }
-        catch (DbUpdateException ex)
+        catch (DbUpdateException e)
         {
-            this._logger.LogError(ex, "Database update failed.");
-            throw new DataAccessException("Failed to save changes due to database error.", ex);
+            this._logger.LogError(e, "Database update failed.");
+            throw new DataAccessException("Failed to save changes due to database error.", e);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            this._logger.LogError(ex, "Unexpected error during commit.");
+            this._logger.LogError(e, "Unexpected error during commit.");
             throw;
         }
     }
@@ -569,70 +361,44 @@ public class AddressRepository : IAddressRepository
         uint pageSize = 25,
         bool descending = false)
     {
-        if (page == 0)
-        {
-            _logger.LogWarning("Page cannot be 0. Page: {Page}", page);
-            throw new ArgumentOutOfRangeException(nameof(page));
-        }
-        
         try
         {
-            await using var connection = new NpgsqlConnection(this._connectionString);
-            await connection.OpenAsync(cancellationToken);
-
-            pageSize = Math.Min(pageSize, MaxPageSize);
-            uint offset = (page - 1) * pageSize;
-            var direction = descending ? "DESC" : "ASC";
-
+            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
+
+            var pageRequest = BuildPageRequest(page, pageSize, descending);
             
-            string sql =
+            string sql = 
                 @$"
-                    SELECT
-                        ""address_id""       AS Id,
-                        ""house_code""       AS HouseCode,
-                        ""street""           AS Street,
-                        ""building_number""  AS BuildingNumber,
-                        ""apartment_number"" AS ApartmentNumber,
-                        ""entrance""         AS Entrance,
-                        ""floor""            AS Floor,
-                        ""flat_number""      AS FlatNumber,
-                        ""full_address""     AS FullAddress,
-                        ""created_date""     AS CreatedAt,
-                        ""updated_date""     AS UpdatedAt,
-                        ""is_deleted""       AS IsDeleted,
-                        ""user_id""          AS ApplicationUserId,
-                        ""country_id""       AS CountryId,
-                        ""city_id""          AS CityId
-                    FROM
-                        ""addresses""
-                    ORDER BY {columnName} {direction}
+                    {BaseSqlQuery}
+                    ORDER BY ""{columnName}"" {pageRequest.Direction}
                     LIMIT @Count
                     OFFSET @Offset;
                 ";
 
-            var command = new CommandDefinition(
-                commandText: sql, 
-                parameters: new
-                {   
-                    Count = (int)pageSize,
-                    Offset = (int)offset
-                },
-                cancellationToken: cancellationToken);
-
             var result = await connection
-                .QueryAsync<AddressEntity>(command);
+                .QueryAsync<AddressEntity>(
+                    new CommandDefinition(
+                        commandText: sql, 
+                        parameters: new
+                        {   
+                            Count = pageRequest.Limit,
+                            Offset = pageRequest.Offset
+                        },
+                        transaction: CurrentTransaction,
+                        commandTimeout: CommandTimeoutSeconds, 
+                        cancellationToken: cancellationToken));
 
             return result.AsList();
         }
         catch (PostgresException e)
         {
-            _logger.LogError(e, "Database error occured.");
-            throw new DataException("Database error occured.", e);
+            throw Wrap(e);
         }
     }
-    // TODO: сделать по нормальному емае 
+    
     public async Task<IReadOnlyList<AddressEntity>> SearchAsync(
         AddressSearchCriteria criteria,
         CancellationToken cancellationToken,
@@ -642,49 +408,24 @@ public class AddressRepository : IAddressRepository
         uint page = 1,
         bool descending = false)
     {
-        if (page == 0)
-        {
-            _logger.LogWarning("Page cannot be 0. Page: {Page}", page);
-            throw new ArgumentOutOfRangeException(nameof(page));
-        }
-        
         try
         {
-            await using var connection = new NpgsqlConnection(this._connectionString);
-            await connection.OpenAsync(cancellationToken);
+            var connection = await this.GetOpenConnectionAsync(cancellationToken);
 
-            pageSize = Math.Min(pageSize, MaxPageSize);
-            uint offset = (page - 1) * pageSize;
-            var direction = descending ? "DESC" : "ASC";
+            var pageRequest = BuildPageRequest(page, pageSize, descending);
+            
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
             var sql = new StringBuilder(
-                @" 
-                    SELECT 
-                        ""address_id""       AS Id,
-                        ""house_code""       AS HouseCode,
-                        ""street""           AS Street,
-                        ""building_number""  AS BuildingNumber,
-                        ""apartment_number"" AS ApartmentNumber,
-                        ""entrance""         AS Entrance,
-                        ""floor""            AS Floor,
-                        ""flat_number""      AS FlatNumber,
-                        ""full_address""     AS FullAddress,
-                        ""created_date""     AS CreatedAt,
-                        ""updated_date""     AS UpdatedAt,
-                        ""is_deleted""       AS IsDeleted,
-                        ""user_id""          AS ApplicationUserId,
-                        ""country_id""       AS CountryId,
-                        ""city_id""          AS CityId
-                    FROM
-                        ""addresses""
+                $@" 
+                    {BaseSqlQuery}
                     WHERE 1 = 1
                 ");
 
             var parameters = new DynamicParameters();
-            parameters.Add("Count", pageSize);
-            parameters.Add("Offset", offset);
+            parameters.Add("Count", pageRequest.Limit);
+            parameters.Add("Offset", pageRequest.Offset);
 
             if (includeDeleted.HasValue)
             {
@@ -703,168 +444,211 @@ public class AddressRepository : IAddressRepository
                 sql.Append(" AND \"city_id\" = @CityId");
                 parameters.Add("CityId", criteria.CityId); 
             }
-
-            sql.Append($" ORDER BY \"{columnName}\" {direction} LIMIT @Count OFFSET @Offset;");
-
-            var commandDefinition = new CommandDefinition(
-                commandText: sql.ToString(),
-                parameters: parameters,
-                cancellationToken: cancellationToken);
+            
+            if (!string.IsNullOrEmpty(criteria.UserId))
+            {
+                sql.Append(" AND \"user_id\" = @UserId");
+                parameters.Add("UserId", criteria.UserId); 
+            }
+            
+            if (!string.IsNullOrEmpty(criteria.Street))
+            {
+                sql.Append(" AND \"street\" = @Street");
+                parameters.Add("Street", criteria.Street); 
+            }
+            
+            if (!string.IsNullOrEmpty(criteria.BuildingNumber))
+            {
+                sql.Append(" AND \"building_number\" = @BuildingNumber");
+                parameters.Add("BuildingNumber", criteria.BuildingNumber); 
+            }
+            
+            sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction} 
+                           LIMIT @Count OFFSET @Offset;");
 
             var result = await connection
                 .QueryAsync<AddressEntity>(
-                    commandDefinition);
+                    new CommandDefinition(
+                        commandText: sql.ToString(),
+                        parameters: parameters,
+                        transaction: CurrentTransaction,
+                        commandTimeout: CommandTimeoutSeconds, 
+                        cancellationToken: cancellationToken));
 
             return result.AsList();
         }
         catch (PostgresException e)
         {
-            _logger.LogError(e, "Database error occured.");
-            throw;
+            throw Wrap(e);
         }
     }
 
-    public async Task<AddressEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<AddressEntity?> FindByIdAsync(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
         if (id == Guid.Empty)
-            throw new InvalidEnumArgumentException();
+            throw new ArgumentOutOfRangeException(nameof(id), "Id cannot be empty.");
         
         try
         {
-            await using var connection = new NpgsqlConnection(this._connectionString);
-            await connection.OpenAsync(cancellationToken);
+            var connection = await this.GetOpenConnectionAsync(cancellationToken);
 
             string sql =
-                @"
-                    SELECT
-                        ""address_id""       AS Id,
-                        ""house_code""       AS HouseCode,
-                        ""street""           AS Street,
-                        ""building_number""  AS BuildingNumber,
-                        ""apartment_number"" AS ApartmentNumber,
-                        ""entrance""         AS Entrance,
-                        ""floor""            AS Floor,
-                        ""flat_number""      AS FlatNumber,
-                        ""full_address""     AS FullAddress,
-                        ""created_date""     AS CreatedAt,
-                        ""updated_date""     AS UpdatedAt,
-                        ""is_deleted""       AS IsDeleted,
-                        ""user_id""          AS ApplicationUserId,
-                        ""country_id""       AS CountryId,
-                        ""city_id""          AS CityId
-                    FROM
-                        ""addresses""
+                $@"
+                    {BaseSqlQuery}
                     WHERE
                         ""address_id"" = @Id;
                 ";
 
             return await connection
                 .QueryFirstOrDefaultAsync<AddressEntity>(
-                    sql, new
-                    {
-                        Id = id
-                    });
+                    new CommandDefinition(
+                        commandText: sql,
+                        parameters: new { Id = id },
+                        transaction: CurrentTransaction,
+                        commandTimeout: CommandTimeoutSeconds, 
+                        cancellationToken: cancellationToken));
         }
         catch (PostgresException e)
         {
-            throw new Exception($"Database error occured: {e.Message}");
+            throw Wrap(e);
         }
     }
 
-    public async Task<AddressEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<AddressEntity> GetByIdAsync(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
             ?? throw new NotFoundException(typeof(AddressEntity), id);
     }
     
-    public async Task<IEnumerable<AddressEntity>> FindByUserIdAsync(
+    public async Task<IReadOnlyList<AddressEntity>> FindByUserIdAsync(
         string userId,
         CancellationToken cancellationToken,
         AddressSortBy sortBy = AddressSortBy.Id,
         uint page = 1,
-        uint pageCount = 25,
+        uint pageSize = 25,
         bool descending = false)
     {
         if (string.IsNullOrEmpty(userId))
-            throw new InvalidOperationException();
+            throw new ArgumentException("UserId cannot be empty", nameof(userId));
         
         try
         {
-            await using var connection = new NpgsqlConnection(this._connectionString);
-            await connection.OpenAsync(cancellationToken);
+            var connection = await this.GetOpenConnectionAsync(cancellationToken);
 
-            pageCount = Math.Min(pageCount, 1000);
-            uint offset = (page - 1) * pageCount;
-            var direction = descending ? "DESC" : "ASC";
+            var pageRequest = BuildPageRequest(page, pageSize, descending);
+            
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
+            {
+                _logger.LogWarning("{Argument} out of range.", sortBy);
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
-
+            }
+            
             string sql =
                 @$"
-                    SELECT
-                        ""address_id""       AS Id,
-                        ""house_code""       AS HouseCode,
-                        ""street""           AS Street,
-                        ""building_number""  AS BuildingNumber,
-                        ""apartment_number"" AS ApartmentNumber,
-                        ""entrance""         AS Entrance,
-                        ""floor""            AS Floor,
-                        ""flat_number""      AS FlatNumber,
-                        ""full_address""     AS FullAddress,
-                        ""created_date""     AS CreatedAt,
-                        ""updated_date""     AS UpdatedAt,
-                        ""is_deleted""       AS IsDeleted,
-                        ""user_id""          AS ApplicationUserId,
-                        ""country_id""       AS CountryId,
-                        ""city_id""          AS CityId
-                    FROM
-                        ""addresses""
+                    {BaseSqlQuery}
                     WHERE 
                         ""user_id"" = @UserId
-                    ORDER BY {columnName} {direction}
+                    ORDER BY ""{columnName}"" {pageRequest.Direction}
                     LIMIT @Count
                     OFFSET @Offset;
                 ";
 
-            return await connection
-                .QueryAsync<AddressEntity>(sql, new
-                {   
-                    Count = (int)pageCount,
-                    Offset = (int)offset,
-                    UserId = userId
-                });
+            var result = await connection
+                .QueryAsync<AddressEntity>(
+                    new CommandDefinition(
+                        commandText: sql,
+                        parameters:new
+                        {   
+                            Count = pageRequest.Limit,
+                            Offset = pageRequest.Offset,
+                            UserId = userId
+                        },
+                        transaction: CurrentTransaction,
+                        commandTimeout: CommandTimeoutSeconds, 
+                        cancellationToken: cancellationToken));
+
+            return result.AsList();
         }
         catch (PostgresException e)
         {
-            throw new Exception($"Database error occured: {e.Message}");
+            throw Wrap(e);
+        }
+    }
+    
+    public async Task<bool> IsExists(
+        Guid id, 
+        CancellationToken cancellationToken)
+    {
+        if (id == Guid.Empty)
+            throw new ArgumentException("AddressId cannot be empty!", nameof(id));
+        
+        try
+        {
+            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            
+            string sql = 
+                @"
+                    SELECT EXISTS (
+                        SELECT 1
+                        FROM 
+                            ""addresses""
+                        WHERE 
+                            ""address_id"" = @Id
+                    );
+                ";
+
+            var result = await connection
+                .ExecuteScalarAsync<bool>(
+                    new CommandDefinition(
+                        parameters: new { Id = id},
+                        commandText: sql,
+                        transaction: CurrentTransaction,
+                        commandTimeout: CommandTimeoutSeconds, 
+                        cancellationToken: cancellationToken));
+
+            return result;
+        }
+        catch (PostgresException e)
+        {
+            throw Wrap(e);
         }
     }
 
-    public async Task<IEnumerable<AddressEntity>> GetByUserIdAsync(
-        string userId,
-        CancellationToken cancellationToken,
-        AddressSortBy sortBy = AddressSortBy.Id,
-        uint page = 1,
-        uint pageCount = 25,
-        bool descending = false)
+    private async Task<DbConnection> GetOpenConnectionAsync(
+        CancellationToken cancellationToken)
     {
-        var result = await this.FindByUserIdAsync(
-            userId: userId,
-            cancellationToken: cancellationToken,
-            sortBy: sortBy,
-            page: page,
-            pageCount: pageCount,
-            descending: descending);
+        var connection = _context.Database.GetDbConnection();
+            
+        if (connection.State != ConnectionState.Open)
+            await connection.OpenAsync(cancellationToken);
 
-        if (result == null || !result.Any())
-            throw new NotFoundException(typeof(AddressEntity), userId);
+        return connection;
+    }
 
-        return result;
+    private DataException Wrap(Exception e)
+    {
+        _logger.LogError(e, "Database error occured.");
+        return new DataException("Database error occured.", e);
     }
     
-    // TODO:
-    public async Task<bool> IsExists()
+    private static PageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
     {
-        return false;
+        if (page == 0) 
+            throw new ArgumentOutOfRangeException(nameof(page));
+        
+        pageSize = Math.Min(pageSize, MaxPageSize);
+        uint offset = (page - 1) * pageSize;
+        var direction = descending ? "DESC" : "ASC";
+
+        return new PageRequest(
+            Limit: (int)pageSize,
+            Offset: (int)offset,
+            Direction: direction);
     }
 }
+
+readonly record struct PageRequest(int Limit, int Offset, string Direction);
