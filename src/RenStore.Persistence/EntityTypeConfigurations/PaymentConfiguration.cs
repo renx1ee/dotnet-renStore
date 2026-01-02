@@ -63,10 +63,10 @@ public class PaymentConfiguration : IEntityTypeConfiguration<PaymentEntity>
             .HasColumnName("method_details")
             .IsRequired(false);
         
-        builder
+        /*builder
             .Property(x => x.Status)
             .HasColumnName("status")
-            .IsRequired();
+            .IsRequired();*/
         
         builder
             .Property(x => x.ErrorCode)

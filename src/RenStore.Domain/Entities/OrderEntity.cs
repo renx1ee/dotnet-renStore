@@ -1,6 +1,5 @@
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Enums;
-using RenStore.Microservice.Payment.Enums;
 
 namespace RenStore.Domain.Entities;
 

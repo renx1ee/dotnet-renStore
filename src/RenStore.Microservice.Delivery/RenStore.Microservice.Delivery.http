@@ -1,6 +1,0 @@
-@RenStore.Microservice.Delivery_HostAddress = http://localhost:5038
-
-GET {{RenStore.Microservice.Delivery_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
