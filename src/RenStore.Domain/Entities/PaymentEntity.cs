@@ -1,5 +1,4 @@
 using RenStore.Domain.Enums;
-using RenStore.Microservice.Payment.Enums;
 
 namespace RenStore.Domain.Entities;
 
@@ -15,7 +14,7 @@ public class PaymentEntity
     public bool? IsSuccess { get; set; } = null;
     public PaymentMethod Method { get; set; }
     public string? MethodDetails { get; set; } = string.Empty;
-    public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
+    /*public PaymentStatus Status { get; set; } = PaymentStatus.Pending;*/
     public string ErrorCode { get; set; } = string.Empty;
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedDate { get; set; }
