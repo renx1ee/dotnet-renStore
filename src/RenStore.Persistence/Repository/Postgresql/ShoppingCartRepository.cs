@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
-using RenStore.Domain.Exceptions;
 using RenStore.Domain.Repository;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 

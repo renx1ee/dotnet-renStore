@@ -1,9 +1,11 @@
+using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository for working with <see cref="CityEntity"/>.
+/// Repository for working with <see cref="City"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface ICityRepository
@@ -14,7 +16,7 @@ public interface ICityRepository
     /// <param name="city">The city entity to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>ID of the created entity.</returns>
-    Task<int> CreateAsync(CityEntity city, CancellationToken cancellationToken);
+    Task<int> CreateAsync(City city, CancellationToken cancellationToken);
     /// <summary>
     /// Update an existing city in the database.
     /// </summary>
@@ -22,7 +24,7 @@ public interface ICityRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when city is not found.</exception>
-    Task UpdateAsync(CityEntity city, CancellationToken cancellationToken);
+    Task UpdateAsync(City city, CancellationToken cancellationToken);
     /// <summary>
     /// Delete a city by ID.
     /// </summary>
@@ -40,7 +42,7 @@ public interface ICityRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of matching the city entities.</returns>
-    Task<IEnumerable<CityEntity?>> FindAllAsync(
+    Task<IEnumerable<City?>> FindAllAsync(
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
         uint pageCount = 25,
@@ -52,7 +54,7 @@ public interface ICityRepository
     /// <param name="id">The city identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The city entity if found; overwise, <c>null</c>.</returns>
-    Task<CityEntity?> FindByIdAsync(int id, CancellationToken cancellationToken);
+    Task<City?> FindByIdAsync(int id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a city by ID.
     /// </summary>
@@ -60,7 +62,7 @@ public interface ICityRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The city entity.</returns>
     /// <exception cref="NotFoundException">Thrown when city is not found.</exception>  
-    Task<CityEntity?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<City?> GetByIdAsync(int id, CancellationToken cancellationToken);
     /// <summary>
     /// Searching categories by name with sorting and pagination.
     /// </summary>
@@ -71,7 +73,7 @@ public interface ICityRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of matching city entities.</returns>
-    Task<IEnumerable<CityEntity?>> FindByNameAsync(
+    Task<IEnumerable<City?>> FindByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
@@ -89,7 +91,7 @@ public interface ICityRepository
     /// <param name="descending">Sort by descending order if true.</param>
     /// <returns>A collection of matching city entity.</returns>
     /// <exception cref="NotFoundException">Thrown when city is not found.</exception>
-    Task<IEnumerable<CityEntity?>> GetByNameAsync(
+    Task<IEnumerable<City?>> GetByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,

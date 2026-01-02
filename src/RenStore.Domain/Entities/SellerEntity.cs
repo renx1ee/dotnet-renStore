@@ -6,7 +6,8 @@ public class SellerEntity
     public string Name { get; set; } = string.Empty;
     public string NormalizedName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset LastUpdatedAt { get; set; } = DateTimeOffset.UtcNow;
     public bool IsBlocked { get; set; } = false;
     public string Url { get; set; } = string.Empty;
     public string ApplicationUserId { get; set; } = string.Empty;

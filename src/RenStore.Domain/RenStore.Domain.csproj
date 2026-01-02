@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RenStore.Delivery.Domain\RenStore.Delivery.Domain.csproj" />
     <ProjectReference Include="..\RenStore.Microservice.Payment\RenStore.Microservice.Payment.csproj" />
   </ItemGroup>
 

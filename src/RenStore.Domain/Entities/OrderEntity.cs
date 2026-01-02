@@ -1,3 +1,4 @@
+using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Enums;
 using RenStore.Microservice.Payment.Enums;
 
@@ -5,11 +6,13 @@ namespace RenStore.Domain.Entities;
 
 public class OrderEntity
 {
-    public Guid Id { get; set; }
+    private readonly List<OrderItemEntity>? _items = new();
+    
+    public Guid Id { get; private set; }
     public decimal TotalPrice { get; set; }
     public decimal SubTotalPrice { get; set; }
     public decimal TaxAmount { get; set; }
-    public OrderStatus Status { get; set; } = OrderStatus.Pending;
+    public OrderStatus Status { get; private set; } = OrderStatus.Pending;
     public string? CancellationReason { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
@@ -19,7 +22,32 @@ public class OrderEntity
     public ApplicationUser? User { get; set; }
     public Guid PromoCodeId { get; set; }
     public PromoCodeEntity? PromoCode { get; set; }
-    public DeliveryOrderEntity? DeliveryOrder { get; set; }
+    public DeliveryOrder? DeliveryOrder { get; set; }
     public IEnumerable<PaymentEntity>? Payments { get; set; }
-    public IEnumerable<OrderItemEntity>? Items { get; set; }
+
+    /*public void AddItem(ProductEntity product, int quantity)
+    {
+        if (Status != OrderStatus.Pending)
+            throw new DomainException("");
+        
+        if (quantity <= 0)
+            throw new DomainException("");
+        
+        _items.Add(new OrderItemEntity());
+    }
+
+    public void Place()
+    {
+        if (Status != OrderStatus.Delivered)
+            throw new DomainException("");
+        
+        if (Status != OrderStatus.Delivered)
+            throw new DomainException("");
+
+        Status = OrderStatus.Delivered;
+    }
+
+    public void RecalculateTotalPrice()
+    {
+    }*/
 }

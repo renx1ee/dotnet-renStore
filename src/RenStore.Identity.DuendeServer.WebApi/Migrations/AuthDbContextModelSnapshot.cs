@@ -166,14 +166,14 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                     b.Property<double?>("Balance")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("CityEntity")
+                    b.Property<string>("City")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("CountryEntity")
+                    b.Property<string>("Country")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -283,7 +283,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AddressEntity")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -296,12 +296,12 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("CityEntity")
+                    b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");
 
-                    b.Property<string>("CountryEntity")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");

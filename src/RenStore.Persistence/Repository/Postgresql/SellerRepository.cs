@@ -1,6 +1,10 @@
+/*using System.Data.Common;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Dapper;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
@@ -9,56 +13,63 @@ using RenStore.Domain.Repository;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class SellerRepository : ISellerRepository
+public class SellerRepository(
+    ILogger<SellerRepository> logger,
+    ApplicationDbContext context)
 {
-    private readonly ApplicationDbContext _context;
-    private readonly string _connectionString;
+    private const int MaxPageSize = 1000;
+    private const uint CommandTimeoutSeconds = 30;
+    
+    private const string BaseSqlQuery = 
+        """
+        
+        """;
+    
     private readonly Dictionary<SellerSortBy, string> _sortColumnMapping = new()
     {
         { SellerSortBy.Id, "seller_id" },
         { SellerSortBy.Name, "seller_name" },
         { SellerSortBy.CreatedDate, "created_date" }
     };
-
-    public SellerRepository(
-        ApplicationDbContext context,
-        string connectionString)
-    {
-        this._context = context;
-        this._connectionString = connectionString 
-                                 ?? throw new ArgumentNullException(nameof(connectionString));
-    }
-
-    public SellerRepository(
-        ApplicationDbContext context,
-        IConfiguration configuration)
-    {
-        this._context = context;
-        this._connectionString = configuration.GetConnectionString("DefaultConnection")
-                                 ?? throw new ArgumentNullException($"DefaultConnection is null");
-    }
-    
-    public async Task<long> CreateAsync(SellerEntity seller, CancellationToken cancellationToken)
-    {
-        await this._context.Sellers.AddAsync(seller, cancellationToken);
-        await this._context.SaveChangesAsync(cancellationToken);
-        return seller.Id;
-    }
-    
-    public async Task UpdateAsync(SellerEntity seller, CancellationToken cancellationToken)
-    {
-        var existingSeller = await this.GetByIdAsync(seller.Id, cancellationToken);
         
-        this._context.Update(seller);
-        await this._context.SaveChangesAsync(cancellationToken);
+    private readonly ApplicationDbContext _context     = context 
+                                                         ?? throw new ArgumentNullException(nameof(context));
+    
+    private readonly ILogger<SellerRepository> _logger = logger 
+                                                         ?? throw new ArgumentNullException(nameof(logger));
+    
+    private DbTransaction? CurrentDbTransaction =>
+        this._context.Database.CurrentTransaction?.GetDbTransaction();
+
+    public async Task<long> CreateAsync(
+        SellerEntity seller,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(seller);
+
+        seller.CreatedAt = DateTimeOffset.UtcNow;
+
+        var result = await this._context.Sellers.AddAsync(seller, cancellationToken);
+        
+        return result.Entity.Id;
     }
 
-    public async Task DeleteAsync(long id, CancellationToken cancellationToken)
+    public async Task CreateRangeAsync(
+        IReadOnlyCollection<SellerEntity> sellers,
+        CancellationToken cancellationToken)
     {
-        var seller = await this.GetByIdAsync(id, cancellationToken);
-        this._context.Sellers.Remove(seller);
-        await this._context.SaveChangesAsync(cancellationToken);
+        ArgumentNullException.ThrowIfNull(sellers);
+
+        var sellersList = sellers as IList<SellerEntity> ?? sellers.ToList();
+
+        if (!sellers.Any()) return;
+
+        foreach (var seller in sellers)
+        {
+            seller.CreatedAt = DateTimeOffset.UtcNow;
+        }
     }
+    
     
     public async Task<IEnumerable<SellerEntity>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -101,7 +112,7 @@ public class SellerRepository : ISellerRepository
                 sql.Append(@" WHERE ""is_blocked"" = @IsBlocked");
                 parameters.Add("IsBlocked", isBlocked.Value);
             }
-        
+            
             sql.Append($" ORDER BY \"{columnName}\" {direction} LIMIT @Count OFFSET @Offset;");
         
             return await connection
@@ -281,5 +292,5 @@ public class SellerRepository : ISellerRepository
     {
         return null;
     }
-    */
-}
+    #1#
+}*/

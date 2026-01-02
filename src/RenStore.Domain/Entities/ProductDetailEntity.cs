@@ -1,3 +1,4 @@
+using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Enums;
 
 namespace RenStore.Domain.Entities;
@@ -12,7 +13,7 @@ public class ProductDetailEntity
     public string Composition { get; set; } = string.Empty;
     public string CaringOfThings { get; set; } = string.Empty;
     public TypeOfPackaging? TypeOfPacking { get; set; }
-    public CountryEntity? CountryOfManufacture { get; set; }
+    public Country? CountryOfManufacture { get; set; }
     public int CountryOfManufactureId { get; set; }
     public ProductVariantEntity? ProductVariant { get; set; }
     public Guid ProductVariantId { get; set; }

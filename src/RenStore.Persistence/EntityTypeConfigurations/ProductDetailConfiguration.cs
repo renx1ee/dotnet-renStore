@@ -59,11 +59,11 @@ public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetail
             .HasColumnName("type_of_packing")
             .IsRequired(false);
                 
-        builder
+        /*builder
             .HasOne(x => x.CountryOfManufacture)
             .WithMany(x => x.ProductDetails)
             .HasForeignKey(x => x.CountryOfManufactureId)
-            .HasConstraintName("country_id");
+            .HasConstraintName("country_id");*/
         
         builder
             .Property(x => x.CountryOfManufactureId)

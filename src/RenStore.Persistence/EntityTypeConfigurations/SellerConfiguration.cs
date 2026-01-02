@@ -45,7 +45,7 @@ public class SellerConfiguration : IEntityTypeConfiguration<SellerEntity>
             .IsRequired(false);
         
         builder
-            .Property(seller => seller.CreatedDate)
+            .Property(seller => seller.CreatedAt)
             .HasColumnName("created_date")
             .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();

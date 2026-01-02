@@ -1,3 +1,5 @@
+using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 
@@ -5,18 +7,18 @@ namespace RenStore.Domain.Repository;
 
 public interface IDeliveryTrackingRepository
 {
-    Task<IEnumerable<DeliveryTrackingEntity>> FindAllAsync(
+    Task<IEnumerable<DeliveryTracking>> FindAllAsync(
         CancellationToken cancellationToken,
         DeliveryTrackingSortBy sortBy = DeliveryTrackingSortBy.Id,
         uint pageCount = 25,
         uint page = 1,
         bool descending = false);
     
-    Task<DeliveryTrackingEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<DeliveryTracking?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     
-    Task<DeliveryTrackingEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<DeliveryTracking?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<IEnumerable<DeliveryTrackingEntity>> FindByDeliveryOrderId(
+    Task<IEnumerable<DeliveryTracking>> FindByDeliveryOrderId(
         Guid orderId,
         CancellationToken cancellationToken,
         DeliveryTrackingSortBy sortBy = DeliveryTrackingSortBy.Id,
@@ -24,7 +26,7 @@ public interface IDeliveryTrackingRepository
         uint page = 1,
         bool descending = false);
 
-    Task<IEnumerable<DeliveryTrackingEntity>> GetByDeliveryOrderId(
+    Task<IEnumerable<DeliveryTracking>> GetByDeliveryOrderId(
         Guid orderId,
         CancellationToken cancellationToken,
         DeliveryTrackingSortBy sortBy = DeliveryTrackingSortBy.Id,

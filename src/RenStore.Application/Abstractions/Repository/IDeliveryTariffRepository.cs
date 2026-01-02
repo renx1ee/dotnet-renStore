@@ -1,3 +1,5 @@
+using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Shoes;
 using RenStore.Domain.Enums.Sorting;
@@ -6,15 +8,15 @@ namespace RenStore.Domain.Repository;
 
 public interface IDeliveryTariffRepository
 {
-    Task<Guid> CreateAsync(DeliveryTariffEntity tariff, CancellationToken cancellationToken);
-    Task UpdateAsync(DeliveryTariffEntity tariff, CancellationToken cancellationToken);
+    Task<Guid> CreateAsync(DeliveryTariff tariff, CancellationToken cancellationToken);
+    Task UpdateAsync(DeliveryTariff tariff, CancellationToken cancellationToken);
     Task DeleteAsync(Guid id, CancellationToken cancellationToken);
-    Task<IEnumerable<DeliveryTariffEntity>> FindAllAsync(
+    Task<IEnumerable<DeliveryTariff>> FindAllAsync(
         CancellationToken cancellationToken,
         DeliveryTariffSortBy sortBy = DeliveryTariffSortBy.Id,
         uint page = 1,
         uint pageCount = 25,
         bool descending = false);
-    Task<DeliveryTariffEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
-    Task<DeliveryTariffEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<DeliveryTariff?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<DeliveryTariff?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

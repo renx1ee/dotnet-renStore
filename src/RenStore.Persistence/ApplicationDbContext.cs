@@ -1,19 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Entities;
 using RenStore.Persistence.EntityTypeConfigurations;
 
 namespace RenStore.Persistence;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ColorConfiguration());
         modelBuilder.ApplyConfiguration(new SellerConfiguration());
-        modelBuilder.ApplyConfiguration(new CountryConfiguration());
-        modelBuilder.ApplyConfiguration(new CityConfiguration());
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
@@ -43,11 +40,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<SellerEntity> Sellers { get; set; }
     public DbSet<ColorEntity> Colors { get; set; }
-    public DbSet<AddressEntity> Addresses { get; set; }
-    public DbSet<CountryEntity> Countries { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<Country> Countries { get; set; }
     public DbSet<CategoryEntity> Categories { get; set; }
     public DbSet<SubCategoryEntity> SubCategories { get; set; }
-    public DbSet<CityEntity> Cities { get; set; }
+    public DbSet<City> Cities { get; set; }
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<ProductVariantEntity> ProductVariants { get; set; }
     public DbSet<ProductDetailEntity> ProductDetails { get; set; }
@@ -68,9 +65,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductVariantComplainEntity> ProductVariantComplains { get; set; }
     public DbSet<ReviewComplainEntity> ReviewComplains { get; set; }
     public DbSet<SellerComplainEntity> SellerComplains { get; set; }
-    public DbSet<DeliveryOrderEntity> DeliveryOrders { get; set; }
-    public DbSet<DeliveryTariffEntity> DeliveryTariffs { get; set; }
-    public DbSet<DeliveryTrackingEntity> DeliveryTrackingHistory { get; set; }
+    public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
+    public DbSet<DeliveryTariff> DeliveryTariffs { get; set; }
+    public DbSet<DeliveryTracking> DeliveryTrackingHistory { get; set; }
     public DbSet<OrderEntity> Orders { get; set; }
     public DbSet<OrderItemEntity> OrderItems { get; set; }
     public DbSet<PaymentEntity> Payments { get; set; }

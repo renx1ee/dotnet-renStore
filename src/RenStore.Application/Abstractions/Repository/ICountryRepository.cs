@@ -1,9 +1,11 @@
+using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository for working with <see cref="CountryEntity"/>.
+/// Repository for working with <see cref="Country"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and paginations.
 /// </summary>
 public interface ICountryRepository
@@ -14,7 +16,7 @@ public interface ICountryRepository
     /// <param name="country">The country entity to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>ID of the created entity.</returns>
-    Task<int> CreateAsync(CountryEntity country, CancellationToken cancellationToken);
+    Task<int> CreateAsync(Country country, CancellationToken cancellationToken);
     /// <summary>
     /// Update an existing country in the database.
     /// </summary>
@@ -22,7 +24,7 @@ public interface ICountryRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when country is not found.</exception>
-    Task UpdateAsync(CountryEntity country, CancellationToken cancellationToken);
+    Task UpdateAsync(Country country, CancellationToken cancellationToken);
     /// <summary>
     /// Delete a country by ID.
     /// </summary>
@@ -40,7 +42,7 @@ public interface ICountryRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of matching the country entities.</returns>
-    Task<IEnumerable<CountryEntity?>> FindAllAsync(
+    Task<IEnumerable<Country?>> FindAllAsync(
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Id,
         uint pageCount = 25,
@@ -52,7 +54,7 @@ public interface ICountryRepository
     /// <param name="id">The country identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The country entity if found; overwise, <c>null</c>.</returns>
-    Task<CountryEntity?> FindByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Country?> FindByIdAsync(int id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a country by ID.
     /// </summary>
@@ -60,7 +62,7 @@ public interface ICountryRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The country entity.</returns>
     /// <exception cref="NotFoundException">Thrown when country is not found.</exception>
-    Task<CountryEntity?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Country?> GetByIdAsync(int id, CancellationToken cancellationToken);
     /// <summary>
     /// Searching countries by name with sorting and pagination.
     /// </summary>
@@ -71,7 +73,7 @@ public interface ICountryRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of matching country entities.</returns>
-    Task<IEnumerable<CountryEntity?>> FindByNameAsync(
+    Task<IEnumerable<Country?>> FindByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Name,
@@ -89,7 +91,7 @@ public interface ICountryRepository
     /// <param name="descending">Sort by descending order if true.</param>
     /// <returns>A collection of matching country entity.</returns>
     /// <exception cref="NotFoundException">Thrown when country is not found.</exception>
-    Task<IEnumerable<CountryEntity?>> GetByNameAsync(
+    Task<IEnumerable<Country?>> GetByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Name,

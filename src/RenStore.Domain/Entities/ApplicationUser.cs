@@ -1,5 +1,6 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
+using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Domain.Entities;
 
@@ -15,7 +16,7 @@ public class ApplicationUser : IdentityUser, IUser<string>
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public SellerEntity? Seller { get; set; }
     public ShoppingCartEntity? Cart { get; set; }
-    public IEnumerable<AddressEntity>? Addresses { get; set; }
+    public IEnumerable<Address>? Addresses { get; set; }
     public IEnumerable<ReviewEntity>? Reviews { get; set; }
     public IEnumerable<UserImageEntity>? Images { get; set; }
     public IEnumerable<ProductQuestionEntity>? ProductQuestions { get; set; }
@@ -27,4 +28,8 @@ public class ApplicationUser : IdentityUser, IUser<string>
     public IEnumerable<SellerComplainEntity>? SellerComplains { get; set; }
     // public IEnumerable<PromoCodeUserLimit>? PromoCodeUserLimits { get; set; }
     public IEnumerable<OrderEntity>? Orders { get; set; }
+
+    public void AccountFreeze()
+    {
+    }
 }
