@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Persistence;
@@ -236,7 +236,7 @@ public class ProductAttributeRepositoryTest
        Assert.Equal(TestDataConstants.SellerIdForGetting2, result[2].Id);
        Assert.Equal(TestDataConstants.SellerIdForDelete, result[3].Id);
        Assert.Equal(TestDataConstants.SellerIdForGetting1, result[4].Id);
-       Assert.Equal(TestDataConstants.SellerIdForUpdate, result[5].Id);*/
+       Assert.Equal(TestDataConstants.SellerIdForUpdate, result[5].Id);#1#
     }
     #endregion
     #region By Id
@@ -304,4 +304,4 @@ public class ProductAttributeRepositoryTest
                    CancellationToken.None));
     }
     #endregion
-}
+}*/

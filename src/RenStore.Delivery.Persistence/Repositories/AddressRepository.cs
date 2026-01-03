@@ -1,19 +1,12 @@
-using System.Data.Common;
-using Microsoft.EntityFrameworkCore.Storage;
 using RenStore.Delivery.Domain.Entities;
-using RenStore.Delivery.Domain.Interfaces;
 
 namespace RenStore.Delivery.Persistence.Repositories;
 
-internal sealed class AddressRepository(
-    ApplicationDbContext context)
-    : IAddressRepository
+internal sealed class AddressRepository(ApplicationDbContext context) 
+    : RenStore.Delivery.Domain.Interfaces.IAddressRepository
 {
     private readonly ApplicationDbContext _context = context 
                                                      ?? throw new ArgumentNullException(nameof(context));
-
-    private DbTransaction? CurrentTransaction => 
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
     
     public async Task<Guid> AddAsync(
         Address address, 

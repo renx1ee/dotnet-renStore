@@ -2,6 +2,7 @@ using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using CitySortBy = RenStore.Delivery.Domain.Enums.Sorting.CitySortBy;
 
 namespace RenStore.Domain.Repository;
 /// <summary>

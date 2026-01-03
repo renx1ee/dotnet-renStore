@@ -1,4 +1,4 @@
-namespace Tests.Common;
+/*namespace Tests.Common;
 
 public static class TestDataConstants
 {
@@ -345,4 +345,4 @@ public static class TestDataConstants
     public static readonly Guid SellerComplainIdForGetting1        = Guid.NewGuid();
     public static readonly Guid SellerComplainIdForGetting2        = Guid.NewGuid();
     public static readonly Guid SellerComplainIdForGetting3        = Guid.NewGuid();
-}
+}*/

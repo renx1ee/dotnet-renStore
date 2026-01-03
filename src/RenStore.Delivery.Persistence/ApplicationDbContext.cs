@@ -13,4 +13,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     }
     
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<City> Cities { get; set; }
 }

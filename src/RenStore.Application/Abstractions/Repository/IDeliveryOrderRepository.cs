@@ -2,6 +2,7 @@ using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using DeliveryOrderSortBy = RenStore.Delivery.Domain.Enums.Sorting.DeliveryOrderSortBy;
 
 namespace RenStore.Domain.Repository;
 

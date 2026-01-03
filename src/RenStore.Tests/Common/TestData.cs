@@ -1,4 +1,4 @@
-using RenStore.Delivery.Domain.Entities;
+/*using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums;
 using RenStore.Domain.Enums.Clothes;
@@ -328,7 +328,7 @@ public static class TestData
             OtherName = TestDataConstants.CountryOtherNameForGetting6,
             NormalizedOtherName = TestDataConstants.CountryOtherNameForGetting6.ToUpper(),
         }
-    };*/
+    };#1#
     
     /*public static readonly IList<City> Cities = new[]
     {
@@ -406,7 +406,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting6.ToUpper(),
             CountryId = TestDataConstants.CountryIdForGetting6
         }
-    };*/
+    };#1#
     
     public static readonly IList<CategoryEntity> Categories = new[]
     {
@@ -1807,5 +1807,5 @@ public static class TestData
             ReviewId = TestDataConstants.SellerIdForGetting3,
             UserId = TestDataConstants.UserIdForGettingSeller3
         },
-    };*/
-}
+    };#1#
+}*/

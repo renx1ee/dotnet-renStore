@@ -1,9 +1,8 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Delivery.Domain.Entities;
-using RenStore.Domain.Entities;
 
-namespace RenStore.Persistence.EntityTypeConfigurations;
+namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 public class CityConfiguration : IEntityTypeConfiguration<City>
 {
@@ -48,6 +47,12 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .IsRequired();
 
         builder
+            .Property(x => x.IsDelete)
+            .HasColumnName("is_deleted")
+            .HasDefaultValue(false)
+            .IsRequired();
+
+        builder
             .Property(x => x.CountryId)
             .HasColumnName("country_id")
             .IsRequired();
@@ -57,4 +62,4 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .WithMany(x => x.Cities)
             .HasForeignKey(x => x.CountryId);
     }
-}*/
+}

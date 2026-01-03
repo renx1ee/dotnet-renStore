@@ -22,7 +22,6 @@ public class Address
     public Country? Country { get; private set; }
     public int CityId { get; private set; }
     public City? City { get; private set; }
-    // public ICollection<DeliveryOrder>? Deliveries { get; set; } = new List<DeliveryOrder>();
     
     private Address() { }
 
@@ -30,6 +29,7 @@ public class Address
     /// <summary>
     /// Creates a new address ensuring all invariants are satisfied.
     /// </summary>
+    /// <exception cref="DomainException">if the city is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
     public static Address Create(
         Guid id,
         string houseCode,
@@ -43,6 +43,24 @@ public class Address
         string userId,
         DateTimeOffset now)
     {
+        if (string.IsNullOrEmpty(houseCode))
+            throw new DomainException("House Code cannot be null or empty!");
+        
+        if (string.IsNullOrEmpty(street))
+            throw new DomainException("Street cannot be null or empty!");
+        
+        if (string.IsNullOrEmpty(buildingNumber))
+            throw new DomainException("Building Number cannot be null or empty!");
+        
+        if (countryId <= 0)
+            throw new DomainException("Country ID cannot be less 1.");
+        
+        if (cityId <= 0)
+            throw new DomainException("Country ID cannot be  less 1.");
+        
+        if (string.IsNullOrEmpty(userId))
+            throw new DomainException("User ID cannot be less 1.");
+        
         // TODO: validation
         return new Address()
         {
@@ -64,6 +82,7 @@ public class Address
     /// Updates an address data.
     /// Cannot be called with deleted address.
     /// </summary>
+    /// <exception cref="DomainException">if the city is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
     public void Update(
         string houseCode,
         string street,
@@ -73,7 +92,9 @@ public class Address
         int floor,
         DateTimeOffset now)
     {
-        // TODO: validation
+        if (IsDeleted)
+            throw new DomainException("Cannot update deleted address");
+        
         HouseCode = houseCode;
         Street = street;
         BuildingNumber = buildingNumber;
@@ -86,7 +107,7 @@ public class Address
     /// Soft delete the country.
     /// Once deleted the country cannot be modified.
     /// </summary>
-    /// <exception cref="DomainException"></exception>
+    /// <exception cref="DomainException">Throw if address already marked as deleted.</exception>
     public void Delete(DateTimeOffset now)
     {
         if (IsDeleted) 
@@ -95,11 +116,5 @@ public class Address
         IsDeleted = true;
         UpdatedAt = now;
     }
-    
-    public void Validate()
-    {
-        
-    }
-    
     #endregion
 }

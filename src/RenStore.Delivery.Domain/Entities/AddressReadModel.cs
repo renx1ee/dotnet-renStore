@@ -8,10 +8,10 @@ public class AddressReadModel
     public string BuildingNumber  { get; init; } = string.Empty;
     public string ApartmentNumber { get; init; } = string.Empty;
     public string Entrance { get; init; } = string.Empty;
-    public int? Floor { get; init; }
+    public int? Floor { get; init; } = null;
     public string FullAddress { get; init; } = string.Empty;
     public DateTimeOffset CreatedAt { get; init; }
-    public DateTimeOffset? UpdatedAt { get; init; } 
+    public DateTimeOffset? UpdatedAt { get; init; } = null; 
     public bool IsDeleted { get; init; }
     public string ApplicationUserId { get; init; } = string.Empty;
     public int CountryId { get; init; }

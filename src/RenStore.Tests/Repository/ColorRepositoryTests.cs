@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Persistence;
@@ -510,6 +510,6 @@ public class ColorRepositoryTests : IDisposable
     public void Dispose()
     {
         /*_context.Database.EnsureDeleted();
-        _context.Dispose();*/
+        _context.Dispose();#1#
     }
-}
+}*/

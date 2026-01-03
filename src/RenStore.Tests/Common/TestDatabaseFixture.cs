@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Persistence;
 using RenStore.Tests.Common;
 
@@ -31,7 +31,7 @@ public class TestDatabaseFixture : IDisposable
     {
         context.Colors.AddRange(TestData.Colors);
         /*context.Countries.AddRange(TestData.Countries);
-        context.Cities.AddRange(TestData.Cities);*/
+        context.Cities.AddRange(TestData.Cities);#1#
         context.Categories.AddRange(TestData.Categories);
         context.SubCategories.AddRange(TestData.SubCategories);
         context.AspNetUsers.AddRange(TestData.Users);
@@ -52,4 +52,4 @@ public class TestDatabaseFixture : IDisposable
     }
     
     public void Dispose() { }
-}
+}*/

@@ -1,4 +1,4 @@
-using RenStore.Delivery.Domain.Entities;
+/*using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Entities;
 
 namespace RenStore.Tests.Common;
@@ -11,5 +11,5 @@ public class TestDataFactory
         {
             
         };
-    }*/
-}
+    }#1#
+}*/

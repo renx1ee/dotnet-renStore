@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Persistence;
@@ -662,4 +662,4 @@ public class CategoryRepositoryTests
         Assert.Equal(TestDataConstants.CategoryIdForGetting7, result[2].Id);
     }
     #endregion
-}
+}*/

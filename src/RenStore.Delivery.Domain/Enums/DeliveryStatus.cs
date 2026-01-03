@@ -1,11 +1,43 @@
 namespace RenStore.Delivery.Domain.Enums;
 
+/// <summary>
+/// Represents the current status of a delivery during its lifecycle.
+/// </summary>
 public enum DeliveryStatus
 {
-    AwaitingConfirmation,
-    OnAssemblyByTheSeller,
-    OnTheWayToTheSortingCenter,
-    OnTheWay,
-    OnTheWayToThePickUpPoint,
-    AwaitingReceipt
+    /// <summary>
+    /// Order has been created and is awaiting confirmation.
+    /// Ожидает подтверждения.
+    /// </summary>
+    AwaitingConfirmation = 0,
+
+    /// <summary>
+    /// Order is being assembled by the seller.
+    /// На сборке у продавца.
+    /// </summary>
+    AssemblingBySeller = 1,
+
+    /// <summary>
+    /// Order is on the way to the sorting center.
+    /// В пути к сортировочному центру.
+    /// </summary>
+    EnRouteToSortingCenter = 2,
+
+    /// <summary>
+    /// Order is in transit between logistics hubs.
+    /// В пути.
+    /// </summary>
+    InTransit = 3,
+
+    /// <summary>
+    /// Order is on the way to the pickup point.
+    /// В пути к пункту выдачи.
+    /// </summary>
+    EnRouteToPickupPoint = 4,
+
+    /// <summary>
+    /// Order has arrived and is awaiting receipt by the customer.
+    /// Ожидает получения.
+    /// </summary>
+    AwaitingPickup = 5
 }

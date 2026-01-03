@@ -1,9 +1,8 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Delivery.Domain.Entities;
-using RenStore.Domain.Entities;
 
-namespace RenStore.Persistence.EntityTypeConfigurations;
+namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 public class CountryConfiguration : IEntityTypeConfiguration<Country>
 {
@@ -63,20 +62,6 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
             .IsRequired();
         
         builder
-            .Property(x => x.OtherName)
-            .HasColumnName("other_name")
-            .HasMaxLength(256)
-            .HasColumnType("varchar(256)")
-            .IsRequired(false);
-        
-        builder
-            .Property(x => x.NormalizedOtherName)
-            .HasColumnName("normalized_other_name")
-            .HasMaxLength(256)
-            .HasColumnType("varchar(256)")
-            .IsRequired(false);
-        
-        builder
             .Property(x => x.PhoneCode)
             .HasColumnName("country_phone_code")
             .HasMaxLength(5)
@@ -90,6 +75,6 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
         /*builder
             .HasMany(x => x.ProductDetails)
             .WithOne(x => x.CountryOfManufacture)
-            .HasForeignKey(x => x.CountryOfManufactureId);#1#
+            .HasForeignKey(x => x.CountryOfManufactureId);*/
     }
-}*/
+}

@@ -246,10 +246,7 @@ internal sealed class AddressQuery(
             var pageRequest = BuildPageRequest(page, pageSize, descending);
             
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
-            {
-                _logger.LogWarning("{Argument} out of range.", sortBy);
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
-            }
             
             string sql =
                 @$"
@@ -339,7 +336,7 @@ internal sealed class AddressQuery(
         return new DataException("Database error occured.", e);
     }
     
-    private static PageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
+    private static AddressPageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
     {
         if (page == 0) 
             throw new ArgumentOutOfRangeException(nameof(page));
@@ -348,11 +345,11 @@ internal sealed class AddressQuery(
         uint offset = (page - 1) * pageSize;
         var direction = descending ? "DESC" : "ASC";
 
-        return new PageRequest(
+        return new AddressPageRequest(
             Limit: (int)pageSize,
             Offset: (int)offset,
             Direction: direction);
     }
 }
 
-readonly record struct PageRequest(int Limit, int Offset, string Direction);
+readonly record struct AddressPageRequest(int Limit, int Offset, string Direction);

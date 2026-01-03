@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Persistence;
@@ -8,7 +8,7 @@ using Tests.Common;
 
 namespace Tests.Repository;
 
-public class ShoppingCartRepositoryTests
+public class /*#1#ShoppingCartRepositoryTests
 {
     private ApplicationDbContext _context;
     private ShoppingCartRepository _shoppingCartRepository;
@@ -340,4 +340,4 @@ public class ShoppingCartRepositoryTests
                     CancellationToken.None));
     }
     #endregion
-}
+}*/

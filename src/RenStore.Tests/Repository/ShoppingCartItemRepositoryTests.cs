@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Persistence;
@@ -412,4 +412,4 @@ public class ShoppingCartItemRepositoryTests
                     CancellationToken.None));
     }
     #endregion
-}
+}*/

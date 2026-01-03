@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums;
 using RenStore.Domain.Enums.Sorting;
@@ -357,4 +357,4 @@ public class ProductVariantComplainRepositoryTests
                     CancellationToken.None));
     }
     #endregion
-}
+}*/

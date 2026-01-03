@@ -4,12 +4,12 @@ using RenStore.Domain.Enums.Sorting;
 namespace RenStore.Domain.Repository;
 /// <summary>
 /// Repository for working with <see cref="SubCategoryEntity"/>.
-/// Provide basic CRUD operations and data retrieval methods with sorting and paginations.
+/// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface ISubCategoryRepository
 {
     /// <summary>
-    /// Create a new subcategory it the database.
+    /// Create a new subcategory in the database.
     /// </summary>
     /// <param name="subCategory">The subcategory entity to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
