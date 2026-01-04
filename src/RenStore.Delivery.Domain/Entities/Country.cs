@@ -1,6 +1,7 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;
+
 /// <summary>
 /// Represents a country and its related cities and addresses.
 /// </summary>
@@ -27,7 +28,7 @@ public class Country
     /// <summary>
     /// Creates a new country ensuring all invariants are satisfied.
     /// </summary>
-    /// <exception cref="DomainException">if the country is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
+    /// <exception cref="DomainException">if the country parameters are null or empty, or any IDs are less 0.</exception>
     public static Country Create(
         string name, 
         string nameRu,

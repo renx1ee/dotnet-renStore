@@ -221,7 +221,7 @@ public class ProductRepository : IProductRepository
                     pv.""article""                 AS Article,
                     pv.""in_stock""                AS InStock,
                     pv.""is_available""            AS IsAvailable,
-                    pv.""created_date""            AS CreatedAt,
+                    pv.""created_date""            AS OccuredAt,
                     pv.""url""                     AS Url,
                     pv.""product_id""              AS ProductId,
                     pv.""color_id""                AS ColorId

@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums.Sorting;
+using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Persistence.Repositories;
@@ -47,7 +47,7 @@ public class CountryQuery
     private DbTransaction? CurrentTransaction =>
         this._context.Database.CurrentTransaction?.GetDbTransaction();
     
-    public async Task<IReadOnlyList<Country>> FindAllAsync(
+    public async Task<IReadOnlyList<CountryReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Id,
         uint pageSize = 25,
@@ -76,7 +76,7 @@ public class CountryQuery
                 ";
 
             var result = await connection
-                .QueryAsync<Country>(
+                .QueryAsync<CountryReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -96,7 +96,7 @@ public class CountryQuery
         }
     }
 
-    public async Task<Country?> FindByIdAsync(
+    public async Task<CountryReadModel?> FindByIdAsync(
         int id,
         CancellationToken cancellationToken)
     {
@@ -115,7 +115,7 @@ public class CountryQuery
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<Country>(
+                .QueryFirstOrDefaultAsync<CountryReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -130,15 +130,15 @@ public class CountryQuery
         }
     }
     
-    public async Task<Country?> GetByIdAsync(
+    public async Task<CountryReadModel?> GetByIdAsync(
         int id,
         CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(Country), id);
+            ?? throw new NotFoundException(typeof(CountryReadModel), id);
     }
 
-    public async Task<IReadOnlyList<Country>> FindByNameAsync(
+    public async Task<IReadOnlyList<CountryReadModel>> FindByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Id,
@@ -180,7 +180,7 @@ public class CountryQuery
                 ";
 
             var result = await connection
-                .QueryAsync<Country>(
+                .QueryAsync<CountryReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -201,7 +201,7 @@ public class CountryQuery
         }
     }
 
-    public async Task<IEnumerable<Country>> GetByNameAsync(
+    public async Task<IEnumerable<CountryReadModel>> GetByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Id,
@@ -211,12 +211,12 @@ public class CountryQuery
     {
         var result = await this.FindByNameAsync(name, cancellationToken, sortBy, pageSize, page, descending);
         
-        if (result.Count == 0) throw new NotFoundException(typeof(Country), name);
+        if (result.Count == 0) throw new NotFoundException(typeof(CountryReadModel), name);
 
         return result;
     }
     
-    public async Task<IReadOnlyList<Country>> FindByCityIdAsync(
+    public async Task<IReadOnlyList<CountryReadModel>> FindByCityIdAsync(
         int cityId,
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Id,
@@ -253,7 +253,7 @@ public class CountryQuery
                 ";
 
             var result = await connection
-                .QueryAsync<Country>(
+                .QueryAsync<CountryReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -274,7 +274,7 @@ public class CountryQuery
         }
     }
 
-    public async Task<IReadOnlyList<Country>> GetByCityIdAsync(
+    public async Task<IReadOnlyList<CountryReadModel>> GetByCityIdAsync(
         int cityId,
         CancellationToken cancellationToken,
         CountrySortBy sortBy = CountrySortBy.Id,
@@ -284,7 +284,7 @@ public class CountryQuery
     {
         var result = await this.FindByCityIdAsync(cityId, cancellationToken, sortBy, pageSize, page, descending);
         
-        if (result.Count == 0) throw new NotFoundException(typeof(Country), cityId);
+        if (result.Count == 0) throw new NotFoundException(typeof(CountryReadModel), cityId);
 
         return result;
     }

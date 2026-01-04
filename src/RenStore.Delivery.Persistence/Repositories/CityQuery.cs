@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums.Sorting;
-using RenStore.Domain.Entities;
+using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Persistence.Repositories;
@@ -15,6 +14,7 @@ namespace RenStore.Delivery.Persistence.Repositories;
 public class CityQuery(
     ILogger<CityQuery> logger,
     ApplicationDbContext context)
+    : RenStore.Delivery.Application.Interfaces.ICityQuery
 {
     private const int CommandTimeoutSeconds = 30;
     private const uint MaxPageSize = 1000;
@@ -46,7 +46,7 @@ public class CityQuery(
     private DbTransaction? CurrentTransaction =>
         this._context.Database.CurrentTransaction?.GetDbTransaction();
     
-    public async Task<IReadOnlyList<City>> FindAllAsync(
+    public async Task<IReadOnlyList<CityReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
         uint pageSize = 25,
@@ -75,7 +75,7 @@ public class CityQuery(
                 ";
 
             var result = await connection
-                .QueryAsync<City>(
+                .QueryAsync<CityReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -95,7 +95,7 @@ public class CityQuery(
         }
     }
 
-    public async Task<City?> FindByIdAsync(
+    public async Task<CityReadModel?> FindByIdAsync(
         int id,
         CancellationToken cancellationToken)
     {
@@ -114,7 +114,7 @@ public class CityQuery(
                 ";
             
             return await connection
-                .QueryFirstOrDefaultAsync<City>(
+                .QueryFirstOrDefaultAsync<CityReadModel>(
                     new CommandDefinition(
                         commandText: sql, 
                         parameters: new 
@@ -129,15 +129,15 @@ public class CityQuery(
         }
     }
     
-    public async Task<City> GetByIdAsync(
+    public async Task<CityReadModel> GetByIdAsync(
         int id,
         CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(City), id);
+            ?? throw new NotFoundException(typeof(CityReadModel), id);
     }
 
-    public async Task<IReadOnlyList<City>> FindByNameAsync(
+    public async Task<IReadOnlyList<CityReadModel>> FindByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
@@ -170,7 +170,7 @@ public class CityQuery(
                 ";
 
             var result = await connection
-                .QueryAsync<City>(
+                .QueryAsync<CityReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -191,7 +191,7 @@ public class CityQuery(
         }
     }
 
-    public async Task<IEnumerable<City>> GetByNameAsync(
+    public async Task<IReadOnlyList<CityReadModel>> GetByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
@@ -202,12 +202,12 @@ public class CityQuery(
         var result = await this.FindByNameAsync(name, cancellationToken, sortBy, pageSize, page, descending);
         
         if (result.Count == 0)
-            throw new NotFoundException(typeof(ColorEntity), name);
+            throw new NotFoundException(typeof(CityReadModel), name);
         
         return result;
     }
     
-    public async Task<IReadOnlyList<City>> FindByCountryIdAsync(
+    public async Task<IReadOnlyList<CityReadModel>> FindByCountryIdAsync(
         int countryId,
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
@@ -242,7 +242,7 @@ public class CityQuery(
                 ";
 
             var result = await connection
-                .QueryAsync<City>(
+                .QueryAsync<CityReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -263,7 +263,7 @@ public class CityQuery(
         }
     }
 
-    public async Task<IReadOnlyList<City>> GetByCountryIdAsync(
+    public async Task<IReadOnlyList<CityReadModel>> GetByCountryIdAsync(
         int countryId,
         CancellationToken cancellationToken,
         CitySortBy sortBy = CitySortBy.Id,
@@ -280,7 +280,7 @@ public class CityQuery(
             descending: descending);
 
         if (result.Count == 0)
-            throw new NotFoundException(typeof(City), countryId);
+            throw new NotFoundException(typeof(CityReadModel), countryId);
 
         return result;
     }

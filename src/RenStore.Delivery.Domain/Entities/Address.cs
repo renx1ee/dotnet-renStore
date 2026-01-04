@@ -1,6 +1,7 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;
+
 /// <summary>
 /// Represents a user's physical address with lifecycle and invariants.
 /// </summary>

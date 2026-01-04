@@ -15,4 +15,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Country> Countries { get; set; }
     public DbSet<City> Cities { get; set; }
+    public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
+    public DbSet<DeliveryTariff> DeliveryTariffs { get; set; }
+    public DbSet<DeliveryTracking> DeliveryTrackings { get; set; }
+    public DbSet<PickUpPoint> PickUpPoints { get; set; }
+    public DbSet<SortingCenter> SortingCenters { get; set; }
 }

@@ -47,7 +47,7 @@ public class SellerRepository(
     {
         ArgumentNullException.ThrowIfNull(seller);
 
-        seller.CreatedAt = DateTimeOffset.UtcNow;
+        seller.OccuredAt = DateTimeOffset.UtcNow;
 
         var result = await this._context.Sellers.AddAsync(seller, cancellationToken);
         
@@ -66,7 +66,7 @@ public class SellerRepository(
 
         foreach (var seller in sellers)
         {
-            seller.CreatedAt = DateTimeOffset.UtcNow;
+            seller.OccuredAt = DateTimeOffset.UtcNow;
         }
     }
     
@@ -96,7 +96,7 @@ public class SellerRepository(
                     ""seller_name""            AS Name,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
-                    ""created_date""           AS CreatedAt,
+                    ""created_date""           AS OccuredAt,
                     ""is_blocked""             AS IsBlocked,
                     ""user_id""                AS UserId
                 FROM
@@ -140,7 +140,7 @@ public class SellerRepository(
                     ""seller_name""            AS Name,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
-                    ""created_date""           AS CreatedAt,
+                    ""created_date""           AS OccuredAt,
                     ""is_blocked""             AS IsBlocked,
                     ""user_id""                AS UserId
                 FROM
@@ -194,7 +194,7 @@ public class SellerRepository(
                         ""seller_name""            AS Name,
                         ""normalized_seller_name"" AS NormalizedName,
                         ""seller_description""     AS Description,
-                        ""created_date""           AS CreatedAt,
+                        ""created_date""           AS OccuredAt,
                         ""is_blocked""             AS IsBlocked,
                         ""user_id""                AS UserId
                     FROM
@@ -254,7 +254,7 @@ public class SellerRepository(
                     ""seller_name""            AS Name,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
-                    ""created_date""           AS CreatedAt,
+                    ""created_date""           AS OccuredAt,
                     ""is_blocked""             AS IsBlocked,
                     ""user_id""                AS UserId
                 FROM

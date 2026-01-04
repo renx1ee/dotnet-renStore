@@ -1,6 +1,7 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;
+
 /// <summary>
 /// Represents a city physical entity with lifecycle and invariants. 
 /// </summary>
@@ -11,10 +12,11 @@ public class City
     public string NameRu { get; private set; } = string.Empty;
     public string NormalizedName { get; private set; } = string.Empty;
     public string NormalizedNameRu { get; private set; } = string.Empty;
-    public int CountryId { get; private set; }
     public bool IsDelete { get; private set; } = false;
+    public int CountryId { get; private set; }
     public Country? Country { get; private set; }
-    public IEnumerable<Address>? Addresses { get; set; }
+    // TODO:
+    public IReadOnlyCollection<Address>? Addresses { get; private set; }
     
     private City() { }
     /// <summary>

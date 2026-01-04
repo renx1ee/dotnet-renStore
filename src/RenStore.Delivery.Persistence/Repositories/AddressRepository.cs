@@ -2,7 +2,8 @@ using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Delivery.Persistence.Repositories;
 
-internal sealed class AddressRepository(ApplicationDbContext context) 
+internal sealed class AddressRepository
+    (ApplicationDbContext context) 
     : RenStore.Delivery.Domain.Interfaces.IAddressRepository
 {
     private readonly ApplicationDbContext _context = context 

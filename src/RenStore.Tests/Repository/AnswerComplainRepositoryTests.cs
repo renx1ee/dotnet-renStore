@@ -30,7 +30,7 @@ public class AnswerComplainRepositoryTests
             Name = "Sample Name for Update",
             Description = "Sample Description for Update",
             NormalizedName = Guid.NewGuid().ToString().ToUpper(),
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             IsBlocked = false,
             ApplicationUserId = TestDataConstants.UserIdForCreateSeller
         };
@@ -47,7 +47,7 @@ public class AnswerComplainRepositoryTests
         Assert.Equal(seller.Name, sellerExists.Name);
         Assert.Equal(seller.Description, sellerExists.Description);
         Assert.Equal(seller.NormalizedName, sellerExists.NormalizedName);
-        Assert.Equal(seller.CreatedAt, sellerExists.CreatedAt);
+        Assert.Equal(seller.OccuredAt, sellerExists.OccuredAt);
         Assert.Equal(seller.IsBlocked, sellerExists.IsBlocked);
     }
     

@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DTOs\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
     </ItemGroup>
 

@@ -176,7 +176,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("OccuredAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
@@ -306,7 +306,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("OccuredAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("OrderTotal")
@@ -346,7 +346,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                     b.Property<Guid>("ClothesProductId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("OccuredAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -575,7 +575,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("OccuredAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.PrimitiveCollection<string[]>("ImagesUrls")

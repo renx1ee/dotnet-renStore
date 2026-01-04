@@ -83,7 +83,7 @@ public class ProductQuestionRepository : IProductQuestionRepository
                     SELECT
                        ""question_id""        AS Id,
                        ""message""            AS Message,
-                       ""created_date""       AS CreatedAt,
+                       ""created_date""       AS OccuredAt,
                        ""moderated_date""     AS ModeratedDate,
                        ""is_approved""        AS IsApproved,
                        ""product_variant_id"" AS ProductVariantId,
@@ -127,7 +127,7 @@ public class ProductQuestionRepository : IProductQuestionRepository
                     SELECT
                        ""question_id""        AS Id,
                        ""message""            AS Message,
-                       ""created_date""       AS CreatedAt,
+                       ""created_date""       AS OccuredAt,
                        ""moderated_date""     AS ModeratedDate,
                        ""is_approved""        AS IsApproved,
                        ""product_variant_id"" AS ProductVariantId,
@@ -166,7 +166,7 @@ public class ProductQuestionRepository : IProductQuestionRepository
                     SELECT
                        ""question_id""        AS Id,
                        ""message""            AS Message,
-                       ""created_date""       AS CreatedAt,
+                       ""created_date""       AS OccuredAt,
                        ""moderated_date""     AS ModeratedDate,
                        ""is_approved""        AS IsApproved,
                        ""product_variant_id"" AS ProductVariantId,

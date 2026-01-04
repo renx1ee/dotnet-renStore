@@ -6,16 +6,18 @@ namespace RenStore.Delivery.Domain.Enums;
 public enum DeliveryStatus
 {
     /// <summary>
-    /// Order has been created and is awaiting confirmation.
-    /// Ожидает подтверждения.
+    /// Order has been place.
+    /// Размещен.
     /// </summary>
-    AwaitingConfirmation = 0,
+    Placed = 0,
 
     /// <summary>
     /// Order is being assembled by the seller.
     /// На сборке у продавца.
     /// </summary>
     AssemblingBySeller = 1,
+    
+    SentToSortingCenter = 2, 
 
     /// <summary>
     /// Order is on the way to the sorting center.
@@ -24,10 +26,10 @@ public enum DeliveryStatus
     EnRouteToSortingCenter = 2,
 
     /// <summary>
-    /// Order is in transit between logistics hubs.
+    /// Order is arrived at sorting center.
     /// В пути.
     /// </summary>
-    InTransit = 3,
+    ArrivedAtSortingCenter = 3,
 
     /// <summary>
     /// Order is on the way to the pickup point.
@@ -39,5 +41,34 @@ public enum DeliveryStatus
     /// Order has arrived and is awaiting receipt by the customer.
     /// Ожидает получения.
     /// </summary>
-    AwaitingPickup = 5
+    AwaitingPickup = 5,
+    
+    /// <summary>
+    /// Order has been successfully delivered to the recipient.
+    /// Доставлен.
+    /// </summary>
+    Delivered = 6,
+    
+    /// <summary>
+    /// Order has been sorted.
+    /// Отсортирован.
+    /// </summary>
+    Sorted = 7,
+    
+    /// <summary>
+    /// Order has been deleted.
+    /// </summary>
+    IsDeleted = 8,
+    
+    /// <summary>
+    /// Delivery is temporarily delayed.
+    /// Отложенный.
+    /// </summary>
+    Delayed = 9,
+    
+    /// <summary>
+    /// Order has been returned to the sender.
+    /// Возвращен.
+    /// </summary>
+    Returned = 10
 }

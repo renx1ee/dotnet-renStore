@@ -30,7 +30,7 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
             .IsRequired();#1#
 
         builder
-            .Property(x => x.CreatedAt)
+            .Property(x => x.OccuredAt)
             .HasColumnName("created_date")
             .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();

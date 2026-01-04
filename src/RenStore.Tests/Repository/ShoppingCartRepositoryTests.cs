@@ -25,7 +25,7 @@ public class /*#1#ShoppingCartRepositoryTests
         {
             Id = Guid.NewGuid(),
             TotalPrice = 21456,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForGettingSeller4
         };
         // Act
@@ -38,7 +38,7 @@ public class /*#1#ShoppingCartRepositoryTests
         Assert.NotNull(result);
         Assert.Equal(cart.Id, result.Id);
         Assert.Equal(cart.TotalPrice, result.TotalPrice);
-        Assert.Equal(cart.CreatedAt, result.CreatedAt);
+        Assert.Equal(cart.OccuredAt, result.OccuredAt);
         Assert.Equal(cart.UserId, result.UserId);
     }
     
@@ -52,7 +52,7 @@ public class /*#1#ShoppingCartRepositoryTests
         {
             Id = Guid.NewGuid(),
             TotalPrice = 21456,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = Guid.NewGuid().ToString()
         };
         // Act & Assert
@@ -95,7 +95,7 @@ public class /*#1#ShoppingCartRepositoryTests
         {
             Id = Guid.NewGuid(),
             TotalPrice = 21456,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForGettingSeller5
         };
         // Act & Assert

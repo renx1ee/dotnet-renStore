@@ -192,7 +192,7 @@ public static class TestData
             Name = TestDataConstants.SellerNameForDelete,
             Description = "Sample Description for Update",
             NormalizedName = TestDataConstants.SellerNameForDelete.ToUpper(),
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForDeleteSeller,
             IsBlocked = false
         },
@@ -203,7 +203,7 @@ public static class TestData
             Name = TestDataConstants.SellerNameForUpdate,
             Description = "Sample Description for Update",
             NormalizedName = TestDataConstants.SellerNameForUpdate.ToUpper(),
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForUpdateSeller,
         },
         new SellerEntity()
@@ -212,7 +212,7 @@ public static class TestData
             Name = TestDataConstants.SellerNameForGetting1,
             Description = "Sample Description for Update",
             NormalizedName = TestDataConstants.SellerNameForGetting1.ToUpper(),
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller1,
             IsBlocked = false
         },
@@ -222,7 +222,7 @@ public static class TestData
             Name = TestDataConstants.SellerNameForGetting2,
             Description = "Sample Description for Update",
             NormalizedName = TestDataConstants.SellerNameForGetting2.ToUpper(),
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller2,
             IsBlocked = true
         },
@@ -232,7 +232,7 @@ public static class TestData
             Name = TestDataConstants.SellerNameForGetting3,
             Description = "Sample Description for Update",
             NormalizedName = TestDataConstants.SellerNameForGetting3.ToUpper(),
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller3,
             IsBlocked = false
         },
@@ -242,7 +242,7 @@ public static class TestData
             Name = TestDataConstants.SellerNameForGetting4,
             Description = "Sample Description for Update",
             NormalizedName = TestDataConstants.SellerNameForGetting4.ToUpper(),
-            CreatedAt = DateTime.UtcNow.AddHours(1),
+            OccuredAt = DateTime.UtcNow.AddHours(1),
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller4,
             IsBlocked = true
         },
@@ -1543,35 +1543,35 @@ public static class TestData
         {
             Id = TestDataConstants.ShoppingCartIdForUpdate,
             TotalPrice = 23542,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForUpdateSeller
         },
         new ShoppingCartEntity()
         {
             Id = TestDataConstants.ShoppingCartIdForDelete,
             TotalPrice = 2534,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForDeleteSeller
         },
         new ShoppingCartEntity()
         {
             Id = TestDataConstants.ShoppingCartIdForGetting1,
             TotalPrice = 854,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForGettingSeller1
         },
         new ShoppingCartEntity()
         {
             Id = TestDataConstants.ShoppingCartIdForGetting2,
             TotalPrice = 21456,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForGettingSeller2
         },
         new ShoppingCartEntity()
         {
             Id = TestDataConstants.ShoppingCartIdForGetting3,
             TotalPrice = 8795,
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             UserId = TestDataConstants.UserIdForGettingSeller3
         },
     };
@@ -1762,7 +1762,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForUpdate,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForUpdate,
             UserId = TestDataConstants.UserIdForUpdateSeller
@@ -1772,7 +1772,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForDelete,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForDelete,
             UserId = TestDataConstants.UserIdForDeleteSeller
@@ -1782,7 +1782,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting1,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForGetting1,
             UserId = TestDataConstants.UserIdForGettingSeller1
@@ -1792,7 +1792,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting2,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId= TestDataConstants.SellerIdForGetting2,
             UserId = TestDataConstants.UserIdForGettingSeller2
@@ -1802,7 +1802,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting3,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedAt = DateTime.UtcNow,
+            OccuredAt = DateTime.UtcNow,
             Status = ReviewComplainStatus.New,
             ReviewId = TestDataConstants.SellerIdForGetting3,
             UserId = TestDataConstants.UserIdForGettingSeller3

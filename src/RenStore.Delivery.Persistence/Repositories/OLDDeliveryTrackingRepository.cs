@@ -11,10 +11,10 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class DeliveryTrackingRepository : IDeliveryTrackingRepository
+public class IDeliveryTrackingRepository : IDeliveryTrackingRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<DeliveryTrackingRepository> _logger;
+    private readonly ILogger<IDeliveryTrackingRepository> _logger;
     private readonly string _connectionString;
 
     private readonly Dictionary<DeliveryTrackingSortBy, string> _sortColumnMapping = new()
@@ -22,7 +22,7 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
         { DeliveryTrackingSortBy.Id, "delivery_tracking_history_id" }
     };
     
-    public DeliveryTrackingRepository(
+    public IDeliveryTrackingRepository(
         ApplicationDbContext context,
         string connectionString)
     {
@@ -31,7 +31,7 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
                                  ?? throw new ArgumentNullException(nameof(connectionString));
     }
     
-    public DeliveryTrackingRepository(
+    public IDeliveryTrackingRepository(
         ApplicationDbContext context,
         IConfiguration configuration)
     {
@@ -85,7 +85,7 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
                         ""delivery_tracking_history_id"" AS Id,
                         ""current_location""             AS CurrentLocation,
                         ""status""                       AS Status,
-                        ""created_date""                 AS CreatedAt,
+                        ""created_date""                 AS OccuredAt,
                         ""notes""                        AS Notes,
                         ""delivery_order_id""            AS DeliveryOrderId
                     FROM
@@ -122,7 +122,7 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
                         ""delivery_tracking_history_id"" AS Id,
                         ""current_location""             AS CurrentLocation,
                         ""status""                       AS Status,
-                        ""created_date""                 AS CreatedAt,
+                        ""created_date""                 AS OccuredAt,
                         ""notes""                        AS Notes,
                         ""delivery_order_id""            AS DeliveryOrderId
                     FROM
@@ -175,7 +175,7 @@ public class DeliveryTrackingRepository : IDeliveryTrackingRepository
                         ""delivery_tracking_history_id"" AS Id,
                         ""current_location""             AS CurrentLocation,
                         ""status""                       AS Status,
-                        ""created_date""                 AS CreatedAt,
+                        ""created_date""                 AS OccuredAt,
                         ""notes""                        AS Notes,
                         ""delivery_order_id""            AS DeliveryOrderId
                     FROM 

@@ -86,7 +86,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedAt,
+                        ""created_date""                    AS OccuredAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories"" 
@@ -128,7 +128,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedAt,
+                        ""created_date""                    AS OccuredAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories""
@@ -184,7 +184,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedAt,
+                        ""created_date""                    AS OccuredAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories""
@@ -261,7 +261,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
                         ""sub_category_description""        AS Description,
                         ""is_active""                       AS IsActive,
-                        ""created_date""                    AS CreatedAt,
+                        ""created_date""                    AS OccuredAt,
                         ""category_id""                     As CategoryId
                     FROM
                         ""sub_categories""

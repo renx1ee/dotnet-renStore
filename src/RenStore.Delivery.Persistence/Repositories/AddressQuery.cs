@@ -7,8 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Application.Features.Address.Queries;
-using RenStore.Delivery.Application.Interfaces;
-using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Persistence.Repositories;
@@ -16,7 +15,7 @@ namespace RenStore.Delivery.Persistence.Repositories;
 internal sealed class AddressQuery(
     ILogger<AddressRepository> logger,
     ApplicationDbContext context) 
-    : IAddressQuery
+    : RenStore.Delivery.Application.Interfaces.IAddressQuery
 {
     private const uint MaxPageSize = 1000;
     private const int CommandTimeoutSeconds = 30;
@@ -33,7 +32,7 @@ internal sealed class AddressQuery(
                 ""floor""            AS Floor,
                 ""flat_number""      AS FlatNumber,
                 ""full_address""     AS FullAddress,
-                ""created_date""     AS CreatedAt,
+                ""created_date""     AS OccuredAt,
                 ""updated_date""     AS UpdatedAt,
                 ""is_deleted""       AS IsDeleted,
                 ""user_id""          AS ApplicationUserId,
@@ -242,11 +241,11 @@ internal sealed class AddressQuery(
         try
         {
             var connection = await this.GetOpenConnectionAsync(cancellationToken);
-
-            var pageRequest = BuildPageRequest(page, pageSize, descending);
             
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
+            
+            var pageRequest = BuildPageRequest(page, pageSize, descending);
             
             string sql =
                 @$"
@@ -262,7 +261,7 @@ internal sealed class AddressQuery(
                 .QueryAsync<AddressReadModel>(
                     new CommandDefinition(
                         commandText: sql,
-                        parameters:new
+                        parameters: new
                         {   
                             Count = pageRequest.Limit,
                             Offset = pageRequest.Offset,

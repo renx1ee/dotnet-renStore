@@ -1,4 +1,4 @@
-namespace RenStore.Delivery.Domain.Entities;
+namespace RenStore.Delivery.Domain.ReadModels;
 
 public class AddressReadModel
 {

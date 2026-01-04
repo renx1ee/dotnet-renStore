@@ -92,7 +92,7 @@ public class ProductVariantRepository : IProductVariantRepository
                         ""article""                 AS Article,
                         ""in_stock""                AS InStock,
                         ""is_available""            AS IsAvailable,
-                        ""created_date""            AS CreatedAt,
+                        ""created_date""            AS OccuredAt,
                         ""product_id""              AS ProductId,
                         ""color_id""                AS ColorId
                     FROM
@@ -140,7 +140,7 @@ public class ProductVariantRepository : IProductVariantRepository
                         ""article""                 AS Article,
                         ""in_stock""                AS InStock,
                         ""is_available""            AS IsAvailable,
-                        ""created_date""            AS CreatedAt,
+                        ""created_date""            AS OccuredAt,
                         ""product_id""              AS ProductId,
                         ""color_id""                AS ColorId
                     FROM

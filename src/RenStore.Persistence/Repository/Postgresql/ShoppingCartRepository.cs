@@ -83,7 +83,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
                     SELECT
                         ""cart_id""      AS Id,
                         ""total_price""  AS TotalPrice,
-                        ""created_date"" AS CreatedAt,
+                        ""created_date"" AS OccuredAt,
                         ""updated_date"" AS UpdatedAt,
                         ""user_id""      AS UserId
                     FROM
@@ -119,7 +119,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
                     SELECT
                         ""cart_id""      AS Id,
                         ""total_price""  AS TotalPrice,
-                        ""created_date"" AS CreatedAt,
+                        ""created_date"" AS OccuredAt,
                         ""updated_date"" AS UpdatedAt,
                         ""user_id""      AS UserId
                     FROM
@@ -170,7 +170,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
                     SELECT
                         ""cart_id""      AS Id,
                         ""total_price""  AS TotalPrice,
-                        ""created_date"" AS CreatedAt,
+                        ""created_date"" AS OccuredAt,
                         ""updated_date"" AS UpdatedAt,
                         ""user_id""      AS UserId
                     FROM

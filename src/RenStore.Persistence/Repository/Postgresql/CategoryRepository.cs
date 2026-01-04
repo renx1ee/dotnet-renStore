@@ -87,7 +87,7 @@ public class CategoryRepository : ICategoryRepository
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
                         ""category_description""        AS Description,
                         ""is_active""                   AS IsActive,
-                        ""created_date""                AS CreatedAt
+                        ""created_date""                AS OccuredAt
                     FROM
                         ""categories"" 
                     ORDER BY {columnName} {direction} 
@@ -128,7 +128,7 @@ public class CategoryRepository : ICategoryRepository
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
                         ""category_description""        AS Description,
                         ""is_active""                   AS IsActive,
-                        ""created_date""                AS CreatedAt
+                        ""created_date""                AS OccuredAt
                     FROM
                         ""categories""
                     WHERE
@@ -183,7 +183,7 @@ public class CategoryRepository : ICategoryRepository
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
                         ""category_description""        AS Description,
                         ""is_active""                   AS IsActive,
-                        ""created_date""                AS CreatedAt
+                        ""created_date""                AS OccuredAt
                     FROM
                         ""categories""
                     WHERE

@@ -3,7 +3,7 @@ namespace RenStore.Delivery.Domain.Enums;
 /// <summary>
 /// Represents available delivery tariff options.
 /// </summary>
-public enum DeliveryTariff
+public enum DeliveryTariffType
 {
     /// <summary>
     /// Standard delivery with balanced cost and delivery time.

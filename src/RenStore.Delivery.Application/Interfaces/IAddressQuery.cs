@@ -1,5 +1,6 @@
 using RenStore.Application.Features.Address.Queries;
 using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Application.Interfaces;
 
