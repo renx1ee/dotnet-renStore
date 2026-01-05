@@ -1,9 +1,8 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Delivery.Domain.Entities;
-using RenStore.Domain.Entities;
 
-namespace RenStore.Persistence.EntityTypeConfigurations;
+namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 public class DeliveryTariffConfiguration : IEntityTypeConfiguration<DeliveryTariff>
 {
@@ -25,10 +24,10 @@ public class DeliveryTariffConfiguration : IEntityTypeConfiguration<DeliveryTari
             .HasColumnName("price")
             .IsRequired();
 
-        /*builder
+        builder
             .Property(x => x.Type)
             .HasColumnName("type")
-            .IsRequired();#1#
+            .IsRequired();
 
         builder
             .Property(x => x.Description)
@@ -39,5 +38,31 @@ public class DeliveryTariffConfiguration : IEntityTypeConfiguration<DeliveryTari
             .Property(x => x.WeightLimitKg)
             .HasColumnName("weight_limit_kg")
             .IsRequired();
+        
+        builder
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .HasDefaultValue(false)
+            .IsRequired();
+        
+        builder
+            .Property(x => x.CreatedAt)
+            .HasColumnName("created_date")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.DeliveryOrderId)
+            .HasColumnName("delivery_order_id")
+            .IsRequired();
     }
-}*/
+}

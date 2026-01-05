@@ -1,14 +1,103 @@
 using RenStore.Delivery.Domain.Enums;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;
 
 public class DeliveryTariff
 {
-    public Guid Id { get; set; }
-    public decimal Price { get; set; }
-    public DeliveryTariffType Type { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public double WeightLimitKg { get; set; }
-    public Guid DeliveryOrderId { get; set; }
-    public DeliveryOrder? DeliveryOrder { get; set; }
+    public Guid Id { get; private set; } 
+    public decimal Price { get; private set; } 
+    public DeliveryTariffType Type { get; private set; }
+    public string Description { get; private set; } = string.Empty;
+    public decimal WeightLimitKg { get; private set; }
+    public Guid DeliveryOrderId { get; private set; }
+    public bool IsDeleted { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
+    
+    private DeliveryTariff() { }
+    
+    public static DeliveryTariff Create(
+        decimal price,
+        DeliveryTariffType type,
+        string description,
+        decimal weightLimitKg,
+        Guid deliveryOrderId,
+        DateTimeOffset now)
+    {
+        if (price <= 0)
+            throw new DomainException("Price must be greater then zero.");
+        
+        if (weightLimitKg <= 0)
+            throw new DomainException("Weight limit must be greater then zero.");
+
+        if (deliveryOrderId == Guid.Empty)
+            throw new DomainException("Delivery Order Id cannot be Guid empty.");
+        
+        var tariff = new DeliveryTariff()
+        {
+            Id = Guid.NewGuid(),
+            Price = price,
+            Type = type,
+            WeightLimitKg = weightLimitKg,
+            DeliveryOrderId = deliveryOrderId,
+            CreatedAt = now
+        };
+
+        if (!string.IsNullOrEmpty(description))
+            tariff.Description = description;
+
+        return tariff;
+    }
+
+    public void ChangePrice(
+        decimal price,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+        
+        if (price <= 0)
+            throw new DomainException("Price must be greater then zero.");
+
+        Price = price;
+        UpdatedAt = now;
+    }
+
+    public void ChangeWeightLimitKg(
+        decimal weightLimitKg,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+        
+        if (weightLimitKg <= 0)
+            throw new DomainException("Weight limit must be greater then zero.");
+
+        WeightLimitKg = weightLimitKg;
+        UpdatedAt = now;
+    }
+
+    public void ChangeDescription(
+        string description,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+        
+        Description = description ?? string.Empty;
+        UpdatedAt = now;
+    }
+    
+    public void Delete(DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+        
+        IsDeleted = true;
+        DeletedAt = now;
+    }
+
+    private void EnsureNotDeleted()
+    {
+        if(IsDeleted) 
+            throw new DomainException("Delivery tariff already deleted.");
+    }
 }

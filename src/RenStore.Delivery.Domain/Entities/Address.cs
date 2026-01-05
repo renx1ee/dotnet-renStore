@@ -32,7 +32,6 @@ public class Address
     /// </summary>
     /// <exception cref="DomainException">if the city is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
     public static Address Create(
-        Guid id,
         string houseCode,
         string street,
         string buildingNumber,
@@ -63,14 +62,12 @@ public class Address
             throw new DomainException("User ID cannot be less 1.");
         
         // TODO: validation
-        return new Address()
+        var result =  new Address()
         {
-            Id = id,
+            Id = Guid.NewGuid(),
             HouseCode = houseCode,
             Street = street,
             BuildingNumber = buildingNumber,
-            ApartmentNumber = apartmentNumber,
-            Entrance = entrance,
             Floor = floor,
             CountryId = countryId,
             CityId = cityId,
@@ -78,6 +75,14 @@ public class Address
             CreatedAt = now,
             IsDeleted = false
         };
+
+        if (!string.IsNullOrEmpty(apartmentNumber))
+            result.ApartmentNumber = apartmentNumber;
+        
+        if (!string.IsNullOrEmpty(entrance))
+            result.Entrance = entrance;
+
+        return result;
     }
     /// <summary>
     /// Updates an address data.

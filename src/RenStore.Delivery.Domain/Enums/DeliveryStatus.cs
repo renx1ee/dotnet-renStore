@@ -5,13 +5,14 @@ namespace RenStore.Delivery.Domain.Enums;
 /// </summary>
 public enum DeliveryStatus
 {
+    
     /// <summary>
     /// Order has been place.
     /// Размещен.
     /// </summary>
     Placed = 0,
 
-    /// <summary>
+    /// <summary>   
     /// Order is being assembled by the seller.
     /// На сборке у продавца.
     /// </summary>

@@ -1,5 +1,9 @@
 namespace RenStore.Delivery.Domain.ReadModels;
 
+/// <summary>
+/// Read model, represents the address entity.
+/// Used to display and transmit data without state change logic.
+/// </summary>
 public class AddressReadModel
 {
     public Guid Id { get; init; }

@@ -27,12 +27,12 @@ public class DeliveryOrderConfiguration : IEntityTypeConfiguration<DeliveryOrder
         builder
             .Property(x => x.DeliveredAt)
             .HasColumnName("delivered_date")
-            .IsRequired();
+            .IsRequired(false);
         
         builder
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
-            .IsRequired();
+            .IsRequired(false);
         
         builder
             .Property(x => x.Status)
@@ -54,14 +54,13 @@ public class DeliveryOrderConfiguration : IEntityTypeConfiguration<DeliveryOrder
             .HasColumnName("pickup_point_id")
             .IsRequired(false);
         
-        // TODO:
         builder
             .Property(x => x.OrderId)
             .HasColumnName("order_id")
             .IsRequired();
 
         builder
-            .Property(x => x.OrderId)
+            .Property(x => x.AddressId)
             .HasColumnName("address_id")
             .IsRequired();
         

@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Application.Features.Address.Queries;
+using RenStore.Delivery.Application.Features.Address.Queries;
+using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -46,7 +47,11 @@ internal sealed class AddressQuery(
     {
         { AddressSortBy.Id, "address_id" },
         { AddressSortBy.HouseCode, "house_code" },
-        { AddressSortBy.FlatNumber, "flat_number" }
+        { AddressSortBy.FlatNumber, "flat_number" },
+        { AddressSortBy.Street, "street"},
+        { AddressSortBy.CountryId, "country_id" },
+        { AddressSortBy.CreatedAt, "created_date"},
+        { AddressSortBy.UpdatedAt, "updated_date"}
     };
     
     private readonly ILogger<AddressRepository> _logger = logger 
@@ -62,7 +67,8 @@ internal sealed class AddressQuery(
         AddressSortBy sortBy = AddressSortBy.Id,
         uint page = 1,
         uint pageSize = 25,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         try
         {
@@ -73,22 +79,27 @@ internal sealed class AddressQuery(
 
             var pageRequest = BuildPageRequest(page, pageSize, descending);
             
-            string sql = 
+            StringBuilder sql = new StringBuilder(
                 @$"
                     {BaseSqlQuery}
-                    ORDER BY ""{columnName}"" {pageRequest.Direction}
-                    LIMIT @Count
-                    OFFSET @Offset;
-                ";
+                ");
+
+            if (isDeleted.HasValue)
+                sql.Append($" WHERE \"is_deleted\" = @IsDeleted");
+
+            sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
+                          LIMIT @Count
+                          OFFSET @Offset;");
 
             var result = await connection
                 .QueryAsync<AddressReadModel>(
                     new CommandDefinition(
-                        commandText: sql, 
+                        commandText: sql.ToString(), 
                         parameters: new
                         {   
                             Count = pageRequest.Limit,
-                            Offset = pageRequest.Offset
+                            Offset = pageRequest.Offset,
+                            IsDeleted = isDeleted
                         },
                         transaction: CurrentTransaction,
                         commandTimeout: CommandTimeoutSeconds, 
@@ -105,11 +116,11 @@ internal sealed class AddressQuery(
     public async Task<IReadOnlyList<AddressReadModel>> SearchAsync(
         AddressSearchCriteria criteria,
         CancellationToken cancellationToken,
-        bool? includeDeleted = null,
         AddressSortBy sortBy = AddressSortBy.Id,
         uint pageSize = 25,
         uint page = 1,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         try
         {
@@ -130,10 +141,10 @@ internal sealed class AddressQuery(
             parameters.Add("Count", pageRequest.Limit);
             parameters.Add("Offset", pageRequest.Offset);
 
-            if (includeDeleted.HasValue)
+            if (isDeleted.HasValue)
             {
                 sql.Append(" AND \"is_deleted\" = @IsDeleted");
-                parameters.Add("IsDeleted", includeDeleted.Value);
+                parameters.Add("IsDeleted", isDeleted);
             }
             
             if (criteria.CountryId.HasValue)
@@ -196,12 +207,12 @@ internal sealed class AddressQuery(
         try
         {
             var connection = await this.GetOpenConnectionAsync(cancellationToken);
-
-            string sql =
-                $@"
+            
+            string sql = 
+                @$"
                     {BaseSqlQuery}
                     WHERE
-                        ""address_id"" = @Id;
+                        ""address_id"" = @Id
                 ";
 
             return await connection
@@ -233,7 +244,8 @@ internal sealed class AddressQuery(
         AddressSortBy sortBy = AddressSortBy.Id,
         uint page = 1,
         uint pageSize = 25,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         if (string.IsNullOrEmpty(userId))
             throw new ArgumentException("UserId cannot be empty", nameof(userId));
@@ -247,25 +259,30 @@ internal sealed class AddressQuery(
             
             var pageRequest = BuildPageRequest(page, pageSize, descending);
             
-            string sql =
+            StringBuilder sql = new StringBuilder(
                 @$"
                     {BaseSqlQuery}
                     WHERE 
                         ""user_id"" = @UserId
-                    ORDER BY ""{columnName}"" {pageRequest.Direction}
-                    LIMIT @Count
-                    OFFSET @Offset;
-                ";
+                ");
+            
+            if (isDeleted.HasValue)
+                sql.Append($" and \"is_deleted\" = @IsDeleted");
 
+            sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
+                          LIMIT @Count
+                          OFFSET @Offset;");
+            
             var result = await connection
                 .QueryAsync<AddressReadModel>(
                     new CommandDefinition(
-                        commandText: sql,
+                        commandText: sql.ToString(),
                         parameters: new
                         {   
                             Count = pageRequest.Limit,
                             Offset = pageRequest.Offset,
-                            UserId = userId
+                            UserId = userId,
+                            IsDeleted = isDeleted
                         },
                         transaction: CurrentTransaction,
                         commandTimeout: CommandTimeoutSeconds, 

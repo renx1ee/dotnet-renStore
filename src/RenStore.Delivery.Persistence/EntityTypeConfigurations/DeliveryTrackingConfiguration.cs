@@ -1,9 +1,8 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Delivery.Domain.Entities;
-using RenStore.Domain.Entities;
 
-namespace RenStore.Persistence.EntityTypeConfigurations;
+namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTracking>
 {
@@ -22,22 +21,36 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
         builder
             .Property(x => x.CurrentLocation)
             .HasColumnName("current_location")
-            .IsRequired();
-
-        /*builder
-            .Property(x => x.Status)
-            .HasColumnName("status")
-            .IsRequired();#1#
+            .IsRequired(false);
 
         builder
-            .Property(x => x.OccuredAt)
-            .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
+            .Property(x => x.Status)
+            .HasColumnName("status")
             .IsRequired();
 
         builder
             .Property(x => x.Notes)
             .HasColumnName("notes")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.OccurredAt)
+            .HasColumnName("created_date")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.SortingCenterId)
+            .HasColumnName("sorting_center_id")
             .IsRequired(false);
 
         builder
@@ -45,9 +58,9 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
             .HasColumnName("delivery_order_id")
             .IsRequired();
 
-        builder
-            .HasOne(x => x.DeliveryOrder)
+        /*builder
+            .HasOne(x => x.DeliveryOrderId)
             .WithMany(x => x.TrackingHistory)
-            .HasForeignKey(x => x.DeliveryOrderId);
+            .HasForeignKey(x => x.DeliveryOrderId);*/
     }
-}*/
+}

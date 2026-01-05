@@ -9,6 +9,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AddressConfiguration());
+        modelBuilder.ApplyConfiguration(new CityConfiguration());
+        modelBuilder.ApplyConfiguration(new CountryConfiguration());
+        modelBuilder.ApplyConfiguration(new DeliveryOrderConfiguration());
+        modelBuilder.ApplyConfiguration(new DeliveryTariffConfiguration());
+        modelBuilder.ApplyConfiguration(new DeliveryTrackingConfiguration());
         base.OnModelCreating(modelBuilder);
     }
     
@@ -18,6 +23,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
     public DbSet<DeliveryTariff> DeliveryTariffs { get; set; }
     public DbSet<DeliveryTracking> DeliveryTrackings { get; set; }
-    public DbSet<PickUpPoint> PickUpPoints { get; set; }
+    public DbSet<PickupPoint> PickupPoints { get; set; }
     public DbSet<SortingCenter> SortingCenters { get; set; }
 }

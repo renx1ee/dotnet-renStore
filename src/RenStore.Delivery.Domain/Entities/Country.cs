@@ -20,7 +20,7 @@ public class Country
     public string Code { get; private set; } = string.Empty;
     public string PhoneCode { get; private set; } = string.Empty;
     public bool IsDeleted { get; private set; }
-    public IEnumerable<Address>? Addresses { get; set; }
+    public IReadOnlyCollection<Address>? Addresses { get; private set; }
     public IReadOnlyCollection<City> Cities => _cities;
     /*public IEnumerable<ProductDetailEntity>? ProductDetails { get; set; }*/
     

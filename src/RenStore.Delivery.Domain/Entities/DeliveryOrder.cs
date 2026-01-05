@@ -46,6 +46,7 @@ public class DeliveryOrder
         
         var order = new DeliveryOrder()
         {
+            Id = Guid.NewGuid(),
             OrderId = orderId,
             AddressId = addressId,
             DeliveryTariffId = deliveryTariffId,
@@ -229,12 +230,13 @@ public class DeliveryOrder
         string? location = null)
     {
         _trackingHistory.Add(
-            new DeliveryTracking(
-                currentLocation: string.Empty,
+            DeliveryTracking.Create(
+                currentLocation: location ?? string.Empty,
                 notes: string.Empty,
                 status: status,
                 occurredAt: now,
-                deliveryOrderId: Id));
+                deliveryOrderId: Id,
+                sortingCenterId: sortingCenter));
     }
 
     private void UpdateStatus(
@@ -245,6 +247,10 @@ public class DeliveryOrder
     {
         Status = newStatus;
         
-        AddTracking(status: newStatus, now: now, location: location);
+        this.AddTracking(
+            status: newStatus, 
+            now: now, 
+            location: location, 
+            sortingCenter: sortingCenter);
     }
 }

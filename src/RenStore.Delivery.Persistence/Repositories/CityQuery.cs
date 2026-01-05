@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.Common;
+using System.Text;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -22,20 +23,23 @@ public class CityQuery(
     private const string BaseSqlQuery = 
         """ 
             SELECT
-            "city_id"                 AS Id,
-            "city_name"               AS Name,
-            "normalized_city_name"    AS NormalizedName,
-            "city_name_ru"            AS NameRu,
-            "normalized_city_name_ru" AS NormalizedNameRu,
-            "country_id"              AS CountryOfManufactureId
-        FROM
-            "cities"
+                "city_id"                 AS Id,
+                "city_name"               AS Name,
+                "normalized_city_name"    AS NormalizedName,
+                "city_name_ru"            AS NameRu,
+                "normalized_city_name_ru" AS NormalizedNameRu,
+                "is_deleted"              AS IsDeleted,
+                "country_id"              AS CountryOfManufactureId
+            FROM
+                "cities"
         """;
     
     private readonly Dictionary<CitySortBy, string> _sortColumnMapping = new ()
     {
         { CitySortBy.Id, "city_id" },
-        { CitySortBy.Name, "city_name" }
+        { CitySortBy.Name, "city_name" },
+        { CitySortBy.NameRu, "city_name_ru" },
+        { CitySortBy.CountryId, "country_id" }
     };
     
     private readonly ILogger<CityQuery> _logger    = logger 
@@ -51,7 +55,8 @@ public class CityQuery(
         CitySortBy sortBy = CitySortBy.Id,
         uint pageSize = 25,
         uint page = 1,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         try
         {
@@ -65,23 +70,27 @@ public class CityQuery(
                 pageSize: pageSize,
                 descending: descending);
             
-            string sql =
-                $@"
+            StringBuilder sql = new StringBuilder(
+                @$"
                     {BaseSqlQuery}
-                    ORDER BY 
-                        {columnName} {pageRequest.Direction}
-                    LIMIT @Count
-                    OFFSET @Offset;
-                ";
+                ");
+
+            if (isDeleted.HasValue)
+                sql.Append($" WHERE \"is_deleted\" = @IsDeleted");
+
+            sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
+                           LIMIT @Count
+                           OFFSET @Offset;");
 
             var result = await connection
                 .QueryAsync<CityReadModel>(
                     new CommandDefinition(
-                        commandText: sql,
+                        commandText: sql.ToString(),
                         parameters: new
                         {
                             Count = (int)pageRequest.Limit,
-                            Offset = (int)pageRequest.Offset
+                            Offset = (int)pageRequest.Offset,
+                            IsDeleted = isDeleted
                         },
                         commandTimeout: CommandTimeoutSeconds,
                         cancellationToken: cancellationToken,
@@ -105,20 +114,18 @@ public class CityQuery(
         try
         {
             var connection = await GetOpenConnectionAsync(cancellationToken);
-
-            const string sql =
-                $@"
+            
+            string sql = 
+                @$"
                     {BaseSqlQuery}
-                    WHERE
-                        ""city_id"" = @Id;
+                    WHERE ""city_id"" = @Id
                 ";
             
             return await connection
                 .QueryFirstOrDefaultAsync<CityReadModel>(
                     new CommandDefinition(
                         commandText: sql, 
-                        parameters: new 
-                            { Id = id },
+                        parameters: new { Id = id },
                         transaction: CurrentTransaction,
                         commandTimeout: CommandTimeoutSeconds,
                         cancellationToken: cancellationToken));   
@@ -143,7 +150,8 @@ public class CityQuery(
         CitySortBy sortBy = CitySortBy.Id,
         uint pageSize = 25,
         uint page = 1,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         try
         {
@@ -156,28 +164,32 @@ public class CityQuery(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
-
-            string sql =
+            
+            StringBuilder sql = new StringBuilder(
                 @$"
                     {BaseSqlQuery}
                     WHERE
                         ""normalized_city_name"" 
                             LIKE @Name
-                    ORDER BY 
-                        {columnName} {pageRequest.Direction}
-                    LIMIT @Count
-                    OFFSET @Offset;
-                ";
+                ");
+
+            if (isDeleted.HasValue)
+                sql.Append($" AND \"is_deleted\" = @IsDeleted");
+
+            sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
+                           LIMIT @Count
+                           OFFSET @Offset;");
 
             var result = await connection
                 .QueryAsync<CityReadModel>(
                     new CommandDefinition(
-                        commandText: sql,
+                        commandText: sql.ToString(),
                         parameters: new
                         {
                             Name = $"%{name.ToUpper()}%",
                             Count = pageRequest.Limit,
-                            Offset = pageRequest.Offset
+                            Offset = pageRequest.Offset,
+                            IsDeleted = isDeleted
                         },
                         commandTimeout: CommandTimeoutSeconds,
                         transaction: CurrentTransaction,
@@ -197,9 +209,17 @@ public class CityQuery(
         CitySortBy sortBy = CitySortBy.Id,
         uint pageSize = 25,
         uint page = 1,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
-        var result = await this.FindByNameAsync(name, cancellationToken, sortBy, pageSize, page, descending);
+        var result = await this.FindByNameAsync(
+            name: name, 
+            cancellationToken: cancellationToken, 
+            sortBy: sortBy, 
+            pageSize: pageSize, 
+            page: page, 
+            descending: descending, 
+            isDeleted: isDeleted);
         
         if (result.Count == 0)
             throw new NotFoundException(typeof(CityReadModel), name);
@@ -213,7 +233,8 @@ public class CityQuery(
         CitySortBy sortBy = CitySortBy.Id,
         uint pageSize = 25,
         uint page = 1,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         if (countryId <= 0)
             throw new ArgumentOutOfRangeException(nameof(countryId));
@@ -229,27 +250,30 @@ public class CityQuery(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
-
-            string sql =
+            
+            StringBuilder sql = new StringBuilder(
                 @$"
                     {BaseSqlQuery}
-                    WHERE
-                        ""country_id"" = @CountryId
-                    ORDER BY 
-                        {columnName} {pageRequest.Direction}
-                    LIMIT @Count
-                    OFFSET @Offset;
-                ";
+                    WHERE ""country_id"" = @CountryId
+                ");
+
+            if (isDeleted.HasValue)
+                sql.Append($" AND \"is_deleted\" = @IsDeleted");
+
+            sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
+                           LIMIT @Count
+                           OFFSET @Offset;");
 
             var result = await connection
                 .QueryAsync<CityReadModel>(
                     new CommandDefinition(
-                        commandText: sql,
+                        commandText: sql.ToString(),
                         parameters: new
                         {
                             CountryId = countryId,
                             Count = pageRequest.Limit,
-                            Offset = pageRequest.Offset
+                            Offset = pageRequest.Offset,
+                            IsDeleted = isDeleted
                         },
                         commandTimeout: CommandTimeoutSeconds,
                         transaction: CurrentTransaction,
@@ -269,7 +293,8 @@ public class CityQuery(
         CitySortBy sortBy = CitySortBy.Id,
         uint pageSize = 25,
         uint page = 1,
-        bool descending = false)
+        bool descending = false,
+        bool? isDeleted = null)
     {
         var result = await this.FindByCountryIdAsync(
             countryId: countryId,
@@ -277,7 +302,8 @@ public class CityQuery(
             sortBy: sortBy,
             pageSize: pageSize,
             page: page,
-            descending: descending);
+            descending: descending,
+            isDeleted: isDeleted);
 
         if (result.Count == 0)
             throw new NotFoundException(typeof(CityReadModel), countryId);

@@ -1,12 +1,13 @@
 namespace RenStore.Delivery.Domain.Enums.Sorting;
 
 /// <summary>
-/// Represents sorting columns for a delivery order entity.
+/// Represents sorting columns for a sorting center entity.
 /// </summary>
-public enum DeliveryOrderSortBy
+public enum SortingCenterSortBy
 {
     Id,
+    Code,
+    AddressId,
     CreatedAt,
-    DeliveredAt,
     DeletedAt
 }

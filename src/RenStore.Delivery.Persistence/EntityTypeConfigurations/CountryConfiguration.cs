@@ -71,6 +71,11 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
         builder
             .HasIndex(x => x.Code)
             .IsUnique();
+        
+        builder
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .IsRequired(false);
 
         /*builder
             .HasMany(x => x.ProductDetails)

@@ -1,18 +1,23 @@
 using RenStore.Delivery.Domain.Enums;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;
 
 public class DeliveryTracking
 {
-    public Guid Id { get; }
-    public string CurrentLocation { get; } = string.Empty;
-    public DeliveryStatus Status { get; }
-    public DateTimeOffset OccurredAt { get; }
-    public string Notes { get; } = string.Empty;
-    public long? SortingCenterId { get; }
-    public Guid DeliveryOrderId { get; }
+    public Guid Id { get; private set; }
+    public string CurrentLocation { get; private set; } = string.Empty;
+    public DeliveryStatus Status { get; private set; }
+    public string Notes { get; private set; } = string.Empty;
+    public bool IsDeleted { get; private set; }
+    public DateTimeOffset OccurredAt { get; private set; }
+    public DateTimeOffset DeletedAt { get; private set; }
+    public long? SortingCenterId { get; private set; }
+    public Guid DeliveryOrderId { get; private set; }
+    
+    private DeliveryTracking() { }
 
-    public DeliveryTracking(
+    public static DeliveryTracking Create(
         string? currentLocation,
         DeliveryStatus status,
         DateTimeOffset occurredAt,
@@ -20,21 +25,36 @@ public class DeliveryTracking
         Guid deliveryOrderId,
         long? sortingCenterId = null)
     {
+        var tracking = new DeliveryTracking()
+        {       
+            Id = Guid.NewGuid(),
+            Status = status,
+            OccurredAt = occurredAt,
+            DeliveryOrderId = deliveryOrderId,
+        };
+        
         if(!string.IsNullOrEmpty(currentLocation))
-            CurrentLocation = currentLocation;
+            tracking.CurrentLocation = currentLocation;
         
         if(!string.IsNullOrEmpty(notes))
-            Notes = notes;
+            tracking.Notes = notes;
         
         if (sortingCenterId != null &&
             sortingCenterId != 0)
         {
-            SortingCenterId = sortingCenterId;
+            tracking.SortingCenterId = sortingCenterId;
         }
+
+        return tracking;
+    }
+
+    public void Delete(DateTimeOffset now)
+    {
+        if (IsDeleted)
+            throw new DomainException("Cannot delete already deleted entity.");
         
-        Status = status;
-        OccurredAt = occurredAt;
-        DeliveryOrderId = deliveryOrderId;
+        IsDeleted = true;
+        DeletedAt = now;
     }
 }
 

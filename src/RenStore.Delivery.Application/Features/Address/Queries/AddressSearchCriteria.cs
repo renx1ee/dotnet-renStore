@@ -1,4 +1,4 @@
-namespace RenStore.Application.Features.Address.Queries;
+namespace RenStore.Delivery.Application.Features.Address.Queries;
 
 public sealed record AddressSearchCriteria
 {

@@ -1,6 +1,7 @@
 using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Delivery.Domain.Interfaces;
+
 /// <summary>
 ///  Repository for working with <see cref="Address"/>.
 ///  Provide basic (CREATE REMOVE) operations.  
@@ -24,7 +25,6 @@ public interface IAddressRepository
     /// <param name="addresses">Collection of address entities to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <exception cref="ArgumentNullException">If collection of addresses is null.</exception>
-    /// <returns></returns>
     Task AddRangeAsync(
         IReadOnlyCollection<Address> addresses,
         CancellationToken cancellationToken);
@@ -37,7 +37,7 @@ public interface IAddressRepository
     void Remove(Address address);
 
     /// <summary>
-    /// Remove range of entities from the database.
+    /// Remove range of addresses from the database.
     /// </summary>
     /// <param name="addressEntity">Collection of address entities to remove.</param>
     /// <exception cref="ArgumentNullException">If collection of addresses is null.</exception>
