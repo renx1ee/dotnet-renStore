@@ -15,12 +15,15 @@ public class DeliveryOrder
     public DateTimeOffset? DeliveredAt { get; private set; } = null;
     public DateTimeOffset? DeletedAt { get; private set; } = null;
     public DeliveryStatus Status { get; private set; }
-    public Guid OrderId { get; private set; }
-    public Guid AddressId { get; private set; } // TODO: проверитьнуженли
+    public Guid OrderId { get; private set; } // TODO:
     public Guid DeliveryTariffId { get; private set; }
+    private DeliveryTariff _tariff { get; }
     public long? CurrentSortingCenterId { get; private set; }
-    public long? DestinationSortingCenterId { get; private set; }
+    private SortingCenter? _currentSortingCenter { get; }
+    public long? DestinationSortingCenterId { get; private set; } // TODO: не добавлен в конфиг как FK
+    private SortingCenter? _destinationSortingCenter { get; } // TODO: не добавлен в конфиг как FK
     public long? PickupPointId { get; private set; }
+    private PickupPoint _pickupPoint { get; }
     public IReadOnlyCollection<DeliveryTracking> TrackingHistory => _trackingHistory;
     
     private DeliveryOrder() { }
@@ -31,15 +34,11 @@ public class DeliveryOrder
     /// <exception cref="DomainException">if the Delivery order parameters are null or empty, or any IDs are less 0.</exception>
     public static DeliveryOrder Create(
         Guid orderId,
-        Guid addressId,
         Guid deliveryTariffId,
         DateTimeOffset now)
     {
         if (orderId == Guid.Empty)
             throw new DomainException("Order ID cannot be empty.");
-        
-        if (addressId == Guid.Empty)
-            throw new DomainException("Address ID cannot be empty.");
         
         if (deliveryTariffId == Guid.Empty)
             throw new DomainException("Delivery Tariff ID cannot be empty.");
@@ -48,7 +47,6 @@ public class DeliveryOrder
         {
             Id = Guid.NewGuid(),
             OrderId = orderId,
-            AddressId = addressId,
             DeliveryTariffId = deliveryTariffId,
             Status = DeliveryStatus.Placed
         };

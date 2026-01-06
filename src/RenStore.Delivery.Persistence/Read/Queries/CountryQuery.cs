@@ -1,25 +1,17 @@
-using System.Data;
-using System.Data.Common;
 using System.Text;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Read.Queries;
 
-public class CountryQuery
-    (ILogger<CountryQuery> logger,
-    ApplicationDbContext context)
-    : RenStore.Delivery.Application.Interfaces.ICountryQuery
+internal sealed class CountryQuery
+    : RenStore.Delivery.Persistence.Read.Base.DapperQueryBase,
+      RenStore.Delivery.Application.Interfaces.ICountryQuery
 {
-    private const uint MaxPageSize = 1000;
-    private const int CommandTimeoutSeconds = 30;
-
     private const string BaseSqlQuery =
         """
             SELECT
@@ -44,13 +36,12 @@ public class CountryQuery
         { CountrySortBy.PhoneCode, "country_phone_code" }
     };
     
-    private readonly ILogger<CountryQuery> _logger = logger 
-                                                     ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context = context 
-                                                     ?? throw new ArgumentNullException(nameof(context));
-
-    private DbTransaction? CurrentTransaction =>
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    public CountryQuery(
+        ILogger<CountryQuery> logger,
+        ApplicationDbContext context) 
+        : base(context, logger)
+    {
+    }
     
     public async Task<IReadOnlyList<CountryReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -62,7 +53,7 @@ public class CountryQuery
     {
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
@@ -96,7 +87,7 @@ public class CountryQuery
                             IsDeleted = isDeleted
                         },
                         commandTimeout: CommandTimeoutSeconds,
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         cancellationToken: cancellationToken));
 
             return result.AsList();
@@ -116,7 +107,7 @@ public class CountryQuery
         
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             const string sql =
                 $@"
@@ -132,7 +123,7 @@ public class CountryQuery
                         parameters: new
                         { Id = id },
                         commandTimeout: CommandTimeoutSeconds,
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         cancellationToken: cancellationToken));
         }
         catch (PostgresException e)
@@ -163,7 +154,7 @@ public class CountryQuery
         
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
@@ -205,7 +196,7 @@ public class CountryQuery
                             Offset = pageRequest.Offset,
                             IsDeleted = isDeleted
                         },
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds,
                         cancellationToken: cancellationToken));
 
@@ -254,7 +245,7 @@ public class CountryQuery
         
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
@@ -291,7 +282,7 @@ public class CountryQuery
                             Offset = pageRequest.Offset,
                             IsDeleted = isDeleted
                         },
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds,
                         cancellationToken: cancellationToken));
 
@@ -325,38 +316,4 @@ public class CountryQuery
 
         return result;
     }
-    
-    private async Task<DbConnection> GetOpenConnectionAsync(
-        CancellationToken cancellationToken)
-    {
-        var connection = _context.Database.GetDbConnection();
-
-        if (connection.State != ConnectionState.Open)
-            await connection.OpenAsync(cancellationToken);
-
-        return connection;
-    }
-
-    private static CountryPageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
-    {
-        if (page == 0)
-            throw new ArgumentOutOfRangeException();
-        
-        pageSize = Math.Min(pageSize, MaxPageSize);
-        uint offset = (page - 1) * pageSize;
-        var direction = descending ? "DESC" : "ASC";
-
-        return new CountryPageRequest(
-            Limit: (int)pageSize,
-            Offset: (int)offset,
-            Direction: direction);
-    }
-
-    private DataException Wrap(Exception e)
-    {
-        _logger.LogError(e, "Database error occured.");
-        return new DataException("Database error occured.", e);
-    }
 }
-
-readonly record struct CountryPageRequest(int Limit, int Offset, string Direction);

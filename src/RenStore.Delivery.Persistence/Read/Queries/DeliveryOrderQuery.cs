@@ -1,25 +1,17 @@
-using System.Data;
-using System.Data.Common;
 using System.Text;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Read.Queries;
 
-public class DeliveryOrderQuery
-    (ILogger<DeliveryOrderQuery> logger,
-    ApplicationDbContext context)
-    : RenStore.Delivery.Application.Interfaces.IDeliveryOrderQuery
+internal sealed class DeliveryOrderQuery
+    : RenStore.Delivery.Persistence.Read.Base.DapperQueryBase,
+      RenStore.Delivery.Application.Interfaces.IDeliveryOrderQuery
 {
-    private const uint MaxPageSize = 1000;
-    private const int CommandTimeoutSeconds = 30;
-    
     private const string BaseSqlQuery =
         """
             SELECT
@@ -38,11 +30,6 @@ public class DeliveryOrderQuery
                 ""delivery_orders""
         """;
     
-    private readonly ILogger<DeliveryOrderQuery> _logger = logger
-                                                           ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context       = context
-                                                           ?? throw new ArgumentNullException(nameof(context));
-    
     private static readonly Dictionary<DeliveryOrderSortBy, string> _sortColumnMapping =new()
     {
         { DeliveryOrderSortBy.Id, "delivery_order_id"},
@@ -51,8 +38,12 @@ public class DeliveryOrderQuery
         { DeliveryOrderSortBy.DeletedAt, "deleted_date"}
     };
     
-    private DbTransaction? CurrentDbTransaction =>
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    public DeliveryOrderQuery(
+        ILogger<DeliveryOrderQuery> logger,
+        ApplicationDbContext context) 
+        : base(context, logger)
+    {
+    }
     
     public async Task<IReadOnlyList<DeliveryOrderReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -316,38 +307,4 @@ public class DeliveryOrderQuery
 
         return result;
     }
-
-    private async Task<DbConnection> GetOpenDbConnectionAsync(
-        CancellationToken cancellationToken)
-    {
-        var connection = this._context.Database.GetDbConnection();
-
-        if (connection.State != ConnectionState.Open)
-            await connection.OpenAsync(cancellationToken);
-
-        return connection;
-    }
-
-    private DeliveryOrderPageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
-    {
-        if (page == 0)
-            throw new ArgumentOutOfRangeException(nameof(page));
-        
-        pageSize = Math.Min(pageSize, MaxPageSize);
-        var offset = (page - 1) * pageSize;
-        var direction = descending ? "DESC" : "ASC";
-        
-        return new DeliveryOrderPageRequest(
-            Limit: (int)pageSize,
-            Offset: (int)offset,
-            Direction: direction);
-    }
-
-    private Exception Wrap(Exception e)
-    {
-        _logger.LogError(e, "Database error occurred.");
-        return new Exception("Database error occurred.", e);
-    }
 }
-
-readonly record struct DeliveryOrderPageRequest(int Limit, int Offset, string Direction);

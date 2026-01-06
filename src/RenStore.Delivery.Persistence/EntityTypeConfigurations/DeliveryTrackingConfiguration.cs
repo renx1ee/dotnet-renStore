@@ -52,11 +52,23 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
             .Property(x => x.SortingCenterId)
             .HasColumnName("sorting_center_id")
             .IsRequired(false);
+        
+        builder
+            .HasOne(typeof(SortingCenter), "_sortingCenter")
+            .WithMany()
+            .HasForeignKey("SortingCenterId")
+            .IsRequired(false);
 
         builder
             .Property(x => x.DeliveryOrderId)
             .HasColumnName("delivery_order_id")
             .IsRequired();
+        
+        builder
+            .HasOne(typeof(DeliveryOrder), "_deliveryOrder")
+            .WithMany()
+            .HasForeignKey("DeliveryOrderId")
+            .IsRequired(false);
 
         /*builder
             .HasOne(x => x.DeliveryOrderId)

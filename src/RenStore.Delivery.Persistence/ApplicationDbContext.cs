@@ -14,6 +14,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.ApplyConfiguration(new DeliveryOrderConfiguration());
         modelBuilder.ApplyConfiguration(new DeliveryTariffConfiguration());
         modelBuilder.ApplyConfiguration(new DeliveryTrackingConfiguration());
+        modelBuilder.ApplyConfiguration(new PickupPointConfiguration());
+        modelBuilder.ApplyConfiguration(new SortingCenterConfiguration());
         base.OnModelCreating(modelBuilder);
     }
     

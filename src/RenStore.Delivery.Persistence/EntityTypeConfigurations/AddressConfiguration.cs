@@ -101,11 +101,12 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
             .Property(x => x.ApplicationUserId)
             .HasColumnName("user_id")
             .IsRequired();
-        
+
         builder
-            .HasOne(x => x.Country)
-            .WithMany(x => x.Addresses)
-            .HasForeignKey(x => x.CountryId);
+            .HasOne(typeof(Country), "_country")
+            .WithMany()
+            .HasForeignKey("CountryId")
+            .IsRequired(false);
         
         builder
             .Property(x => x.CountryId)
@@ -113,9 +114,10 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
             .IsRequired();
         
         builder
-            .HasOne(x => x.City)
-            .WithMany(x => x.Addresses)
-            .HasForeignKey(x => x.CityId);
+            .HasOne(typeof(Country), "_city")
+            .WithMany()
+            .HasForeignKey("CityId")
+            .IsRequired(false);
         
         builder
             .Property(x => x.CityId)

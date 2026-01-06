@@ -1,9 +1,5 @@
-using System.Data;
-using System.Data.Common;
 using System.Text;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Delivery.Application.Features.Address.Queries;
@@ -11,16 +7,12 @@ using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Read.Queries;
 
-internal sealed class AddressQuery(
-    ILogger<AddressRepository> logger,
-    ApplicationDbContext context) 
-    : RenStore.Delivery.Application.Interfaces.IAddressQuery
+internal sealed class AddressQuery
+    : RenStore.Delivery.Persistence.Read.Base.DapperQueryBase, 
+      RenStore.Delivery.Application.Interfaces.IAddressQuery
 {
-    private const uint MaxPageSize = 1000;
-    private const int CommandTimeoutSeconds = 30;
-    
     private const string BaseSqlQuery = 
         """
             SELECT
@@ -54,13 +46,12 @@ internal sealed class AddressQuery(
         { AddressSortBy.UpdatedAt, "updated_date"}
     };
     
-    private readonly ILogger<AddressRepository> _logger = logger 
-                                                          ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context      = context 
-                                                          ?? throw new ArgumentNullException(nameof(context));
-    
-    private DbTransaction? CurrentTransaction => 
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    public AddressQuery(
+        ILogger<AddressQuery> logger,
+        ApplicationDbContext context) 
+        : base(context, logger)
+    {
+    }
     
     public async Task<IReadOnlyList<AddressReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -72,7 +63,7 @@ internal sealed class AddressQuery(
     {
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
             
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
@@ -101,7 +92,7 @@ internal sealed class AddressQuery(
                             Offset = pageRequest.Offset,
                             IsDeleted = isDeleted
                         },
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds, 
                         cancellationToken: cancellationToken));
 
@@ -124,7 +115,7 @@ internal sealed class AddressQuery(
     {
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             var pageRequest = BuildPageRequest(page, pageSize, descending);
             
@@ -185,7 +176,7 @@ internal sealed class AddressQuery(
                     new CommandDefinition(
                         commandText: sql.ToString(),
                         parameters: parameters,
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds, 
                         cancellationToken: cancellationToken));
 
@@ -206,7 +197,7 @@ internal sealed class AddressQuery(
         
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
             
             string sql = 
                 @$"
@@ -220,7 +211,7 @@ internal sealed class AddressQuery(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new { Id = id },
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds, 
                         cancellationToken: cancellationToken));
         }
@@ -252,7 +243,7 @@ internal sealed class AddressQuery(
         
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
             
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
@@ -284,7 +275,7 @@ internal sealed class AddressQuery(
                             UserId = userId,
                             IsDeleted = isDeleted
                         },
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds, 
                         cancellationToken: cancellationToken));
 
@@ -305,7 +296,7 @@ internal sealed class AddressQuery(
         
         try
         {
-            var connection = await this.GetOpenConnectionAsync(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
             
             string sql = 
                 @"
@@ -323,7 +314,7 @@ internal sealed class AddressQuery(
                     new CommandDefinition(
                         parameters: new { Id = id},
                         commandText: sql,
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds, 
                         cancellationToken: cancellationToken));
 
@@ -334,38 +325,4 @@ internal sealed class AddressQuery(
             throw Wrap(e);
         }
     }
-
-    private async Task<DbConnection> GetOpenConnectionAsync(
-        CancellationToken cancellationToken)
-    {
-        var connection = _context.Database.GetDbConnection();
-            
-        if (connection.State != ConnectionState.Open)
-            await connection.OpenAsync(cancellationToken);
-
-        return connection;
-    }
-
-    private DataException Wrap(Exception e)
-    {
-        _logger.LogError(e, "Database error occured.");
-        return new DataException("Database error occured.", e);
-    }
-    
-    private static AddressPageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
-    {
-        if (page == 0) 
-            throw new ArgumentOutOfRangeException(nameof(page));
-        
-        pageSize = Math.Min(pageSize, MaxPageSize);
-        uint offset = (page - 1) * pageSize;
-        var direction = descending ? "DESC" : "ASC";
-
-        return new AddressPageRequest(
-            Limit: (int)pageSize,
-            Offset: (int)offset,
-            Direction: direction);
-    }
 }
-
-readonly record struct AddressPageRequest(int Limit, int Offset, string Direction);

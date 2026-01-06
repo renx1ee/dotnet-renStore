@@ -5,16 +5,18 @@ namespace RenStore.Delivery.Domain.Entities;
 
 public class DeliveryTariff
 {
+    private readonly List<DeliveryOrder> _orders = new();
+    
     public Guid Id { get; private set; } 
     public decimal Price { get; private set; } 
     public DeliveryTariffType Type { get; private set; }
     public string Description { get; private set; } = string.Empty;
     public decimal WeightLimitKg { get; private set; }
-    public Guid DeliveryOrderId { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
+    public IReadOnlyList<DeliveryOrder> DeliveryOrders => _orders.AsReadOnly();
     
     private DeliveryTariff() { }
     
@@ -23,7 +25,6 @@ public class DeliveryTariff
         DeliveryTariffType type,
         string description,
         decimal weightLimitKg,
-        Guid deliveryOrderId,
         DateTimeOffset now)
     {
         if (price <= 0)
@@ -31,9 +32,6 @@ public class DeliveryTariff
         
         if (weightLimitKg <= 0)
             throw new DomainException("Weight limit must be greater then zero.");
-
-        if (deliveryOrderId == Guid.Empty)
-            throw new DomainException("Delivery Order Id cannot be Guid empty.");
         
         var tariff = new DeliveryTariff()
         {
@@ -41,7 +39,6 @@ public class DeliveryTariff
             Price = price,
             Type = type,
             WeightLimitKg = weightLimitKg,
-            DeliveryOrderId = deliveryOrderId,
             CreatedAt = now
         };
 

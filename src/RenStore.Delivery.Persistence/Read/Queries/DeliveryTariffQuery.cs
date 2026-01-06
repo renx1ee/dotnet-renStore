@@ -1,26 +1,18 @@
 using System.ComponentModel;
-using System.Data;
-using System.Data.Common;
 using System.Text;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Read.Queries;
 
-public class DeliveryTariffQuery
-    (ILogger<DeliveryTariffQuery> logger,
-    ApplicationDbContext context)
-    : RenStore.Delivery.Application.Interfaces.IDeliveryTariffQuery
+internal sealed class DeliveryTariffQuery
+    : RenStore.Delivery.Persistence.Read.Base.DapperQueryBase,
+      RenStore.Delivery.Application.Interfaces.IDeliveryTariffQuery
 {
-    private const uint MaxPageSize = 1000;
-    private const int CommandTimeoutSeconds = 30;
-    
     private const string BaseSqlQuery =
         """
             SELECT
@@ -36,12 +28,7 @@ public class DeliveryTariffQuery
             FROM
                 ""delivery_tariffs""
         """;
-
-    private readonly ILogger<DeliveryTariffQuery> _logger = logger 
-                                                            ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context        = context 
-                                                            ?? throw new ArgumentNullException(nameof(context));
-
+    
     private readonly Dictionary<DeliveryTariffSortBy, string> _sortColumnMapping = new()
     {
         { DeliveryTariffSortBy.Id, "delivery_tariff_id" },
@@ -53,8 +40,12 @@ public class DeliveryTariffQuery
         { DeliveryTariffSortBy.DeletedAt, "deleted_date" }
     };
 
-    private DbTransaction? CurrentDbTransaction =>
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    public DeliveryTariffQuery(
+        ILogger<DeliveryTariffQuery> logger,
+        ApplicationDbContext context) 
+        : base(context, logger)
+    {
+    }
 
     // TODO: сделать умный сорт
     
@@ -68,12 +59,12 @@ public class DeliveryTariffQuery
     {
         try
         {
-            var connection = await GetOpenDbConnection(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
-            var pageRequest = this.BuildPageRequest(
+            var pageRequest = BuildPageRequest(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
@@ -121,7 +112,7 @@ public class DeliveryTariffQuery
 
         try
         {
-            var connection = await this.GetOpenDbConnection(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             string sql =
                 @$"
@@ -151,37 +142,4 @@ public class DeliveryTariffQuery
         return await this.FindByIdAsync(id, cancellationToken)
                ?? throw new NotFoundException(typeof(DeliveryTariffReadModel), id);
     }
-
-    private DeliveryTariffPageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
-    {
-        if (page == 0)
-            throw new ArgumentOutOfRangeException(nameof(page));
-        
-        pageSize = Math.Min(pageSize, MaxPageSize);
-        var offset = (page - 1) * pageSize;
-        var direction = descending ? "DESC" : "ASC";
-        
-        return new DeliveryTariffPageRequest(
-            Limit: (int)pageSize,
-            Offset: (int)offset,
-            Direction: direction);
-    }
-
-    private async Task<DbConnection> GetOpenDbConnection(CancellationToken cancellationToken)
-    {
-        var connecton = this._context.Database.GetDbConnection();
-
-        if (connecton.State != ConnectionState.Open)
-            await connecton.OpenAsync(cancellationToken);
-
-        return connecton;
-    }
-
-    private DataException Wrap(Exception e)
-    {
-        _logger.LogError(e, "Database error occured.");
-        return new DataException("Database error occured.", e);
-    }
 }
-
-readonly record struct DeliveryTariffPageRequest(int Limit, int Offset, string Direction);

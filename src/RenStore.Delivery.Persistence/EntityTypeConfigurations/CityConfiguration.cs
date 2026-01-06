@@ -58,8 +58,9 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .IsRequired();
         
         builder
-            .HasOne(x => x.Country)
-            .WithMany(x => x.Cities)
-            .HasForeignKey(x => x.CountryId);
+            .HasOne(typeof(Country), "_country")
+            .WithMany()
+            .HasForeignKey("CountryId")
+            .IsRequired(false);
     }
 }

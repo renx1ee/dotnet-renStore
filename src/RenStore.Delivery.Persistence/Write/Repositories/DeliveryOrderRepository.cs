@@ -1,8 +1,8 @@
 using RenStore.Delivery.Domain.Entities;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Write.Repositories;
 
-public class DeliveryOrderRepository
+internal sealed class DeliveryOrderRepository
     (ApplicationDbContext context)
     : RenStore.Delivery.Domain.Interfaces.IDeliveryOrderRepository
 {

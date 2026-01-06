@@ -7,6 +7,8 @@ namespace RenStore.Delivery.Domain.Entities;
 /// </summary>
 public class City
 {
+    private readonly List<Address> _addresses = new();
+    
     public int Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public string NameRu { get; private set; } = string.Empty;
@@ -14,9 +16,9 @@ public class City
     public string NormalizedNameRu { get; private set; } = string.Empty;
     public bool IsDelete { get; private set; } = false;
     public int CountryId { get; private set; }
-    public Country? Country { get; private set; }
-    // TODO:
-    public IReadOnlyCollection<Address>? Addresses { get; private set; }
+    private Country? _country { get; }
+
+    public IReadOnlyCollection<Address>? Addresses => _addresses.AsReadOnly();
     
     private City() { }
     /// <summary>

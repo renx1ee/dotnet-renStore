@@ -14,4 +14,9 @@
       <PackageReference Include="Dapper" Version="2.1.66" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Read\" />
+      <Folder Include="Write\" />
+    </ItemGroup>
+
 </Project>

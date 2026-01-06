@@ -327,7 +327,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("DeliveryOrders");
                 });
 
             modelBuilder.Entity("RenStore.Domain.Entities.Product", b =>
@@ -735,7 +735,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
             modelBuilder.Entity("RenStore.Domain.Entities.Order", b =>
                 {
                     b.HasOne("RenStore.Domain.Entities.ApplicationUser", null)
-                        .WithMany("Orders")
+                        .WithMany("DeliveryOrders")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -831,7 +831,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
 
             modelBuilder.Entity("RenStore.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("DeliveryOrders");
 
                     b.Navigation("Reviews");
 

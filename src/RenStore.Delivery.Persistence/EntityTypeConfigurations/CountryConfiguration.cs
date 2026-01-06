@@ -77,9 +77,12 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
             .HasColumnName("is_deleted")
             .IsRequired(false);
 
-        /*builder
-            .HasMany(x => x.ProductDetails)
-            .WithOne(x => x.CountryOfManufacture)
-            .HasForeignKey(x => x.CountryOfManufactureId);*/
+        builder
+            .HasMany(x => x.Addresses)
+            .WithOne();
+        
+        builder
+            .HasMany(x => x.Cities)
+            .WithOne();
     }
 }

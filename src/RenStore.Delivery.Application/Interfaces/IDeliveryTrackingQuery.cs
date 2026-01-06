@@ -28,7 +28,7 @@ public interface IDeliveryTrackingQuery
         bool? isDeleted = null);
 
     /// <summary>
-    /// Get a <see cref="DeliveryTrackingReadModel"/> by delivery tracking ID.
+    /// Find a <see cref="DeliveryTrackingReadModel"/> by delivery tracking ID.
     /// </summary>
     /// <param name="id">Delivery tracking unique identifier (ID).</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

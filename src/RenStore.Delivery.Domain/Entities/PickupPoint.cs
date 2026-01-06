@@ -6,8 +6,9 @@ public class PickupPoint
 {
     public long Id { get; private set; }
     public string Code { get; private set; } = string.Empty;
-    public Guid AddressId { get; private set; }
     public bool IsDeleted { get; private set; }
+    public Guid AddressId { get; private set; }
+    private Address? _address { get; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; } = null;
     

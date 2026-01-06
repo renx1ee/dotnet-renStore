@@ -1,25 +1,17 @@
-using System.Data;
-using System.Data.Common;
 using System.Text;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Read.Queries;
 
-public class CityQuery(
-    ILogger<CityQuery> logger,
-    ApplicationDbContext context)
-    : RenStore.Delivery.Application.Interfaces.ICityQuery
+internal sealed class CityQuery
+    : RenStore.Delivery.Persistence.Read.Base.DapperQueryBase,
+      RenStore.Delivery.Application.Interfaces.ICityQuery
 {
-    private const int CommandTimeoutSeconds = 30;
-    private const uint MaxPageSize = 1000;
-    
     private const string BaseSqlQuery = 
         """ 
             SELECT
@@ -42,13 +34,12 @@ public class CityQuery(
         { CitySortBy.CountryId, "country_id" }
     };
     
-    private readonly ILogger<CityQuery> _logger    = logger 
-                                                     ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context = context 
-                                                     ?? throw new ArgumentNullException(nameof(context));
-    
-    private DbTransaction? CurrentTransaction =>
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    public CityQuery(
+        ILogger<CityQuery> logger,
+        ApplicationDbContext context) 
+        : base(context, logger)
+    {
+    }
     
     public async Task<IReadOnlyList<CityReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -60,12 +51,12 @@ public class CityQuery(
     {
         try
         {
-            var connection = await GetOpenConnectionAsync(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
             
-            var pageRequest = BuildCityRequest(
+            var pageRequest = BuildPageRequest(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
@@ -94,7 +85,7 @@ public class CityQuery(
                         },
                         commandTimeout: CommandTimeoutSeconds,
                         cancellationToken: cancellationToken,
-                        transaction: CurrentTransaction));
+                        transaction: CurrentDbTransaction));
 
             return result.AsList();
         }
@@ -113,7 +104,7 @@ public class CityQuery(
         
         try
         {
-            var connection = await GetOpenConnectionAsync(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
             
             string sql = 
                 @$"
@@ -126,7 +117,7 @@ public class CityQuery(
                     new CommandDefinition(
                         commandText: sql, 
                         parameters: new { Id = id },
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         commandTimeout: CommandTimeoutSeconds,
                         cancellationToken: cancellationToken));   
         }
@@ -155,12 +146,12 @@ public class CityQuery(
     {
         try
         {
-            var connection = await GetOpenConnectionAsync(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
-            var pageRequest = BuildCityRequest(
+            var pageRequest = BuildPageRequest(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
@@ -192,7 +183,7 @@ public class CityQuery(
                             IsDeleted = isDeleted
                         },
                         commandTimeout: CommandTimeoutSeconds,
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         cancellationToken: cancellationToken));
 
             return result.AsList();
@@ -241,12 +232,12 @@ public class CityQuery(
         
         try
         {
-            var connection = await GetOpenConnectionAsync(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
-            var pageRequest = BuildCityRequest(
+            var pageRequest = BuildPageRequest(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
@@ -276,7 +267,7 @@ public class CityQuery(
                             IsDeleted = isDeleted
                         },
                         commandTimeout: CommandTimeoutSeconds,
-                        transaction: CurrentTransaction,
+                        transaction: CurrentDbTransaction,
                         cancellationToken: cancellationToken));
 
             return result.AsList();
@@ -310,33 +301,4 @@ public class CityQuery(
 
         return result;
     }
-
-    private async Task<DbConnection> GetOpenConnectionAsync(CancellationToken cancellationToken)
-    {
-        var connection = this._context.Database.GetDbConnection();
-
-        if (connection.State != ConnectionState.Open)
-            await connection.OpenAsync(cancellationToken);
-
-        return connection;
-    }
-    private static CityPageRequest BuildCityRequest(uint page, uint pageSize, bool descending)
-    {
-        pageSize = Math.Min(pageSize, MaxPageSize);
-        uint offset = (page - 1) * pageSize;
-        var direction = descending ? "DESC" : "ASC";
-        
-        return new CityPageRequest(
-            Limit: pageSize,
-            Offset: offset,
-            Direction: direction);
-    }
-
-    private DataException Wrap(Exception e)
-    {
-        _logger.LogError(e, "Database error occured.");
-        return new DataException("Database error occured", e);
-    }
 }
-
-readonly record struct CityPageRequest(uint Limit, uint Offset, string Direction);

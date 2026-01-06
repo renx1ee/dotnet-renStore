@@ -32,12 +32,12 @@ public interface IPickupPointRepository
     /// <summary>
     /// Remove a <see cref="PickupPoint"/> entity from the database.
     /// </summary>
-    /// <param name="pickupPoint">Pickup pointentity to remove.</param>
+    /// <param name="pickupPoint">Pickup point entity to remove.</param>
     /// <exception cref="ArgumentNullException">If pickup point is null.</exception>
     void Remove(PickupPoint pickupPoint);
 
     /// <summary>
-    /// Remove range of <see cref="pickupPoints"/> from the database.
+    /// Remove range of <see cref="PickupPoint"/> from the database.
     /// </summary>
     /// <param name="pickupPoints">Collection of pickup point entities to remove.</param>
     /// <exception cref="ArgumentNullException">If collection of pickup points is null.</exception>

@@ -200,7 +200,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "DeliveryOrders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -454,7 +454,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ApplicationUserId",
-                table: "Orders",
+                table: "DeliveryOrders",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
@@ -522,7 +522,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                 name: "ClothesProducts");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "DeliveryOrders");
 
             migrationBuilder.DropTable(
                 name: "ProductDetailEntity");

@@ -7,6 +7,8 @@ namespace RenStore.Delivery.Domain.Entities;
 /// </summary>
 public class Address
 {
+    /*private readonly List<ApplicationUser> _users = new();*/
+    
     public Guid Id { get; private set; }
     public string HouseCode { get; private set; } = string.Empty;
     public string Street { get; private set; } = string.Empty;
@@ -20,13 +22,12 @@ public class Address
     public bool IsDeleted { get; private set; }
     public string ApplicationUserId { get; private set; } = string.Empty;
     public int CountryId { get; private set; }
-    public Country? Country { get; private set; }
+    private Country? _country { get; }
     public int CityId { get; private set; }
-    public City? City { get; private set; }
+    private City? _city { get; }
     
     private Address() { }
-
-    #region перенести в пользователя
+    
     /// <summary>
     /// Creates a new address ensuring all invariants are satisfied.
     /// </summary>
@@ -122,5 +123,4 @@ public class Address
         IsDeleted = true;
         UpdatedAt = now;
     }
-    #endregion
 }

@@ -4,19 +4,19 @@ using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
-public class SortingCenterConfiguration : IEntityTypeConfiguration<SortingCenter>
+public class PickupPointConfiguration : IEntityTypeConfiguration<PickupPoint>
 {
-    public void Configure(EntityTypeBuilder<SortingCenter> builder)
+    public void Configure(EntityTypeBuilder<PickupPoint> builder)
     {
         builder
-            .ToTable("sorting_centers");
+            .ToTable("pickup_points");
 
         builder
             .HasKey(x => x.Id);
 
         builder
             .Property(x => x.Id)
-            .HasColumnName("sorting_center_id");
+            .HasColumnName("pickup_point_id");
 
         builder
             .Property(x => x.Code)

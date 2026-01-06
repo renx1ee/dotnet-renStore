@@ -7,6 +7,7 @@ namespace RenStore.Delivery.Domain.Entities;
 /// </summary>
 public class Country
 {
+    private readonly List<Address> _addresses = new();
     private readonly List<City> _cities = new();
     
     public int Id { get; private set; }
@@ -20,9 +21,8 @@ public class Country
     public string Code { get; private set; } = string.Empty;
     public string PhoneCode { get; private set; } = string.Empty;
     public bool IsDeleted { get; private set; }
-    public IReadOnlyCollection<Address>? Addresses { get; private set; }
+    public IReadOnlyCollection<Address> Addresses => _addresses;
     public IReadOnlyCollection<City> Cities => _cities;
-    /*public IEnumerable<ProductDetailEntity>? ProductDetails { get; set; }*/
     
     private Country(){ }
     /// <summary>

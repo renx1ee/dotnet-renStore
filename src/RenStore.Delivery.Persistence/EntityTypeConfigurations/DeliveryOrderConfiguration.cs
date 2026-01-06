@@ -53,15 +53,10 @@ public class DeliveryOrderConfiguration : IEntityTypeConfiguration<DeliveryOrder
             .Property(x => x.PickupPointId)
             .HasColumnName("pickup_point_id")
             .IsRequired(false);
-        
+        // TODO: сделать фк
         builder
             .Property(x => x.OrderId)
             .HasColumnName("order_id")
-            .IsRequired();
-
-        builder
-            .Property(x => x.AddressId)
-            .HasColumnName("address_id")
             .IsRequired();
         
         builder
@@ -69,19 +64,10 @@ public class DeliveryOrderConfiguration : IEntityTypeConfiguration<DeliveryOrder
             .HasColumnName("delivery_tariff_id")
             .IsRequired();
 
-        /*builder
-            .HasOne(x => x.Order)
-            .WithOne(x => x.DeliveryOrder)
-            .HasForeignKey<DeliveryOrder>(x => x.OrderId);
-        
         builder
-            .HasOne(x => x.Address)
-            .WithMany(x => x.Deliveries)
-            .HasForeignKey(x => x.AddressId);
-        
-        builder
-            .HasOne(x => x.DeliveryTariff)
-            .WithMany(x => x.DeliveryOrders)
-            .HasForeignKey(x => x.DeliveryTariffId);*/
+            .HasOne(typeof(DeliveryTariff), "_tariff")
+            .WithMany()
+            .HasForeignKey("DeliveryTariffId")
+            .IsRequired(false);
     }
 }

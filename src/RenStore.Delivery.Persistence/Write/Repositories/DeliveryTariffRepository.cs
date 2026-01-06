@@ -1,9 +1,9 @@
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Interfaces;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Write.Repositories;
 
-public class DeliveryTariffRepository
+internal sealed class DeliveryTariffRepository
     (ApplicationDbContext context)
     : IDeliveryTariffRepository
 {

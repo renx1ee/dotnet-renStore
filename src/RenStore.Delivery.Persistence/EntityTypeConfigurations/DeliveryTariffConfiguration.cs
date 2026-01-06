@@ -59,10 +59,9 @@ public class DeliveryTariffConfiguration : IEntityTypeConfiguration<DeliveryTari
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
             .IsRequired(false);
-        
+
         builder
-            .Property(x => x.DeliveryOrderId)
-            .HasColumnName("delivery_order_id")
-            .IsRequired();
+            .HasMany(x => x.DeliveryOrders)
+            .WithOne();
     }
 }

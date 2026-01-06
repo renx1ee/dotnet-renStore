@@ -1,6 +1,6 @@
 using RenStore.Delivery.Domain.Entities;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Write.Repositories;
 
 internal sealed class CityRepository(ApplicationDbContext context) 
     : RenStore.Delivery.Domain.Interfaces.ICityRepository

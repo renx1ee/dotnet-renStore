@@ -10,16 +10,12 @@ using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Read.Queries;
 
-public class DeliveryTrackingQuery
-    (ILogger<DeliveryTrackingQuery> logger,
-    ApplicationDbContext context)
-    : RenStore.Delivery.Application.Interfaces.IDeliveryTrackingQuery
+internal sealed class DeliveryTrackingQuery
+    : RenStore.Delivery.Persistence.Read.Base.DapperQueryBase,
+      RenStore.Delivery.Application.Interfaces.IDeliveryTrackingQuery
 {
-    private const uint MaxPageSize = 1000;
-    private const int CommandTimeoutSeconds = 30;
-    
     private const string BaseSqlQuery =
         """
             SELECT 
@@ -36,11 +32,6 @@ public class DeliveryTrackingQuery
                 ""delivery_tracking_history""
         """;
     
-    private readonly ILogger<DeliveryTrackingQuery> _logger = logger
-                                                              ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context          = context 
-                                                              ?? throw new ArgumentNullException(nameof(context));
-    
     private readonly Dictionary<DeliveryTrackingSortBy, string> _sortColumnMapping = new()
     {
         { DeliveryTrackingSortBy.Id, "delivery_tracking_history_id"},
@@ -50,8 +41,12 @@ public class DeliveryTrackingQuery
         { DeliveryTrackingSortBy.DeletedAt, "deleted_date"}
     };
     
-    private DbTransaction? CurrentDbTransaction =>
-        this._context.Database.CurrentTransaction?.GetDbTransaction();
+    public DeliveryTrackingQuery(
+        ILogger<DeliveryTrackingQuery> logger,
+        ApplicationDbContext context) 
+        : base(context, logger)
+    {
+    }
 
     public async Task<IReadOnlyList<DeliveryTrackingReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -63,12 +58,12 @@ public class DeliveryTrackingQuery
     {
         try
         {
-            var connection = await GetOpenDbConnection(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
-            var pageRequest = this.BuildPageRequest(
+            var pageRequest = BuildPageRequest(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
@@ -92,7 +87,7 @@ public class DeliveryTrackingQuery
                         parameters: new
                         {
                             Count = pageRequest.Limit,
-                            Offset = pageRequest.Offest,
+                            Offset = pageRequest.Offset,
                             IsDeleted = isDeleted
                         },
                         transaction: CurrentDbTransaction,
@@ -116,7 +111,7 @@ public class DeliveryTrackingQuery
         
         try
         {
-            var connection = await this.GetOpenDbConnection(cancellationToken);
+            var connection = await this.GetOpenDbConnectionAsync(cancellationToken);
 
             string sql =
                 $@"
@@ -161,12 +156,12 @@ public class DeliveryTrackingQuery
         
         try
         {
-            var connection = await GetOpenDbConnection(cancellationToken);
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
-            var pageRequest = this.BuildPageRequest(
+            var pageRequest = BuildPageRequest(
                 page: page,
                 pageSize: pageSize,
                 descending: descending);
@@ -192,7 +187,7 @@ public class DeliveryTrackingQuery
                         {
                             Id = deliveryOrderId,
                             Count = pageRequest.Limit,
-                            Offset = pageRequest.Offest,
+                            Offset = pageRequest.Offset,
                             IsDeleted = isDeleted
                         },
                         transaction: CurrentDbTransaction,
@@ -230,37 +225,4 @@ public class DeliveryTrackingQuery
 
         return result;
     }
-
-    private DataException Wrap(Exception e)
-    {
-        this._logger.LogError(e, "Database error occured.");
-        return new DataException("Database error occured.", e);
-    }
-
-    private async Task<DbConnection> GetOpenDbConnection(CancellationToken cancellationToken)
-    {
-        var connection = this._context.Database.GetDbConnection();
-
-        if (connection.State != ConnectionState.Open)
-            await connection.OpenAsync(cancellationToken);
-
-        return connection;
-    }
-    
-    private DeliveryTrackingPageRequest BuildPageRequest(uint page, uint pageSize, bool descending)
-    {
-        if (page == 0)
-            throw new ArgumentOutOfRangeException(nameof(page));
-        
-        pageSize = Math.Min(pageSize, MaxPageSize);
-        uint offset = (page - 1) * pageSize;
-        var direction = descending ? "DESC" : "ASC";
-        
-        return new DeliveryTrackingPageRequest(
-            Limit: (int)pageSize,
-            Offest: (int)offset,
-            Direction: direction);
-    }
 }
-
-readonly record struct DeliveryTrackingPageRequest(int Limit, int Offest, string Direction); 

@@ -1,8 +1,8 @@
 using RenStore.Delivery.Domain.Entities;
 
-namespace RenStore.Delivery.Persistence.Repositories;
+namespace RenStore.Delivery.Persistence.Write.Repositories;
 
-public class CountryRepository(ApplicationDbContext context) 
+internal sealed class CountryRepository(ApplicationDbContext context) 
     : RenStore.Delivery.Domain.Interfaces.ICountryRepository
 {
     private readonly ApplicationDbContext _context = context 
