@@ -24,9 +24,11 @@ internal sealed class AddressQuery
                 ""entrance""         AS Entrance,
                 ""floor""            AS Floor,
                 ""flat_number""      AS FlatNumber,
-                ""full_address""     AS FullAddress,
+                ""full_address_en""  AS FullAddressEn,
+                ""full_address_ru""  AS FullAddressRu,
                 ""created_date""     AS OccuredAt,
                 ""updated_date""     AS UpdatedAt,
+                ""deleted_date""     AS DeletedAt,
                 ""is_deleted""       AS IsDeleted,
                 ""user_id""          AS ApplicationUserId,
                 ""country_id""       AS CountryId,
@@ -48,7 +50,7 @@ internal sealed class AddressQuery
     
     public AddressQuery(
         ILogger<AddressQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

@@ -3,10 +3,10 @@ using RenStore.Delivery.Domain.Entities;
 namespace RenStore.Delivery.Persistence.Write.Repositories;
 
 internal sealed class DeliveryOrderRepository
-    (ApplicationDbContext context)
+    (DeliveryDbContext context)
     : RenStore.Delivery.Domain.Interfaces.IDeliveryOrderRepository
 {
-    private readonly ApplicationDbContext _context = context
+    private readonly DeliveryDbContext _context = context
                                                      ?? throw new ArgumentNullException(nameof(context));
 
     public async Task<Guid> AddAsync(

@@ -16,73 +16,89 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
 
         builder
             .Property(x => x.Id)
-            .HasColumnName("country_id");
+            .HasColumnName("country_id")
+            .HasColumnType("int")
+            .ValueGeneratedOnAdd()
+            .IsRequired();
         
         builder
             .Property(x => x.Name)
             .HasColumnName("country_name")
-            .HasMaxLength(256)
             .HasColumnType("varchar(256)")
+            .HasMaxLength(256)
             .IsRequired();
         
         builder
             .Property(x => x.NormalizedName)
             .HasColumnName("normalized_country_name")
-            .HasMaxLength(256)
             .HasColumnType("varchar(256)")
+            .HasMaxLength(256)
             .IsRequired();
-        
-        builder
-            .HasIndex(x => x.NormalizedName)
-            .IsUnique();
         
         builder
             .Property(x => x.NameRu)
             .HasColumnName("country_name_ru")
-            .HasMaxLength(256)
             .HasColumnType("varchar(256)")
+            .HasMaxLength(256)
             .IsRequired();
         
         builder
             .Property(x => x.NormalizedNameRu)
             .HasColumnName("normalized_country_name_ru")
-            .HasMaxLength(256)
             .HasColumnType("varchar(256)")
+            .HasMaxLength(256)
             .IsRequired();
-        
-        builder
-            .HasIndex(x => x.NormalizedNameRu)
-            .IsUnique();
         
         builder
             .Property(x => x.Code)
             .HasColumnName("country_code")
-            .HasMaxLength(5)
             .HasColumnType("varchar(5)")
+            .HasMaxLength(5)
             .IsRequired();
         
         builder
-            .Property(x => x.PhoneCode)
+            .Property(x => x.PhoneCode) 
             .HasColumnName("country_phone_code")
-            .HasMaxLength(5)
             .HasColumnType("varchar(5)")
+            .HasMaxLength(5)
             .IsRequired(false);
-        
-        builder
-            .HasIndex(x => x.Code)
-            .IsUnique();
         
         builder
             .Property(x => x.IsDeleted)
             .HasColumnName("is_deleted")
-            .IsRequired(false);
+            .HasColumnType("boolean")
+            .HasDefaultValueSql("false")
+            .IsRequired();
 
         builder
             .HasMany(x => x.Addresses)
-            .WithOne();
+            .WithOne()
+            .HasForeignKey(x => x.CountryId);
         
         builder
             .HasMany(x => x.Cities)
-            .WithOne();
+            .WithOne("_country")
+            .HasForeignKey(x => x.CountryId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+        
+        builder
+            .HasIndex(x => x.NormalizedName)
+            .HasMethod("btree")
+            .HasDatabaseName("idx_country_normalized_name_btree")
+            .IsUnique();
+        
+        builder
+            .HasIndex(x => x.NormalizedNameRu)
+            .HasMethod("btree")
+            .HasDatabaseName("idx_country_normalized_name_ru_btree")
+            .IsUnique();
+        
+        builder
+            .HasIndex(x => x.Code)
+            .HasMethod("btree")
+            .HasDatabaseName("idx_country_code_btree")
+            .IsUnique();
     }
+    
 }

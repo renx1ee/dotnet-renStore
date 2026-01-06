@@ -16,7 +16,10 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
         
         builder
             .Property(x => x.Id)
-            .HasColumnName("city_id");
+            .HasColumnName("city_id")
+            .HasColumnType("int")
+            .ValueGeneratedOnAdd()
+            .IsRequired();
         
         builder
             .Property(x => x.Name)
@@ -47,13 +50,15 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .IsRequired();
 
         builder
-            .Property(x => x.IsDelete)
+            .Property(x => x.IsDeleted)
             .HasColumnName("is_deleted")
-            .HasDefaultValue(false)
+            .HasColumnType("boolean")
+            .HasDefaultValueSql("false")
             .IsRequired();
 
         builder
             .Property(x => x.CountryId)
+            .HasColumnType("int")
             .HasColumnName("country_id")
             .IsRequired();
         
@@ -61,6 +66,6 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .HasOne(typeof(Country), "_country")
             .WithMany()
             .HasForeignKey("CountryId")
-            .IsRequired(false);
+            .IsRequired();
     }
 }

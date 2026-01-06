@@ -4,7 +4,7 @@ using RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 namespace RenStore.Delivery.Persistence;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+public sealed class DeliveryDbContext(DbContextOptions<DeliveryDbContext> options) : DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

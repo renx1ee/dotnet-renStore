@@ -1,3 +1,4 @@
+using RenStore.Delivery.Domain.ValueObjects;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;
@@ -7,20 +8,22 @@ namespace RenStore.Delivery.Domain.Entities;
 /// </summary>
 public class Address
 {
-    /*private readonly List<ApplicationUser> _users = new();*/
+    private FullMultiplyAddress _fullAddress;
     
     public Guid Id { get; private set; }
     public string HouseCode { get; private set; } = string.Empty;
     public string Street { get; private set; } = string.Empty;
-    public string BuildingNumber  { get; private set; } = string.Empty;
+    public string BuildingNumber { get; private set; } = string.Empty;
     public string ApartmentNumber { get; private set; } = string.Empty;
     public string Entrance { get; private set; } = string.Empty;
     public int? Floor { get; private set; }
-    public string FullAddress { get; private set; } = string.Empty;
+    public string FullAddressEn => _fullAddress.English; 
+    public string FullAddressRu => _fullAddress.Russian;  
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; } 
+    public DateTimeOffset? DeletedAt { get; private set; } 
     public bool IsDeleted { get; private set; }
-    public string ApplicationUserId { get; private set; } = string.Empty;
+    public Guid ApplicationUserId { get; private set; }
     public int CountryId { get; private set; }
     private Country? _country { get; }
     public int CityId { get; private set; }
@@ -31,7 +34,7 @@ public class Address
     /// <summary>
     /// Creates a new address ensuring all invariants are satisfied.
     /// </summary>
-    /// <exception cref="DomainException">if the city is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
+    /// <exception cref="DomainException">if any of the input parameters are null or empty, or any IDs are less 0.</exception>
     public static Address Create(
         string houseCode,
         string street,
@@ -41,7 +44,7 @@ public class Address
         int floor,
         int countryId,
         int cityId,
-        string userId,
+        Guid userId,
         DateTimeOffset now)
     {
         if (string.IsNullOrEmpty(houseCode))
@@ -59,10 +62,9 @@ public class Address
         if (cityId <= 0)
             throw new DomainException("Country ID cannot be  less 1.");
         
-        if (string.IsNullOrEmpty(userId))
+        if (userId == Guid.Empty)
             throw new DomainException("User ID cannot be less 1.");
         
-        // TODO: validation
         var result =  new Address()
         {
             Id = Guid.NewGuid(),
@@ -83,8 +85,11 @@ public class Address
         if (!string.IsNullOrEmpty(entrance))
             result.Entrance = entrance;
 
+        
+
         return result;
     }
+    
     /// <summary>
     /// Updates an address data.
     /// Cannot be called with deleted address.
@@ -105,11 +110,18 @@ public class Address
         HouseCode = houseCode;
         Street = street;
         BuildingNumber = buildingNumber;
-        ApartmentNumber = apartmentNumber;
-        Entrance = entrance;
         Floor = floor;
         UpdatedAt = now;
+        
+        if(!string.IsNullOrEmpty(apartmentNumber))
+            ApartmentNumber = apartmentNumber;
+        
+        if(!string.IsNullOrEmpty(entrance))
+            Entrance = entrance;
+        
+        UpdateFullAddress();
     }
+    
     /// <summary>
     /// Soft delete the country.
     /// Once deleted the country cannot be modified.
@@ -122,5 +134,18 @@ public class Address
 
         IsDeleted = true;
         UpdatedAt = now;
+    }
+
+    private void UpdateFullAddress()
+    {
+        _fullAddress = FullMultiplyAddress.BuildFull(
+            country: _country,
+            city: _city,
+            street: Street,
+            buildingNumber: BuildingNumber,
+            houseCode: HouseCode,
+            apartmentNumber: ApartmentNumber,
+            entrance: Entrance,
+            floor: Floor);
     }
 }

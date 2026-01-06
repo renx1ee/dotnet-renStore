@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RenStore.Application\RenStore.Application.csproj" />
+    <ProjectReference Include="..\RenStore.Delivery.Persistence\RenStore.Delivery.Persistence.csproj" />
     <ProjectReference Include="..\RenStore.Identity.DuendeServer.WebAPI\RenStore.Identity.DuendeServer.WebAPI.csproj" />
     <ProjectReference Include="..\RenStore.Persistence\RenStore.Persistence.csproj" />
   </ItemGroup>

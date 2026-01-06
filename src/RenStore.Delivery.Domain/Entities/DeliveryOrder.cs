@@ -16,7 +16,7 @@ public class DeliveryOrder
     public DateTimeOffset? DeletedAt { get; private set; } = null;
     public DeliveryStatus Status { get; private set; }
     public Guid OrderId { get; private set; } // TODO:
-    public Guid DeliveryTariffId { get; private set; }
+    public int DeliveryTariffId { get; private set; }
     private DeliveryTariff _tariff { get; }
     public long? CurrentSortingCenterId { get; private set; }
     private SortingCenter? _currentSortingCenter { get; }
@@ -34,14 +34,14 @@ public class DeliveryOrder
     /// <exception cref="DomainException">if the Delivery order parameters are null or empty, or any IDs are less 0.</exception>
     public static DeliveryOrder Create(
         Guid orderId,
-        Guid deliveryTariffId,
+        int deliveryTariffId,
         DateTimeOffset now)
     {
         if (orderId == Guid.Empty)
             throw new DomainException("Order ID cannot be empty.");
         
-        if (deliveryTariffId == Guid.Empty)
-            throw new DomainException("Delivery Tariff ID cannot be empty.");
+        if (deliveryTariffId <= 0)
+            throw new DomainException("Delivery Tariff ID cannot be less 0.");
         
         var order = new DeliveryOrder()
         {
@@ -201,10 +201,11 @@ public class DeliveryOrder
         UpdateStatus(newStatus: DeliveryStatus.Returned, now: now);
     }
     /// <summary>
-    /// 
+    /// Soft delete the delivery order.
+    /// Once deleted the country cannot be modified.
     /// </summary>
     /// <param name="now"></param>
-    /// <exception cref="DomainException"></exception>
+    /// <exception cref="DomainException">Throw if delivery order already deleted.</exception>
     public void Delete(DateTimeOffset now)
     {
         if (Status == DeliveryStatus.IsDeleted)
@@ -236,7 +237,7 @@ public class DeliveryOrder
                 deliveryOrderId: Id,
                 sortingCenterId: sortingCenter));
     }
-
+    
     private void UpdateStatus(
         DeliveryStatus newStatus, 
         DateTimeOffset now, 

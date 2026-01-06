@@ -36,7 +36,7 @@ internal sealed class CityQuery
     
     public CityQuery(
         ILogger<CityQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

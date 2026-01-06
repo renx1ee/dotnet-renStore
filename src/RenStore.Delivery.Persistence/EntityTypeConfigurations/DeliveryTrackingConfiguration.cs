@@ -16,41 +16,56 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
 
         builder
             .Property(x => x.Id)
-            .HasColumnName("delivery_tracking_history_id");
+            .HasColumnName("delivery_tracking_history_id")
+            .HasColumnType("uuid")
+            .HasDefaultValueSql("gen_random_uuid()")
+            .IsRequired();
 
         builder
             .Property(x => x.CurrentLocation)
             .HasColumnName("current_location")
+            .HasColumnType("varchar(50)")
+            .HasMaxLength(50)
             .IsRequired(false);
 
         builder
             .Property(x => x.Status)
+            .HasConversion<string>()
             .HasColumnName("status")
+            .HasColumnType("varchar(50)")
             .IsRequired();
 
         builder
             .Property(x => x.Notes)
             .HasColumnName("notes")
+            .HasColumnType("varchar(150)")
+            .HasMaxLength(150)
             .IsRequired(false);
         
         builder
             .Property(x => x.IsDeleted)
             .HasColumnName("is_deleted")
-            .IsRequired(false);
+            .HasColumnType("boolean")
+            .HasDefaultValueSql("false")
+            .IsRequired();
         
         builder
             .Property(x => x.OccurredAt)
             .HasColumnName("created_date")
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
             .IsRequired();
         
         builder
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
-            .IsRequired();
+            .HasColumnType("timestamp with time zone")
+            .IsRequired(false);
         
         builder
             .Property(x => x.SortingCenterId)
             .HasColumnName("sorting_center_id")
+            .HasColumnType("bigint")
             .IsRequired(false);
         
         builder
@@ -65,14 +80,9 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
             .IsRequired();
         
         builder
-            .HasOne(typeof(DeliveryOrder), "_deliveryOrder")
-            .WithMany()
-            .HasForeignKey("DeliveryOrderId")
-            .IsRequired(false);
-
-        /*builder
-            .HasOne(x => x.DeliveryOrderId)
+            .HasOne<DeliveryOrder>("_deliveryOrder")
             .WithMany(x => x.TrackingHistory)
-            .HasForeignKey(x => x.DeliveryOrderId);*/
+            .HasForeignKey(x => x.DeliveryOrderId)
+            .IsRequired();
     }
 }

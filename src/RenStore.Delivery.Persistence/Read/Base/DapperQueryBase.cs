@@ -10,7 +10,7 @@ namespace RenStore.Delivery.Persistence.Read.Base;
 /// Base class for read-side query service using Dapper.
 /// </summary>
 internal abstract class DapperQueryBase(
-    ApplicationDbContext context,
+    DeliveryDbContext context,
     ILogger logger)
 {
     private const uint MaxPageSize = 1000;
@@ -18,7 +18,7 @@ internal abstract class DapperQueryBase(
 
     private readonly ILogger _logger            = logger
                                                      ?? throw new ArgumentNullException(nameof(logger));
-    private readonly ApplicationDbContext _context = context
+    private readonly DeliveryDbContext _context = context
                                                      ?? throw new ArgumentNullException(nameof(context));
     
     /// <summary>

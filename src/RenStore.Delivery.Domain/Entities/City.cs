@@ -14,7 +14,7 @@ public class City
     public string NameRu { get; private set; } = string.Empty;
     public string NormalizedName { get; private set; } = string.Empty;
     public string NormalizedNameRu { get; private set; } = string.Empty;
-    public bool IsDelete { get; private set; } = false;
+    public bool IsDeleted { get; private set; } = false;
     public int CountryId { get; private set; }
     private Country? _country { get; }
 
@@ -59,7 +59,7 @@ public class City
         string name,
         string nameRu)
     {
-        if (IsDelete)
+        if (IsDeleted)
             throw new DomainException("Cannot update already deleted city.");
         
         if (cityId <= 0)
@@ -81,9 +81,9 @@ public class City
     /// <exception cref="DomainException">Throw if city already marked as deleted.</exception>
     public void Delete()
     {
-        if (IsDelete)
+        if (IsDeleted)
             throw new DomainException("Cannot delete already deleted city.");
 
-        IsDelete = true;
+        IsDeleted = true;
     }
 }

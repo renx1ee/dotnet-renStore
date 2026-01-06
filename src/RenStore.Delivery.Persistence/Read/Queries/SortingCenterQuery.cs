@@ -36,7 +36,7 @@ internal sealed class SortingCenterQuery
     
     public SortingCenterQuery(
         ILogger<SortingCenterQuery> logger,
-        ApplicationDbContext context)
+        DeliveryDbContext context)
         : base(context, logger)
     {
     }

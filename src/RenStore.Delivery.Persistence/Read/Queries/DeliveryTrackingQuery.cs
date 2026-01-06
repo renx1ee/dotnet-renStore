@@ -43,7 +43,7 @@ internal sealed class DeliveryTrackingQuery
     
     public DeliveryTrackingQuery(
         ILogger<DeliveryTrackingQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

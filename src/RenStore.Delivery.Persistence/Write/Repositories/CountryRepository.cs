@@ -2,10 +2,10 @@ using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Delivery.Persistence.Write.Repositories;
 
-internal sealed class CountryRepository(ApplicationDbContext context) 
+internal sealed class CountryRepository(DeliveryDbContext context) 
     : RenStore.Delivery.Domain.Interfaces.ICountryRepository
 {
-    private readonly ApplicationDbContext _context = context 
+    private readonly DeliveryDbContext _context = context 
                                                      ?? throw new ArgumentNullException(nameof(context));
     
     public async Task<int> AddAsync(

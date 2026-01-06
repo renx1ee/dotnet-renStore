@@ -36,7 +36,7 @@ internal sealed class PickupPointQuery
     
     public PickupPointQuery(
         ILogger<PickupPointQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

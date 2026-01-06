@@ -15,7 +15,7 @@ public interface IDeliveryTariffRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <exception cref="ArgumentNullException">If delivery tariff is null.</exception>
     /// <returns>Delivery tariff unique identifier (ID) from the database.</returns>
-    Task<Guid> AddAsync(
+    Task<int> AddAsync(
         DeliveryTariff tariff,
         CancellationToken cancellationToken);
 

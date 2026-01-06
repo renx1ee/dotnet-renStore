@@ -42,7 +42,7 @@ internal sealed class DeliveryTariffQuery
 
     public DeliveryTariffQuery(
         ILogger<DeliveryTariffQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

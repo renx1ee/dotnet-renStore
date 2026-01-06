@@ -11,7 +11,7 @@ public class DeliveryTracking
     public string Notes { get; private set; } = string.Empty;
     public bool IsDeleted { get; private set; }
     public DateTimeOffset OccurredAt { get; private set; }
-    public DateTimeOffset DeletedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
     public long? SortingCenterId { get; private set; }
     private SortingCenter _sortingCenter { get;  }
     public Guid DeliveryOrderId { get; private set; }

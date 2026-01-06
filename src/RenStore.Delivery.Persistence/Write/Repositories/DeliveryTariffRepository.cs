@@ -4,13 +4,13 @@ using RenStore.Delivery.Domain.Interfaces;
 namespace RenStore.Delivery.Persistence.Write.Repositories;
 
 internal sealed class DeliveryTariffRepository
-    (ApplicationDbContext context)
+    (DeliveryDbContext context)
     : IDeliveryTariffRepository
 {
-    private readonly ApplicationDbContext _context = context 
+    private readonly DeliveryDbContext _context = context 
                                                      ?? throw new ArgumentNullException(nameof(context));
 
-    public async Task<Guid> AddAsync(
+    public async Task<int> AddAsync(
         DeliveryTariff tariff,
         CancellationToken cancellationToken)
     {

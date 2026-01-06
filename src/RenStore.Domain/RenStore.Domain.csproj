@@ -16,13 +16,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RenStore.Delivery.Domain\RenStore.Delivery.Domain.csproj" />
-    <ProjectReference Include="..\RenStore.Microservice.Payment\RenStore.Microservice.Payment.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="RenStore.Microservice.Payment">
-      <HintPath>..\RenStore.Persistence\bin\Debug\net9.0\RenStore.Microservice.Payment.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

@@ -1,26 +1,15 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Microservice.Cache", "RenStore.Microservice.Cache\RenStore.Microservice.Cache.csproj", "{EDFC371C-5916-40BD-0175-B953DF7B3AF1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Microservices.Bonuses", "RenStore.Microservices.Bonuses\RenStore.Microservices.Bonuses.csproj", "{16394F76-20DF-515C-F962-F8B2BDAB6164}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9CF47860-2CEA-F379-09D8-9AEF27965D12}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Microservice.Notification", "RenStore.Microservice.Notification\RenStore.Microservice.Notification.csproj", "{ADF7F6CB-0832-620B-9CDA-A506EC147F75}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Identity.DuendeServer.WebAPI", "RenStore.Identity.DuendeServer.WebApi\RenStore.Identity.DuendeServer.WebAPI.csproj", "{B346E8C1-AE83-BDDE-3159-554E9E0A47E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Application", "RenStore.Application\RenStore.Application.csproj", "{09FB8C38-AC02-2C90-5CD3-C74B6ACE5EDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Microservice.Payment", "RenStore.Microservice.Payment\RenStore.Microservice.Payment.csproj", "{4E229556-1BED-6F3F-F366-5220D063B42F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.ApiGateway", "RenStore.ApiGateway\RenStore.ApiGateway.csproj", "{91B4FA34-B646-48FC-9607-8FE6EF2D7E57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Domain", "RenStore.Domain\RenStore.Domain.csproj", "{27F3CE6A-9532-E0F8-F240-270A3435F7B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Microservice.Delivery", "RenStore.Microservice.Delivery\RenStore.Microservice.Delivery.csproj", "{5413ADA1-D8AD-93CA-0C6D-CFDE47014384}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Persistence", "RenStore.Persistence\RenStore.Persistence.csproj", "{3EE00368-E07C-A114-9B60-2BDB5A998F9F}"
 EndProject

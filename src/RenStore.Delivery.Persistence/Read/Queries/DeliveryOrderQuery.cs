@@ -40,7 +40,7 @@ internal sealed class DeliveryOrderQuery
     
     public DeliveryOrderQuery(
         ILogger<DeliveryOrderQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

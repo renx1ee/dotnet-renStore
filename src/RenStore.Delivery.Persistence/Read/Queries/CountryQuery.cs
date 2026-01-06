@@ -38,7 +38,7 @@ internal sealed class CountryQuery
     
     public CountryQuery(
         ILogger<CountryQuery> logger,
-        ApplicationDbContext context) 
+        DeliveryDbContext context) 
         : base(context, logger)
     {
     }

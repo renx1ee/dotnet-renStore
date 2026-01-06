@@ -9,14 +9,14 @@ namespace RenStore.Delivery.Application.Interfaces;
 public interface IPickupPointQuery
 {
     /// <summary>
-    /// Retrieves all pickup points tracking with sorting and pagination.
+    /// Retrieves all pickup points with sorting and pagination.
     /// </summary>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <param name="sortBy">Fields to sort by. Default value is <see cref="PickupSortBy.Id"/>.</param>
     /// <param name="page">Page number (1-based). Default value is 1.</param>
     /// <param name="pageSize">Number of items per page. Default value is 25, Max value is 1000.</param>
     /// <param name="descending">Sort in descending order if true. Default value is false.</param>
-    /// <param name="isDeleted">Include deleted delivery tracking. Default is <see cref="null"/>.</param>
+    /// <param name="isDeleted">Include deleted pickup points. Default is <see cref="null"/>.</param>
     /// <returns>A collection of matching <see cref="PickupPointReadModel"/>.</returns>
     Task<IReadOnlyList<PickupPointReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
@@ -27,7 +27,7 @@ public interface IPickupPointQuery
         bool? isDeleted = null);
 
     /// <summary>
-    /// Get a <see cref="PickupPointReadModel"/> by delivery tracking ID.
+    /// Get a <see cref="PickupPointReadModel"/> by pickup points ID.
     /// </summary>
     /// <param name="id">Pickup point unique identifier (ID).</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
@@ -37,7 +37,7 @@ public interface IPickupPointQuery
         CancellationToken cancellationToken);
 
     /// <summary>
-    /// Get a <see cref="PickupPointReadModel"/> by delivery tracking ID.
+    /// Get a <see cref="PickupPointReadModel"/> by pickup points ID.
     /// </summary>
     /// <param name="id">Pickup point unique identifier (ID).</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

@@ -3,10 +3,10 @@ using RenStore.Delivery.Domain.Entities;
 namespace RenStore.Delivery.Persistence.Write.Repositories;
 
 internal sealed class SortingCenterRepository
-    (ApplicationDbContext context)
+    (DeliveryDbContext context)
     : RenStore.Delivery.Domain.Interfaces.ISortingCenterRepository
 {
-    private readonly ApplicationDbContext _context = context 
+    private readonly DeliveryDbContext _context = context 
                                                      ?? throw new ArgumentOutOfRangeException(nameof(context));
     
     public async Task<long> CreateAsync(

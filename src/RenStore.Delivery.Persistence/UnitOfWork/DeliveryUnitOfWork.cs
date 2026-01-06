@@ -1,65 +1,63 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
-using RenStore.Delivery.Application.Interfaces;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Persistence.UnitOfWork;
 
 public class DeliveryUnitOfWork
-    : IDeliveryUnitOfWork, IDisposable
+    : IDeliveryUnitOfWork, IAsyncDisposable
 {
-    private readonly ApplicationDbContext _context;
-    private readonly ILogger<DeliveryUnitOfWork> _logger; 
+    private readonly ILogger<DeliveryUnitOfWork> _logger;
+    private readonly DeliveryDbContext _context;
     
-    IAddressQuery AddressesRead { get; }
-    ICityQuery CitiesRead { get; }
-    ICountryQuery CountriesRead { get; }
-    IDeliveryOrderQuery DeliveryOrdersRead { get; }
-    IDeliveryTariffQuery DeliveryTariffsRead { get; }
-    IDeliveryTrackingQuery DeliveryTrackingsRead { get; }
-    IPickupPointQuery PickupPointsRead { get; }
-    ISortingCenterQuery SortingCentersRead { get; }
+    private IDbContextTransaction? _transaction;
 
     public DeliveryUnitOfWork(
         ILogger<DeliveryUnitOfWork> logger,
-        ApplicationDbContext context)
+        DeliveryDbContext context)
     {
-        this._context = context
-                        ?? throw new ArgumentNullException(nameof(context));
-        this._logger = logger
-                       ?? throw new ArgumentNullException(nameof(logger));
+        this._logger = logger   ?? throw new ArgumentNullException(nameof(logger));
+        this._context = context ?? throw new ArgumentNullException(nameof(context));
     }
-
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        return await this._context.SaveChangesAsync(cancellationToken);
-    }
-
+    
     public async Task BeginTransactionAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (this._transaction != null)
+            throw new InvalidOperationException("Transaction already started.");
+        
+        this._transaction = await this._context.Database.BeginTransactionAsync(cancellationToken);
     }
 
     public async Task RollbackAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (_transaction == null) return;
+        
+        this._logger.LogWarning("Transaction rollback.");
+        
+        await RollbackInternalAsync(cancellationToken);
+        await DisposeTransactionAsync();
     }
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken)
     {
+        if (_transaction == null)
+            throw new InvalidOperationException("No active transaction to commit.");
+
         try
         {
-            int result = await this._context.SaveChangesAsync(cancellationToken);
+            var result = await this._context.SaveChangesAsync(cancellationToken);
+            await this._transaction!.CommitAsync(cancellationToken);
             return result;
         }
         catch (OperationCanceledException)
         {
-            this._logger.LogInformation("Commit operation was cancelled." );
+            this._logger.LogInformation("Commit operation was cancelled.");
             throw;
         }
         catch (DbUpdateConcurrencyException e)
         {
-            this._logger.LogError(e, "Concurrency conflict during commit." );
+            this._logger.LogError(e, "Concurrency conflict during commit.");
             throw new ConcurrencyException("Data was notified by another user. Please retry the operation.", e);
         }
         catch (DbUpdateException e)
@@ -70,12 +68,34 @@ public class DeliveryUnitOfWork
         catch (Exception e)
         {
             this._logger.LogError(e, "Unexpected error during commit.");
+            await RollbackInternalAsync(cancellationToken);
             throw;
+        }
+        finally
+        {
+            await DisposeTransactionAsync();
         }
     }
 
-    public void Dispose()
+    private async Task RollbackInternalAsync(CancellationToken cancellationToken)
     {
-        this._context.Dispose();
+        if (this._transaction != null)
+        {
+            await this._transaction.RollbackAsync(cancellationToken);
+        }
+    }
+
+    private async Task DisposeTransactionAsync()
+    {
+        if (this._transaction != null)
+        {
+            await this._transaction.DisposeAsync();
+            this._transaction = null;
+        }
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        await DisposeTransactionAsync();
     }
 }

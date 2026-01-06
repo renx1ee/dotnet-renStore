@@ -27,7 +27,7 @@ public class AddTests
             Street = "Main street",
             BuildingNumber = "10",
             ApartmentNumber = "5",
-            FullAddress = "Main street 10-5",
+            FullAddressEn = "Main street 10-5",
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller1,
             CountryId = 552,
             CityId = 52
@@ -48,7 +48,7 @@ public class AddTests
         Assert.Equal(result.Street, address.Street);
         Assert.Equal(result.BuildingNumber, address.BuildingNumber);
         Assert.Equal(result.ApartmentNumber, address.ApartmentNumber);
-        Assert.Equal(result.FullAddress, address.FullAddress);
+        Assert.Equal(result.FullAddressEn, address.FullAddressEn);
         Assert.Equal(result.ApplicationUserId, address.ApplicationUserId);
         Assert.Equal(result.CountryId, address.CountryId);
         Assert.Equal(result.CityId, address.CityId);
