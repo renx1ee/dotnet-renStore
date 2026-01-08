@@ -22,7 +22,10 @@ internal sealed class CountryQuery
                 ""normalized_country_name_ru"" AS NormalizedNameRu,
                 ""country_code""               AS Code,
                 ""country_phone_code""         AS Code,
-                ""is_deleted""                 AS IsDeleted
+                ""is_deleted""                 AS IsDeleted,
+                ""created_date""               AS CreatedAt,
+                ""updated_date""               AS UpdatedAt,
+                ""deleted_date""               AS DeletedAt
             FROM
                 ""countries"" AS c
         """;

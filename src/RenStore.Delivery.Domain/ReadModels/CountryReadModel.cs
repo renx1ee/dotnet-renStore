@@ -19,6 +19,9 @@ public class CountryReadModel
     public string Code { get; init; } = string.Empty;
     public string PhoneCode { get; init; } = string.Empty;
     public bool IsDeleted { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
+    public DateTimeOffset? UpdatedAt { get; init; }
+    public DateTimeOffset? DeletedAt { get; init; }
     public IReadOnlyCollection<Address>? Addresses { get; set; }
     public IReadOnlyCollection<City>? Cities { get; set; }
 }

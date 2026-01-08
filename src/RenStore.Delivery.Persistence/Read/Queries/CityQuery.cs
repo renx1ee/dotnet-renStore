@@ -21,6 +21,9 @@ internal sealed class CityQuery
                 "city_name_ru"            AS NameRu,
                 "normalized_city_name_ru" AS NormalizedNameRu,
                 "is_deleted"              AS IsDeleted,
+                ""created_date""          AS CreatedAt,
+                ""updated_date""          AS UpdatedAt,
+                ""deleted_date""          AS DeletedAt,
                 "country_id"              AS CountryOfManufactureId
             FROM
                 "cities"

@@ -55,6 +55,25 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .HasColumnType("boolean")
             .HasDefaultValueSql("false")
             .IsRequired();
+        
+        builder
+            .Property(x => x.CreatedAt)
+            .HasColumnName("created_date")
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .HasColumnType("timestamp with time zone")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .HasColumnType("timestamp with time zone")
+            .IsRequired(false);
 
         builder
             .Property(x => x.CountryId)

@@ -5,10 +5,10 @@ namespace RenStore.Delivery.Domain.ValueObjects;
 
 public class FullMultiplyAddress
 {
-    public string Russian { get; set; }
-    public string English { get; set; }
+    public string Russian { get; private set; }
+    public string English { get; private set; }
     
-    public FullMultiplyAddress(string russian, string english)
+    private FullMultiplyAddress(string russian, string english)
     {
         Russian = russian ?? throw new ArgumentNullException(nameof(russian));
         English = english ?? throw new ArgumentNullException(nameof(english));
@@ -30,10 +30,10 @@ public class FullMultiplyAddress
         if (city == null) 
             throw new ArgumentNullException(nameof(city));
 
-        if (string.IsNullOrEmpty(street))
+        if (string.IsNullOrWhiteSpace(street))
             throw new ArgumentNullException(nameof(street));
         
-        if (string.IsNullOrEmpty(buildingNumber))
+        if (string.IsNullOrWhiteSpace(buildingNumber))
             throw new ArgumentNullException(nameof(buildingNumber));
         
         var addressRu = BuildFullRussianAddress(
@@ -73,29 +73,29 @@ public class FullMultiplyAddress
     {
         var result = new StringBuilder(string.Empty);
 
-        if (string.IsNullOrEmpty(country.Name))
+        if (string.IsNullOrWhiteSpace(country.Name))
             throw new ArgumentNullException(nameof(country.Name));
     
         result.Append("Country: " + country.Name);
         
-        if (string.IsNullOrEmpty(city.Name))
+        if (string.IsNullOrWhiteSpace(city.Name))
             throw new ArgumentNullException(nameof(city.Name));
         
         result.Append(", City: " + city.Name);
 
-        if (!string.IsNullOrEmpty(houseCode))
+        if (!string.IsNullOrWhiteSpace(houseCode))
             result.Append(", House code: " + houseCode);
     
-        if (!string.IsNullOrEmpty(street))
+        if (!string.IsNullOrWhiteSpace(street))
             result.Append(", Street: " + street);
     
-        if (!string.IsNullOrEmpty(buildingNumber))
+        if (!string.IsNullOrWhiteSpace(buildingNumber))
             result.Append(", Building number: " + buildingNumber);
     
-        if (!string.IsNullOrEmpty(apartmentNumber))
+        if (!string.IsNullOrWhiteSpace(apartmentNumber))
             result.Append(", Apartment number: " + apartmentNumber);
     
-        if (!string.IsNullOrEmpty(entrance))
+        if (!string.IsNullOrWhiteSpace(entrance))
             result.Append(", Entrance: " + entrance);
 
         result.Append(", Floor: " + floor.ToString());

@@ -52,15 +52,15 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
         builder
             .Property(x => x.Code)
             .HasColumnName("country_code")
-            .HasColumnType("varchar(5)")
-            .HasMaxLength(5)
+            .HasColumnType("varchar(2)")
+            .HasMaxLength(2)
             .IsRequired();
         
         builder
             .Property(x => x.PhoneCode) 
             .HasColumnName("country_phone_code")
-            .HasColumnType("varchar(5)")
-            .HasMaxLength(5)
+            .HasColumnType("varchar(3)")
+            .HasMaxLength(3)
             .IsRequired(false);
         
         builder
@@ -69,6 +69,25 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
             .HasColumnType("boolean")
             .HasDefaultValueSql("false")
             .IsRequired();
+
+        builder
+            .Property(x => x.CreatedAt)
+            .HasColumnName("created_date")
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .HasColumnType("timestamp with time zone")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .HasColumnType("timestamp with time zone")
+            .IsRequired(false);
 
         builder
             .HasMany(x => x.Addresses)

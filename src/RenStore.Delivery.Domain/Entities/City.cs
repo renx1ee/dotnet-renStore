@@ -15,12 +15,16 @@ public class City
     public string NormalizedName { get; private set; } = string.Empty;
     public string NormalizedNameRu { get; private set; } = string.Empty;
     public bool IsDeleted { get; private set; } = false;
+    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
     public int CountryId { get; private set; }
     private Country? _country { get; }
 
     public IReadOnlyCollection<Address>? Addresses => _addresses.AsReadOnly();
     
     private City() { }
+    
     /// <summary>
     /// Creates a new city ensuring all invariants are satisfied.
     /// </summary>
@@ -29,12 +33,13 @@ public class City
     public static City Create(
         string name,
         string nameRu,
-        int countryId)
+        int countryId,
+        DateTimeOffset now)
     {
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Name cannot be null or empty!");
         
-        if (string.IsNullOrEmpty(nameRu))
+        if (string.IsNullOrWhiteSpace(nameRu))
             throw new DomainException("Name RU cannot be null or empty!");
         
         if (countryId <= 0)
@@ -42,48 +47,54 @@ public class City
         
         return new City()
         {
-            Name = name,
-            NormalizedName = name.ToUpperInvariant(),
-            NameRu = nameRu,
-            NormalizedNameRu = nameRu.ToUpperInvariant(),
-            CountryId = countryId
+            Name = name.Trim(),
+            NormalizedName = name.Trim().ToUpperInvariant(),
+            NameRu = nameRu.Trim(),
+            NormalizedNameRu = nameRu.Trim().ToUpperInvariant(),
+            CountryId = countryId,
+            CreatedAt = now,
+            IsDeleted = false
         };
     }
+    
     /// <summary>
     /// Updates a city data.
     /// Cannot be called with deleted city.
     /// </summary>
     /// <exception cref="DomainException">if the city is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
     public void Update(
-        int cityId,
         string name,
-        string nameRu)
+        string nameRu,
+        DateTimeOffset now)
     {
         if (IsDeleted)
             throw new DomainException("Cannot update already deleted city.");
         
-        if (cityId <= 0)
-            throw new DomainException("CountryId cannot be less 1.");
-        
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Name cannot be null or empty!");
         
-        if (string.IsNullOrEmpty(nameRu))
+        if (string.IsNullOrWhiteSpace(nameRu))
             throw new DomainException("Name RU cannot be null or empty!");
         
-        Name = name;
-        NameRu = nameRu;
+        Name = name.Trim();
+        NormalizedName = name.Trim().ToUpperInvariant();
+        NameRu = nameRu.Trim();
+        NormalizedNameRu = nameRu.Trim().ToUpperInvariant();
+        UpdatedAt = now;
     }
+    
     /// <summary>
     /// Soft delete the city.
     /// Once deleted the city cannot be modified.
     /// </summary>
     /// <exception cref="DomainException">Throw if city already marked as deleted.</exception>
-    public void Delete()
+    public void Delete(DateTimeOffset now)
     {
         if (IsDeleted)
             throw new DomainException("Cannot delete already deleted city.");
 
         IsDeleted = true;
+        DeletedAt = now;
+        UpdatedAt = now;
     }
 }

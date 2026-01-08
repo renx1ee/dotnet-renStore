@@ -15,16 +15,22 @@ public class Country
     public string NormalizedName { get; private set; } = string.Empty;
     public string NameRu { get; private set; } = string.Empty;
     public string NormalizedNameRu { get; private set; } = string.Empty;
+    
     /// <summary>
     /// ISO 3166-1 alpha-2 country code.
+    /// Must be 2 characters.
     /// </summary>
     public string Code { get; private set; } = string.Empty;
     public string PhoneCode { get; private set; } = string.Empty;
     public bool IsDeleted { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
     public IReadOnlyCollection<Address> Addresses => _addresses;
     public IReadOnlyCollection<City> Cities => _cities;
     
     private Country(){ }
+    
     /// <summary>
     /// Creates a new country ensuring all invariants are satisfied.
     /// </summary>
@@ -33,78 +39,99 @@ public class Country
         string name, 
         string nameRu,
         string code,
-        string phoneCode)
+        string phoneCode,
+        DateTimeOffset now)
     {
-        if (string.IsNullOrEmpty(name))
-            throw new DomainException("Name cannot be null or empty!");
-        
-        if (string.IsNullOrEmpty(nameRu))
-            throw new DomainException("Name RU cannot be null or empty!");
-        
-        if (string.IsNullOrEmpty(code))
-            throw new DomainException("Code cannot be null or empty!");
-        
-        if (string.IsNullOrEmpty(phoneCode))
-            throw new DomainException("Phone Code cannot be null or empty!");
+        Validate(
+            name: name, 
+            nameRu: nameRu, 
+            code: code, 
+            phoneCode: phoneCode);
         
         return new Country()
         {
-            Name = name,
-            NormalizedName = name.ToUpperInvariant(),
+            Name = name.Trim(),
+            NormalizedName = name.Trim().ToUpperInvariant(),
             NameRu = nameRu,
-            NormalizedNameRu = name.ToUpperInvariant(),
-            Code = code,
-            PhoneCode = phoneCode,
-            IsDeleted = false
+            NormalizedNameRu = nameRu.Trim().ToUpperInvariant(),
+            Code = code.Trim(),
+            PhoneCode = phoneCode.Trim(),
+            IsDeleted = false,
+            CreatedAt = now
         };
     }
+    
     /// <summary>
     /// Updates country data.
     /// Cannot be called with deleted country.
     /// </summary>
     /// <exception cref="DomainException">if the country is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
     public void Update(
-        int countryId,
         string name, 
         string nameRu,
         string code,
-        string phoneCode)
+        string phoneCode,
+        DateTimeOffset now)
     {
-        if (IsDeleted) 
-            throw new DomainException("Cannot update deleted country!");
+        EnsureNotDeleted();
         
-        if (countryId <= 0)
-            throw new DomainException("CountryId cannot be less 1.");
+        Validate(
+            name: name, 
+            nameRu: nameRu, 
+            code: code, 
+            phoneCode: phoneCode);
         
-        if (string.IsNullOrEmpty(name))
-            throw new DomainException("Name cannot be null or empty!");
-        
-        if (string.IsNullOrEmpty(nameRu))
-            throw new DomainException("Name RU cannot be null or empty!");
-        
-        if (string.IsNullOrEmpty(code))
-            throw new DomainException("Code cannot be null or empty!");
-        
-        if (string.IsNullOrEmpty(phoneCode))
-            throw new DomainException("Phone Code cannot be null or empty!");
-        
-        Name = name;
-        NormalizedName = name.ToUpperInvariant();
-        NameRu = nameRu;
-        NormalizedNameRu = name.ToUpperInvariant();
-        Code = code;
-        PhoneCode = phoneCode;
+        Name = name.Trim();
+        NormalizedName = name.Trim().ToUpperInvariant();
+        NameRu = nameRu.Trim();
+        NormalizedNameRu = nameRu.Trim().ToUpperInvariant();
+        Code = code.Trim();
+        PhoneCode = phoneCode.Trim();
+        UpdatedAt = now;
     }
+    
     /// <summary>
     /// Soft delete the country.
     /// Once deleted the country cannot be modified.
     /// </summary>
     /// <exception cref="DomainException">Throw if country already deleted.</exception>
-    public void Delete()
+    public void Delete(DateTimeOffset now)
     {
-        if (IsDeleted) 
-            throw new DomainException("Country already deleted!");
+        EnsureNotDeleted("Country already deleted!");
 
         IsDeleted = true;
+        DeletedAt = now;
+        UpdatedAt = now;
+    }
+
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted) 
+            throw new DomainException(message ?? "Cannot update deleted country!");
+    }
+
+    private static void Validate(
+        string name, 
+        string nameRu,
+        string code,
+        string phoneCode)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name cannot be null or empty!");
+        
+        if (string.IsNullOrWhiteSpace(nameRu))
+            throw new DomainException("Name RU cannot be null or empty!");
+        
+        if (string.IsNullOrWhiteSpace(code))
+            throw new DomainException("Code cannot be null or empty!");
+        
+        if(code.Length != 2)
+            throw new DomainException("Code can contains only 2 symbols.");
+        
+        if (string.IsNullOrWhiteSpace(phoneCode))
+            throw new DomainException("Phone Code cannot be null or empty!");
+        
+        if(phoneCode.Length > 3)
+            throw new DomainException("Phone Code cannot be better then 4 or empty!");
     }
 }
