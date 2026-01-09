@@ -13,7 +13,7 @@ public class DeliveryTariff
     private readonly List<DeliveryOrder> _orders = new();
     
     public int Id { get; private set; } 
-    public Price Price { get; private set; } 
+    public Price Price { get; private set; } // TODO: написат тесты
     public WeightLimitKg WeightLimitKg { get; private set; }
     public DeliveryTariffType Type { get; private set; }
     public string Description { get; private set; } = string.Empty;
@@ -44,7 +44,7 @@ public class DeliveryTariff
             CreatedAt = now
         };
 
-        if (!string.IsNullOrEmpty(description))
+        if (!string.IsNullOrWhiteSpace(description))
             tariff.Description = description;
 
         return tariff;
@@ -60,12 +60,11 @@ public class DeliveryTariff
     {
         EnsureNotDeleted();
         
-        Price = newPrice 
-                ?? throw new DomainException("Price cannot be null.");
+        Price = newPrice ?? throw new DomainException("Price cannot be null.");
         
         UpdatedAt = now;
     }
-
+    
     public void ChangeWeightLimitKg(
         WeightLimitKg weightLimitKg,
         DateTimeOffset now)
@@ -81,6 +80,8 @@ public class DeliveryTariff
         DateTimeOffset now)
     {
         EnsureNotDeleted();
+
+        if (Description == description) return;
         
         Description = description ?? string.Empty;
         UpdatedAt = now;

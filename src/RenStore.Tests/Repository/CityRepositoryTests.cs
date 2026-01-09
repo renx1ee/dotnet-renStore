@@ -15,7 +15,7 @@ public class CityRepositoryTests
     private ApplicationDbContext _context;
     private CityRepository _cityRepository;
 
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateCityAsync_Success_Test()
     {

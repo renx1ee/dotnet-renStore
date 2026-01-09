@@ -16,7 +16,7 @@ public interface ISubCategoryRepository
     /// <returns>ID of the created entity.</returns>
     Task<int> CreateAsync(SubCategoryEntity subCategory, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing subcategory in the database.
+    /// Edit an existing subcategory in the database.
     /// </summary>
     /// <param name="subCategory">The subcategory entity with the updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

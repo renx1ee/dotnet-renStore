@@ -18,7 +18,7 @@ public interface IProductAttributeRepository
         ProductAttributeEntity attribute,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product attribute in the database.
+    /// Edit an existing product attribute in the database.
     /// </summary>
     /// <param name="attribute">The product attribute with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

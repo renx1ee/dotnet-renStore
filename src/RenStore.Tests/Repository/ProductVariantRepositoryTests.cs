@@ -12,7 +12,7 @@ public class ProductVariantRepositoryTests
 {
     private ApplicationDbContext _context;
     private ProductVariantRepository _productVariantRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductVariantAsync_Success_Test()
     {

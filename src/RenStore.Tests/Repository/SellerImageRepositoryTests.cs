@@ -12,7 +12,7 @@ public class SellerImageRepositoryTests
 {
     private ApplicationDbContext _context;
     private SellerImageRepository _sellerImageRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateSellerVariantAsync_Success_Test()
     {

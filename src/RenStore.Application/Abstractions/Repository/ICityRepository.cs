@@ -19,7 +19,7 @@ public interface ICityRepository
     /// <returns>ID of the created entity.</returns>
     Task<int> CreateAsync(City city, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing city in the database.
+    /// Edit an existing city in the database.
     /// </summary>
     /// <param name="city">The city entity with the updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

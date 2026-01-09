@@ -30,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\RenStore.Delivery.Domain\RenStore.Delivery.Domain.csproj" />
+      <ProjectReference Include="..\..\RenStore.Delivery.Persistence\RenStore.Delivery.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

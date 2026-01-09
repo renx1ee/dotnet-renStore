@@ -12,7 +12,7 @@ public class AnswerComplainRepositoryTests
 {
     private ApplicationDbContext _context;
     private AnswerComplainRepository _answerComplainRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateAnswerComplainAsync_Success_Test()
     {
@@ -27,8 +27,8 @@ public class AnswerComplainRepositoryTests
         var seller = new SellerEntity
         {
             Id = TestDataConstants.SellerIdForCreate,
-            Name = "Sample Name for Update",
-            Description = "Sample Description for Update",
+            Name = "Sample Name for Edit",
+            Description = "Sample Description for Edit",
             NormalizedName = Guid.NewGuid().ToString().ToUpper(),
             OccuredAt = DateTime.UtcNow,
             IsBlocked = false,

@@ -13,7 +13,7 @@ public class CategoryRepositoryTests
     private ApplicationDbContext _context;
     private CategoryRepository _categoryRepository;
 
-    #region Create Update Delete
+    #region Create Edit Delete
 
     [Fact]
     public async Task CreateCategoryAsync_Success_Test()

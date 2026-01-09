@@ -13,7 +13,7 @@ public class ProductDetailRepositoryTests
 {
     private ApplicationDbContext _context;
     private ProductDetailRepository _productDetailRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductDetailAsync_Success_Test()
     {

@@ -102,7 +102,7 @@ public static class TestData
             Role = "User",
             CreatedDate = DateTime.UtcNow
         },
-        // For Update
+        // For Edit
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForUpdateSeller,
@@ -190,18 +190,18 @@ public static class TestData
         {
             Id = TestDataConstants.SellerIdForDelete,
             Name = TestDataConstants.SellerNameForDelete,
-            Description = "Sample Description for Update",
+            Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForDelete.ToUpper(),
             OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForDeleteSeller,
             IsBlocked = false
         },
-        // For Update
+        // For Edit
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForUpdate,
             Name = TestDataConstants.SellerNameForUpdate,
-            Description = "Sample Description for Update",
+            Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForUpdate.ToUpper(),
             OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForUpdateSeller,
@@ -210,7 +210,7 @@ public static class TestData
         {
             Id = TestDataConstants.SellerIdForGetting1,
             Name = TestDataConstants.SellerNameForGetting1,
-            Description = "Sample Description for Update",
+            Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting1.ToUpper(),
             OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller1,
@@ -220,7 +220,7 @@ public static class TestData
         {
             Id = TestDataConstants.SellerIdForGetting2,
             Name = TestDataConstants.SellerNameForGetting2,
-            Description = "Sample Description for Update",
+            Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting2.ToUpper(),
             OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller2,
@@ -230,7 +230,7 @@ public static class TestData
         {
             Id = TestDataConstants.SellerIdForGetting3,
             Name = TestDataConstants.SellerNameForGetting3,
-            Description = "Sample Description for Update",
+            Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting3.ToUpper(),
             OccuredAt = DateTime.UtcNow,
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller3,
@@ -240,7 +240,7 @@ public static class TestData
         {
             Id = TestDataConstants.SellerIdForGetting4,
             Name = TestDataConstants.SellerNameForGetting4,
-            Description = "Sample Description for Update",
+            Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting4.ToUpper(),
             OccuredAt = DateTime.UtcNow.AddHours(1),
             ApplicationUserId = TestDataConstants.UserIdForGettingSeller4,
@@ -332,7 +332,7 @@ public static class TestData
     
     /*public static readonly IList<City> Cities = new[]
     {
-        // For Update
+        // For Edit
         new City()
         {
             Id = TestDataConstants.CityIdForUpdate,
@@ -342,7 +342,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CityNameRuForUpdate.ToUpper(),
             CountryId = TestDataConstants.CountryIdForUpdate
         },
-        // For Update
+        // For Edit
         new City()
         {
             Id = TestDataConstants.CityIdForDelete,
@@ -634,7 +634,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        // For Update
+        // For Edit
         new ProductEntity()
         {
             Id = TestDataConstants.ProductIdForUpdate,
@@ -703,7 +703,7 @@ public static class TestData
 
     public static readonly IList<ProductVariantEntity> ProductVariants = new[]
     {
-        // For Update
+        // For Edit
         new ProductVariantEntity()
         {
             Id = TestDataConstants.ProductVariantIdForUpdate,
@@ -835,7 +835,7 @@ public static class TestData
 
     public static readonly IList<ProductClothEntity> ProductClothes = new[]
     {
-        // For Update
+        // For Edit
         new ProductClothEntity()
         {
             Id = TestDataConstants.ProductClothIdForUpdate,
@@ -913,7 +913,7 @@ public static class TestData
 
     public static readonly IList<ProductAttributeEntity> ProductAttributes = new[]
     {
-        // For Update
+        // For Edit
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductAttributeIdForUpdate,
@@ -983,7 +983,7 @@ public static class TestData
 
     public static readonly IList<ProductDetailEntity> ProductDetails = new[]
     {
-        // For Update
+        // For Edit
         new ProductDetailEntity()
         {
             Id = TestDataConstants.ProductDetailIdForUpdate,
@@ -1093,7 +1093,7 @@ public static class TestData
 
     public static readonly IList<ProductClothSizeEntity> ProductClothSizes = new[]
     {
-        // For Update
+        // For Edit
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForUpdate,
@@ -1218,7 +1218,7 @@ public static class TestData
 
     public static readonly IList<ProductPriceHistoryEntity> PriceHistories = new[]
     {
-        // For Update
+        // For Edit
         new ProductPriceHistoryEntity()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForUpdate,
@@ -1332,7 +1332,7 @@ public static class TestData
 
     public static readonly IList<ProductImageEntity> ProductImages = new[]
     {
-        // For Update
+        // For Edit
         new ProductImageEntity()
         {
             Id = TestDataConstants.ProductImageIdForUpdate,
@@ -1455,7 +1455,7 @@ public static class TestData
     
     public static readonly IList<SellerImageEntity> SellerImages = new[]
     {
-        // For Update
+        // For Edit
         new SellerImageEntity()
         {
             Id = TestDataConstants.SellerImageIdForUpdate,

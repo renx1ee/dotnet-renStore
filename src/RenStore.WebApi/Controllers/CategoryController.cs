@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RenStore.Application.Dto.CategoryEntity;
 using RenStore.Application.Features.CategoryEntity.Commands.Create;
 using RenStore.Application.Features.CategoryEntity.Commands.Delete;
-using RenStore.Application.Features.CategoryEntity.Commands.Update;
+using RenStore.Application.Features.CategoryEntity.Commands.Edit;
 using RenStore.Application.Features.CategoryEntity.Queries.GetAllCategories;
 using RenStore.Application.Features.CategoryEntity.Queries.GetCategoryById;
 using RenStore.Application.Features.CategoryEntity.Queries.GetCategoryByName;

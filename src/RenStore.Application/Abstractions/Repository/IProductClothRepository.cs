@@ -18,7 +18,7 @@ public interface IProductClothRepository
         ProductClothEntity cloth,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product cloth in the database.
+    /// Edit an existing product cloth in the database.
     /// </summary>
     /// <param name="cloth">The product cloth with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

@@ -13,7 +13,7 @@ public class SubCategoryRepositoryTests
     private ApplicationDbContext _context;
     private SubCategoryRepository _subCategoryRepository;
 
-    #region Create Update Delete
+    #region Create Edit Delete
 
     [Fact]
     public async Task CreateSubCategoryAsync_Success_Test()

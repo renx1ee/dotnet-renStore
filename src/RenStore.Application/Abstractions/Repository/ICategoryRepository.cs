@@ -21,7 +21,7 @@ public interface ICategoryRepository
     /// <returns>ID of the created entity.</returns>
     Task<int> CreateAsync(CategoryEntity category, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing category in the database.
+    /// Edit an existing category in the database.
     /// </summary>
     /// <param name="category">The category entity with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

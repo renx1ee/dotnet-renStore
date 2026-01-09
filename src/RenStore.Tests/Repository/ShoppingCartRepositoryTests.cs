@@ -13,7 +13,7 @@ public class /*#1#ShoppingCartRepositoryTests
     private ApplicationDbContext _context;
     private ShoppingCartRepository _shoppingCartRepository;
 
-    #region Create Update Delete
+    #region Create Edit Delete
 
     [Fact]
     public async Task CreateShoppingCartAsync_Success_Test()

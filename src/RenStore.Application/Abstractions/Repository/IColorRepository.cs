@@ -16,7 +16,7 @@ public interface IColorRepository
     /// <returns>ID of the created entity.</returns>
     Task<int> CreateAsync(ColorEntity color, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing color in the database.
+    /// Edit an existing color in the database.
     /// </summary>
     /// <param name="color">The color entity with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

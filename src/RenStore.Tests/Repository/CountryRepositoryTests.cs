@@ -15,7 +15,7 @@ public class CountryRepositoryTests : IDisposable
     private ApplicationDbContext _context;
     private CountryRepository _countryRepository;
 
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateCountryAsync_Success_Test()
     {

@@ -17,7 +17,7 @@ public class Address
     public string ApartmentNumber { get; private set; } = string.Empty;
     public string Entrance { get; private set; } = string.Empty;
     public int? Floor { get; private set; }
-    public string FullAddressEn => _fullAddress.English; 
+    public string FullAddressEn => _fullAddress.English;
     public string FullAddressRu => _fullAddress.Russian;  
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; } 
@@ -25,9 +25,9 @@ public class Address
     public bool IsDeleted { get; private set; }
     public Guid ApplicationUserId { get; private set; }
     public int CountryId { get; private set; }
-    private Country? _country { get; }
+    private Country? _country { get; set; }
     public int CityId { get; private set; }
-    private City? _city { get; }
+    private City? _city { get; set; }
     
     private Address() { }
     
@@ -41,52 +41,65 @@ public class Address
         string buildingNumber,
         string? apartmentNumber,
         string? entrance,
-        int? floor,
-        int countryId,
-        int cityId,
+        int floor,
+        Country country,
+        City city,
         Guid userId,
         DateTimeOffset now)
     {
-        if (string.IsNullOrEmpty(houseCode))
+        if (string.IsNullOrWhiteSpace(houseCode))
             throw new DomainException("House Code cannot be null or empty!");
         
-        if (string.IsNullOrEmpty(street))
+        if (string.IsNullOrWhiteSpace(street))
             throw new DomainException("Street cannot be null or empty!");
         
-        if (string.IsNullOrEmpty(buildingNumber))
+        if (string.IsNullOrWhiteSpace(buildingNumber))
             throw new DomainException("Building Number cannot be null or empty!");
         
-        if (countryId <= 0)
+        if(country == null)
+            throw new DomainException("Country cannot be null.");
+        
+        if (country.Id <= 0)
             throw new DomainException("Country ID cannot be less 1.");
         
-        if (cityId <= 0)
-            throw new DomainException("Country ID cannot be  less 1.");
+        if (country.IsDeleted)
+            throw new DomainException("Country cannot be deleted.");
+        
+        if(city == null)
+            throw new DomainException("City cannot be null.");
+        
+        if (city.Id <= 0)
+            throw new DomainException("City ID cannot be  less 1.");
+        
+        if (city.IsDeleted)
+            throw new DomainException("City cannot be deleted.");
         
         if (userId == Guid.Empty)
             throw new DomainException("User ID cannot be less 1.");
         
-        var result =  new Address()
+        var result = new Address()
         {
             Id = Guid.NewGuid(),
-            HouseCode = houseCode,
-            Street = street,
-            BuildingNumber = buildingNumber,
-            Floor = floor ?? 1,
-            CountryId = countryId,
-            CityId = cityId,
-            ApplicationUserId = userId,
+            HouseCode = houseCode.Trim(),
+            Street = street.Trim(),
+            BuildingNumber = buildingNumber.Trim(),
+            Floor = floor,
             CreatedAt = now,
-            IsDeleted = false
+            IsDeleted = false,
+            CountryId = country.Id,
+            CityId = city.Id,
+            ApplicationUserId = userId,
+            _country = country,
+            _city = city
         };
 
-        if (!string.IsNullOrEmpty(apartmentNumber))
-            result.ApartmentNumber = apartmentNumber;
+        if (!string.IsNullOrWhiteSpace(apartmentNumber))
+            result.ApartmentNumber = apartmentNumber.Trim();
         
-        if (!string.IsNullOrEmpty(entrance))
-            result.Entrance = entrance;
+        if (!string.IsNullOrWhiteSpace(entrance))
+            result.Entrance = entrance.Trim();
 
-        
-
+        result.BuildFullAddress();
         return result;
     }
     
@@ -95,17 +108,19 @@ public class Address
     /// Cannot be called with deleted address.
     /// </summary>
     /// <exception cref="DomainException">if the city is marked as deleted, or any of the input parameters are null or empty, or any IDs are less 0.</exception>
-    public void Update(
+    public void Edit(
+        DateTimeOffset now,
         string houseCode,
         string street,
         string buildingNumber,
-        string? apartmentNumber,
-        string? entrance,
-        int floor,
-        DateTimeOffset now)
+        string? apartmentNumber = null,
+        string? entrance = null,
+        int? floor = null)
     {
-        if (IsDeleted)
-            throw new DomainException("Cannot update deleted address");
+        ValidateAddress(
+            houseCode: houseCode, 
+            street: street, 
+            buildingNumber: buildingNumber);
         
         HouseCode = houseCode;
         Street = street;
@@ -113,13 +128,13 @@ public class Address
         Floor = floor;
         UpdatedAt = now;
         
-        if(!string.IsNullOrEmpty(apartmentNumber))
-            ApartmentNumber = apartmentNumber;
+        if(!string.IsNullOrWhiteSpace(apartmentNumber))
+            ApartmentNumber = apartmentNumber.Trim();
         
-        if(!string.IsNullOrEmpty(entrance))
-            Entrance = entrance;
+        if(!string.IsNullOrWhiteSpace(entrance))
+            Entrance = entrance.Trim();
         
-        UpdateFullAddress();
+        BuildFullAddress();
     }
     
     /// <summary>
@@ -135,8 +150,8 @@ public class Address
         IsDeleted = true;
         UpdatedAt = now;
     }
-
-    private void UpdateFullAddress()
+    
+    private void BuildFullAddress()
     {
         _fullAddress = FullMultiplyAddress.BuildFull(
             country: _country,
@@ -147,5 +162,28 @@ public class Address
             apartmentNumber: ApartmentNumber,
             entrance: Entrance,
             floor: Floor);
+    }
+
+    private void EnsureNotDeleted()
+    {
+        if (IsDeleted)
+            throw new DomainException("Cannot update deleted address");
+    }
+
+    private void ValidateAddress(
+        string houseCode,
+        string street,
+        string buildingNumber)
+    {
+        EnsureNotDeleted();
+        
+        if (string.IsNullOrWhiteSpace(houseCode))
+            throw new DomainException("House Code cannot be null or empty!");
+        
+        if (string.IsNullOrWhiteSpace(street))
+            throw new DomainException("Street cannot be null or empty!");
+        
+        if (string.IsNullOrWhiteSpace(buildingNumber))
+            throw new DomainException("Building Number cannot be null or empty!");
     }
 }

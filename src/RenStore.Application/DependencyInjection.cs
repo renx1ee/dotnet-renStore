@@ -4,7 +4,7 @@ using FluentValidation;
 using RenStore.Persistence.Features.Review.Commands.Create;
 using RenStore.Persistence.Features.Review.Commands.Delete;
 using RenStore.Persistence.Features.Review.Commands.Moderate;
-using RenStore.Persistence.Features.Review.Commands.Update;
+using RenStore.Persistence.Features.Review.Commands.Edit;
 
 namespace RenStore.Application;
 

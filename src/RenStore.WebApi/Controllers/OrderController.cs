@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RenStore.Application.Dto.Order;
 using RenStore.Application.Features.DeliveryOrders.Commands.Create;
 using RenStore.Application.Features.DeliveryOrders.Commands.Delete;
-using RenStore.Application.Features.DeliveryOrders.Commands.Update;
+using RenStore.Application.Features.DeliveryOrders.Commands.Edit;
 using RenStore.Application.Features.DeliveryOrders.Queries.GetAll;
 using RenStore.Application.Features.DeliveryOrders.Queries.GetById;
 using RenStore.Application.Features.DeliveryOrders.Queries.GetByProductId;

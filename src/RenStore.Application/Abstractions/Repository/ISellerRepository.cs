@@ -16,7 +16,7 @@ public interface ISellerRepository
     /// <returns>ID of the created entity.</returns>
     Task<long> CreateAsync(SellerEntity seller, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing seller in the database.
+    /// Edit an existing seller in the database.
     /// </summary>
     /// <param name="seller">The seller entity with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

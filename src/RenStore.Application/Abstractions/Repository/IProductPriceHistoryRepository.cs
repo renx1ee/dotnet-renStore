@@ -18,7 +18,7 @@ public interface IProductPriceHistoryRepository
         ProductPriceHistoryEntity priceHistory,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product price history in the database.
+    /// Edit an existing product price history in the database.
     /// </summary>
     /// <param name="priceHistory">The product price history with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

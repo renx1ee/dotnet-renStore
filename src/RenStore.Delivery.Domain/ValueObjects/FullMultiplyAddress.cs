@@ -31,7 +31,7 @@ public class FullMultiplyAddress
             throw new ArgumentNullException(nameof(city));
 
         if (string.IsNullOrWhiteSpace(street))
-            throw new ArgumentNullException(nameof(street));
+            throw new ArgumentNullException(nameof(street)); 
         
         if (string.IsNullOrWhiteSpace(buildingNumber))
             throw new ArgumentNullException(nameof(buildingNumber));

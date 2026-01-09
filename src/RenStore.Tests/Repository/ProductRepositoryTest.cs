@@ -20,7 +20,7 @@ public class ProductRepositoryTest
         this.testOutputHelper = testOutputHelper;
     }
 
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductAsync_Success_Test()
     {

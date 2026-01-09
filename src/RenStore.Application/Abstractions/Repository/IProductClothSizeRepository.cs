@@ -18,7 +18,7 @@ public interface IProductClothSizeRepository
         ProductClothSizeEntity clothSize,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product cloth size in the database.
+    /// Edit an existing product cloth size in the database.
     /// </summary>
     /// <param name="clothSize">The product cloth size with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

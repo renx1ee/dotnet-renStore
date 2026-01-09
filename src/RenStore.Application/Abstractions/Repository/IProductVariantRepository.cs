@@ -18,7 +18,7 @@ public interface IProductVariantRepository
         ProductVariantEntity productVariant,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product variant in the database.
+    /// Edit an existing product variant in the database.
     /// </summary>
     /// <param name="productVariant">The product variant with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

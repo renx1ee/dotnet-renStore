@@ -6,7 +6,7 @@ using RenStore.Application.Dto.Product;
 using RenStore.Application.Features.Product.Commands.Create.Clothes;
 using RenStore.Application.Features.Product.Commands.Create.Shoes;
 using RenStore.Application.Features.Product.Commands.Delete;
-using RenStore.Application.Features.Product.Commands.Update;
+using RenStore.Application.Features.Product.Commands.Edit;
 using RenStore.Application.Features.Product.Queries.GetByArticle;
 using RenStore.Application.Features.Product.Queries.GetById;
 using RenStore.Application.Features.Product.Queries.GetByName;

@@ -1,6 +1,6 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Delivery.Tests.UnitTests.Domain.Entities.City;
+namespace RenStore.Delivery.Tests.UnitTests.Domain.Entities;
 
 public sealed class CityTests
 {

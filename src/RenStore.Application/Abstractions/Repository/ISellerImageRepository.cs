@@ -16,7 +16,7 @@ public interface ISellerImageRepository
     /// <returns>ID of the created entity.</returns>
     Task<Guid> CreateAsync(SellerImageEntity image, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing image in the database.
+    /// Edit an existing image in the database.
     /// </summary>
     /// <param name="image">The image entity with the updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

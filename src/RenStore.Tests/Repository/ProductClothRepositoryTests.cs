@@ -14,7 +14,7 @@ public class ProductClothRepositoryTests
 {
     private ApplicationDbContext _context;
     private ProductClothRepository _clothRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductClothAsync_Success_Test()
     {

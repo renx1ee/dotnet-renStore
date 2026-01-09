@@ -19,7 +19,7 @@ public interface IProductRepository
         ProductEntity product,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product in the database.
+    /// Edit an existing product in the database.
     /// </summary>
     /// <param name="product">The product with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

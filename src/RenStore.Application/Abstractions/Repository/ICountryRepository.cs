@@ -19,7 +19,7 @@ public interface ICountryRepository
     /// <returns>ID of the created entity.</returns>
     Task<int> CreateAsync(Country country, CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing country in the database.
+    /// Edit an existing country in the database.
     /// </summary>
     /// <param name="country">The country entity with the updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

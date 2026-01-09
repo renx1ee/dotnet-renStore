@@ -12,7 +12,7 @@ public class ProductAttributeRepositoryTest
 {
     private ApplicationDbContext _context;
     private ProductAttributeRepository _productAttributeRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductAttributeAsync_Success_Test()
     {

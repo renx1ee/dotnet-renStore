@@ -12,7 +12,7 @@ public class ProductPriceHistoryRepositoryTests
 {
     private ApplicationDbContext _context;
     private ProductPriceHistoryRepository _productPriceHistoryRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductPriceHistoryAsync_Success_Test()
     {

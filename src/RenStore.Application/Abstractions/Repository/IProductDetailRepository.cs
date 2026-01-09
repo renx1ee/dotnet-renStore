@@ -18,7 +18,7 @@ public interface IProductDetailRepository
         ProductDetailEntity detail,
         CancellationToken cancellationToken);
     /// <summary>
-    /// Update an existing product detail in the database.
+    /// Edit an existing product detail in the database.
     /// </summary>
     /// <param name="detail">The product detail with updated values.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>

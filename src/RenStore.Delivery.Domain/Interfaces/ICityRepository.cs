@@ -23,16 +23,16 @@ public interface ICityRepository
     /// </summary>
     /// <param name="cities">Collection of cities to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
-    
     Task AddRangeAsync(
         IReadOnlyCollection<City> cities,
         CancellationToken cancellationToken);
+    
     /// <summary>
     /// Remove a city from the database.
     /// </summary>
     /// <param name="city">City entity to remove.</param>
-    
     void Remove(City city);
+    
     /// <summary>
     /// Remove range of cities from the database.
     /// </summary>

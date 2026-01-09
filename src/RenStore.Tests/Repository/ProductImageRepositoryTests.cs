@@ -12,7 +12,7 @@ public class ProductImageRepositoryTests
 {
     private ApplicationDbContext _context;
     private ProductImageRepository _productImageRepository;
-    #region Create Update Delete
+    #region Create Edit Delete
     [Fact]
     public async Task CreateProductImageAsync_Success_Test()
     {
