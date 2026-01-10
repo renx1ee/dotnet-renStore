@@ -19,7 +19,7 @@ public class SortingCenter
         Guid addressId,
         DateTimeOffset now)
     {
-        if (string.IsNullOrEmpty(code))
+        if (string.IsNullOrWhiteSpace(code) || code.Length <= 1)
             throw new DomainException("Code cannot be null or empty.");
 
         if (addressId == Guid.Empty)

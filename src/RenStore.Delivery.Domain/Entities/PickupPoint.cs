@@ -6,6 +6,7 @@ public class PickupPoint
 {
     public long Id { get; private set; }
     public string Code { get; private set; } = string.Empty;
+    // TODO: сделать статусы
     public bool IsDeleted { get; private set; }
     public Guid AddressId { get; private set; }
     private Address? _address { get; }
@@ -19,7 +20,7 @@ public class PickupPoint
         Guid addressId,
         DateTimeOffset now)
     {
-        if (string.IsNullOrEmpty(code))
+        if (string.IsNullOrWhiteSpace(code) || code.Length <=1 )
             throw new DomainException("Code cannot be null or empty.");
 
         if (addressId == Guid.Empty)

@@ -15,13 +15,13 @@ public class DeliveryOrder
     public DateTimeOffset? DeliveredAt { get; private set; } = null;
     public DateTimeOffset? DeletedAt { get; private set; } = null;
     public DeliveryStatus Status { get; private set; }
-    public Guid OrderId { get; private set; } // TODO:
+    public Guid OrderId { get; private set; }
     public int DeliveryTariffId { get; private set; }
     private DeliveryTariff _tariff { get; }
     public long? CurrentSortingCenterId { get; private set; }
     private SortingCenter? _currentSortingCenter { get; }
-    public long? DestinationSortingCenterId { get; private set; } // TODO: не добавлен в конфиг как FK
-    private SortingCenter? _destinationSortingCenter { get; } // TODO: не добавлен в конфиг как FK
+    public long? DestinationSortingCenterId { get; private set; } 
+    private SortingCenter? _destinationSortingCenter { get; } 
     public long? PickupPointId { get; private set; }
     private PickupPoint _pickupPoint { get; }
     public IReadOnlyCollection<DeliveryTracking> TrackingHistory => _trackingHistory;
@@ -48,7 +48,8 @@ public class DeliveryOrder
             Id = Guid.NewGuid(),
             OrderId = orderId,
             DeliveryTariffId = deliveryTariffId,
-            Status = DeliveryStatus.Placed
+            Status = DeliveryStatus.Placed,
+            CreatedAt = now
         };
         
         order.AddTracking(status: DeliveryStatus.Placed, now: now);
@@ -79,9 +80,12 @@ public class DeliveryOrder
     /// <exception cref="DomainException"></exception>
     public void ShipToSortingCenter(long toSortingCenterId, DateTimeOffset now)
     {
-        if (Status != DeliveryStatus.AssemblingBySeller ||
+        if (Status != DeliveryStatus.AssemblingBySeller &&
             Status != DeliveryStatus.Sorted)
             throw new DomainException("Delivery cannot be send to sorting center.");
+        
+        if(toSortingCenterId <= 0)
+            throw new DomainException("Sorting Center Id cannot be 0 or less.");
 
         DestinationSortingCenterId = toSortingCenterId;
         CurrentSortingCenterId = null;
@@ -98,7 +102,7 @@ public class DeliveryOrder
     public void MarkAsArrivedAtSortingCenter(long sortingCenterId, DateTimeOffset now)
     {
         if (Status != DeliveryStatus.EnRouteToSortingCenter) 
-            throw new DomainException("Delivery cannot be send to sorting center.");
+            throw new DomainException("Delivery cannot arrive to sorting center.");
 
         if (DestinationSortingCenterId != sortingCenterId)
             throw new DomainException("Wrong sorting center");
@@ -148,6 +152,9 @@ public class DeliveryOrder
         
         if (Status != DeliveryStatus.Sorted)
             throw new DomainException("Cannot mark delivery as en route to pickup point.");
+        
+        if(pickupPoint <= 0)
+            throw new DomainException("Pickup Point Id cannot be 0 or less.");
 
         PickupPointId = pickupPoint;
         
@@ -159,12 +166,17 @@ public class DeliveryOrder
     /// </summary>
     /// <param name="now"></param>
     /// <exception cref="DomainException"></exception>
-    public void MarkAsAwaitingPickup(DateTimeOffset now)
+    public void MarkAsAwaitingPickup(
+        long pickupPoint, 
+        DateTimeOffset now)
     {
         EnsureNotDeleted();
         
         if (Status != DeliveryStatus.EnRouteToPickupPoint)
             throw new DomainException("Cannot mark delivery as awaiting pickup.");
+        
+        if(pickupPoint != PickupPointId)
+            throw new DomainException("Wrong Pickup Point!");
         
         UpdateStatus(newStatus: DeliveryStatus.AwaitingPickup, now: now);
     }
@@ -184,7 +196,10 @@ public class DeliveryOrder
         if (Status != DeliveryStatus.AwaitingPickup)
             throw new DomainException("Cannot mark delivery as Delivered.");
         
-        UpdateStatus(newStatus: DeliveryStatus.Delivered, now: now);
+        UpdateStatus(
+            newStatus: DeliveryStatus.Delivered, 
+            now: now);
+        
         DeliveredAt = now;
     }
 
@@ -200,6 +215,7 @@ public class DeliveryOrder
         
         UpdateStatus(newStatus: DeliveryStatus.Returned, now: now);
     }
+    
     /// <summary>
     /// Soft delete the delivery order.
     /// Once deleted the country cannot be modified.
@@ -208,8 +224,7 @@ public class DeliveryOrder
     /// <exception cref="DomainException">Throw if delivery order already deleted.</exception>
     public void Delete(DateTimeOffset now)
     {
-        if (Status == DeliveryStatus.IsDeleted)
-            throw new DomainException("Cannot deleted already deleted delivery order.");
+        EnsureNotDeleted("Cannot deleted already deleted delivery order.");
         
         UpdateStatus(newStatus: DeliveryStatus.IsDeleted, now: now);
         

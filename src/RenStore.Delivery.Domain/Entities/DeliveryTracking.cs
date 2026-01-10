@@ -14,6 +14,8 @@ public class DeliveryTracking
     public DateTimeOffset? DeletedAt { get; private set; }
     public long? SortingCenterId { get; private set; }
     private SortingCenter _sortingCenter { get;  }
+    public long? PickupPointId { get; private set; }
+    private PickupPoint _pickupPoint { get;  } 
     public Guid DeliveryOrderId { get; private set; }
     private DeliveryOrder _deliveryOrder { get; }
     
@@ -25,8 +27,12 @@ public class DeliveryTracking
         DateTimeOffset occurredAt,
         string? notes,
         Guid deliveryOrderId,
-        long? sortingCenterId = null)
+        long? sortingCenterId = null,
+        long? pickupPointId = null)
     {
+        if (deliveryOrderId == Guid.Empty)
+            throw new DomainException("Delivery Id cannot be Guid Empty.");
+        
         var tracking = new DeliveryTracking()
         {       
             Id = Guid.NewGuid(),
@@ -35,16 +41,26 @@ public class DeliveryTracking
             DeliveryOrderId = deliveryOrderId,
         };
         
-        if(!string.IsNullOrEmpty(currentLocation))
+        if(!string.IsNullOrWhiteSpace(currentLocation))
             tracking.CurrentLocation = currentLocation;
         
-        if(!string.IsNullOrEmpty(notes))
+        if(!string.IsNullOrWhiteSpace(notes))
             tracking.Notes = notes;
-        
-        if (sortingCenterId != null &&
-            sortingCenterId != 0)
+
+        if (sortingCenterId.HasValue)
         {
+            if (sortingCenterId <= 0)
+                throw new DomainException("");
+            
             tracking.SortingCenterId = sortingCenterId;
+        }
+
+        if (pickupPointId.HasValue)
+        {
+            if (pickupPointId <= 0)
+                throw new DomainException("");
+            
+            tracking.PickupPointId = pickupPointId;
         }
 
         return tracking;

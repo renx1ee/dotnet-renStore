@@ -4,7 +4,6 @@ namespace RenStore.Delivery.Tests.UnitTests.Domain.Entities;
 
 public sealed class CityTests
 {
-    
     private readonly Delivery.Domain.Entities.Country _coutnry;
 
     public CityTests()

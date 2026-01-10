@@ -58,5 +58,11 @@ public class SortingCenterConfiguration : IEntityTypeConfiguration<SortingCenter
             .WithMany()
             .HasForeignKey("AddressId")
             .IsRequired(false);
+        
+        builder
+            .HasIndex(x => x.Code)
+            .HasMethod("btree")
+            .HasDatabaseName("idx_sorting_center_code_btree")
+            .IsUnique();
     }
 }

@@ -3,10 +3,10 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Tests.UnitTests.Domain.Entities;
 
-public class PickupPointTests
+public class SortingCenterTests
 {
     [Fact]
-    public async Task CreatePickupPoint_Success_Test()
+    public async Task CreateSortingCenter_Success_Test()
     {
         // Arrange
         string code = "QWERTy1";
@@ -14,7 +14,7 @@ public class PickupPointTests
         var now = DateTimeOffset.UtcNow;
         
         // Act
-        var result = PickupPoint.Create(
+        var result = SortingCenter.Create(
             code: code,
             addressId: addressId,
             now: now);
@@ -30,7 +30,7 @@ public class PickupPointTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("1")]
-    public async Task CreatePickupPoint_FailOnWrongCode_Test(
+    public async Task CreateSortingCenter_FailOnWrongCode_Test(
         string code)
     {
         // Arrange
@@ -39,14 +39,14 @@ public class PickupPointTests
 
         // Act & Assert
         Assert.Throws<DomainException>(
-            () => PickupPoint.Create(
+            () => SortingCenter.Create(
                 code: code,
                 addressId: addressId,
                 now: now));
     }
     
     [Fact]
-    public async Task CreatePickupPoint_FailOnWrongAddressId_Test()
+    public async Task CreateSortingCenter_FailOnWrongAddressId_Test()
     {
         // Arrange
         string code = "faewfew";
@@ -55,14 +55,14 @@ public class PickupPointTests
 
         // Act & Assert
         Assert.Throws<DomainException>(
-            () => PickupPoint.Create(
+            () => SortingCenter.Create(
                 code: code,
                 addressId: addressId,
                 now: now));
     }
     
     [Fact]
-    public async Task DeletePickupPoint_Success_Test()
+    public async Task DeleteSortingCenter_Success_Test()
     {
         // Arrange
         string code = "QWERTy1";
@@ -70,7 +70,7 @@ public class PickupPointTests
         var now = DateTimeOffset.UtcNow;
         
         // Act
-        var result = PickupPoint.Create(
+        var result = SortingCenter.Create(
             code: code,
             addressId: addressId,
             now: now);
@@ -87,7 +87,7 @@ public class PickupPointTests
     }
     
     [Fact]
-    public async Task DeletePickupPoint_FailOnAlreadyDeleted_Test()
+    public async Task DeleteSortingCenter_FailOnAlreadyDeleted_Test()
     {
         // Arrange
         string code = "QWERTy1";
@@ -95,7 +95,7 @@ public class PickupPointTests
         var now = DateTimeOffset.UtcNow;
         
         // Act
-        var result = PickupPoint.Create(
+        var result = SortingCenter.Create(
             code: code,
             addressId: addressId,
             now: now);

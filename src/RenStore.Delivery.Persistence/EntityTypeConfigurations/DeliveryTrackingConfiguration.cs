@@ -69,9 +69,21 @@ public class DeliveryTrackingConfiguration : IEntityTypeConfiguration<DeliveryTr
             .IsRequired(false);
         
         builder
+            .Property(x => x.PickupPointId)
+            .HasColumnName("pickup_point_id")
+            .HasColumnType("bigint")
+            .IsRequired(false);
+        
+        builder
             .HasOne(typeof(SortingCenter), "_sortingCenter")
             .WithMany()
             .HasForeignKey("SortingCenterId")
+            .IsRequired(false);
+        
+        builder
+            .HasOne(typeof(PickupPoint), "_pickupPoint")
+            .WithMany()
+            .HasForeignKey("PickupPointId")
             .IsRequired(false);
 
         builder

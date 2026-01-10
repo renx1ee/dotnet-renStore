@@ -58,5 +58,11 @@ public class PickupPointConfiguration : IEntityTypeConfiguration<PickupPoint>
             .WithMany()
             .HasForeignKey("AddressId")
             .IsRequired(false);
+        
+        builder
+            .HasIndex(x => x.Code)
+            .HasMethod("btree")
+            .HasDatabaseName("idx_pickup_point_code_btree")
+            .IsUnique();
     }
 }
