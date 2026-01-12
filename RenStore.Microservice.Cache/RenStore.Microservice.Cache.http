@@ -1,0 +1,6 @@
+@RenStore.Microservice.Cache_HostAddress = http://localhost:5197
+
+GET {{RenStore.Microservice.Cache_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

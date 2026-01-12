@@ -1,5 +1,6 @@
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Tests.UnitTests.Domain.Entities;
 
@@ -48,25 +49,16 @@ public class DeliveryTrackingTests
         string notes = "fwefwa";
         var now = DateTimeOffset.UtcNow;
         var deliveryOrderId = Guid.NewGuid();
-        
-        // Act
-        var result = DeliveryTracking.Create(
-            currentLocation: currentLocation,
-            status: DeliveryStatus.Delayed,
-            occurredAt: now,
-            notes: notes,
-            deliveryOrderId: deliveryOrderId,
-            sortingCenterId: sortingCenterId,
-            pickupPointId: pickupPointId);
 
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(currentLocation, result.CurrentLocation);
-        Assert.Equal(notes, result.Notes);
-        Assert.Equal(now, result.OccurredAt);
-        Assert.Equal(deliveryOrderId, result.DeliveryOrderId);
-        Assert.Equal(sortingCenterId, result.SortingCenterId);
-        Assert.Equal(pickupPointId, result.PickupPointId);
-        Assert.Equal(DeliveryStatus.Delayed, result.Status);
+        // Act & Assert
+        Assert.Throws<DomainException>(() => 
+            DeliveryTracking.Create(
+                currentLocation: currentLocation,
+                status: DeliveryStatus.Delayed,
+                occurredAt: now,
+                notes: notes,
+                deliveryOrderId: deliveryOrderId,
+                sortingCenterId: sortingCenterId,
+                pickupPointId: pickupPointId));
     }
 }

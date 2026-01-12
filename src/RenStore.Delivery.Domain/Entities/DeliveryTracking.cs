@@ -50,7 +50,7 @@ public class DeliveryTracking
         if (sortingCenterId.HasValue)
         {
             if (sortingCenterId <= 0)
-                throw new DomainException("");
+                throw new DomainException("Sorting Center Id cannot be less 0.");
             
             tracking.SortingCenterId = sortingCenterId;
         }
@@ -58,7 +58,7 @@ public class DeliveryTracking
         if (pickupPointId.HasValue)
         {
             if (pickupPointId <= 0)
-                throw new DomainException("");
+                throw new DomainException("Pickup Point Id cannot be less 0.");
             
             tracking.PickupPointId = pickupPointId;
         }
