@@ -133,9 +133,9 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
             .IsRequired();
         
         builder
-            .HasOne(typeof(City), "_city")
-            .WithMany()
-            .HasForeignKey(nameof(Address.CityId))
+            .HasOne<City>("_city")
+            .WithMany(x => x.Addresses)
+            .HasForeignKey(x => x.CityId)
             .IsRequired(false);
         
         builder

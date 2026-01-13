@@ -45,7 +45,7 @@ public class DeliveryTrackingTests
         int pickupPointId)
     {
         // Arrange
-        string currentLocation = "fwefew";
+        string currentLocation = "fweffewew";
         string notes = "fwefwa";
         var now = DateTimeOffset.UtcNow;
         var deliveryOrderId = Guid.NewGuid();
@@ -60,5 +60,56 @@ public class DeliveryTrackingTests
                 deliveryOrderId: deliveryOrderId,
                 sortingCenterId: sortingCenterId,
                 pickupPointId: pickupPointId));
+    }
+
+    [Fact]
+    public async Task DeleteDeliveryTracking_Success_Test()
+    {
+        // Arrange
+        string currentLocation = "fwefew";
+        string notes = "fwefwa";
+        var now = DateTimeOffset.UtcNow;
+        var deliveryOrderId = Guid.NewGuid();
+        var sortingCenterId = 1;
+        
+        // Act
+        var result = DeliveryTracking.Create(
+            currentLocation: currentLocation,
+            status: DeliveryStatus.Delayed,
+            occurredAt: now,
+            notes: notes,
+            deliveryOrderId: deliveryOrderId,
+            sortingCenterId: sortingCenterId);
+        
+        result.Delete(now);
+
+        // Assert
+        Assert.True(result.IsDeleted);
+        Assert.Equal(result.DeletedAt, now);
+    }
+    
+    [Fact]
+    public async Task DeleteDeliveryTracking_FailOnAlreadyDeleted_Test()
+    {
+        // Arrange
+        string currentLocation = "fwefew";
+        string notes = "fwefwa";
+        var now = DateTimeOffset.UtcNow;
+        var deliveryOrderId = Guid.NewGuid();
+        var sortingCenterId = 1;
+        
+        // Act
+        var result = DeliveryTracking.Create(
+            currentLocation: currentLocation,
+            status: DeliveryStatus.Delayed,
+            occurredAt: now,
+            notes: notes,
+            deliveryOrderId: deliveryOrderId,
+            sortingCenterId: sortingCenterId);
+        
+        result.Delete(now);
+
+        // Assert
+        Assert.Throws<DomainException>(() => result.Delete(now));
     }
 }
