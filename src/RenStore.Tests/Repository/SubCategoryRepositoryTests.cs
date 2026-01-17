@@ -22,7 +22,7 @@ public class SubCategoryRepositoryTests
         _subCategoryRepository = new SubCategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int subCategoryId = 1535636;
-        var subCategory = new SubCategoryEntity()
+        var subCategory = new SubCategory()
         {
             Id = subCategoryId,
             Name = "Test",
@@ -31,7 +31,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         };
         // Act
@@ -49,7 +49,7 @@ public class SubCategoryRepositoryTests
         Assert.Equal(subCategory.NormalizedNameRu, result.NormalizedNameRu);
         Assert.Equal(subCategory.Description, result.Description);
         Assert.Equal(subCategory.IsActive, result.IsActive);
-        Assert.Equal(subCategory.CreatedDate, result.CreatedDate);
+        Assert.Equal(subCategory.CreatedAt, result.CreatedAt);
     }
     
     [Fact]
@@ -59,7 +59,7 @@ public class SubCategoryRepositoryTests
         _subCategoryRepository = new SubCategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int categoryId = 15356;
-        var category = new SubCategoryEntity()
+        var category = new SubCategory()
         {
             Id = categoryId,
             Name = TestDataConstants.SubCategoryNameForGetting1,
@@ -68,7 +68,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         };
         // Act & Assert
@@ -86,7 +86,7 @@ public class SubCategoryRepositoryTests
         _subCategoryRepository = new SubCategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int categoryId = 15356;
-        var category = new SubCategoryEntity()
+        var category = new SubCategory()
         {
             Id = categoryId,
             Name = TestDataConstants.SubCategoryNameForGetting1,
@@ -95,7 +95,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = 634737
         };
         // Act & Assert
@@ -113,7 +113,7 @@ public class SubCategoryRepositoryTests
         _subCategoryRepository = new SubCategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int categoryId = 15356;
-        var category = new SubCategoryEntity()
+        var category = new SubCategory()
         {
             Id = categoryId,
             Name = "wfkwej",
@@ -122,7 +122,7 @@ public class SubCategoryRepositoryTests
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
         };
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async () => 
@@ -205,7 +205,7 @@ public class SubCategoryRepositoryTests
         _subCategoryRepository = new SubCategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int wrongId = 1535656;
-        var subCategory = new SubCategoryEntity()
+        var subCategory = new SubCategory()
         {
             Id = wrongId,
         };

@@ -26,7 +26,7 @@ public class SellerComplainRepositoryTests
             Id = Guid.NewGuid(),
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForUpdate,
             UserId = TestDataConstants.UserIdForGettingSeller4
@@ -41,7 +41,7 @@ public class SellerComplainRepositoryTests
         Assert.NotNull(result);
         Assert.Equal(complain.Id, result.Id);
         Assert.Equal(complain.Comment, result.Comment);
-        Assert.Equal(complain.CreatedDate, result.CreatedDate);
+        Assert.Equal(complain.CreatedAt, result.CreatedAt);
         Assert.Equal(complain.Status, result.Status);
         Assert.Equal(complain.SellerId, result.SellerId);
         Assert.Equal(complain.UserId, result.UserId);
@@ -59,7 +59,7 @@ public class SellerComplainRepositoryTests
             Id = Guid.NewGuid(),
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForUpdate,
             UserId = Guid.NewGuid().ToString()
@@ -109,7 +109,7 @@ public class SellerComplainRepositoryTests
             Id = Guid.NewGuid(),
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForUpdate,
             UserId = Guid.NewGuid().ToString()

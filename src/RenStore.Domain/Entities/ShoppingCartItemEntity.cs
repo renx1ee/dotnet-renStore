@@ -8,5 +8,5 @@ public class ShoppingCartItemEntity
     public Guid CartId { get; set; }
     public ShoppingCartEntity? Cart { get; set; }
     public Guid ProductId { get; set; }
-    public ProductEntity? Product { get; set; }
+    /*public ProductEntity? Product { get; set; }*/
 }

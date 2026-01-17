@@ -20,7 +20,7 @@ public class ColorRepositoryTests : IDisposable
         _colorRepository = new ColorRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int colorId = 84587;
-        var color = new ColorEntity()
+        var color = new Color()
         {
             Id = colorId,
             Name = TestDataConstants.ColorNameForCreate,
@@ -52,7 +52,7 @@ public class ColorRepositoryTests : IDisposable
         _colorRepository = new ColorRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int colorId = 4345;
-        var color = new ColorEntity()
+        var color = new Color()
         {
             Id = colorId,
             Name = TestDataConstants.ColorNameForCreate,
@@ -61,7 +61,7 @@ public class ColorRepositoryTests : IDisposable
             ColorCode = "#FFF",
             Description = "Test Description"
         };
-        var duplicateColor = new ColorEntity()
+        var duplicateColor = new Color()
         {
             Id = colorId + 1,
             Name = TestDataConstants.ColorNameForCreate,
@@ -123,7 +123,7 @@ public class ColorRepositoryTests : IDisposable
         string updatedNormalizedName = updatedName.ToUpper();
         string description = Guid.NewGuid().ToString();
         // Act
-        var color = new ColorEntity()
+        var color = new Color()
         {
             Id = 63263774,
             Name = updatedName,

@@ -1,5 +1,6 @@
+using RenStore.Catalog.Domain.Enums;
+using RenStore.Catalog.Domain.Enums.Clothes;
 using RenStore.Domain.Enums;
-using RenStore.Domain.Enums.Clothes;
 
 namespace RenStore.Application.Dto.Product;
 

@@ -15,7 +15,7 @@ public class ReviewEntity
     public bool? IsApproved = null;
     public ApplicationUser? ApplicationUser { get; set; }
     public string UserId { get; set; }
-    public ProductVariantEntity? ProductVariant { get; set; }
+    /*public ProductVariantEntity? ProductVariant { get; set; }*/
     public Guid ProductVariantId { get; set; }
     public IEnumerable<ReviewComplainEntity>? Complains { get; set; }
 }

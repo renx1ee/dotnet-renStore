@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />
     <ProjectReference Include="..\RenStore.Delivery.Domain\RenStore.Delivery.Domain.csproj" />
   </ItemGroup>
 </Project>

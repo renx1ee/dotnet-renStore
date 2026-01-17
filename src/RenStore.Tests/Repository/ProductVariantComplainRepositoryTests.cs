@@ -26,7 +26,7 @@ public class ProductVariantComplainRepositoryTests
             Id = Guid.NewGuid(),
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting7,
             UserId = TestDataConstants.UserIdForGettingSeller4
@@ -41,7 +41,7 @@ public class ProductVariantComplainRepositoryTests
         Assert.NotNull(result);
         Assert.Equal(complain.Id, result.Id);
         Assert.Equal(complain.Comment, result.Comment);
-        Assert.Equal(complain.CreatedDate, result.CreatedDate);
+        Assert.Equal(complain.CreatedAt, result.CreatedAt);
         Assert.Equal(complain.Status, result.Status);
         Assert.Equal(complain.ProductVariantId, result.ProductVariantId);
         Assert.Equal(complain.UserId, result.UserId);
@@ -59,7 +59,7 @@ public class ProductVariantComplainRepositoryTests
             Id = Guid.NewGuid(),
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting7,
             UserId = Guid.NewGuid().ToString()
@@ -108,7 +108,7 @@ public class ProductVariantComplainRepositoryTests
             Id = Guid.NewGuid(),
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate,
             UserId = Guid.NewGuid().ToString()

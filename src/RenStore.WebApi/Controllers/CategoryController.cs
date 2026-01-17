@@ -1,13 +1,13 @@
 /*using Asp.Versioning;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using RenStore.Application.Dto.CategoryEntity;
-using RenStore.Application.Features.CategoryEntity.Commands.Create;
-using RenStore.Application.Features.CategoryEntity.Commands.Delete;
-using RenStore.Application.Features.CategoryEntity.Commands.Edit;
-using RenStore.Application.Features.CategoryEntity.Queries.GetAllCategories;
-using RenStore.Application.Features.CategoryEntity.Queries.GetCategoryById;
-using RenStore.Application.Features.CategoryEntity.Queries.GetCategoryByName;
+using RenStore.Application.Dto.Category;
+using RenStore.Application.Features.Category.Commands.Create;
+using RenStore.Application.Features.Category.Commands.Delete;
+using RenStore.Application.Features.Category.Commands.Edit;
+using RenStore.Application.Features.Category.Queries.GetAllCategories;
+using RenStore.Application.Features.Category.Queries.GetCategoryById;
+using RenStore.Application.Features.Category.Queries.GetCategoryByName;
 
 namespace RenStore.WebApi.Controllers;
 

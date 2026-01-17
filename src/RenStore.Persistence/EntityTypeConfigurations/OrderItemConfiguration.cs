@@ -84,9 +84,9 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItemEntity>
             .HasColumnName("product_id")
             .IsRequired();
 
-        builder
+        /*builder
             .HasOne(x => x.Product)
             .WithMany(x => x.OrderItems)
-            .HasForeignKey(x => x.ProductId);
+            .HasForeignKey(x => x.ProductId);*/
     }
 }

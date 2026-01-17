@@ -1,7 +1,7 @@
 ﻿/*
 using RenStore.Application.Repository;
 
-namespace RenStore.Application.Services.CategoryEntity;
+namespace RenStore.Application.Services.Category;
 
 public class CategoryService
 {
@@ -9,17 +9,17 @@ public class CategoryService
     public CategoryService(ICategoryRepository categoryRepository) =>
         this.categoryRepository = categoryRepository;
     
-    public Task<IEnumerable<Domain.Entities.CategoryEntity>> GetAllCategoryAsync()
+    public Task<IEnumerable<Domain.Entities.Category>> GetAllCategoryAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<Domain.Entities.CategoryEntity> GetCategoryByIdAsync(Guid id)
+    public Task<Domain.Entities.Category> GetCategoryByIdAsync(Guid id)
     {
         throw new NotImplementedException();
     }
     
-    public async Task<Domain.Entities.CategoryEntity> GetByName(string name)
+    public async Task<Domain.Entities.Category> GetByName(string name)
     {
         var category = await categoryRepository.GetByNameAsync(name);
         
@@ -29,7 +29,7 @@ public class CategoryService
         return null;
     }
 
-    public async Task<IEnumerable<Domain.Entities.CategoryEntity>> GetAllCategory(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Domain.Entities.Category>> GetAllCategory(CancellationToken cancellationToken)
     {
         return await categoryRepository.GetAllAsync(cancellationToken);
     }

@@ -1,7 +1,6 @@
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
-using RenStore.Domain.Enums.Shoes;
 using RenStore.Domain.Enums.Sorting;
 using DeliveryTariffSortBy = RenStore.Delivery.Domain.Enums.Sorting.DeliveryTariffSortBy;
 

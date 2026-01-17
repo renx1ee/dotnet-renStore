@@ -2,6 +2,8 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Domain.Repository;
@@ -38,14 +40,14 @@ public class CategoryRepository : ICategoryRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
     
-    public async Task<int> CreateAsync(CategoryEntity category, CancellationToken cancellationToken)
+    public async Task<int> CreateAsync(Category category, CancellationToken cancellationToken)
     {
         var result = await this._context.Categories.AddAsync(category, cancellationToken);
         await this._context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;
     }
 
-    public async Task UpdateAsync(CategoryEntity category, CancellationToken cancellationToken)
+    public async Task UpdateAsync(Category category, CancellationToken cancellationToken)
     {
         var existingCategory = await this.GetByIdAsync(category.Id, cancellationToken);
         
@@ -60,7 +62,7 @@ public class CategoryRepository : ICategoryRepository
         await this._context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<CategoryEntity>> FindAllAsync(
+    public async Task<IEnumerable<Category>> FindAllAsync(
         CancellationToken cancellationToken,
         CategorySortBy sortBy = CategorySortBy.Id,
         uint pageCount = 25,
@@ -96,7 +98,7 @@ public class CategoryRepository : ICategoryRepository
                 ";
         
             return await connection
-                .QueryAsync<CategoryEntity>(
+                .QueryAsync<Category>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -109,7 +111,7 @@ public class CategoryRepository : ICategoryRepository
         }
     }
     
-    public async Task<CategoryEntity?> FindByIdAsync(
+    public async Task<Category?> FindByIdAsync(
         int id, 
         CancellationToken cancellationToken)
     {
@@ -136,7 +138,7 @@ public class CategoryRepository : ICategoryRepository
                 ";
         
             return await connection
-                .QueryFirstOrDefaultAsync<CategoryEntity>(
+                .QueryFirstOrDefaultAsync<Category>(
                     sql, new { Id = id })
                         ?? null;
         }
@@ -146,13 +148,13 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<CategoryEntity> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-               ?? throw new NotFoundException(typeof(CategoryEntity), id);
+               ?? throw new NotFoundException(typeof(Category), id);
     }
     
-    public async Task<IEnumerable<CategoryEntity?>> FindByNameAsync(
+    public async Task<IEnumerable<Category?>> FindByNameAsync(
         string name, 
         CancellationToken cancellationToken,
         CategorySortBy sortBy = CategorySortBy.Id,
@@ -198,7 +200,7 @@ public class CategoryRepository : ICategoryRepository
                 ";
         
             return await connection
-                .QueryAsync<CategoryEntity>(
+                .QueryAsync<Category>(
                     sql, new
                     {
                         Name = $"%{name.ToUpper()}%",
@@ -212,7 +214,7 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<IEnumerable<CategoryEntity?>> GetByNameAsync(
+    public async Task<IEnumerable<Category?>> GetByNameAsync(
         string name, 
         CancellationToken cancellationToken,
         CategorySortBy sortBy = CategorySortBy.Id,
@@ -223,7 +225,7 @@ public class CategoryRepository : ICategoryRepository
         var result = await this.FindByNameAsync(name, cancellationToken, sortBy, pageCount, page, descending);
         
         if (result is null || !result.Any())
-            throw new NotFoundException(typeof(CategoryEntity), name);
+            throw new NotFoundException(typeof(Category), name);
         
         return result;
     }

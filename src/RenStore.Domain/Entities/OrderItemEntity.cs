@@ -18,11 +18,6 @@ public class OrderItemEntity
     public Guid OrderId { get; set; }
     public OrderEntity? Order { get; set; }
     public Guid ProductId { get; set; }
-    public ProductEntity? Product { get; set; }
+    /*public ProductEntity? Product { get; set; }*/
     public IEnumerable<PaymentEntity>? Payments { get; set; }
-
-    public OrderItemEntity(ProductEntity product, int quantity)
-    {
-        
-    }
 }

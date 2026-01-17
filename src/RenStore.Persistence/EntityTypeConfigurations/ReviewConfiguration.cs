@@ -72,10 +72,10 @@ public class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
             .Property(x => x.UserId)
             .HasColumnName("user_id");
         
-        builder
+        /*builder
             .HasOne(x => x.ProductVariant)
             .WithMany(x => x.Reviews)
-            .HasForeignKey(x => x.ProductVariantId);
+            .HasForeignKey(x => x.ProductVariantId);*/
 
         builder
             .Property(x => x.ProductVariantId)

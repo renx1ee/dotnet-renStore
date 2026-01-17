@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Entities;
 using RenStore.Persistence.EntityTypeConfigurations;
@@ -9,23 +10,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ColorConfiguration());
-        modelBuilder.ApplyConfiguration(new SellerConfiguration());
-        modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-        modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductDetailConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductClothConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductClothSizeConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductAttributeConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductPriceHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new ShoppingCartConfiguration());
         modelBuilder.ApplyConfiguration(new ShoppingCartItemConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewConfiguration());
         modelBuilder.ApplyConfiguration(new ProductQuestionConfiguration());
         modelBuilder.ApplyConfiguration(new ProductAnswerConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
         modelBuilder.ApplyConfiguration(new SellerImageConfiguration());
         modelBuilder.ApplyConfiguration(new UserImageConfiguration());
         modelBuilder.ApplyConfiguration(new AnswerComplainConfiguration());
@@ -39,11 +29,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<SellerEntity> Sellers { get; set; }
-    public DbSet<ColorEntity> Colors { get; set; }
+    public DbSet<Color> Colors { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Country> Countries { get; set; }
-    public DbSet<CategoryEntity> Categories { get; set; }
-    public DbSet<SubCategoryEntity> SubCategories { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<SubCategory> SubCategories { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<ProductVariantEntity> ProductVariants { get; set; }

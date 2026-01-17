@@ -10,9 +10,9 @@ public static class TestData
 {
     
     
-    public static readonly IList<ColorEntity> Colors = new[]
+    public static readonly IList<Color> Colors = new[]
     {
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForUpdate,
             Name = TestDataConstants.ColorNameForUpdate,
@@ -21,7 +21,7 @@ public static class TestData
             ColorCode = "#123",
             Description = Guid.NewGuid().ToString(),
         },
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForDelete,
             Name = TestDataConstants.ColorNameForDelete,
@@ -30,7 +30,7 @@ public static class TestData
             ColorCode = "#123",
             Description = Guid.NewGuid().ToString(),
         },
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForGetting1,
             Name = TestDataConstants.ColorNameForGetting1,
@@ -39,7 +39,7 @@ public static class TestData
             ColorCode = "#123",
             Description = Guid.NewGuid().ToString(),
         },
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForGetting2,
             Name = TestDataConstants.ColorNameForGetting2,
@@ -48,7 +48,7 @@ public static class TestData
             ColorCode = "#123",
             Description = Guid.NewGuid().ToString(),
         },
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForGetting3,
             Name = TestDataConstants.ColorNameForGetting3,
@@ -58,7 +58,7 @@ public static class TestData
             Description = Guid.NewGuid().ToString(),
         }
         ,
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForGetting4,
             Name = TestDataConstants.ColorNameForGetting4,
@@ -68,7 +68,7 @@ public static class TestData
             Description = Guid.NewGuid().ToString(),
         }
         ,
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForGetting5,
             Name = TestDataConstants.ColorNameForGetting5,
@@ -77,7 +77,7 @@ public static class TestData
             ColorCode = "#123",
             Description = Guid.NewGuid().ToString(),
         },
-        new ColorEntity()
+        new Color()
         {
             Id = TestDataConstants.ColorIdForGetting6,
             Name = TestDataConstants.ColorNameForGetting6,
@@ -100,7 +100,7 @@ public static class TestData
             PhoneNumber = "0888888881",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         // For Edit
         new ApplicationUser()
@@ -112,7 +112,7 @@ public static class TestData
             PhoneNumber = "0888888882",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         // For Delete
         new ApplicationUser()
@@ -124,7 +124,7 @@ public static class TestData
             PhoneNumber = "0888888883",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         new ApplicationUser
         {
@@ -135,7 +135,7 @@ public static class TestData
             PhoneNumber = "5323620243",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -146,7 +146,7 @@ public static class TestData
             PhoneNumber = "0888888888",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -157,7 +157,7 @@ public static class TestData
             PhoneNumber = "0888888884",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -168,7 +168,7 @@ public static class TestData
             PhoneNumber = "0888888885",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
         new ApplicationUser()
         {
@@ -179,7 +179,7 @@ public static class TestData
             PhoneNumber = "0888888886",
             PasswordHash = Guid.NewGuid().ToString(),
             Role = "User",
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         }
     };
 
@@ -408,9 +408,9 @@ public static class TestData
         }
     };#1#
     
-    public static readonly IList<CategoryEntity> Categories = new[]
+    public static readonly IList<Category> Categories = new[]
     {
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForUpdate,
             Name = TestDataConstants.CategoryNameForUpdate,
@@ -419,9 +419,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForUpdate.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForDelete,
             Name = TestDataConstants.CategoryNameForDelete,
@@ -430,9 +430,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForDelete.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting1,
             Name = TestDataConstants.CategoryNameForGetting1,
@@ -441,9 +441,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting2,
             Name = TestDataConstants.CategoryNameForGetting2,
@@ -452,9 +452,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting2.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting3,
             Name = TestDataConstants.CategoryNameForGetting3,
@@ -463,9 +463,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting3.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting4,
             Name = TestDataConstants.CategoryNameForGetting4,
@@ -474,9 +474,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting4.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting5,
             Name = TestDataConstants.CategoryNameForGetting5,
@@ -485,9 +485,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting5.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting6,
             Name = TestDataConstants.CategoryNameForGetting6,
@@ -496,9 +496,9 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting6.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
-        new CategoryEntity()
+        new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting7,
             Name = TestDataConstants.CategoryNameForGetting7,
@@ -507,13 +507,13 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting7.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         },
     };
     
-    public static readonly IList<SubCategoryEntity> SubCategories = new[]
+    public static readonly IList<SubCategory> SubCategories = new[]
     {
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForUpdate,
             Name = TestDataConstants.SubCategoryNameForUpdate,
@@ -522,10 +522,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForUpdate.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForUpdate,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForDelete,
             Name = TestDataConstants.SubCategoryNameForDelete,
@@ -534,10 +534,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForDelete.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForDelete,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting1,
             Name = TestDataConstants.SubCategoryNameForGetting1,
@@ -546,10 +546,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting1,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting2,
             Name = TestDataConstants.SubCategoryNameForGetting2,
@@ -558,10 +558,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting2.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting2,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting3,
             Name = TestDataConstants.SubCategoryNameForGetting3,
@@ -570,10 +570,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting3.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting3,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting4,
             Name = TestDataConstants.SubCategoryNameForGetting4,
@@ -582,10 +582,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting4.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting4,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting5,
             Name = TestDataConstants.SubCategoryNameForGetting5,
@@ -594,10 +594,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting5.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting5,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting6,
             Name = TestDataConstants.SubCategoryNameForGetting6,
@@ -606,10 +606,10 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting6.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting6,
         },
-        new SubCategoryEntity()
+        new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting7,
             Name = TestDataConstants.SubCategoryNameForGetting7,
@@ -618,7 +618,7 @@ public static class TestData
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting7.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             CategoryId = TestDataConstants.CategoryIdForGetting7,
         },
     };
@@ -713,7 +713,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForUpdate,
             InStock = 36,
             IsAvailable = false,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForUpdate,
             ColorId = TestDataConstants.ColorIdForUpdate
@@ -728,7 +728,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForDelete,
             InStock = 86,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForDelete,
             ColorId = TestDataConstants.ColorIdForDelete
@@ -742,7 +742,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting1,
             InStock = 235,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting1,
             ColorId = TestDataConstants.ColorIdForGetting1
@@ -756,7 +756,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting2,
             InStock = 96,
             IsAvailable = false,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting2,
             ColorId = TestDataConstants.ColorIdForGetting2
@@ -770,7 +770,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting3,
             InStock = 62,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting3,
             ColorId = TestDataConstants.ColorIdForGetting3
@@ -784,7 +784,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting4,
             InStock = 736,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting4,
             ColorId = TestDataConstants.ColorIdForGetting4
@@ -798,7 +798,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting5,
             InStock = 332,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting5,
             ColorId = TestDataConstants.ColorIdForGetting5
@@ -812,7 +812,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting6,
             InStock = 606,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting6,
             ColorId = TestDataConstants.ColorIdForGetting6
@@ -826,7 +826,7 @@ public static class TestData
             Article = TestDataConstants.ProductVariantArticleForGetting7,
             InStock = 32,
             IsAvailable = true,
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Url = "",
             ProductId = TestDataConstants.ProductIdForGetting7,
             ColorId = TestDataConstants.ColorIdForGetting6
@@ -1643,7 +1643,7 @@ public static class TestData
             Id = TestDataConstants.AnswerComplainIdForUpdate,
             CustomReason = Guid.NewGuid().ToString(),
             Comment = Guid.NewGuid().ToString(),
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
         }
     };
 
@@ -1654,7 +1654,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForUpdate,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate,
             UserId = TestDataConstants.UserIdForUpdateSeller
@@ -1664,7 +1664,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForDelete,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete,
             UserId = TestDataConstants.UserIdForDeleteSeller
@@ -1674,7 +1674,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting1,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1,
             UserId = TestDataConstants.UserIdForGettingSeller1
@@ -1684,7 +1684,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting2,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2,
             UserId = TestDataConstants.UserIdForGettingSeller2
@@ -1694,7 +1694,7 @@ public static class TestData
             Id = TestDataConstants.ProductVariantComplainIdForGetting3,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = ProductComplainStatus.New,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3,
             UserId = TestDataConstants.UserIdForGettingSeller3
@@ -1708,7 +1708,7 @@ public static class TestData
             Id = TestDataConstants.SellerComplainIdForUpdate,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForUpdate,
             UserId = TestDataConstants.UserIdForUpdateSeller
@@ -1718,7 +1718,7 @@ public static class TestData
             Id = TestDataConstants.SellerComplainIdForDelete,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForDelete,
             UserId = TestDataConstants.UserIdForDeleteSeller
@@ -1728,7 +1728,7 @@ public static class TestData
             Id = TestDataConstants.SellerComplainIdForGetting1,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForGetting1,
             UserId = TestDataConstants.UserIdForGettingSeller1
@@ -1738,7 +1738,7 @@ public static class TestData
             Id = TestDataConstants.SellerComplainIdForGetting2,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId= TestDataConstants.SellerIdForGetting2,
             UserId = TestDataConstants.UserIdForGettingSeller2
@@ -1748,7 +1748,7 @@ public static class TestData
             Id = TestDataConstants.SellerComplainIdForGetting3,
             CustomReason = "fewfawfa",
             Comment = "wfwafaw",
-            CreatedDate = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             Status = SellerComplainStatus.New,
             SellerId = TestDataConstants.SellerIdForGetting3,
             UserId = TestDataConstants.UserIdForGettingSeller3

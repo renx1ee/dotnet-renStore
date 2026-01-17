@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Domain.Enums;
 
 namespace RenStore.Domain.Entities;

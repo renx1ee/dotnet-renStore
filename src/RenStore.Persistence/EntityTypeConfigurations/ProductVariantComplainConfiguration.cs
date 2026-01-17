@@ -63,20 +63,20 @@ public class ProductVariantComplainConfiguration : IEntityTypeConfiguration<Prod
             .HasColumnName("moderator_id")
             .IsRequired(false);
 
-        builder
+        /*builder
             .HasOne(x => x.ProductVariant)
             .WithMany(x => x.Complains)
-            .HasForeignKey(x => x.ProductVariantId);
+            .HasForeignKey(x => x.ProductVariantId);*/
 
         builder
             .Property(x => x.ProductVariantId)
             .HasColumnName("product_variant_id")
             .IsRequired();
 
-        builder
+        /*builder
             .HasOne(x => x.User)
             .WithMany(x => x.ProductVariantComplains)
-            .HasForeignKey(x => x.UserId);
+            .HasForeignKey(x => x.UserId);*/
 
         builder
             .Property(x => x.UserId)

@@ -1,5 +1,6 @@
+using RenStore.Catalog.Domain.Enums;
+using RenStore.Catalog.Domain.Enums.Shoes;
 using RenStore.Domain.Enums;
-using RenStore.Domain.Enums.Shoes;
 
 namespace RenStore.Application.Dto.Product;
 

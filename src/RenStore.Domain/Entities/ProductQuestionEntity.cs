@@ -1,4 +1,6 @@
-namespace RenStore.Domain.Entities;
+using RenStore.Domain.Entities;
+
+namespace RenStore.Catalog.Domain.Entities;
 
 public class ProductQuestionEntity
 {
@@ -10,10 +12,10 @@ public class ProductQuestionEntity
     public Guid ProductVariantId { get; set; }
     public ProductVariantEntity? ProductVariant { get; set; }
     public string UserId { get; set; }
-    public ApplicationUser? User { get; set; }
+    /*public ApplicationUser? User { get; set; }*/
     public Guid AnswerId { get; set; }
-    public ProductAnswerEntity? Answer { get; set; }
+    /*public ProductAnswerEntity? Answer { get; set; }*/
     // public int ModerationStatusId { get; set; }
     public Guid ComplainId { get; set; }
-    public QuestionComplainEntity? Complain { get; set; }
+    /*public QuestionComplainEntity? Complain { get; set; }*/
 }

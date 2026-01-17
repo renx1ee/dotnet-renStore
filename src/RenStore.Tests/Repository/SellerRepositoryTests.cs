@@ -622,7 +622,7 @@ public class SellerRepositoryTests : IDisposable
             .FindByNameAsync(
                 name: TestDataConstants.SellerNameForGetting4, 
                 cancellationToken: CancellationToken.None,
-                sortBy: SellerSortBy.CreatedDate,
+                sortBy: SellerSortBy.CreatedAt,
                 descending: false);
         
         var result = sellers.ToList();
@@ -642,7 +642,7 @@ public class SellerRepositoryTests : IDisposable
         var sellers = await _sellerRepository
             .FindByNameAsync(name: TestDataConstants.SellerNameForGetting4, 
                 cancellationToken: CancellationToken.None,
-                sortBy: SellerSortBy.CreatedDate,
+                sortBy: SellerSortBy.CreatedAt,
                 descending: true);
         
         var result = sellers.ToList();

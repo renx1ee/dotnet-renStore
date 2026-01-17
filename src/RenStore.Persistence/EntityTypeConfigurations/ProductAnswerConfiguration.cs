@@ -42,19 +42,19 @@ public class ProductAnswerConfiguration : IEntityTypeConfiguration<ProductAnswer
             .HasColumnName("is_approved")
             .IsRequired(false);
         
-        builder
+        /*builder
             .HasOne(x => x.Seller)
             .WithMany(x => x.ProductAnswers)
-            .HasForeignKey(x => x.SellerId);
+            .HasForeignKey(x => x.SellerId);*/
 
         builder
             .Property(x => x.SellerId)
             .HasColumnName("seller_id");
         
-        builder
+        /*builder
             .HasOne(x => x.Question)
             .WithOne(x => x.Answer)
-            .HasForeignKey<ProductAnswerEntity>(x => x.QuestionId);
+            .HasForeignKey<ProductAnswerEntity>(x => x.QuestionId);*/
 
         builder
             .Property(x => x.QuestionId)

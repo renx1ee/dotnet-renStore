@@ -1,4 +1,5 @@
 using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.Interfaces;
 
 namespace RenStore.Delivery.Persistence.Write.Repositories;
 
@@ -7,8 +8,10 @@ internal sealed class AddressRepository
     : RenStore.Delivery.Domain.Interfaces.IAddressRepository
 {
     private readonly DeliveryDbContext _context = context 
-                                                     ?? throw new ArgumentNullException(nameof(context));
-    
+                                                  ?? throw new ArgumentNullException(nameof(context));
+    /// <summary>
+    /// <inheritdoc cref="IAddressRepository.AddAsync"/>
+    /// </summary>
     public async Task<Guid> AddAsync(
         Address address, 
         CancellationToken cancellationToken)

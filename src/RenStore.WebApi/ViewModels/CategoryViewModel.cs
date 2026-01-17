@@ -6,13 +6,13 @@ public class CategoryViewModel
 {
     [Required]
     public Guid Id { get; set; }
-    [Display(Name = "CategoryEntity Name*")]
-    [Required(ErrorMessage = "Please enter CategoryEntity Name!")]
+    [Display(Name = "Category Name*")]
+    [Required(ErrorMessage = "Please enter Category Name!")]
     public string? Name { get; set; }
-    [Display(Name = "CategoryEntity Description*")]
-    [Required(ErrorMessage = "Please enter CategoryEntity Description!")]
+    [Display(Name = "Category Description*")]
+    [Required(ErrorMessage = "Please enter Category Description!")]
     public string? Description { get; set; }
-    [Display(Name = "CategoryEntity Image*")]
-    [Required(ErrorMessage = "Please enter CategoryEntity Image!")]
+    [Display(Name = "Category Image*")]
+    [Required(ErrorMessage = "Please enter Category Image!")]
     public string? ImagePath { get; set; }
 }

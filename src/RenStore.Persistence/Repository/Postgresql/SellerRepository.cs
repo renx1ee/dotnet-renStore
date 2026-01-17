@@ -29,7 +29,7 @@ public class SellerRepository(
     {
         { SellerSortBy.Id, "seller_id" },
         { SellerSortBy.Name, "seller_name" },
-        { SellerSortBy.CreatedDate, "created_date" }
+        { SellerSortBy.CreatedAt, "created_date" }
     };
         
     private readonly ApplicationDbContext _context     = context 

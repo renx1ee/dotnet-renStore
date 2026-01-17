@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Domain.Repository;
@@ -37,14 +38,14 @@ public class ColorRepository : IColorRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
 
-    public async Task<int> CreateAsync(ColorEntity color, CancellationToken cancellationToken)
+    public async Task<int> CreateAsync(Color color, CancellationToken cancellationToken)
     {
         var result = await this._context.Colors.AddAsync(color, cancellationToken);
         await this._context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;
     }
 
-    public async Task UpdateAsync(ColorEntity color, CancellationToken cancellationToken)
+    public async Task UpdateAsync(Color color, CancellationToken cancellationToken)
     {
         var existingColor = await this.GetByIdAsync(color.Id, cancellationToken);
         
@@ -59,7 +60,7 @@ public class ColorRepository : IColorRepository
         await this._context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<ColorEntity>> FindAllAsync(
+    public async Task<IEnumerable<Color>> FindAllAsync(
         CancellationToken cancellationToken,
         ColorSortBy sortBy = ColorSortBy.Id,
         uint pageCount = 25,
@@ -93,7 +94,7 @@ public class ColorRepository : IColorRepository
                 ";
         
             return await connection
-                .QueryAsync<ColorEntity>(
+                .QueryAsync<Color>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -106,7 +107,7 @@ public class ColorRepository : IColorRepository
         }
     }
 
-    public async Task<ColorEntity?> FindByIdAsync(
+    public async Task<Color?> FindByIdAsync(
         int id, 
         CancellationToken cancellationToken)
     {
@@ -131,7 +132,7 @@ public class ColorRepository : IColorRepository
             ";
         
             return await connection
-               .QueryFirstOrDefaultAsync<ColorEntity>(
+               .QueryFirstOrDefaultAsync<Color>(
                    sql, new { Id = id })
                        ?? null;
         }
@@ -141,13 +142,13 @@ public class ColorRepository : IColorRepository
         }
     }
 
-    public async Task<ColorEntity> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Color> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ColorEntity), id);
+            ?? throw new NotFoundException(typeof(Color), id);
     }
     
-    public async Task<IEnumerable<ColorEntity?>> FindByNameAsync(
+    public async Task<IEnumerable<Color?>> FindByNameAsync(
         string name, 
         CancellationToken cancellationToken,
         ColorSortBy sortBy = ColorSortBy.Id,
@@ -188,7 +189,7 @@ public class ColorRepository : IColorRepository
             ";
         
             return await connection
-                .QueryAsync<ColorEntity>(
+                .QueryAsync<Color>(
                     sql, new
                     {
                         Name = $"%{name.ToUpper()}%",
@@ -202,7 +203,7 @@ public class ColorRepository : IColorRepository
         }
     }
 
-    public async Task<IEnumerable<ColorEntity?>> GetByNameAsync(
+    public async Task<IEnumerable<Color?>> GetByNameAsync(
         string name, 
         CancellationToken cancellationToken,
         ColorSortBy sortBy = ColorSortBy.Id,
@@ -213,7 +214,7 @@ public class ColorRepository : IColorRepository
         var result = await this.FindByNameAsync(name, cancellationToken, sortBy, pageCount, page, descending);
         
         if (result is null || !result.Any())
-            throw new NotFoundException(typeof(ColorEntity), name);
+            throw new NotFoundException(typeof(Color), name);
         
         return result;
     }

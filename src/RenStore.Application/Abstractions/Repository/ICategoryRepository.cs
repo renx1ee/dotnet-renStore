@@ -1,9 +1,12 @@
+using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository for working with <see cref="CategoryEntity"/>.
+/// Repository for working with <see cref="Category"/>.
 /// Provides basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 /// <remarks>
@@ -19,7 +22,7 @@ public interface ICategoryRepository
     /// <param name="category">The category entity to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>ID of the created entity.</returns>
-    Task<int> CreateAsync(CategoryEntity category, CancellationToken cancellationToken);
+    Task<int> CreateAsync(Category category, CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing category in the database.
     /// </summary>
@@ -27,7 +30,7 @@ public interface ICategoryRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when category is not found.</exception>
-    Task UpdateAsync(CategoryEntity category, CancellationToken cancellationToken);
+    Task UpdateAsync(Category category, CancellationToken cancellationToken);
     /// <summary>
     /// Delete a category by ID.
     /// </summary>
@@ -45,7 +48,7 @@ public interface ICategoryRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of category entities.</returns>
-    Task<IEnumerable<CategoryEntity>> FindAllAsync(CancellationToken cancellationToken,
+    Task<IEnumerable<Category>> FindAllAsync(CancellationToken cancellationToken,
         CategorySortBy sortBy = CategorySortBy.Id,
         uint pageCount = 25,
         uint page = 1,
@@ -56,7 +59,7 @@ public interface ICategoryRepository
     /// <param name="id">The category identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The category entity if found; otherwise, <c>null</c>.</returns>
-    Task<CategoryEntity?> FindByIdAsync( int id, CancellationToken cancellationToken);
+    Task<Category?> FindByIdAsync( int id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a category by ID.
     /// </summary>
@@ -64,7 +67,7 @@ public interface ICategoryRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The category entity.</returns>
     /// <exception cref="NotFoundException">Thrown when category is not found.</exception>
-    Task<CategoryEntity> GetByIdAsync( int id, CancellationToken cancellationToken);
+    Task<Category> GetByIdAsync( int id, CancellationToken cancellationToken);
     /// <summary>
     /// Searches categories by name with sorting and pagination.
     /// </summary>
@@ -75,7 +78,7 @@ public interface ICategoryRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of matching category entities.</returns>
-    Task<IEnumerable<CategoryEntity?>> FindByNameAsync(
+    Task<IEnumerable<Category?>> FindByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CategorySortBy sortBy = CategorySortBy.Id,
@@ -93,7 +96,7 @@ public interface ICategoryRepository
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of matching category entities.</returns>
     /// <exception cref="NotFoundException">Thrown when category is not found.</exception>
-    Task<IEnumerable<CategoryEntity?>> GetByNameAsync(
+    Task<IEnumerable<Category?>> GetByNameAsync(
         string name,
         CancellationToken cancellationToken,
         CategorySortBy sortBy = CategorySortBy.Id,

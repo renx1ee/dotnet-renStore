@@ -1,6 +1,8 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
 using RenStore.Domain.Repository;
@@ -37,14 +39,14 @@ public class SubCategoryRepository : ISubCategoryRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
     
-    public async Task<int> CreateAsync(SubCategoryEntity subCategory, CancellationToken cancellationToken)
+    public async Task<int> CreateAsync(SubCategory subCategory, CancellationToken cancellationToken)
     {
         var result = await this._context.SubCategories.AddAsync(subCategory, cancellationToken);
         await this._context.SaveChangesAsync(cancellationToken);
         return result.Entity.Id;
     }
 
-    public async Task UpdateAsync(SubCategoryEntity subCategory, CancellationToken cancellationToken)
+    public async Task UpdateAsync(SubCategory subCategory, CancellationToken cancellationToken)
     {
         var existingSubCategory = await this.GetByIdAsync(subCategory.Id, cancellationToken);
         
@@ -59,7 +61,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         await this._context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<SubCategoryEntity>> FindAllAsync(
+    public async Task<IEnumerable<SubCategory>> FindAllAsync(
         CancellationToken cancellationToken,
         SubCategorySortBy sortBy = SubCategorySortBy.Id,
         uint pageCount = 25,
@@ -96,7 +98,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 ";
         
             return await connection
-                .QueryAsync<SubCategoryEntity>(
+                .QueryAsync<SubCategory>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -109,7 +111,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
     
-    public async Task<SubCategoryEntity?> FindByIdAsync(
+    public async Task<SubCategory?> FindByIdAsync(
         int id, 
         CancellationToken cancellationToken)
     {
@@ -137,7 +139,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 ";
         
             return await connection
-                .QueryFirstOrDefaultAsync<SubCategoryEntity>(
+                .QueryFirstOrDefaultAsync<SubCategory>(
                     sql, new { Id = id })
                         ?? null;
         }
@@ -147,13 +149,13 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task<SubCategoryEntity> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<SubCategory> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-               ?? throw new NotFoundException(typeof(CategoryEntity), id);
+               ?? throw new NotFoundException(typeof(Category), id);
     }
     
-    public async Task<IEnumerable<SubCategoryEntity?>> FindByNameAsync(
+    public async Task<IEnumerable<SubCategory?>> FindByNameAsync(
         string name, 
         CancellationToken cancellationToken,
         SubCategorySortBy sortBy = SubCategorySortBy.Id,
@@ -200,7 +202,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 ";
         
             return await connection
-                .QueryAsync<SubCategoryEntity>(
+                .QueryAsync<SubCategory>(
                     sql, new
                     {
                         Name = $"%{name.ToUpper()}%",
@@ -214,7 +216,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task<IEnumerable<SubCategoryEntity?>> GetByNameAsync(
+    public async Task<IEnumerable<SubCategory?>> GetByNameAsync(
         string name, 
         CancellationToken cancellationToken,
         SubCategorySortBy sortBy = SubCategorySortBy.Id,
@@ -225,12 +227,12 @@ public class SubCategoryRepository : ISubCategoryRepository
         var result = await this.FindByNameAsync(name, cancellationToken, sortBy, pageCount, page, descending);
         
         if (result is null || !result.Any())
-            throw new NotFoundException(typeof(SubCategoryEntity), name);
+            throw new NotFoundException(typeof(SubCategory), name);
         
         return result;
     }
     
-    public async Task<IEnumerable<SubCategoryEntity?>> FindByCategoryIdAsync(
+    public async Task<IEnumerable<SubCategory?>> FindByCategoryIdAsync(
         int categoryId, 
         CancellationToken cancellationToken,
         SubCategorySortBy sortBy = SubCategorySortBy.Id,
@@ -274,7 +276,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 ";
         
             return await connection
-                .QueryAsync<SubCategoryEntity>(
+                .QueryAsync<SubCategory>(
                     sql, new
                     {
                         CategoryId = categoryId,
@@ -288,7 +290,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task<IEnumerable<SubCategoryEntity?>> GetByCategoryIdAsync(
+    public async Task<IEnumerable<SubCategory?>> GetByCategoryIdAsync(
         int categoryId, 
         CancellationToken cancellationToken,
         SubCategorySortBy sortBy = SubCategorySortBy.Id,
@@ -299,7 +301,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         var result = await this.FindByCategoryIdAsync(categoryId, cancellationToken, sortBy, pageCount, page, descending);
         
         if (result is null || !result.Any())
-            throw new NotFoundException(typeof(SubCategoryEntity), categoryId);
+            throw new NotFoundException(typeof(SubCategory), categoryId);
         
         return result;
     }

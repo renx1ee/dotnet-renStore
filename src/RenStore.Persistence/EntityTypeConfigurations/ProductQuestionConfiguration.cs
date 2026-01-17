@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Domain.Entities;
 
 namespace RenStore.Persistence.EntityTypeConfigurations;
@@ -41,26 +42,26 @@ public class ProductQuestionConfiguration : IEntityTypeConfiguration<ProductQues
             .HasColumnName("is_approved")
             .IsRequired(false);
 
-        builder
+        /*builder
             .HasOne(x => x.ProductVariant)
             .WithMany(x => x.ProductQuestions)
-            .HasForeignKey(x => x.ProductVariantId);
+            .HasForeignKey(x => x.ProductVariantId);*/
 
         builder
             .Property(x => x.ProductVariantId)
             .HasColumnName("product_variant_id");
         
-        builder
+        /*builder
             .HasOne(x => x.User)
             .WithMany(x => x.ProductQuestions)
-            .HasForeignKey(x => x.UserId);
+            .HasForeignKey(x => x.UserId);*/
 
         builder
             .Property(x => x.UserId)
             .HasColumnName("user_id");
 
-        builder
+        /*builder
             .HasOne(x => x.Answer)
-            .WithOne(x => x.Question);
+            .WithOne(x => x.Question);*/
     }
 }

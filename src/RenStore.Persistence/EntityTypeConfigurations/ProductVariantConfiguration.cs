@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Domain.Entities;
 
 namespace RenStore.Persistence.EntityTypeConfigurations;
@@ -81,10 +82,10 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .Property(v => v.ProductId)
             .HasColumnName("product_id");
         
-        builder
+        /*builder
             .HasOne(v => v.Color)
             .WithMany(c => c.ProductVariants)
-            .HasForeignKey(v => v.ColorId);
+            .HasForeignKey(v => v.ColorId);*/
         
         builder
             .Property(v => v.ColorId)

@@ -23,8 +23,6 @@
       <Folder Include="IntegrationTests\Persistence\Repositories\County\" />
       <Folder Include="Shared\Builders\" />
       <Folder Include="UnitTests\Application\Features\" />
-      <Folder Include="UnitTests\Persistence\Queries\Address\" />
-      <Folder Include="UnitTests\Persistence\Queries\City\" />
       <Folder Include="UnitTests\Persistence\Queries\Country\" />
     </ItemGroup>
 

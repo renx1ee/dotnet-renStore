@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Enums;
 using RenStore.Domain.Enums;
 
 namespace RenStore.Application.Dto.Product;

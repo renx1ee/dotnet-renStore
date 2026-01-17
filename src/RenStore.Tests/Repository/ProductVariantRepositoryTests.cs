@@ -28,7 +28,7 @@ public class ProductVariantRepositoryTests
            Article = 098765432,
            InStock = 86,
            IsAvailable = true,
-           CreatedDate = DateTime.UtcNow,
+           CreatedAt = DateTime.UtcNow,
            Url = "",
            ProductId = TestDataConstants.ProductIdForGetting1,
            ColorId = TestDataConstants.ColorIdForGetting1
@@ -50,7 +50,7 @@ public class ProductVariantRepositoryTests
        Assert.Equal(productVariant.Article, productVariantExists.Article);
        Assert.Equal(productVariant.InStock, productVariantExists.InStock);
        Assert.Equal(productVariant.IsAvailable, productVariantExists.IsAvailable);
-       Assert.Equal(productVariant.CreatedDate, productVariantExists.CreatedDate);
+       Assert.Equal(productVariant.CreatedAt, productVariantExists.CreatedAt);
        Assert.Equal(productVariant.Url, productVariantExists.Url);
        Assert.Equal(productVariant.ProductId, productVariantExists.ProductId);
        Assert.Equal(productVariant.ColorId, productVariantExists.ColorId);
@@ -89,7 +89,7 @@ public class ProductVariantRepositoryTests
            Article = 098765432,
            InStock = 86,
            IsAvailable = true,
-           CreatedDate = DateTime.UtcNow,
+           CreatedAt = DateTime.UtcNow,
            Url = "",
            ProductId = Guid.NewGuid(),
            ColorId = TestDataConstants.ColorIdForGetting1
@@ -117,7 +117,7 @@ public class ProductVariantRepositoryTests
            Article = 098765432,
            InStock = 86,
            IsAvailable = true,
-           CreatedDate = DateTime.UtcNow,
+           CreatedAt = DateTime.UtcNow,
            Url = "",
            ProductId = TestDataConstants.ProductIdForGetting1,
            ColorId = 63723643
@@ -183,7 +183,7 @@ public class ProductVariantRepositoryTests
            Article = 098765432,
            InStock = 86,
            IsAvailable = true,
-           CreatedDate = DateTime.UtcNow,
+           CreatedAt = DateTime.UtcNow,
            Url = "",
            ProductId = Guid.NewGuid(),
            ColorId = TestDataConstants.ColorIdForGetting1

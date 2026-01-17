@@ -63,10 +63,10 @@ public class AnswerComplainConfiguration : IEntityTypeConfiguration<AnswerCompla
             .HasColumnName("moderator_id")
             .IsRequired(false);
 
-        builder
+        /*builder
             .HasOne(x => x.ProductAnswer)
             .WithOne(x => x.Complain)
-            .HasForeignKey<AnswerComplainEntity>(x => x.ProductAnswerId);
+            .HasForeignKey<AnswerComplainEntity>(x => x.ProductAnswerId);*/
 
         builder
             .Property(x => x.ProductAnswerId)

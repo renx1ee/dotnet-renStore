@@ -22,7 +22,7 @@ public class CategoryRepositoryTests
         _categoryRepository = new CategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int categoryId = 15356;
-        var category = new CategoryEntity()
+        var category = new Category()
         {
             Id = categoryId,
             Name = "Test",
@@ -31,7 +31,7 @@ public class CategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
         // Act
         await _categoryRepository.CreateAsync(category, CancellationToken.None);
@@ -47,7 +47,7 @@ public class CategoryRepositoryTests
         Assert.Equal(category.NormalizedNameRu, result.NormalizedNameRu);
         Assert.Equal(category.Description, result.Description);
         Assert.Equal(category.IsActive, result.IsActive);
-        Assert.Equal(category.CreatedDate, result.CreatedDate);
+        Assert.Equal(category.CreatedAt, result.CreatedAt);
     }
     
     [Fact]
@@ -57,7 +57,7 @@ public class CategoryRepositoryTests
         _categoryRepository = new CategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int categoryId = 15356;
-        var category = new CategoryEntity()
+        var category = new Category()
         {
             Id = categoryId,
             Name = TestDataConstants.CategoryNameForGetting1,
@@ -66,7 +66,7 @@ public class CategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedAt = DateTime.Now
         };
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async () => 
@@ -83,7 +83,7 @@ public class CategoryRepositoryTests
         _categoryRepository = new CategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int categoryId = 15356;
-        var category = new CategoryEntity()
+        var category = new Category()
         {
             Id = categoryId,
             Name = "wfkwej",
@@ -92,7 +92,7 @@ public class CategoryRepositoryTests
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedAt = DateTime.Now
         };
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async () => 
@@ -172,7 +172,7 @@ public class CategoryRepositoryTests
         _categoryRepository = new CategoryRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
         int wrongId = 1535656;
-        var category = new CategoryEntity()
+        var category = new Category()
         {
             Id = wrongId,
         };

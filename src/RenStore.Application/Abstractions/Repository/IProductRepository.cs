@@ -1,6 +1,9 @@
-using RenStore.Domain.DTOs.Product.FullPage;
+using RenStore.Catalog.Domain.DTOs.Product.FullPage;
+using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
 using RenStore.Domain.Enums.Sorting;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>

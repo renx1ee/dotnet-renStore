@@ -44,9 +44,9 @@ public class ShoppingCartItemConfiguration : IEntityTypeConfiguration<ShoppingCa
             .HasColumnName("product_id")
             .IsRequired();
         
-        builder
+        /*builder
             .HasOne(x => x.Product)
             .WithMany(x => x.CartItems)
-            .HasForeignKey(x => x.ProductId);
+            .HasForeignKey(x => x.ProductId);*/
     }
 }

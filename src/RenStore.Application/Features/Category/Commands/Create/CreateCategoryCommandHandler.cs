@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using RenStore.Application.Repository;
 
-namespace RenStore.Application.Features.CategoryEntity.Commands.Create;
+namespace RenStore.Application.Features.Category.Commands.Create;
 
 public class CreateCategoryCommandHandler 
     : IRequestHandler<CreateCategoryCommand, int>
@@ -30,7 +30,7 @@ public class CreateCategoryCommandHandler
         
         if(data is not null) return 0;
         
-        var category = mapper.Map<Domain.Entities.CategoryEntity>(request); 
+        var category = mapper.Map<Domain.Entities.Category>(request); 
         category.ImagePath = $"categories/{category.Name}";
         
         var result = await categoryRepository.CreateAsync(category, cancellationToken);
