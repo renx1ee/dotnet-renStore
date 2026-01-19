@@ -4,9 +4,9 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductConfiguration : IEntityTypeConfiguration<ProductEntity>
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
-    public void Configure(EntityTypeBuilder<ProductEntity> builder)
+    public void Configure(EntityTypeBuilder<Product> builder)
     {
         builder
             .ToTable("products");

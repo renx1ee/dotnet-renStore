@@ -11,6 +11,6 @@ public class ProductClothEntity
     public Neckline? Neckline { get; private set; }
     public TheCut? TheCut { get; private set; }
     public Guid ProductId { get; private set; }
-    public ProductEntity? Product { get; private set; }
+    public Product? Product { get; private set; }
     public IEnumerable<ProductClothSizeEntity>? ClothSizes { get; private set; }
 }

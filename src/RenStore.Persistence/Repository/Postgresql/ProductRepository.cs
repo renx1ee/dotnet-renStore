@@ -42,7 +42,7 @@ public class ProductRepository : IProductRepository
     }
 
     public async Task<Guid> CreateAsync(
-        ProductEntity product,
+        Product product,
         CancellationToken cancellationToken)
     {
         var result = await _context.Products.AddAsync(product, cancellationToken);
@@ -51,7 +51,7 @@ public class ProductRepository : IProductRepository
     }
     
     public async Task UpdateAsync(
-        ProductEntity product,
+        Product product,
         CancellationToken cancellationToken)
     {
         var existingProduct = await this.GetByIdAsync(product.Id, cancellationToken);
@@ -68,7 +68,7 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<ProductEntity>> FindAllAsync(
+    public async Task<IEnumerable<Product>> FindAllAsync(
         CancellationToken cancellationToken,
         uint pageCount = 25,
         uint page = 1,
@@ -105,7 +105,7 @@ public class ProductRepository : IProductRepository
             sql.Append($" ORDER BY \"{columnName}\" {direction} LIMIT @Count OFFSET @Offset;");
 
             return await connection
-                .QueryAsync<ProductEntity>(
+                .QueryAsync<Product>(
                     sql.ToString(), new
                     {
                         Count = (int)pageCount,
@@ -118,7 +118,7 @@ public class ProductRepository : IProductRepository
         }
     }
     
-    public async Task<ProductEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Product?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -140,7 +140,7 @@ public class ProductRepository : IProductRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductEntity>(
+                .QueryFirstOrDefaultAsync<Product>(
                     sql, new { Id = id });
         }
         catch (PostgresException e)
@@ -149,10 +149,10 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public async Task<ProductEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductEntity), id);
+            ?? throw new NotFoundException(typeof(Product), id);
     }
     
     public async Task<ProductFullDto?> FindFullAsync(Guid id, CancellationToken cancellationToken)

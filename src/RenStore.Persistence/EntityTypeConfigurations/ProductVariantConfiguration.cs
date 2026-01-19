@@ -5,9 +5,9 @@ using RenStore.Domain.Entities;
 
 namespace RenStore.Persistence.EntityTypeConfigurations;
 
-public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVariantEntity>
+public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVariant>
 {
-    public void Configure(EntityTypeBuilder<ProductVariantEntity> builder)
+    public void Configure(EntityTypeBuilder<ProductVariant> builder)
     {
         builder
             .ToTable("product_variants");
@@ -62,7 +62,7 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .IsRequired();
         
         builder
-            .Property(v => v.CreatedDate)
+            .Property(v => v.CreatedAt)
             .HasColumnName("created_date")
             .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
@@ -73,10 +73,10 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .HasMaxLength(500)
             .IsRequired();
 
-        builder
+        /*builder
             .HasOne(v => v.Product)
             .WithMany(p => p.ProductVariants)
-            .HasForeignKey(v => v.ProductId);
+            .HasForeignKey(v => v.ProductId);*/
 
         builder
             .Property(v => v.ProductId)
@@ -91,9 +91,9 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .Property(v => v.ColorId)
             .HasColumnName("color_id");
 
-        builder
+        /*builder
             .HasOne(v => v.ProductDetails)
-            .WithOne(d => d.ProductVariant);
+            .WithOne(d => d.ProductVariant);*/
         
         builder
             .HasMany(v => v.ProductAttributes)

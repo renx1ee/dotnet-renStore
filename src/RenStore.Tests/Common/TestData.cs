@@ -623,10 +623,10 @@ public static class TestData
         },
     };
 
-    public static readonly IList<ProductEntity> Products = new[]
+    public static readonly IList<Product> Products = new[]
     {
         // For Delete
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForDelete,
             IsBlocked = false,
@@ -635,7 +635,7 @@ public static class TestData
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
         // For Edit
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForUpdate,
             IsBlocked = false,
@@ -643,7 +643,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting1,
             IsBlocked = false,
@@ -651,7 +651,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting2,
             IsBlocked = false,
@@ -659,7 +659,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting3,
             IsBlocked = true,
@@ -667,7 +667,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting4,
             IsBlocked = false,
@@ -675,7 +675,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting5,
             IsBlocked = true,
@@ -683,7 +683,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting6,
             IsBlocked = false,
@@ -691,7 +691,7 @@ public static class TestData
             SellerId = TestDataConstants.SellerIdForGetting1,
             CategoryId = TestDataConstants.CategoryIdForGetting1
         },
-        new ProductEntity()
+        new Product()
         {
             Id = TestDataConstants.ProductIdForGetting7,
             IsBlocked = false,
@@ -701,10 +701,10 @@ public static class TestData
         }
     };
 
-    public static readonly IList<ProductVariantEntity> ProductVariants = new[]
+    public static readonly IList<ProductVariant> ProductVariants = new[]
     {
         // For Edit
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForUpdate,
             Name = TestDataConstants.ProductVariantNameForUpdate,
@@ -719,7 +719,7 @@ public static class TestData
             ColorId = TestDataConstants.ColorIdForUpdate
         },
         // For Delete
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForDelete,
             Name = TestDataConstants.ProductVariantNameForDelete,
@@ -733,7 +733,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForDelete,
             ColorId = TestDataConstants.ColorIdForDelete
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting1,
             Name = TestDataConstants.ProductVariantNameForGetting1,
@@ -747,7 +747,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForGetting1,
             ColorId = TestDataConstants.ColorIdForGetting1
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting2,
             Name = TestDataConstants.ProductVariantNameForGetting2,
@@ -761,7 +761,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForGetting2,
             ColorId = TestDataConstants.ColorIdForGetting2
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting3,
             Name = TestDataConstants.ProductVariantNameForGetting3,
@@ -775,7 +775,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForGetting3,
             ColorId = TestDataConstants.ColorIdForGetting3
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting4,
             Name = TestDataConstants.ProductVariantNameForGetting4,
@@ -789,7 +789,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForGetting4,
             ColorId = TestDataConstants.ColorIdForGetting4
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting5,
             Name = TestDataConstants.ProductVariantNameForGetting5,
@@ -803,7 +803,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForGetting5,
             ColorId = TestDataConstants.ColorIdForGetting5
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting6,
             Name = TestDataConstants.ProductVariantNameForGetting6,
@@ -817,7 +817,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForGetting6,
             ColorId = TestDataConstants.ColorIdForGetting6
         },
-        new ProductVariantEntity()
+        new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting7,
             Name = TestDataConstants.ProductVariantNameForGetting7,

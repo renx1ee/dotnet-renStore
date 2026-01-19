@@ -12,5 +12,5 @@ public class ProductImageEntity
     public int Weight { get; private set; }
     public int Height { get; private set; }
     public Guid ProductVariantId { get; private set; }
-    public ProductVariantEntity? ProductVariant { get; private set; }
+    public ProductVariant? ProductVariant { get; private set; }
 }

@@ -7,7 +7,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductEntity"/>.
+/// Repository with working with <see cref="Product"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductRepository
@@ -19,7 +19,7 @@ public interface IProductRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductEntity product,
+        Product product,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product in the database.
@@ -29,7 +29,7 @@ public interface IProductRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product is not found.</exception>
     Task UpdateAsync(
-        ProductEntity product,
+        Product product,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product from database by ID.
@@ -52,7 +52,7 @@ public interface IProductRepository
     /// <param name="sortBy">Fields to sort by. Defaults to <see cref="ProductSortBy.Id"/>.</param>
     /// <param name="isBlocked"></param>
     /// <returns>A collection of matching the products entities.</returns>
-    Task<IEnumerable<ProductEntity>> FindAllAsync(CancellationToken cancellationToken,
+    Task<IEnumerable<Product>> FindAllAsync(CancellationToken cancellationToken,
         uint pageCount = 25U,
         uint page = 1U,
         bool descending = false,
@@ -64,7 +64,7 @@ public interface IProductRepository
     /// <param name="id">The product unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product entity if found; overwise <c>null</c>.</returns>
-    Task<ProductEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Product?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product by ID.
     /// </summary>
@@ -72,7 +72,7 @@ public interface IProductRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product is not found.</exception>
-    Task<ProductEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Product> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Get a full product page by ID.
     /// </summary>

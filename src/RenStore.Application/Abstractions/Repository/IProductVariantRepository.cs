@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductVariantEntity"/>.
+/// Repository with working with <see cref="ProductVariant"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductVariantRepository
@@ -18,7 +18,7 @@ public interface IProductVariantRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductVariantEntity productVariant,
+        ProductVariant productVariant,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product variant in the database.
@@ -28,7 +28,7 @@ public interface IProductVariantRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product variant is not found.</exception>
     Task UpdateAsync(
-        ProductVariantEntity productVariant,
+        ProductVariant productVariant,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product variant from database by ID.
@@ -49,7 +49,7 @@ public interface IProductVariantRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product variants entities.</returns>
-    Task<IEnumerable<ProductVariantEntity>> FindAllAsync(
+    Task<IEnumerable<ProductVariant>> FindAllAsync(
         CancellationToken cancellationToken,
         uint pageCount = 25,
         uint page = 1,
@@ -62,7 +62,7 @@ public interface IProductVariantRepository
     /// <param name="id">The product variant unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product variant entity if found; overwise <c>null</c>.</returns>
-    Task<ProductVariantEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductVariant?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product variant by ID.
     /// </summary>
@@ -70,5 +70,5 @@ public interface IProductVariantRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product variant entity if found;</returns>
     /// <exception cref="NotFoundException">Thrown when product variant is not found.</exception>
-    Task<ProductVariantEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductVariant?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

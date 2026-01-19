@@ -40,7 +40,7 @@ public class ProductVariantRepository : IProductVariantRepository
     }
 
     public async Task<Guid> CreateAsync(
-        ProductVariantEntity productVariant,
+        ProductVariant productVariant,
         CancellationToken cancellationToken)
     {
         var result = await _context.ProductVariants.AddAsync(productVariant, cancellationToken);
@@ -49,7 +49,7 @@ public class ProductVariantRepository : IProductVariantRepository
     }
     
     public async Task UpdateAsync(
-        ProductVariantEntity productVariant,
+        ProductVariant productVariant,
         CancellationToken cancellationToken)
     {
         var existingProduct = await this.GetByIdAsync(productVariant.Id, cancellationToken);
@@ -66,7 +66,7 @@ public class ProductVariantRepository : IProductVariantRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<ProductVariantEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductVariant>> FindAllAsync(
         CancellationToken cancellationToken,
         uint pageCount = 25,
         uint page = 1,
@@ -115,7 +115,7 @@ public class ProductVariantRepository : IProductVariantRepository
             
             
             return await connection
-                .QueryAsync<ProductVariantEntity>(
+                .QueryAsync<ProductVariant>(
                     sql.ToString(),
                     parameters);
         }
@@ -125,7 +125,7 @@ public class ProductVariantRepository : IProductVariantRepository
         }
     }
     
-    public async Task<ProductVariantEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductVariant?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -152,7 +152,7 @@ public class ProductVariantRepository : IProductVariantRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductVariantEntity>(
+                .QueryFirstOrDefaultAsync<ProductVariant>(
                     sql, new
                     {
                         Id = id
@@ -165,9 +165,9 @@ public class ProductVariantRepository : IProductVariantRepository
         }
     }
 
-    public async Task<ProductVariantEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductVariant> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductEntity), id);
+            ?? throw new NotFoundException(typeof(Product), id);
     }
 }

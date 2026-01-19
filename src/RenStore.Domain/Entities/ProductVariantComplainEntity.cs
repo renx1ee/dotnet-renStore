@@ -16,7 +16,7 @@ public class ProductVariantComplainEntity
     // public ModeratorEntity? Moderator { get; set; }
     public Guid? ModeratorId { get; set; }
     public Guid ProductVariantId { get; set; }
-    public ProductVariantEntity? ProductVariant { get; set; }
+    public ProductVariant? ProductVariant { get; set; }
     public string UserId { get; set; } = string.Empty;
     public ApplicationUser? User { get; set; }
 }

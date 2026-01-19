@@ -14,6 +14,6 @@ public class ProductDetailEntity
     public TypeOfPackaging? TypeOfPacking { get; private set; }
     /*public Country? CountryOfManufacture { get; set; }*/
     public int CountryOfManufactureId { get; private set; }
-    public ProductVariantEntity? ProductVariant { get; private set; }
+    public ProductVariant? ProductVariant { get; private set; }
     public Guid ProductVariantId { get; private set; }
 }

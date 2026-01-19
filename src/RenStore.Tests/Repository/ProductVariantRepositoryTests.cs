@@ -19,7 +19,7 @@ public class ProductVariantRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var productVariant = new ProductVariantEntity()
+       var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
            Name = "Sample product",
@@ -62,7 +62,7 @@ public class ProductVariantRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productVariant = new ProductVariantEntity()
+       var productVariant = new ProductVariant()
        {
            Article = 9525
        };
@@ -80,7 +80,7 @@ public class ProductVariantRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productVariant = new ProductVariantEntity()
+       var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
            Name = "Sample product",
@@ -108,7 +108,7 @@ public class ProductVariantRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productVariant = new ProductVariantEntity()
+       var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
            Name = "Sample product",
@@ -174,7 +174,7 @@ public class ProductVariantRepositoryTests
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var productVariant = new ProductVariantEntity()
+       var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
            Name = "Sample product",

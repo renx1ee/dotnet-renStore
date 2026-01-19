@@ -58,11 +58,31 @@ public class Category
         {
             string trimmedDescription = description.Trim();
             
-            if (trimmedDescription.Length is < 500 and > 10)
+            if (trimmedDescription.Length is > 10 and < 500)
                 category.Description = trimmedDescription;
         }
         
         return category;
+    }
+
+    public void AddSubCategory(
+        SubCategory subCategory)
+    {
+        EnsureNotDeleted();
+        
+        _subCategories.Add(subCategory);
+    }
+    
+    public void AddRangeOfSubCategory(
+        IReadOnlyList<SubCategory> subCategories)
+    {
+        EnsureNotDeleted();
+
+        var list = subCategories as List<SubCategory> ?? subCategories.ToList();
+
+        if (!list.Any()) return;
+        
+        _subCategories.AddRange(list);
     }
 
     public void ChangeName(

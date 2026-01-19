@@ -29,7 +29,7 @@ public class ProductRepositoryTest
         // Arranges
         var id = Guid.NewGuid();
 
-        var product = new ProductEntity()
+        var product = new Product()
         {
             Id = id,
             IsBlocked = false,
@@ -61,7 +61,7 @@ public class ProductRepositoryTest
         _context = TestDatabaseFixture.CreateReadyContext();
         _productRepository = new ProductRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
-        var product = new ProductEntity();
+        var product = new Product();
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async() => 
             await _productRepository
@@ -76,7 +76,7 @@ public class ProductRepositoryTest
         _context = TestDatabaseFixture.CreateReadyContext();
         _productRepository = new ProductRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
-        var product = new ProductEntity()
+        var product = new Product()
         {
             Id = Guid.NewGuid(),
             IsBlocked = false,
@@ -98,7 +98,7 @@ public class ProductRepositoryTest
         _context = TestDatabaseFixture.CreateReadyContext();
         _productRepository = new ProductRepository(_context, TestDatabaseFixture.ConnectionString);
         // Arrange
-        var product = new ProductEntity()
+        var product = new Product()
         {
             Id = Guid.NewGuid(),
             IsBlocked = false,
@@ -153,7 +153,7 @@ public class ProductRepositoryTest
         var wrongId = Guid.NewGuid();
         
         // Act
-        var product = new ProductEntity()
+        var product = new Product()
         {
             Id = wrongId,
             IsBlocked = false,

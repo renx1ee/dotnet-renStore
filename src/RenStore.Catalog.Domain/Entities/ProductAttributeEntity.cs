@@ -6,5 +6,5 @@ public class ProductAttributeEntity
     public string Name { get; private set; } = string.Empty;
     public string Value { get; private set; } = string.Empty;
     public Guid ProductVariantId { get; private set; }
-    public ProductVariantEntity? ProductVariant { get; private set; }
+    public ProductVariant? ProductVariant { get; private set; }
 }

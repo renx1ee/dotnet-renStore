@@ -24,7 +24,7 @@ public class OrderEntity
     public DeliveryOrder? DeliveryOrder { get; set; }
     public IEnumerable<PaymentEntity>? Payments { get; set; }
 
-    /*public void AddItem(ProductEntity product, int quantity)
+    /*public void AddItem(Product product, int quantity)
     {
         if (Status != OrderStatus.Pending)
             throw new DomainException("");

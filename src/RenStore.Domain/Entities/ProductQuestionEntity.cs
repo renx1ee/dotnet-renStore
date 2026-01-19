@@ -10,7 +10,7 @@ public class ProductQuestionEntity
     public DateTime? ModeratedDate { get; set; } = null;
     public bool? IsApproved { get; set; } = null;
     public Guid ProductVariantId { get; set; }
-    public ProductVariantEntity? ProductVariant { get; set; }
+    public ProductVariant? ProductVariant { get; set; }
     public string UserId { get; set; }
     /*public ApplicationUser? User { get; set; }*/
     public Guid AnswerId { get; set; }

@@ -8,6 +8,7 @@ namespace RenStore.Delivery.Domain.Entities;
 public class City
 {
     private readonly List<Address> _addresses = new();
+    private Country? _country { get; }
     
     public int Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
@@ -19,7 +20,6 @@ public class City
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
     public int CountryId { get; private set; }
-    private Country? _country { get; }
 
     public IReadOnlyCollection<Address>? Addresses => _addresses.AsReadOnly();
     

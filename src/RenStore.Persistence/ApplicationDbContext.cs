@@ -35,8 +35,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
     public DbSet<City> Cities { get; set; }
-    public DbSet<ProductEntity> Products { get; set; }
-    public DbSet<ProductVariantEntity> ProductVariants { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductVariant> ProductVariants { get; set; }
     public DbSet<ProductDetailEntity> ProductDetails { get; set; }
     public DbSet<ProductClothEntity> ProductClothes { get; set; }
     public DbSet<ProductClothSizeEntity> ProductClothSizes { get; set; }

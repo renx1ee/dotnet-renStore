@@ -8,7 +8,7 @@ namespace RenStore.Catalog.Domain.Entities;
 /// </summary>
 public class Color
 {
-    private readonly List<ProductVariantEntity> _variants = new();
+    private readonly List<ProductVariant> _variants = new();
     
     public int Id { get; private set; }
     public string Name { get; private set; }
@@ -23,7 +23,7 @@ public class Color
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
     
-    public IReadOnlyCollection<ProductVariantEntity> ProductVariants => _variants.AsReadOnly();
+    public IReadOnlyCollection<ProductVariant> ProductVariants => _variants.AsReadOnly();
     
     private Color() { }
 

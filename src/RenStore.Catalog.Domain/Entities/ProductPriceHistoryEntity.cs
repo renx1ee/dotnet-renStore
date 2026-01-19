@@ -11,5 +11,5 @@ public class ProductPriceHistoryEntity
     public DateTime? EndDate { get; private set; }
     public string ChangedBy { get; private set; } = string.Empty;
     public Guid ProductVariantId { get; private set; }
-    public ProductVariantEntity? ProductVariant { get; private set; }
+    public ProductVariant? ProductVariant { get; private set; }
 }
