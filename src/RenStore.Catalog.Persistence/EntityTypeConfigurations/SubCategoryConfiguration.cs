@@ -19,7 +19,7 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .HasColumnName("sub_category_id");
         
         builder
-            .Property(x => x.Name)
+            .Property(x => x.Key)
             .HasColumnName("sub_category_name")
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)

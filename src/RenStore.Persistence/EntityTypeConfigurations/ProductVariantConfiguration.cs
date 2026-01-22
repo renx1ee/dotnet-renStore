@@ -95,10 +95,10 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .HasOne(v => v.ProductDetails)
             .WithOne(d => d.ProductVariant);*/
         
-        builder
+        /*builder
             .HasMany(v => v.ProductAttributes)
             .WithOne(a => a.ProductVariant)
-            .HasForeignKey(a => a.ProductVariantId);
+            .HasForeignKey(a => a.ProductVariantId);*/
         
         builder
             .HasMany(v => v.PriceHistories)

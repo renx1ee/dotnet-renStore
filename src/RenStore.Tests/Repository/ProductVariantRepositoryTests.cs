@@ -22,7 +22,7 @@ public class ProductVariantRepositoryTests
        var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
-           Name = "Sample product",
+           Key = "Sample product",
            NormalizedName = "Sample product".ToUpper(),
            Rating = 3,
            Article = 098765432,
@@ -44,7 +44,7 @@ public class ProductVariantRepositoryTests
        
        Assert.NotNull(productVariantExists);
        Assert.Equal(productVariant.Id, productVariantExists.Id);
-       Assert.Equal(productVariant.Name, productVariantExists.Name);
+       Assert.Equal(productVariant.Key, productVariantExists.Key);
        Assert.Equal(productVariant.NormalizedName, productVariantExists.NormalizedName);
        Assert.Equal(productVariant.Rating, productVariantExists.Rating);
        Assert.Equal(productVariant.Article, productVariantExists.Article);
@@ -83,7 +83,7 @@ public class ProductVariantRepositoryTests
        var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
-           Name = "Sample product",
+           Key = "Sample product",
            NormalizedName = "Sample product".ToUpper(),
            Rating = 3,
            Article = 098765432,
@@ -111,7 +111,7 @@ public class ProductVariantRepositoryTests
        var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
-           Name = "Sample product",
+           Key = "Sample product",
            NormalizedName = "Sample product".ToUpper(),
            Rating = 3,
            Article = 098765432,
@@ -144,8 +144,8 @@ public class ProductVariantRepositoryTests
        if (productVariantExists is null) 
            Assert.Fail();
        
-       productVariantExists.Name = "Updated Name";
-       productVariantExists.NormalizedName = "Updated Name".ToUpper();
+       productVariantExists.Key = "Updated Key";
+       productVariantExists.NormalizedName = "Updated Key".ToUpper();
        productVariantExists.InStock = productVariantExists.InStock - 1;
        productVariantExists.Article = 021551;
        productVariantExists.Rating = 5;
@@ -159,7 +159,7 @@ public class ProductVariantRepositoryTests
                s.Id == TestDataConstants.ProductVariantIdForUpdate);
        
        Assert.NotNull(productVariantResult);
-       Assert.Equal(productVariantExists.Name, productVariantResult.Name);
+       Assert.Equal(productVariantExists.Key, productVariantResult.Key);
        Assert.Equal(productVariantExists.NormalizedName, productVariantResult.NormalizedName);
        Assert.Equal(productVariantExists.InStock, productVariantResult.InStock);
        Assert.Equal(productVariantExists.Article, productVariantResult.Article);
@@ -177,7 +177,7 @@ public class ProductVariantRepositoryTests
        var productVariant = new ProductVariant()
        {
            Id = Guid.NewGuid(),
-           Name = "Sample product",
+           Key = "Sample product",
            NormalizedName = "Sample product".ToUpper(),
            Rating = 3,
            Article = 098765432,

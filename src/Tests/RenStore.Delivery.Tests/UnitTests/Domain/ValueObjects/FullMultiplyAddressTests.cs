@@ -11,7 +11,7 @@ public sealed class FullMultiplyAddressTests
     public FullMultiplyAddressTests()
     {
         var result = _coutnry = Country.Create(
-            name: "Name", 
+            name: "Key", 
             nameRu: "NameRu", 
             code: "ru", 
             phoneCode: "+7",

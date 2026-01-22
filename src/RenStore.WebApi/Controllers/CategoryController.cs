@@ -99,7 +99,7 @@ public class CategoryController(IMapper mapper) : BaseController
         var result = await Mediator.Send(
             new GetCategoryByNameQuery()
             {
-                Name = name
+                Key = name
             });
         
         if (result is null)

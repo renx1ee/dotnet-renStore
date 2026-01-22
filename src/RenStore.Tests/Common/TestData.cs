@@ -15,7 +15,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForUpdate,
-            Name = TestDataConstants.ColorNameForUpdate,
+            Key = TestDataConstants.ColorNameForUpdate,
             NormalizedName = TestDataConstants.ColorNameForUpdate.ToUpper(),
             NameRu = "колорНейм1",
             ColorCode = "#123",
@@ -24,7 +24,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForDelete,
-            Name = TestDataConstants.ColorNameForDelete,
+            Key = TestDataConstants.ColorNameForDelete,
             NormalizedName = TestDataConstants.ColorNameForDelete.ToUpper(),
             NameRu = "колорНейм2",
             ColorCode = "#123",
@@ -33,7 +33,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForGetting1,
-            Name = TestDataConstants.ColorNameForGetting1,
+            Key = TestDataConstants.ColorNameForGetting1,
             NormalizedName = TestDataConstants.ColorNameForGetting1.ToUpper(),
             NameRu = "колорНейм3",
             ColorCode = "#123",
@@ -42,7 +42,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForGetting2,
-            Name = TestDataConstants.ColorNameForGetting2,
+            Key = TestDataConstants.ColorNameForGetting2,
             NormalizedName = TestDataConstants.ColorNameForGetting2.ToUpper(),
             NameRu = "колорНейм4",
             ColorCode = "#123",
@@ -51,7 +51,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForGetting3,
-            Name = TestDataConstants.ColorNameForGetting3,
+            Key = TestDataConstants.ColorNameForGetting3,
             NormalizedName = TestDataConstants.ColorNameForGetting3.ToUpper(),
             NameRu = "колорНейм5",
             ColorCode = "#123",
@@ -61,7 +61,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForGetting4,
-            Name = TestDataConstants.ColorNameForGetting4,
+            Key = TestDataConstants.ColorNameForGetting4,
             NormalizedName = TestDataConstants.ColorNameForGetting4.ToUpper(),
             NameRu = "колорНейм6",
             ColorCode = "#123",
@@ -71,7 +71,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForGetting5,
-            Name = TestDataConstants.ColorNameForGetting5,
+            Key = TestDataConstants.ColorNameForGetting5,
             NormalizedName = TestDataConstants.ColorNameForGetting5.ToUpper(),
             NameRu = "колорНейм7",
             ColorCode = "#123",
@@ -80,7 +80,7 @@ public static class TestData
         new Color()
         {
             Id = TestDataConstants.ColorIdForGetting6,
-            Name = TestDataConstants.ColorNameForGetting6,
+            Key = TestDataConstants.ColorNameForGetting6,
             NormalizedName = TestDataConstants.ColorNameForGetting6.ToUpper(),
             NameRu = "колорНейм8",
             ColorCode = "#123",
@@ -94,7 +94,7 @@ public static class TestData
         new ApplicationUser
         {
             Id = TestDataConstants.UserIdForCreateSeller,
-            Name = "1testmail@.com",
+            Key = "1testmail@.com",
             UserName = "1testmail@.com",
             Email = "1testmail@.com",
             PhoneNumber = "0888888881",
@@ -106,7 +106,7 @@ public static class TestData
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForUpdateSeller,
-            Name = "2testmail@.com",
+            Key = "2testmail@.com",
             UserName = "2testmail@.com",
             Email = "2testmail@.com",
             PhoneNumber = "0888888882",
@@ -118,7 +118,7 @@ public static class TestData
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForDeleteSeller,
-            Name = "3testmail@.com",
+            Key = "3testmail@.com",
             UserName = "3testmail@.com",
             Email = "3testmail@.com",
             PhoneNumber = "0888888883",
@@ -129,7 +129,7 @@ public static class TestData
         new ApplicationUser
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "testm5323ail@.com",
+            Key = "testm5323ail@.com",
             UserName = "testm5323ail@.com",
             Email = "testm5323ail@.com",
             PhoneNumber = "5323620243",
@@ -140,7 +140,7 @@ public static class TestData
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForGettingSeller1,
-            Name = "7testmail@.com",
+            Key = "7testmail@.com",
             UserName = "7testmail@.com",
             Email = "7testmail@.com",
             PhoneNumber = "0888888888",
@@ -151,7 +151,7 @@ public static class TestData
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForGettingSeller2,
-            Name = "4testmail@.com",
+            Key = "4testmail@.com",
             UserName = "4testmail@.com",
             Email = "4testmail@.com",
             PhoneNumber = "0888888884",
@@ -162,7 +162,7 @@ public static class TestData
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForGettingSeller3,
-            Name = "5testmail@.com",
+            Key = "5testmail@.com",
             UserName = "5testmail@.com",
             Email = "5testmail@.com",
             PhoneNumber = "0888888885",
@@ -173,7 +173,7 @@ public static class TestData
         new ApplicationUser()
         {
             Id = TestDataConstants.UserIdForGettingSeller4,
-            Name = "6testmail@.com",
+            Key = "6testmail@.com",
             UserName = "6testmail@.com",
             Email = "6testmail@.com",
             PhoneNumber = "0888888886",
@@ -189,7 +189,7 @@ public static class TestData
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForDelete,
-            Name = TestDataConstants.SellerNameForDelete,
+            Key = TestDataConstants.SellerNameForDelete,
             Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForDelete.ToUpper(),
             OccuredAt = DateTime.UtcNow,
@@ -200,7 +200,7 @@ public static class TestData
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForUpdate,
-            Name = TestDataConstants.SellerNameForUpdate,
+            Key = TestDataConstants.SellerNameForUpdate,
             Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForUpdate.ToUpper(),
             OccuredAt = DateTime.UtcNow,
@@ -209,7 +209,7 @@ public static class TestData
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForGetting1,
-            Name = TestDataConstants.SellerNameForGetting1,
+            Key = TestDataConstants.SellerNameForGetting1,
             Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting1.ToUpper(),
             OccuredAt = DateTime.UtcNow,
@@ -219,7 +219,7 @@ public static class TestData
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForGetting2,
-            Name = TestDataConstants.SellerNameForGetting2,
+            Key = TestDataConstants.SellerNameForGetting2,
             Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting2.ToUpper(),
             OccuredAt = DateTime.UtcNow,
@@ -229,7 +229,7 @@ public static class TestData
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForGetting3,
-            Name = TestDataConstants.SellerNameForGetting3,
+            Key = TestDataConstants.SellerNameForGetting3,
             Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting3.ToUpper(),
             OccuredAt = DateTime.UtcNow,
@@ -239,7 +239,7 @@ public static class TestData
         new SellerEntity()
         {
             Id = TestDataConstants.SellerIdForGetting4,
-            Name = TestDataConstants.SellerNameForGetting4,
+            Key = TestDataConstants.SellerNameForGetting4,
             Description = "Sample Description for Edit",
             NormalizedName = TestDataConstants.SellerNameForGetting4.ToUpper(),
             OccuredAt = DateTime.UtcNow.AddHours(1),
@@ -254,7 +254,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForDelete,
-            Name = TestDataConstants.CountryNameForDelete,
+            Key = TestDataConstants.CountryNameForDelete,
             NormalizedName = TestDataConstants.CountryNameForDelete.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForDelete,
             NormalizedNameRu = TestDataConstants.CountryNameRuForDelete.ToUpper(),
@@ -264,7 +264,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForUpdate,
-            Name = TestDataConstants.CountryNameForUpdate,
+            Key = TestDataConstants.CountryNameForUpdate,
             NormalizedName = TestDataConstants.CountryNameForUpdate.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForUpdate,
             NormalizedNameRu = TestDataConstants.CountryNameRuForUpdate.ToUpper(),
@@ -273,7 +273,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForGetting1,
-            Name = TestDataConstants.CountryNameForGetting1,
+            Key = TestDataConstants.CountryNameForGetting1,
             NormalizedName = TestDataConstants.CountryNameForGetting1.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForGetting1,
             NormalizedNameRu = TestDataConstants.CountryNameRuForGetting1.ToUpper(),
@@ -282,7 +282,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForGetting2,
-            Name = TestDataConstants.CountryNameForGetting2,
+            Key = TestDataConstants.CountryNameForGetting2,
             NormalizedName = TestDataConstants.CountryNameForGetting2.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForGetting2,
             NormalizedNameRu = TestDataConstants.CountryNameRuForGetting2.ToUpper(),
@@ -291,7 +291,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForGetting3,
-            Name = TestDataConstants.CountryNameForGetting3,
+            Key = TestDataConstants.CountryNameForGetting3,
             NormalizedName = TestDataConstants.CountryNameForGetting3.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForGetting3,
             NormalizedNameRu = TestDataConstants.CountryNameRuForGetting3.ToUpper(),
@@ -300,7 +300,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForGetting4,
-            Name = TestDataConstants.CountryNameForGetting4,
+            Key = TestDataConstants.CountryNameForGetting4,
             NormalizedName = TestDataConstants.CountryNameForGetting4.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForGetting4,
             NormalizedNameRu = TestDataConstants.CountryNameRuForGetting4.ToUpper(),
@@ -311,7 +311,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForGetting5,
-            Name = TestDataConstants.CountryNameForGetting5,
+            Key = TestDataConstants.CountryNameForGetting5,
             NormalizedName = TestDataConstants.CountryNameForGetting5.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForGetting5,
             NormalizedNameRu = TestDataConstants.CountryNameRuForGetting5.ToUpper(),
@@ -320,7 +320,7 @@ public static class TestData
         new Country()
         {
             Id = TestDataConstants.CountryIdForGetting6,
-            Name = TestDataConstants.CountryNameForGetting6,
+            Key = TestDataConstants.CountryNameForGetting6,
             NormalizedName = TestDataConstants.CountryNameForGetting6.ToUpper(),
             NameRu = TestDataConstants.CountryNameRuForGetting6,
             NormalizedNameRu = TestDataConstants.CountryNameRuForGetting6.ToUpper(),
@@ -336,7 +336,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForUpdate,
-            Name = TestDataConstants.CityNameForUpdate,
+            Key = TestDataConstants.CityNameForUpdate,
             NormalizedName = TestDataConstants.CityNameForUpdate.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForUpdate,
             NormalizedNameRu = TestDataConstants.CityNameRuForUpdate.ToUpper(),
@@ -346,7 +346,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForDelete,
-            Name = TestDataConstants.CityNameForDelete,
+            Key = TestDataConstants.CityNameForDelete,
             NormalizedName = TestDataConstants.CityNameForDelete.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForDelete,
             NormalizedNameRu = TestDataConstants.CityNameRuForDelete.ToUpper(),
@@ -355,7 +355,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForGetting1,
-            Name = TestDataConstants.CityNameForGetting1,
+            Key = TestDataConstants.CityNameForGetting1,
             NormalizedName = TestDataConstants.CityNameForGetting1.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForGetting1,
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting1.ToUpper(),
@@ -364,7 +364,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForGetting2,
-            Name = TestDataConstants.CityNameForGetting2,
+            Key = TestDataConstants.CityNameForGetting2,
             NormalizedName = TestDataConstants.CityNameForGetting2.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForGetting2,
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting2.ToUpper(),
@@ -373,7 +373,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForGetting3,
-            Name = TestDataConstants.CityNameForGetting3,
+            Key = TestDataConstants.CityNameForGetting3,
             NormalizedName = TestDataConstants.CityNameForGetting3.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForGetting3,
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting3.ToUpper(),
@@ -382,7 +382,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForGetting4,
-            Name = TestDataConstants.CityNameForGetting4,
+            Key = TestDataConstants.CityNameForGetting4,
             NormalizedName = TestDataConstants.CityNameForGetting4.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForGetting4,
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting4.ToUpper(),
@@ -391,7 +391,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForGetting5,
-            Name = TestDataConstants.CityNameForGetting5,
+            Key = TestDataConstants.CityNameForGetting5,
             NormalizedName = TestDataConstants.CityNameForGetting5.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForGetting5,
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting5.ToUpper(),
@@ -400,7 +400,7 @@ public static class TestData
         new City()
         {
             Id = TestDataConstants.CityIdForGetting6,
-            Name = TestDataConstants.CityNameForGetting6,
+            Key = TestDataConstants.CityNameForGetting6,
             NormalizedName = TestDataConstants.CityNameForGetting6.ToUpper(),
             NameRu = TestDataConstants.CityNameRuForGetting6,
             NormalizedNameRu = TestDataConstants.CityNameRuForGetting6.ToUpper(),
@@ -413,7 +413,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForUpdate,
-            Name = TestDataConstants.CategoryNameForUpdate,
+            Key = TestDataConstants.CategoryNameForUpdate,
             NormalizedName = TestDataConstants.CategoryNameForUpdate.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForUpdate,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForUpdate.ToUpper(),
@@ -424,7 +424,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForDelete,
-            Name = TestDataConstants.CategoryNameForDelete,
+            Key = TestDataConstants.CategoryNameForDelete,
             NormalizedName = TestDataConstants.CategoryNameForDelete.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForDelete,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForDelete.ToUpper(),
@@ -435,7 +435,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting1,
-            Name = TestDataConstants.CategoryNameForGetting1,
+            Key = TestDataConstants.CategoryNameForGetting1,
             NormalizedName = TestDataConstants.CategoryNameForGetting1.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting1,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper(),
@@ -446,7 +446,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting2,
-            Name = TestDataConstants.CategoryNameForGetting2,
+            Key = TestDataConstants.CategoryNameForGetting2,
             NormalizedName = TestDataConstants.CategoryNameForGetting2.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting2,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting2.ToUpper(),
@@ -457,7 +457,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting3,
-            Name = TestDataConstants.CategoryNameForGetting3,
+            Key = TestDataConstants.CategoryNameForGetting3,
             NormalizedName = TestDataConstants.CategoryNameForGetting3.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting3,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting3.ToUpper(),
@@ -468,7 +468,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting4,
-            Name = TestDataConstants.CategoryNameForGetting4,
+            Key = TestDataConstants.CategoryNameForGetting4,
             NormalizedName = TestDataConstants.CategoryNameForGetting4.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting4,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting4.ToUpper(),
@@ -479,7 +479,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting5,
-            Name = TestDataConstants.CategoryNameForGetting5,
+            Key = TestDataConstants.CategoryNameForGetting5,
             NormalizedName = TestDataConstants.CategoryNameForGetting5.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting5,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting5.ToUpper(),
@@ -490,7 +490,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting6,
-            Name = TestDataConstants.CategoryNameForGetting6,
+            Key = TestDataConstants.CategoryNameForGetting6,
             NormalizedName = TestDataConstants.CategoryNameForGetting6.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting6,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting6.ToUpper(),
@@ -501,7 +501,7 @@ public static class TestData
         new Category()
         {
             Id = TestDataConstants.CategoryIdForGetting7,
-            Name = TestDataConstants.CategoryNameForGetting7,
+            Key = TestDataConstants.CategoryNameForGetting7,
             NormalizedName = TestDataConstants.CategoryNameForGetting7.ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting7,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting7.ToUpper(),
@@ -516,7 +516,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForUpdate,
-            Name = TestDataConstants.SubCategoryNameForUpdate,
+            Key = TestDataConstants.SubCategoryNameForUpdate,
             NormalizedName = TestDataConstants.SubCategoryNameForUpdate.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForUpdate,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForUpdate.ToUpper(),
@@ -528,7 +528,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForDelete,
-            Name = TestDataConstants.SubCategoryNameForDelete,
+            Key = TestDataConstants.SubCategoryNameForDelete,
             NormalizedName = TestDataConstants.SubCategoryNameForDelete.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForDelete,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForDelete.ToUpper(),
@@ -540,7 +540,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting1,
-            Name = TestDataConstants.SubCategoryNameForGetting1,
+            Key = TestDataConstants.SubCategoryNameForGetting1,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting1.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting1,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper(),
@@ -552,7 +552,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting2,
-            Name = TestDataConstants.SubCategoryNameForGetting2,
+            Key = TestDataConstants.SubCategoryNameForGetting2,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting2.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting2,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting2.ToUpper(),
@@ -564,7 +564,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting3,
-            Name = TestDataConstants.SubCategoryNameForGetting3,
+            Key = TestDataConstants.SubCategoryNameForGetting3,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting3.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting3,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting3.ToUpper(),
@@ -576,7 +576,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting4,
-            Name = TestDataConstants.SubCategoryNameForGetting4,
+            Key = TestDataConstants.SubCategoryNameForGetting4,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting4.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting4,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting4.ToUpper(),
@@ -588,7 +588,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting5,
-            Name = TestDataConstants.SubCategoryNameForGetting5,
+            Key = TestDataConstants.SubCategoryNameForGetting5,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting5.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting5,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting5.ToUpper(),
@@ -600,7 +600,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting6,
-            Name = TestDataConstants.SubCategoryNameForGetting6,
+            Key = TestDataConstants.SubCategoryNameForGetting6,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting6.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting6,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting6.ToUpper(),
@@ -612,7 +612,7 @@ public static class TestData
         new SubCategory()
         {
             Id = TestDataConstants.SubCategoryIdForGetting7,
-            Name = TestDataConstants.SubCategoryNameForGetting7,
+            Key = TestDataConstants.SubCategoryNameForGetting7,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting7.ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting7,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting7.ToUpper(),
@@ -707,7 +707,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForUpdate,
-            Name = TestDataConstants.ProductVariantNameForUpdate,
+            Key = TestDataConstants.ProductVariantNameForUpdate,
             NormalizedName = TestDataConstants.ProductVariantNameForUpdate.ToUpper(),
             Rating = 0,
             Article = TestDataConstants.ProductVariantArticleForUpdate,
@@ -722,7 +722,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForDelete,
-            Name = TestDataConstants.ProductVariantNameForDelete,
+            Key = TestDataConstants.ProductVariantNameForDelete,
             NormalizedName = TestDataConstants.ProductVariantNameForDelete.ToUpper(),
             Rating = 3,
             Article = TestDataConstants.ProductVariantArticleForDelete,
@@ -736,7 +736,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting1,
-            Name = TestDataConstants.ProductVariantNameForGetting1,
+            Key = TestDataConstants.ProductVariantNameForGetting1,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting1.ToUpper(),
             Rating = 4,
             Article = TestDataConstants.ProductVariantArticleForGetting1,
@@ -750,7 +750,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting2,
-            Name = TestDataConstants.ProductVariantNameForGetting2,
+            Key = TestDataConstants.ProductVariantNameForGetting2,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting2.ToUpper(),
             Rating = 1,
             Article = TestDataConstants.ProductVariantArticleForGetting2,
@@ -764,7 +764,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting3,
-            Name = TestDataConstants.ProductVariantNameForGetting3,
+            Key = TestDataConstants.ProductVariantNameForGetting3,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting3.ToUpper(),
             Rating = 5,
             Article = TestDataConstants.ProductVariantArticleForGetting3,
@@ -778,7 +778,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting4,
-            Name = TestDataConstants.ProductVariantNameForGetting4,
+            Key = TestDataConstants.ProductVariantNameForGetting4,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting4.ToUpper(),
             Rating = 4,
             Article = TestDataConstants.ProductVariantArticleForGetting4,
@@ -792,7 +792,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting5,
-            Name = TestDataConstants.ProductVariantNameForGetting5,
+            Key = TestDataConstants.ProductVariantNameForGetting5,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting5.ToUpper(),
             Rating = 3,
             Article = TestDataConstants.ProductVariantArticleForGetting5,
@@ -806,7 +806,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting6,
-            Name = TestDataConstants.ProductVariantNameForGetting6,
+            Key = TestDataConstants.ProductVariantNameForGetting6,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting6.ToUpper(),
             Rating = 3,
             Article = TestDataConstants.ProductVariantArticleForGetting6,
@@ -820,7 +820,7 @@ public static class TestData
         new ProductVariant()
         {
             Id = TestDataConstants.ProductVariantIdForGetting7,
-            Name = TestDataConstants.ProductVariantNameForGetting7,
+            Key = TestDataConstants.ProductVariantNameForGetting7,
             NormalizedName = TestDataConstants.ProductVariantNameForGetting7.ToUpper(),
             Rating = 3,
             Article = TestDataConstants.ProductVariantArticleForGetting7,
@@ -917,7 +917,7 @@ public static class TestData
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductAttributeIdForUpdate,
-            Name = "attribute_name_for_update",
+            Key = "attribute_name_for_update",
             Value = "attribute_value_for_update",
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate
         },
@@ -925,56 +925,56 @@ public static class TestData
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductAttributeIdForDelete,
-            Name = "attribute_name_for_delete",
+            Key = "attribute_name_for_delete",
             Value = "attribute_value_for_delete",
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductAttributeIdForGetting1,
-            Name = "attribute_name_for_getting_1",
+            Key = "attribute_name_for_getting_1",
             Value = "attribute_value_for_getting_1",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductVariantIdForGetting2,
-            Name = "attribute_name_for_getting_2",
+            Key = "attribute_name_for_getting_2",
             Value = "attribute_value_for_getting_2",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductVariantIdForGetting3,
-            Name = "attribute_name_for_getting_3",
+            Key = "attribute_name_for_getting_3",
             Value = "attribute_value_for_getting_3",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductVariantIdForGetting4,
-            Name = "attribute_name_for_getting_4",
+            Key = "attribute_name_for_getting_4",
             Value = "attribute_value_for_getting_4",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting4
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductVariantIdForGetting5,
-            Name = "attribute_name_for_getting_5",
+            Key = "attribute_name_for_getting_5",
             Value = "attribute_value_for_getting_5",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting5
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductVariantIdForGetting6,
-            Name = "attribute_name_for_getting_6",
+            Key = "attribute_name_for_getting_6",
             Value = "attribute_value_for_getting_6",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting6
         },
         new ProductAttributeEntity()
         {
             Id = TestDataConstants.ProductVariantIdForGetting7,
-            Name = "attribute_name_for_getting_7",
+            Key = "attribute_name_for_getting_7",
             Value = "attribute_value_for_getting_7",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting7
         },

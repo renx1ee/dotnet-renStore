@@ -25,7 +25,7 @@ public class CityRepositoryTests
         var city = new City()
         {
             Id = 1664633,
-            Name = "Test",
+            Key = "Test",
             NormalizedName = "TEST",
             NameRu = "ТЕСЕ",
             NormalizedNameRu = "ТЕСЕ",
@@ -39,7 +39,7 @@ public class CityRepositoryTests
                 c.Id == city.Id);
         Assert.NotNull(result);
         Assert.Equal(city.Id, result.Id);
-        Assert.Equal(city.Name, result.Name);
+        Assert.Equal(city.Key, result.Key);
         Assert.Equal(city.NormalizedName, result.NormalizedName);
         Assert.Equal(city.NameRu, result.NameRu);
         Assert.Equal(city.NormalizedNameRu, result.NormalizedNameRu);
@@ -61,7 +61,7 @@ public class CityRepositoryTests
         string nameRu = Guid.NewGuid().ToString();
         string normalizedNameRu = nameRu.ToUpper();
         // Act
-        city.Name = updatedName;
+        city.Key = updatedName;
         city.NormalizedName = updatedNormalizedName;
         city.NameRu = nameRu;
         city.NormalizedNameRu = normalizedNameRu;
@@ -72,7 +72,7 @@ public class CityRepositoryTests
                 c.Id == TestDataConstants.CityIdForUpdate);
         Assert.NotNull(result);
         Assert.Equal(city.Id, result.Id);
-        Assert.Equal(updatedName, result.Name);
+        Assert.Equal(updatedName, result.Key);
         Assert.Equal(updatedNormalizedName, result.NormalizedName);
         Assert.Equal(nameRu, result.NameRu);
         Assert.Equal(normalizedNameRu, result.NormalizedNameRu);
@@ -87,7 +87,7 @@ public class CityRepositoryTests
         var city = new City()
         {
             Id = 166264633,
-            Name = "Test",
+            Key = "Test",
             NormalizedName = "TEST",
             NameRu = "ТЕСЕ",
             NormalizedNameRu = "ТЕСЕ",
@@ -226,7 +226,7 @@ public class CityRepositoryTests
         var result = await _cityRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: CitySortBy.Name);
+            sortBy: CitySortBy.Key);
         var cities = result.ToList();
         // Assert
         Assert.NotNull(cities);
@@ -252,7 +252,7 @@ public class CityRepositoryTests
         var result = await _cityRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: CitySortBy.Name);
+            sortBy: CitySortBy.Key);
         var cities = result.ToList();
         // Assert
         Assert.NotNull(cities);
@@ -333,7 +333,7 @@ public class CityRepositoryTests
                     CancellationToken.None));
     }
     #endregion
-    #region By Name
+    #region By Key
 
     [Fact]
     public async Task FindCitiesByNameAsync_WithDefaultParameters_Success_Test()
@@ -444,7 +444,7 @@ public class CityRepositoryTests
             name: name,
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: CitySortBy.Name);
+            sortBy: CitySortBy.Key);
         var cities = result.ToList();
         // Assert
         Assert.NotNull(cities);
@@ -466,7 +466,7 @@ public class CityRepositoryTests
             name: name,
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: CitySortBy.Name);
+            sortBy: CitySortBy.Key);
         var cities = result.ToList();
         // Assert
         Assert.NotNull(cities);

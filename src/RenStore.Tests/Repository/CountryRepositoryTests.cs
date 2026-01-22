@@ -25,7 +25,7 @@ public class CountryRepositoryTests : IDisposable
         var country = new Country()
         {
             Id = 163,
-            Name = "Test",
+            Key = "Test",
             NormalizedName = "TEST",
             NameRu = "ТЕСЕ",
             Code =  "tes"
@@ -39,7 +39,7 @@ public class CountryRepositoryTests : IDisposable
         
         Assert.NotNull(result);
         Assert.Equal(country.Id, result.Id);
-        Assert.Equal(country.Name, result.Name);
+        Assert.Equal(country.Key, result.Key);
         Assert.Equal(country.NormalizedName, result.NormalizedName);
         Assert.Equal(country.NameRu, result.NameRu);
         Assert.Equal(country.Code, result.Code);
@@ -55,7 +55,7 @@ public class CountryRepositoryTests : IDisposable
         var country = new Country()
         {
             Id = id,
-            Name = "Getting1",
+            Key = "Getting1",
             NormalizedName = "GETTING_1",
             NameRu = "ТЕСТ3",
             Code = "get1"
@@ -85,7 +85,7 @@ public class CountryRepositoryTests : IDisposable
         string nameRu = Guid.NewGuid().ToString();
         string code = "eges";
         // Act
-        country.Name = updatedName;
+        country.Key = updatedName;
         country.NormalizedName = updatedNormalizedName;
         country.NameRu = nameRu;
         country.Code = code;
@@ -97,7 +97,7 @@ public class CountryRepositoryTests : IDisposable
         
         Assert.NotNull(result);
         Assert.Equal(country.Id, result.Id);
-        Assert.Equal(updatedName, result.Name);
+        Assert.Equal(updatedName, result.Key);
         Assert.Equal(updatedNormalizedName, result.NormalizedName);
         Assert.Equal(nameRu, result.NameRu);
         Assert.Equal(code, result.Code);
@@ -112,7 +112,7 @@ public class CountryRepositoryTests : IDisposable
         var country = new Country()
         {
             Id = 163,
-            Name = "Germany",
+            Key = "Germany",
             NormalizedName = "GERMANY",
             NameRu = "Германия",
             Code =  "de"
@@ -251,7 +251,7 @@ public class CountryRepositoryTests : IDisposable
         var result = await _countryRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: CountrySortBy.Name);
+            sortBy: CountrySortBy.Key);
         var countries = result.ToList();
         // Assert
         Assert.NotNull(countries);
@@ -276,7 +276,7 @@ public class CountryRepositoryTests : IDisposable
         var result = await _countryRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: CountrySortBy.Name);
+            sortBy: CountrySortBy.Key);
         var countries = result.ToList();
         // Assert
         Assert.NotNull(countries);
@@ -358,7 +358,7 @@ public class CountryRepositoryTests : IDisposable
     }
     
     #endregion
-    #region By Name
+    #region By Key
 
     [Fact]
     public async Task FindCountriesByNameAsync_WithDefaultParameters_Success_Test()
@@ -464,7 +464,7 @@ public class CountryRepositoryTests : IDisposable
             name: TestDataConstants.CountryNameForGetting4,
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: CountrySortBy.Name);
+            sortBy: CountrySortBy.Key);
         var countries = result.ToList();
         // Assert
         Assert.NotNull(countries);
@@ -485,7 +485,7 @@ public class CountryRepositoryTests : IDisposable
             name: TestDataConstants.CountryNameForGetting4,
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: CountrySortBy.Name);
+            sortBy: CountrySortBy.Key);
         var countries = result.ToList();
         // Assert
         Assert.NotNull(countries);

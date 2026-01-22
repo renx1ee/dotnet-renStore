@@ -70,7 +70,7 @@ public class UserService : ControllerBase
         
         /*var claims = new List<Claim>
         {
-            new (ClaimTypes.Name, email),
+            new (ClaimTypes.Key, email),
             new (ClaimTypes.Role, "AuthUser"),
             new ("UserId", user.Id),
             new ("Role", user.Role)
@@ -79,7 +79,7 @@ public class UserService : ControllerBase
         var claimsIdentity = new ClaimsIdentity(
             claims: claims,
             authenticationType: "Bearer",
-            nameType: ClaimTypes.Name,
+            nameType: ClaimTypes.Key,
             roleType: ClaimTypes.Role);
 
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

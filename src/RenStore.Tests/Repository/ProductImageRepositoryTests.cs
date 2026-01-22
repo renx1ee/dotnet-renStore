@@ -102,7 +102,7 @@ public class ProductImageRepositoryTests
        if (productImageExists is null) 
            Assert.Fail();
        
-       productImageExists.OriginalFileName = "Updated Name";
+       productImageExists.OriginalFileName = "Updated Key";
        productImageExists.StoragePath = Guid.NewGuid().ToString();
        productImageExists.FileSizeBytes = 400;
        productImageExists.IsMain = false;

@@ -24,8 +24,8 @@ public class UpdateSellerCommandHandler
         
         var seller = await sellerRepository.GetByIdAsync(request.Id, cancellationToken);
         
-        /*if(request.Name != "string")
-            seller.Name = request.Name;
+        /*if(request.Key != "string")
+            seller.Key = request.Key;
         if(request.Description != "string")
             seller.Description = request.Description;
         if(request.ImagePath != "string")

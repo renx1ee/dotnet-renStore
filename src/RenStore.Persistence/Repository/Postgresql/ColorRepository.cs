@@ -81,7 +81,7 @@ public class ColorRepository : IColorRepository
                 $@"
                     SELECT
                         ""color_id""              AS Id,
-                        ""color_name""            AS Name,
+                        ""color_name""            AS Key,
                         ""normalized_color_name"" AS NormalizedName,
                         ""color_name_ru""         AS NameRu,
                         ""color_code""            AS ColorCode,
@@ -120,7 +120,7 @@ public class ColorRepository : IColorRepository
                 @"
                 SELECT
                     ""color_id""              AS Id,
-                    ""color_name""            AS Name,
+                    ""color_name""            AS Key,
                     ""normalized_color_name"" AS NormalizedName,
                     ""color_name_ru""         AS NameRu,
                     ""color_code""            AS ColorCode,
@@ -173,7 +173,7 @@ public class ColorRepository : IColorRepository
                 $@"
                 SELECT
                     ""color_id""              AS Id,
-                    ""color_name""            AS Name,
+                    ""color_name""            AS Key,
                     ""normalized_color_name"" AS NormalizedName,
                     ""color_name_ru""         AS NameRu,
                     ""color_code""            AS ColorCode,
@@ -182,7 +182,7 @@ public class ColorRepository : IColorRepository
                     ""colors""
                 WHERE
                     ""normalized_color_name"" 
-                        LIKE @Name
+                        LIKE @Key
                 ORDER BY {columnName} {direction} 
                 LIMIT @Count
                 OFFSET @Offset;

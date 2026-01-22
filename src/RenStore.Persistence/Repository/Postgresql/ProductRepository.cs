@@ -217,7 +217,7 @@ public class ProductRepository : IProductRepository
             @"
                 SELECT
                     pv.""product_variant_id""      AS VariantId,
-                    pv.""variant_name""            AS Name,
+                    pv.""variant_name""            AS Key,
                     pv.""normalized_variant_name"" AS NormalizedName,
                     pv.""rating""                  AS Rating,
                     pv.""article""                 AS Article,
@@ -245,7 +245,7 @@ public class ProductRepository : IProductRepository
                     pd.""type_of_packing""         AS TypeOfPacking,
                     pd.""country_id""              AS CountryOfManufactureId,
                     pd.""product_variant_id""      AS ProductVariantId,
-                    countries.""country_name""     AS Name
+                    countries.""country_name""     AS Key
                 FROM ""product_details""           AS pd
                 LEFT JOIN ""countries""
                     ON ""countries"".""country_id"" = pd.""country_id""
@@ -283,7 +283,7 @@ public class ProductRepository : IProductRepository
             @"
                 SELECT 
                     pa.""attribute_id""            AS AttributeId,
-                    pa.""attribute_name""          AS Name,
+                    pa.""attribute_name""          AS Key,
                     pa.""attribute_value""         AS Value,
                     pa.""product_variant_id""      AS ProductVariantId
                 FROM ""product_attributes""        AS pa
@@ -315,7 +315,7 @@ public class ProductRepository : IProductRepository
             @"
                 SELECT 
                     s.""seller_id""                AS SellerId,
-                    s.""seller_name""              AS Name,
+                    s.""seller_name""              AS Key,
                     s.""url""                      AS Url
                 FROM ""sellers""                   AS s
                 WHERE ""seller_id"" = (

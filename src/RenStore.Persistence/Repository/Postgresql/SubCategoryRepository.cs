@@ -82,7 +82,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 $@"
                     SELECT
                         ""sub_category_id""                 AS Id,
-                        ""sub_category_name""               AS Name,
+                        ""sub_category_name""               AS Key,
                         ""normalized_sub_category_name""    AS NormalizedName,
                         ""sub_category_name_ru""            AS NameRu,
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
@@ -124,7 +124,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 @"
                     SELECT
                         ""sub_category_id""                 AS Id,
-                        ""sub_category_name""               AS Name,
+                        ""sub_category_name""               AS Key,
                         ""normalized_sub_category_name""    AS NormalizedName,
                         ""sub_category_name_ru""            AS NameRu,
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
@@ -180,7 +180,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 $@"
                     SELECT
                         ""sub_category_id""                 AS Id,
-                        ""sub_category_name""               AS Name,
+                        ""sub_category_name""               AS Key,
                         ""normalized_sub_category_name""    AS NormalizedName,
                         ""sub_category_name_ru""            AS NameRu,
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,
@@ -192,10 +192,10 @@ public class SubCategoryRepository : ISubCategoryRepository
                         ""sub_categories""
                     WHERE
                         ""normalized_sub_category_name"" 
-                            LIKE @Name
+                            LIKE @Key
                     OR 
                         ""normalized_sub_category_name_ru"" 
-                            LIKE @Name
+                            LIKE @Key
                     ORDER BY {columnName} {direction} 
                     LIMIT @Count
                     OFFSET @Offset;
@@ -257,7 +257,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                 $@"
                     SELECT
                         ""sub_category_id""                 AS Id,
-                        ""sub_category_name""               AS Name,
+                        ""sub_category_name""               AS Key,
                         ""normalized_sub_category_name""    AS NormalizedName,
                         ""sub_category_name_ru""            AS NameRu,
                         ""normalized_sub_category_name_ru"" AS NormalizedNameRu,

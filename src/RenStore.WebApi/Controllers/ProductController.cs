@@ -180,7 +180,7 @@ public class ProductController(IMapper mapper) : BaseController
             await Mediator.Send(
                 new GetProductByNameQuery()
                 {
-                    Name = words
+                    Key = words
                 });
         
         if (!result.Any())

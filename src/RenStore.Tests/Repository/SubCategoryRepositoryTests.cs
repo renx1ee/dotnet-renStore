@@ -25,7 +25,7 @@ public class SubCategoryRepositoryTests
         var subCategory = new SubCategory()
         {
             Id = subCategoryId,
-            Name = "Test",
+            Key = "Test",
             NormalizedName = "TEST",
             NameRu = "Тест",
             NormalizedNameRu = "ТЕСТ",
@@ -43,7 +43,7 @@ public class SubCategoryRepositoryTests
                 c.Id == subCategoryId);
         Assert.NotNull(result);
         Assert.Equal(subCategoryId, result.Id);
-        Assert.Equal(subCategory.Name, result.Name);
+        Assert.Equal(subCategory.Key, result.Key);
         Assert.Equal(subCategory.NormalizedName, result.NormalizedName);
         Assert.Equal(subCategory.NameRu, result.NameRu);
         Assert.Equal(subCategory.NormalizedNameRu, result.NormalizedNameRu);
@@ -62,7 +62,7 @@ public class SubCategoryRepositoryTests
         var category = new SubCategory()
         {
             Id = categoryId,
-            Name = TestDataConstants.SubCategoryNameForGetting1,
+            Key = TestDataConstants.SubCategoryNameForGetting1,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting1.ToUpper(),
             NameRu = "Тест",
             NormalizedNameRu = "ТЕСТ",
@@ -89,7 +89,7 @@ public class SubCategoryRepositoryTests
         var category = new SubCategory()
         {
             Id = categoryId,
-            Name = TestDataConstants.SubCategoryNameForGetting1,
+            Key = TestDataConstants.SubCategoryNameForGetting1,
             NormalizedName = TestDataConstants.SubCategoryNameForGetting1.ToUpper(),
             NameRu = "Тест",
             NormalizedNameRu = "ТЕСТ",
@@ -116,7 +116,7 @@ public class SubCategoryRepositoryTests
         var category = new SubCategory()
         {
             Id = categoryId,
-            Name = "wfkwej",
+            Key = "wfkwej",
             NormalizedName = "lkwwfwawf".ToUpper(),
             NameRu = TestDataConstants.SubCategoryNameRuForGetting1,
             NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper(),
@@ -150,7 +150,7 @@ public class SubCategoryRepositoryTests
             .FirstOrDefaultAsync(c => 
                 c.Id == TestDataConstants.SubCategoryIdForUpdate);
         
-        existsSubCategory.Name = subCategoryName;
+        existsSubCategory.Key = subCategoryName;
         existsSubCategory.NameRu = subCategoryNameRu;
         existsSubCategory.NormalizedName = normalizedSubCategoryName;
         existsSubCategory.NormalizedNameRu = normalizedSubCategoryNameRu;
@@ -165,7 +165,7 @@ public class SubCategoryRepositoryTests
                 c.Id == TestDataConstants.SubCategoryIdForUpdate);
         Assert.NotNull(result);
         Assert.Equal(TestDataConstants.SubCategoryIdForUpdate, result.Id);
-        Assert.Equal(subCategoryName, result.Name);
+        Assert.Equal(subCategoryName, result.Key);
         Assert.Equal(subCategoryNameRu, result.NameRu);
         Assert.Equal(normalizedSubCategoryNameRu, result.NormalizedNameRu);
         Assert.Equal(normalizedSubCategoryName, result.NormalizedName);
@@ -185,7 +185,7 @@ public class SubCategoryRepositoryTests
             .FirstOrDefaultAsync(c => 
                 c.Id == TestDataConstants.SubCategoryIdForUpdate);
         
-        existsSubCategory.Name = TestDataConstants.SubCategoryNameForGetting1;
+        existsSubCategory.Key = TestDataConstants.SubCategoryNameForGetting1;
         existsSubCategory.NameRu = TestDataConstants.SubCategoryNameRuForGetting1;
         existsSubCategory.NormalizedName = TestDataConstants.SubCategoryNameForGetting1.ToUpper();
         existsSubCategory.NormalizedNameRu = TestDataConstants.SubCategoryNameRuForGetting1.ToUpper();
@@ -345,7 +345,7 @@ public class SubCategoryRepositoryTests
         var result = await _subCategoryRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: SubCategorySortBy.Name);
+            sortBy: SubCategorySortBy.Key);
         var subCategories = result.ToList();
         // Assert
         Assert.NotNull(subCategories);
@@ -371,7 +371,7 @@ public class SubCategoryRepositoryTests
         var result = await _subCategoryRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: SubCategorySortBy.Name);
+            sortBy: SubCategorySortBy.Key);
         var subCategories = result.ToList();
         // Assert
         Assert.NotNull(subCategories);
@@ -504,7 +504,7 @@ public class SubCategoryRepositoryTests
                     CancellationToken.None));
     }
     #endregion
-    #region By Name
+    #region By Key
     [Fact]
     public async Task FindSubCategoriesByNameAsync_WithDefaultParameters_Success_Test()
     {
@@ -605,7 +605,7 @@ public class SubCategoryRepositoryTests
             name: name,
             cancellationToken: CancellationToken.None,
             descending: false,
-            sortBy: SubCategorySortBy.Name);
+            sortBy: SubCategorySortBy.Key);
         var result = subCategories.ToList();
         // Assert
         Assert.NotNull(result);
@@ -634,7 +634,7 @@ public class SubCategoryRepositoryTests
             name: name,
             cancellationToken: CancellationToken.None,
             descending: true,
-            sortBy: SubCategorySortBy.Name);
+            sortBy: SubCategorySortBy.Key);
         var result = subCategories.ToList();
         // Assert
         Assert.NotNull(result);

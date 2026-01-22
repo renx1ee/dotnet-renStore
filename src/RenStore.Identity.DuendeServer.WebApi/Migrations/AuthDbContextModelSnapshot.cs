@@ -118,13 +118,13 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Key")
                         .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("UserId", "LoginProvider", "Key");
 
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
@@ -138,7 +138,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Key")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -201,7 +201,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Key")
                         .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
@@ -267,7 +267,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
@@ -643,7 +643,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");

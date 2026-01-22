@@ -27,7 +27,7 @@ public class AnswerComplainRepositoryTests
         var seller = new SellerEntity
         {
             Id = TestDataConstants.SellerIdForCreate,
-            Name = "Sample Name for Edit",
+            Key = "Sample Key for Edit",
             Description = "Sample Description for Edit",
             NormalizedName = Guid.NewGuid().ToString().ToUpper(),
             OccuredAt = DateTime.UtcNow,
@@ -44,7 +44,7 @@ public class AnswerComplainRepositoryTests
         
         Assert.NotNull(sellerExists);
         Assert.Equal(TestDataConstants.SellerIdForCreate, sellerExists.Id);
-        Assert.Equal(seller.Name, sellerExists.Name);
+        Assert.Equal(seller.Key, sellerExists.Key);
         Assert.Equal(seller.Description, sellerExists.Description);
         Assert.Equal(seller.NormalizedName, sellerExists.NormalizedName);
         Assert.Equal(seller.OccuredAt, sellerExists.OccuredAt);
@@ -83,7 +83,7 @@ public class AnswerComplainRepositoryTests
         if (sellerExists is null)
             Assert.Fail();
         // Act
-        sellerExists.Name = updatedSellerName;
+        sellerExists.Key = updatedSellerName;
         sellerExists.NormalizedName = updatedSellerNormalizedName;
         sellerExists.Description = updatedSellerDescription;
         sellerExists.IsBlocked = updatedSellerIsBlocked;
@@ -95,7 +95,7 @@ public class AnswerComplainRepositoryTests
             .FirstOrDefaultAsync(s => 
                 s.Id == TestDataConstants.SellerIdForUpdate);
         Assert.NotNull(sellerResult);
-        Assert.Equal(updatedSellerName, sellerResult.Name);
+        Assert.Equal(updatedSellerName, sellerResult.Key);
         Assert.Equal(updatedSellerNormalizedName, sellerResult.NormalizedName);
         Assert.Equal(updatedSellerDescription, sellerResult.Description);
         Assert.Equal(updatedSellerIsBlocked, sellerResult.IsBlocked);
@@ -116,7 +116,7 @@ public class AnswerComplainRepositoryTests
         var seller = new SellerEntity()
         {
             Id = wrongSelleId,
-            Name = updatedSellerName,
+            Key = updatedSellerName,
             NormalizedName = updatedSellerNormalizedName,
             Description = updatedSellerDescription,
             IsBlocked = updatedSellerIsBlocked
@@ -208,7 +208,7 @@ public class AnswerComplainRepositoryTests
         // Act
         var sellers = await _sellerRepository
             .FindAllAsync(
-                sortBy: SellerSortBy.Name,
+                sortBy: SellerSortBy.Key,
                 descending: false,
                 cancellationToken: CancellationToken.None);
         
@@ -234,7 +234,7 @@ public class AnswerComplainRepositoryTests
         // Act
         var sellers = await _sellerRepository
             .FindAllAsync(
-                sortBy: SellerSortBy.Name,
+                sortBy: SellerSortBy.Key,
                 descending: true,
                 cancellationToken: CancellationToken.None);
         

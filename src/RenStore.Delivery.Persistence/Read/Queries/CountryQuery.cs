@@ -16,7 +16,7 @@ internal sealed class CountryQuery
         """
             SELECT
                 ""country_id""                 AS Id,
-                ""country_name""               AS Name,
+                ""country_name""               AS Key,
                 ""normalized_country_name""    AS NormalizedName,
                 ""country_name_ru""            AS NameRu,
                 ""normalized_country_name_ru"" AS NormalizedNameRu,
@@ -172,13 +172,13 @@ internal sealed class CountryQuery
                     {BaseSqlQuery}
                     WHERE
                         ""normalized_country_name"" 
-                            LIKE @Name
+                            LIKE @Key
                     OR 
                         ""normalized_other_name""
-                            LIKE @Name
+                            LIKE @Key
                     OR 
                         ""normalized_country_name_ru""
-                            LIKE @Name
+                            LIKE @Key
                 ");
 
             if (isDeleted.HasValue)

@@ -25,7 +25,7 @@ public class CategoryRepositoryTests
         var category = new Category()
         {
             Id = categoryId,
-            Name = "Test",
+            Key = "Test",
             NormalizedName = "TEST",
             NameRu = "Тест",
             NormalizedNameRu = "ТЕСТ",
@@ -41,7 +41,7 @@ public class CategoryRepositoryTests
                 c.Id == categoryId);
         Assert.NotNull(result);
         Assert.Equal(categoryId, result.Id);
-        Assert.Equal(category.Name, result.Name);
+        Assert.Equal(category.Key, result.Key);
         Assert.Equal(category.NormalizedName, result.NormalizedName);
         Assert.Equal(category.NameRu, result.NameRu);
         Assert.Equal(category.NormalizedNameRu, result.NormalizedNameRu);
@@ -60,7 +60,7 @@ public class CategoryRepositoryTests
         var category = new Category()
         {
             Id = categoryId,
-            Name = TestDataConstants.CategoryNameForGetting1,
+            Key = TestDataConstants.CategoryNameForGetting1,
             NormalizedName = TestDataConstants.CategoryNameForGetting1.ToUpper(),
             NameRu = "Тест",
             NormalizedNameRu = "ТЕСТ",
@@ -86,7 +86,7 @@ public class CategoryRepositoryTests
         var category = new Category()
         {
             Id = categoryId,
-            Name = "wfkwej",
+            Key = "wfkwej",
             NormalizedName = "lkwwfwawf".ToUpper(),
             NameRu = TestDataConstants.CategoryNameRuForGetting1,
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper(),
@@ -119,7 +119,7 @@ public class CategoryRepositoryTests
             .FirstOrDefaultAsync(c => 
                 c.Id == TestDataConstants.CategoryIdForUpdate);
         
-        existsCategory.Name = categoryName;
+        existsCategory.Key = categoryName;
         existsCategory.NameRu = categoryNameRu;
         existsCategory.NormalizedName = normalizedCategoryName;
         existsCategory.NormalizedNameRu = normalizedCategoryNameRu;
@@ -133,7 +133,7 @@ public class CategoryRepositoryTests
                 c.Id == TestDataConstants.CategoryIdForUpdate);
         Assert.NotNull(result);
         Assert.Equal(TestDataConstants.CategoryIdForUpdate, result.Id);
-        Assert.Equal(categoryName, result.Name);
+        Assert.Equal(categoryName, result.Key);
         Assert.Equal(categoryNameRu, result.NameRu);
         Assert.Equal(normalizedCategoryNameRu, result.NormalizedNameRu);
         Assert.Equal(normalizedCategoryName, result.NormalizedName);
@@ -152,7 +152,7 @@ public class CategoryRepositoryTests
             .FirstOrDefaultAsync(c => 
                 c.Id == TestDataConstants.CategoryIdForUpdate);
         
-        existsCategory.Name = TestDataConstants.CategoryNameForGetting1;
+        existsCategory.Key = TestDataConstants.CategoryNameForGetting1;
         existsCategory.NameRu = TestDataConstants.CategoryNameRuForGetting1;
         existsCategory.NormalizedName = TestDataConstants.CategoryNameForGetting1.ToUpper();
         existsCategory.NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper();
@@ -311,7 +311,7 @@ public class CategoryRepositoryTests
         var result = await _categoryRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: CategorySortBy.Name);
+            sortBy: CategorySortBy.Key);
         var categories = result.ToList();
         // Assert
         Assert.NotNull(categories);
@@ -337,7 +337,7 @@ public class CategoryRepositoryTests
         var result = await _categoryRepository.FindAllAsync(
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: CategorySortBy.Name);
+            sortBy: CategorySortBy.Key);
         var categories = result.ToList();
         // Assert
         Assert.NotNull(categories);
@@ -470,7 +470,7 @@ public class CategoryRepositoryTests
                     CancellationToken.None));
     }
     #endregion
-    #region By Name
+    #region By Key
     [Fact]
     public async Task FindCategoriesByNameAsync_WithDefaultParameters_Success_Test()
     {
@@ -573,7 +573,7 @@ public class CategoryRepositoryTests
             name: TestDataConstants.CategoryNameForGetting7,
             cancellationToken: CancellationToken.None, 
             descending: false,
-            sortBy: CategorySortBy.Name);
+            sortBy: CategorySortBy.Key);
         var result = categories.ToList();
         // Assert
         Assert.NotNull(result);
@@ -593,7 +593,7 @@ public class CategoryRepositoryTests
             name: TestDataConstants.CategoryNameForGetting7,
             cancellationToken: CancellationToken.None, 
             descending: true,
-            sortBy: CategorySortBy.Name);
+            sortBy: CategorySortBy.Key);
         var result = categories.ToList();
         // Assert
         Assert.NotNull(result);

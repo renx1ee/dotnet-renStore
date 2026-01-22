@@ -48,7 +48,7 @@ public static class AuthExtensions
                }
            };
            options.ExpireTimeSpan = TimeSpan.FromMinutes(30000);
-           options.Cookie.Name = "tasty-cookies";
+           options.Cookie.Key = "tasty-cookies";
        })*/
         services.AddAuthorization(options =>
         {

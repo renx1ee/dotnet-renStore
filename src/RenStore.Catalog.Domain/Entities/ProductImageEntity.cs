@@ -8,7 +8,7 @@ public class ProductImageEntity
     public long FileSizeBytes { get; private set; }
     public bool IsMain { get; private set; } = false;
     public short SortOrder { get; private set; } = 0;
-    public DateTime UploadedAt { get; private set; } = DateTime.UtcNow;
+    public DateTime UploadedAt { get; private set; } 
     public int Weight { get; private set; }
     public int Height { get; private set; }
     public Guid ProductVariantId { get; private set; }

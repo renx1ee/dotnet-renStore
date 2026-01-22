@@ -28,7 +28,7 @@ public class SellerRepository(
     private readonly Dictionary<SellerSortBy, string> _sortColumnMapping = new()
     {
         { SellerSortBy.Id, "seller_id" },
-        { SellerSortBy.Name, "seller_name" },
+        { SellerSortBy.Key, "seller_name" },
         { SellerSortBy.CreatedAt, "created_date" }
     };
         
@@ -93,7 +93,7 @@ public class SellerRepository(
                 @"
                 SELECT
                     ""seller_id""              AS Id,
-                    ""seller_name""            AS Name,
+                    ""seller_name""            AS Key,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
                     ""created_date""           AS OccuredAt,
@@ -137,7 +137,7 @@ public class SellerRepository(
                 @"
                 SELECT
                     ""seller_id""              AS Id,
-                    ""seller_name""            AS Name,
+                    ""seller_name""            AS Key,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
                     ""created_date""           AS OccuredAt,
@@ -191,7 +191,7 @@ public class SellerRepository(
                 @"
                     SELECT
                         ""seller_id""              AS Id,
-                        ""seller_name""            AS Name,
+                        ""seller_name""            AS Key,
                         ""normalized_seller_name"" AS NormalizedName,
                         ""seller_description""     AS Description,
                         ""created_date""           AS OccuredAt,
@@ -200,11 +200,11 @@ public class SellerRepository(
                     FROM
                         ""sellers""
                     WHERE
-                        ""normalized_seller_name"" LIKE @Name
+                        ""normalized_seller_name"" LIKE @Key
                 ");
         
             var parameters = new DynamicParameters();
-            parameters.Add("Name", $"%{name.ToUpper()}%");
+            parameters.Add("Key", $"%{name.ToUpper()}%");
             parameters.Add("Count", (int)pageCount);
             parameters.Add("Offset", (int)offset);
 
@@ -251,7 +251,7 @@ public class SellerRepository(
                 @"
                 SELECT
                     ""seller_id""              AS Id,
-                    ""seller_name""            AS Name,
+                    ""seller_name""            AS Key,
                     ""normalized_seller_name"" AS NormalizedName,
                     ""seller_description""     AS Description,
                     ""created_date""           AS OccuredAt,

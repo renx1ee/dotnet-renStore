@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.ValueObjects;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Entities;
@@ -15,7 +16,8 @@ public class ProductVariant
     public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string NormalizedName { get; private set; } 
-    public decimal Rating { get; private set; }
+    // TODO:
+    public Rating Rating { get; private set; }
     public long Article { get; private set; }
     public int InStock { get; private set; }
     public int Sales { get; private set; }
@@ -133,6 +135,7 @@ public class ProductVariant
         Sales += count;
     }
     
+    // TODO:
     public void UpdateRating(
         decimal sumOfRatings,
         decimal ratingsCount,
@@ -140,7 +143,7 @@ public class ProductVariant
     {
         EnsureNotDeleted();
 
-        Rating = sumOfRatings / ratingsCount;
+        
         
         UpdatedAt = now;
     }

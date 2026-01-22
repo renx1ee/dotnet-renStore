@@ -83,7 +83,7 @@ public class CategoryRepository : ICategoryRepository
                 $@"
                     SELECT
                         ""category_id""                 AS Id,
-                        ""category_name""               AS Name,
+                        ""category_name""               AS Key,
                         ""normalized_category_name""    AS NormalizedName,
                         ""category_name_ru""            AS NameRu,
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
@@ -124,7 +124,7 @@ public class CategoryRepository : ICategoryRepository
                 @"
                     SELECT
                         ""category_id""                 AS Id,
-                        ""category_name""               AS Name,
+                        ""category_name""               AS Key,
                         ""normalized_category_name""    AS NormalizedName,
                         ""category_name_ru""            AS NameRu,
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
@@ -179,7 +179,7 @@ public class CategoryRepository : ICategoryRepository
                 $@"
                     SELECT
                         ""category_id""                 AS Id,
-                    ""category_name""                   AS Name,
+                    ""category_name""                   AS Key,
                         ""normalized_category_name""    AS NormalizedName,
                         ""category_name_ru""            AS NameRu,
                         ""normalized_category_name_ru"" AS NormalizedNameRu,
@@ -190,10 +190,10 @@ public class CategoryRepository : ICategoryRepository
                         ""categories""
                     WHERE
                         ""normalized_category_name"" 
-                            LIKE @Name
+                            LIKE @Key
                     OR 
                         ""normalized_category_name_ru"" 
-                            LIKE @Name
+                            LIKE @Key
                     ORDER BY {columnName} {direction} 
                     LIMIT @Count
                     OFFSET @Offset;

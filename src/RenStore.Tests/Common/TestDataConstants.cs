@@ -193,15 +193,15 @@ public static class TestDataConstants
     public static readonly Guid ProductVariantIdForGetting6      = Guid.NewGuid();
     public static readonly Guid ProductVariantIdForGetting7      = Guid.NewGuid();
     
-    public static readonly string ProductVariantNameForUpdate    = "Name A";
-    public static readonly string ProductVariantNameForDelete    = "Name B";
-    public static readonly string ProductVariantNameForGetting1  = "Name C";
-    public static readonly string ProductVariantNameForGetting2  = "Name D";
-    public static readonly string ProductVariantNameForGetting3  = "Name E";
-    public static readonly string ProductVariantNameForGetting4  = "Name F";
-    public static readonly string ProductVariantNameForGetting5  = "Name G";
-    public static readonly string ProductVariantNameForGetting6  = "Name H";
-    public static readonly string ProductVariantNameForGetting7  = "Name HH";
+    public static readonly string ProductVariantNameForUpdate    = "Key A";
+    public static readonly string ProductVariantNameForDelete    = "Key B";
+    public static readonly string ProductVariantNameForGetting1  = "Key C";
+    public static readonly string ProductVariantNameForGetting2  = "Key D";
+    public static readonly string ProductVariantNameForGetting3  = "Key E";
+    public static readonly string ProductVariantNameForGetting4  = "Key F";
+    public static readonly string ProductVariantNameForGetting5  = "Key G";
+    public static readonly string ProductVariantNameForGetting6  = "Key H";
+    public static readonly string ProductVariantNameForGetting7  = "Key HH";
     
     public static readonly int ProductVariantArticleForUpdate    = 000000001;
     public static readonly int ProductVariantArticleForDelete    = 000000002;

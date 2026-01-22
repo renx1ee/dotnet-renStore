@@ -88,7 +88,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
                 $@"
                     SELECT 
                         ""attribute_id""       AS Id,
-                        ""attribute_name""     AS Name,
+                        ""attribute_name""     AS Key,
                         ""attribute_value""    AS Value,
                         ""product_variant_id"" AS ProductVariantId
                     FROM
@@ -123,7 +123,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
                 @"
                     SELECT 
                         ""attribute_id""       AS Id,
-                        ""attribute_name""     AS Name,
+                        ""attribute_name""     AS Key,
                         ""attribute_value""    AS Value,
                         ""product_variant_id"" AS ProductVariantId
                     FROM

@@ -20,7 +20,7 @@ public class ProductAttributeConfiguration
             .HasColumnName("attribute_id");
         
         builder
-            .Property(x => x.Name)
+            .Property(x => x.Key)
             .HasColumnName("attribute_name")
             .IsRequired();
         

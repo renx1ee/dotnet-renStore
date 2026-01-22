@@ -22,7 +22,7 @@ public class ProductAttributeRepositoryTest
        var productAttribute = new ProductAttributeEntity()
        {
            Id = Guid.NewGuid(),
-           Name = "test",
+           Key = "test",
            Value = "test",
            ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
        };
@@ -37,7 +37,7 @@ public class ProductAttributeRepositoryTest
        
        Assert.NotNull(productAttributeExists);
        Assert.Equal(productAttribute.Id, productAttributeExists.Id);
-       Assert.Equal(productAttribute.Name, productAttributeExists.Name);
+       Assert.Equal(productAttribute.Key, productAttributeExists.Key);
        Assert.Equal(productAttribute.Value, productAttributeExists.Value);
        Assert.Equal(productAttribute.ProductVariantId, productAttributeExists.ProductVariantId);
     }
@@ -66,7 +66,7 @@ public class ProductAttributeRepositoryTest
        var productAttribute = new ProductAttributeEntity()
        {
            Id = Guid.NewGuid(),
-           Name = "test",
+           Key = "test",
            Value = "test",
            ProductVariantId = Guid.NewGuid()
        };
@@ -92,8 +92,8 @@ public class ProductAttributeRepositoryTest
        if (productAttributeExists is null) 
            Assert.Fail();
        
-       productAttributeExists.Name = "Updated Name";
-       productAttributeExists.Value = "Updated Name";
+       productAttributeExists.Key = "Updated Key";
+       productAttributeExists.Value = "Updated Key";
        
        await _productAttributeRepository.UpdateAsync(productAttributeExists, CancellationToken.None);
        // Assert
@@ -103,7 +103,7 @@ public class ProductAttributeRepositoryTest
                s.Id == TestDataConstants.ProductAttributeIdForUpdate);
        
        Assert.NotNull(productAttributeResult);
-       Assert.Equal(productAttributeExists.Name, productAttributeResult.Name);
+       Assert.Equal(productAttributeExists.Key, productAttributeResult.Key);
        Assert.Equal(productAttributeExists.Value, productAttributeResult.Value);
     }
 
@@ -117,7 +117,7 @@ public class ProductAttributeRepositoryTest
        var productAttribute = new ProductAttributeEntity()
        {
            Id = Guid.NewGuid(),
-           Name = "test",
+           Key = "test",
            Value = "test",
            ProductVariantId = Guid.NewGuid()
        };

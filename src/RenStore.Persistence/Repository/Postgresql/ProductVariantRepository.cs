@@ -88,7 +88,7 @@ public class ProductVariantRepository : IProductVariantRepository
                 $@"
                     SELECT
                         ""product_variant_id""      AS Id,
-                        ""variant_name""            AS Name,
+                        ""variant_name""            AS Key,
                         ""normalized_variant_name"" AS NormalizedName,
                         ""rating""                  AS Rating,
                         ""article""                 AS Article,
@@ -136,7 +136,7 @@ public class ProductVariantRepository : IProductVariantRepository
                 @"
                     SELECT
                         ""product_variant_id""      AS Id,
-                        ""variant_name""            AS Name,
+                        ""variant_name""            AS Key,
                         ""normalized_variant_name"" AS NormalizedName,
                         ""rating""                  AS Rating,
                         ""article""                 AS Article,

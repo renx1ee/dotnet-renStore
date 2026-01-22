@@ -26,7 +26,7 @@ public class GetSellerByNameQueryHandler
     {
         logger.LogInformation($"Handling {nameof(GetSellerByNameQueryHandler)}");
         
-        var seller = await sellerRepository.FindByNameAsync(request.Name, cancellationToken);
+        var seller = await sellerRepository.FindByNameAsync(request.Key, cancellationToken);
         
         if (seller == null) return null;
         

@@ -16,7 +16,7 @@ internal sealed class CityQuery
         """ 
             SELECT
                 "city_id"                 AS Id,
-                "city_name"               AS Name,
+                "city_name"               AS Key,
                 "normalized_city_name"    AS NormalizedName,
                 "city_name_ru"            AS NameRu,
                 "normalized_city_name_ru" AS NormalizedNameRu,
@@ -164,7 +164,7 @@ internal sealed class CityQuery
                     {BaseSqlQuery}
                     WHERE
                         ""normalized_city_name"" 
-                            LIKE @Name
+                            LIKE @Key
                 ");
 
             if (isDeleted.HasValue)

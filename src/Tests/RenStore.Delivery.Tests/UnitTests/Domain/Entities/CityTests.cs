@@ -9,7 +9,7 @@ public sealed class CityTests
     public CityTests()
     {
         var result = _coutnry = Delivery.Domain.Entities.Country.Create(
-            name: "Name", 
+            name: "Key", 
             nameRu: "NameRu", 
             code: "ru", 
             phoneCode:"+7",
@@ -71,7 +71,7 @@ public sealed class CityTests
         string nameRu    = "City";
         int countryId    = 1;
 
-        string newName   = "New Name";
+        string newName   = "New Key";
         string newNameRu = "Новое имя";
         
         // Act

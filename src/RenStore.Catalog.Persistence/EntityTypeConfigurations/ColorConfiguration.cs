@@ -20,13 +20,13 @@ public class ColorConfiguration : IEntityTypeConfiguration<Color>
             .HasColumnName("color_id");
         
         builder
-            .Property(c => c.Name)
+            .Property(c => c.Key)
             .HasColumnName("color_name")
             .HasMaxLength(50)
             .IsRequired();
         
         builder
-            .HasIndex(c => c.Name)
+            .HasIndex(c => c.Key)
             .IsUnique();
         
         builder

@@ -23,7 +23,7 @@ public class ColorRepositoryTests : IDisposable
         var color = new Color()
         {
             Id = colorId,
-            Name = TestDataConstants.ColorNameForCreate,
+            Key = TestDataConstants.ColorNameForCreate,
             NormalizedName = TestDataConstants.ColorNameForCreate.ToUpper(),
             NameRu = Guid.NewGuid().ToString(),
             ColorCode = "#123",
@@ -35,10 +35,10 @@ public class ColorRepositoryTests : IDisposable
         Assert.Equal(colorId, result);
         var savedColor = await _context.Colors
             .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Name == TestDataConstants.ColorNameForCreate);
+            .FirstOrDefaultAsync(c => c.Key == TestDataConstants.ColorNameForCreate);
         
         Assert.NotNull(savedColor);
-        Assert.Equal(color.Name, savedColor.Name);
+        Assert.Equal(color.Key, savedColor.Key);
         Assert.Equal(color.NormalizedName, savedColor.NormalizedName);
         Assert.Equal(color.NameRu, savedColor.NameRu);
         Assert.Equal(color.ColorCode, savedColor.ColorCode);
@@ -55,7 +55,7 @@ public class ColorRepositoryTests : IDisposable
         var color = new Color()
         {
             Id = colorId,
-            Name = TestDataConstants.ColorNameForCreate,
+            Key = TestDataConstants.ColorNameForCreate,
             NormalizedName = TestDataConstants.ColorNameForCreate.ToUpper(),
             NameRu = "белый",
             ColorCode = "#FFF",
@@ -64,7 +64,7 @@ public class ColorRepositoryTests : IDisposable
         var duplicateColor = new Color()
         {
             Id = colorId + 1,
-            Name = TestDataConstants.ColorNameForCreate,
+            Key = TestDataConstants.ColorNameForCreate,
             NormalizedName = TestDataConstants.ColorNameForCreate.ToUpper(),
             NameRu = "белый",
             ColorCode = "#FFF",
@@ -100,7 +100,7 @@ public class ColorRepositoryTests : IDisposable
         if (color is null)
             return;
         // Act
-        color.Name = updatedName;
+        color.Key = updatedName;
         color.NormalizedName = updatedNormalizedName;
         color.Description = description;
         await _colorRepository.UpdateAsync(color, CancellationToken.None);
@@ -108,7 +108,7 @@ public class ColorRepositoryTests : IDisposable
         var updatedColor = await _context.Colors.FirstOrDefaultAsync(c => 
             c.Id == TestDataConstants.ColorIdForUpdate);
         Assert.NotNull(updatedColor);
-        Assert.Equal(updatedName, updatedColor.Name);
+        Assert.Equal(updatedName, updatedColor.Key);
         Assert.Equal(updatedNormalizedName, updatedColor.NormalizedName);
         Assert.Equal(description, updatedColor.Description);
     }
@@ -126,7 +126,7 @@ public class ColorRepositoryTests : IDisposable
         var color = new Color()
         {
             Id = 63263774,
-            Name = updatedName,
+            Key = updatedName,
             NormalizedName = updatedNormalizedName,
             Description = description
         };
@@ -217,14 +217,14 @@ public class ColorRepositoryTests : IDisposable
         Assert.NotNull(result);
         Assert.Equal(8, result.Count());
         
-        Assert.Equal(TestDataConstants.ColorNameForUpdate, result[0].Name);
-        Assert.Equal(TestDataConstants.ColorNameForGetting1, result[1].Name);
-        Assert.Equal(TestDataConstants.ColorNameForGetting6, result[2].Name); 
-        Assert.Equal(TestDataConstants.ColorNameForGetting5, result[3].Name);
-        Assert.Equal(TestDataConstants.ColorNameForDelete, result[4].Name); 
-        Assert.Equal(TestDataConstants.ColorNameForGetting2, result[5].Name); 
-        Assert.Equal(TestDataConstants.ColorNameForGetting4, result[6].Name);
-        Assert.Equal(TestDataConstants.ColorNameForGetting3, result[7].Name);
+        Assert.Equal(TestDataConstants.ColorNameForUpdate, result[0].Key);
+        Assert.Equal(TestDataConstants.ColorNameForGetting1, result[1].Key);
+        Assert.Equal(TestDataConstants.ColorNameForGetting6, result[2].Key); 
+        Assert.Equal(TestDataConstants.ColorNameForGetting5, result[3].Key);
+        Assert.Equal(TestDataConstants.ColorNameForDelete, result[4].Key); 
+        Assert.Equal(TestDataConstants.ColorNameForGetting2, result[5].Key); 
+        Assert.Equal(TestDataConstants.ColorNameForGetting4, result[6].Key);
+        Assert.Equal(TestDataConstants.ColorNameForGetting3, result[7].Key);
     }
     
     [Fact]
@@ -243,14 +243,14 @@ public class ColorRepositoryTests : IDisposable
         var result = colors.ToList();
         Assert.NotNull(result);
         Assert.Equal(8, result.Count());
-        Assert.Equal(TestDataConstants.ColorNameForGetting3, result[0].Name);
-        Assert.Equal(TestDataConstants.ColorNameForGetting4, result[1].Name);
-        Assert.Equal(TestDataConstants.ColorNameForGetting2, result[2].Name); 
-        Assert.Equal(TestDataConstants.ColorNameForDelete, result[3].Name);
-        Assert.Equal(TestDataConstants.ColorNameForGetting5, result[4].Name); 
-        Assert.Equal(TestDataConstants.ColorNameForGetting6, result[5].Name); 
-        Assert.Equal(TestDataConstants.ColorNameForGetting1, result[6].Name);
-        Assert.Equal(TestDataConstants.ColorNameForUpdate, result[7].Name);
+        Assert.Equal(TestDataConstants.ColorNameForGetting3, result[0].Key);
+        Assert.Equal(TestDataConstants.ColorNameForGetting4, result[1].Key);
+        Assert.Equal(TestDataConstants.ColorNameForGetting2, result[2].Key); 
+        Assert.Equal(TestDataConstants.ColorNameForDelete, result[3].Key);
+        Assert.Equal(TestDataConstants.ColorNameForGetting5, result[4].Key); 
+        Assert.Equal(TestDataConstants.ColorNameForGetting6, result[5].Key); 
+        Assert.Equal(TestDataConstants.ColorNameForGetting1, result[6].Key);
+        Assert.Equal(TestDataConstants.ColorNameForUpdate, result[7].Key);
     }
     
     [Fact]
@@ -461,7 +461,7 @@ public class ColorRepositoryTests : IDisposable
         var result = colors.ToList();
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(TestDataConstants.ColorNameForGetting1, result[0].Name);
+        Assert.Equal(TestDataConstants.ColorNameForGetting1, result[0].Key);
     }
     
     [Fact]

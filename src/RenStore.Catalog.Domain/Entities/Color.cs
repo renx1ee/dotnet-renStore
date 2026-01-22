@@ -43,10 +43,10 @@ public class Color
             throw new DomainException("Color name ru must be 1-100 characters.");
         
         if (string.IsNullOrWhiteSpace(trimmedName))
-            throw new DomainException("Name cannot be null or empty.");
+            throw new DomainException("Key cannot be null or empty.");
         
         if (string.IsNullOrWhiteSpace(trimmedNameRu))
-            throw new DomainException("Name Ru cannot be null or empty.");
+            throw new DomainException("Key Ru cannot be null or empty.");
         
         if (string.IsNullOrWhiteSpace(colorCode))
             throw new DomainException("Color Code cannot be null or empty.");

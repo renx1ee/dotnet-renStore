@@ -102,7 +102,7 @@ public class SellerImageRepositoryTests
        if (sellerImageExists is null) 
            Assert.Fail();
        
-       sellerImageExists.OriginalFileName = "Updated Name";
+       sellerImageExists.OriginalFileName = "Updated Key";
        sellerImageExists.StoragePath = Guid.NewGuid().ToString();
        sellerImageExists.FileSizeBytes = 400;
        sellerImageExists.IsMain = false;

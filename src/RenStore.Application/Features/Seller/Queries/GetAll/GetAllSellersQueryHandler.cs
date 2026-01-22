@@ -31,7 +31,7 @@ public class GetAllSellersQueryHandler
             .Select(seller => 
                 new SellerLookupDto(
                     seller.Id,
-                    seller.Name,
+                    seller.Key,
                     seller.Description,
                     seller.ImagePath,
                     seller.ImageFooterPath)

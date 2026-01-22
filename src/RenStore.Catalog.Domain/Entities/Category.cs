@@ -26,9 +26,16 @@ public class Category
     public DateTimeOffset? DeletedAt { get; private set; }
 
     public IReadOnlyCollection<SubCategory> SubCategories => _subCategories.AsReadOnly();
+
+    private const int MaxCategoryNameLength = 100;
+    private const int MinCategoryNameLength = 2;
+    
+    private const int MaxDescriptionLength = 500;
+    private const int MinDescriptionLength = 25;
     
     private Category() { }
 
+    #region Category
     public static Category Create(
         DateTimeOffset now,
         string name,
@@ -38,11 +45,11 @@ public class Category
         string trimmedName   = name.Trim();
         string trimmedNameRu = nameRu.Trim();
         
-        if(trimmedName.Length is < 1 or > 100)
-            throw new DomainException("Category name must be 1-100 characters.");
+        if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
+            throw new DomainException($"Category name length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
         
-        if(trimmedNameRu.Length is < 1 or > 100)
-            throw new DomainException("Category name ru must be 1-100 characters.");
+        if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
+            throw new DomainException($"Category name ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
         
         var category = new Category()
         {
@@ -58,31 +65,13 @@ public class Category
         {
             string trimmedDescription = description.Trim();
             
-            if (trimmedDescription.Length is > 10 and < 500)
-                category.Description = trimmedDescription;
+            if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
+                throw new DomainException($"Category description length must be between {MaxDescriptionLength} and {MinDescriptionLength}.");
+
+            category.Description = trimmedDescription;
         }
         
         return category;
-    }
-
-    public void AddSubCategory(
-        SubCategory subCategory)
-    {
-        EnsureNotDeleted();
-        
-        _subCategories.Add(subCategory);
-    }
-    
-    public void AddRangeOfSubCategory(
-        IReadOnlyList<SubCategory> subCategories)
-    {
-        EnsureNotDeleted();
-
-        var list = subCategories as List<SubCategory> ?? subCategories.ToList();
-
-        if (!list.Any()) return;
-        
-        _subCategories.AddRange(list);
     }
 
     public void ChangeName(
@@ -91,12 +80,15 @@ public class Category
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
+        if(string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Category name cannot be null or whitespace.");
+        
         string trimmedName = name.Trim();
         
         if (trimmedName == Name) return;
         
-        if(trimmedName.Length is < 1 or > 100)
-            throw new DomainException("Category name must be 1-100 characters.");
+        if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
+            throw new DomainException($"Category name length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
         Name = trimmedName;
         NormalizedName = trimmedName.ToUpperInvariant();
@@ -110,12 +102,15 @@ public class Category
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
+        if(string.IsNullOrWhiteSpace(nameRu))
+            throw new DomainException("Category nameRu ru cannot be null or whitespace.");
+        
         string trimmedNameRu = nameRu.Trim();
         
         if (trimmedNameRu == NameRu) return;
         
-        if(trimmedNameRu.Length is < 1 or > 100)
-            throw new DomainException("Category name ru must be 1-100 characters.");
+        if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
+            throw new DomainException($"Category name ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
         NameRu = trimmedNameRu;
         NormalizedNameRu = trimmedNameRu.ToUpperInvariant();
@@ -133,9 +128,10 @@ public class Category
         
         if (trimmedDescription == Description) return;
             
-        if (trimmedDescription.Length is > 10 and < 500)
-            Description = trimmedDescription;
-        
+        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
+            throw new DomainException($"Category description length must be between {MaxDescriptionLength} and {MinDescriptionLength}.");
+
+        Description = trimmedDescription;
         UpdatedAt = now;
     }
 
@@ -148,6 +144,113 @@ public class Category
         DeletedAt = now;
         UpdatedAt = now;
     }
+    
+    public void Restore(DateTimeOffset now)
+    {
+        if (!IsDeleted)
+            throw new DomainException("Category is not was deleted.");
+        
+        IsDeleted = false;
+        
+        UpdatedAt = now;
+        DeletedAt = null;
+    }
+    #endregion
+    
+    #region SubCategory
+    public void AddSubCategory(
+        SubCategory subCategory)
+    {
+        EnsureNotDeleted();
+
+        if (subCategory == null)
+            throw new DomainException("Sub category cannot be null");
+        
+        _subCategories.Add(subCategory);
+    }
+    
+    public void AddRangeOfSubCategory(
+        IReadOnlyList<SubCategory> subCategories)
+    {
+        EnsureNotDeleted();
+        
+        if(subCategories == null)
+            throw new DomainException("Sub categories cannot be null");
+
+        var list = subCategories as List<SubCategory> ?? subCategories.ToList();
+
+        if (!list.Any()) return;
+        
+        _subCategories.AddRange(list);
+    }
+
+    public void RemoveSubCategory(
+        DateTimeOffset now,
+        SubCategory subCategory)
+    {
+        if(subCategory == null)
+            throw new DomainException("Sub category cannot be null");
+        
+        subCategory.Delete(now);
+    }
+    
+    public void RemoveSubCategories(
+        DateTimeOffset now,
+        IReadOnlyList<SubCategory> subCategories)
+    {
+        if(subCategories == null || !subCategories.Any())
+            throw new DomainException("Sub categories cannot be null");
+
+        foreach (var subCategory in subCategories)
+            RemoveSubCategory(now, subCategory);
+    }
+
+    public void ChangeSubCategoryName(
+        DateTimeOffset now,
+        SubCategory subCategory,
+        string name)
+    {
+        EnsureNotDeleted("Cannot change deleted sub category.");
+        
+        if(string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Sub Category name cannot be null or whitespace.");
+        
+        subCategory.ChangeName(
+            name: name, 
+            now: now);
+    }
+    
+    public void ChangeSubCategoryNameRu(
+        DateTimeOffset now,
+        SubCategory subCategory,
+        string nameRu)
+    {
+        EnsureNotDeleted("Cannot change deleted sub category.");
+        
+        if(string.IsNullOrWhiteSpace(nameRu))
+            throw new DomainException("Sub Category name ru cannot be null or whitespace.");
+        
+        subCategory.ChangeNameRu(
+            nameRu: nameRu,  
+            now: now);
+    }
+    
+    public void ChangeSubCategoryDescription(
+        DateTimeOffset now,
+        SubCategory subCategory,
+        string description)
+    {
+        EnsureNotDeleted("Cannot change deleted sub category.");
+        
+        if(string.IsNullOrWhiteSpace(description))
+            throw new DomainException("Sub Category description cannot be null or whitespace.");
+        
+        subCategory.ChangeDescription(
+            description: description, 
+            now: now);
+    }
+
+    #endregion
 
     private void EnsureNotDeleted(string? message = null)
     {

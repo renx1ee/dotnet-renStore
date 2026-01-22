@@ -6,8 +6,8 @@ public class CategoryViewModel
 {
     [Required]
     public Guid Id { get; set; }
-    [Display(Name = "Category Name*")]
-    [Required(ErrorMessage = "Please enter Category Name!")]
+    [Display(Name = "Category Key*")]
+    [Required(ErrorMessage = "Please enter Category Key!")]
     public string? Name { get; set; }
     [Display(Name = "Category Description*")]
     [Required(ErrorMessage = "Please enter Category Description!")]
