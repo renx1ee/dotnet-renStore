@@ -30,8 +30,8 @@ public class Category
     private const int MaxCategoryNameLength = 100;
     private const int MinCategoryNameLength = 2;
     
-    private const int MaxDescriptionLength = 500;
-    private const int MinDescriptionLength = 25;
+    private const int MaxDescriptionLength  = 500;
+    private const int MinDescriptionLength  = 25;
     
     private Category() { }
 
@@ -46,10 +46,10 @@ public class Category
         string trimmedNameRu = nameRu.Trim();
         
         if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category name length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+            throw new DomainException($"Category nameRu length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
         
         if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category name ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+            throw new DomainException($"Category nameRu ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
         
         var category = new Category()
         {
@@ -81,14 +81,14 @@ public class Category
         EnsureNotDeleted("Cannot change deleted category.");
         
         if(string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Category name cannot be null or whitespace.");
+            throw new DomainException("Category nameRu cannot be null or whitespace.");
         
         string trimmedName = name.Trim();
         
         if (trimmedName == Name) return;
         
         if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category name length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+            throw new DomainException($"Category nameRu length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
         Name = trimmedName;
         NormalizedName = trimmedName.ToUpperInvariant();
@@ -110,7 +110,7 @@ public class Category
         if (trimmedNameRu == NameRu) return;
         
         if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category name ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+            throw new DomainException($"Category nameRu ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
         NameRu = trimmedNameRu;
         NormalizedNameRu = trimmedNameRu.ToUpperInvariant();
@@ -213,7 +213,7 @@ public class Category
         EnsureNotDeleted("Cannot change deleted sub category.");
         
         if(string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Sub Category name cannot be null or whitespace.");
+            throw new DomainException("Sub Category nameRu cannot be null or whitespace.");
         
         subCategory.ChangeName(
             name: name, 
@@ -228,7 +228,7 @@ public class Category
         EnsureNotDeleted("Cannot change deleted sub category.");
         
         if(string.IsNullOrWhiteSpace(nameRu))
-            throw new DomainException("Sub Category name ru cannot be null or whitespace.");
+            throw new DomainException("Sub Category nameRu ru cannot be null or whitespace.");
         
         subCategory.ChangeNameRu(
             nameRu: nameRu,  

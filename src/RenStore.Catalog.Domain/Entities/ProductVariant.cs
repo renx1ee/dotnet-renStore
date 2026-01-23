@@ -3,6 +3,9 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Entities;
 
+/// <summary>
+/// Represents a product variant physical entity with lifecycle and invariants.
+/// </summary>
 public class ProductVariant
 {
     private readonly List<ProductAttributeEntity> _attributes = new();
@@ -91,7 +94,9 @@ public class ProductVariant
         
         if(trimmedName.Length is < 25 or > 500)
             throw new DomainException("Product name must be 15-500 characters.");
-        
+
+        Name = trimmedName;
+        NormalizedName = trimmedName.ToUpperInvariant();
         UpdatedAt = now;
     }
     
@@ -166,7 +171,20 @@ public class ProductVariant
         
         IsDeleted = true;
         IsAvailable = false;
+        
         DeletedAt = now;
+        UpdatedAt = now;
+    }
+    
+    public void Restore(DateTimeOffset now)
+    {
+        if (!IsDeleted)
+            throw new DomainException("The product variant is not deleted!");
+        
+        IsDeleted = false;
+        IsAvailable = true;
+        
+        DeletedAt = null;
         UpdatedAt = now;
     }
 

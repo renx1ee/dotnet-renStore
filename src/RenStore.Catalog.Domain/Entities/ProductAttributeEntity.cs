@@ -19,8 +19,8 @@ public class ProductAttributeEntity
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
 
-    private const int MaxKeyLength = 100;
-    private const int MinKeyLength = 1;
+    private const int MaxKeyLength   = 100;
+    private const int MinKeyLength   = 1;
     
     private const int MaxValueLength = 500;
     private const int MinValueLength = 1;

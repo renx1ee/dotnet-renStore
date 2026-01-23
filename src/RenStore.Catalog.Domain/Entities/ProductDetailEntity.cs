@@ -26,23 +26,23 @@ public class ProductDetailEntity
     public ProductVariant? ProductVariant { get; private set; }
     public Guid ProductVariantId { get; private set; }
 
-    private const int MaxDescriptionLength = 500;
-    private const int MinDescriptionLength = 25;
+    private const int MaxDescriptionLength        = 500;
+    private const int MinDescriptionLength        = 25;
     
-    private const int MaxModelFeaturesLength = 500;
-    private const int MinModelFeaturesLength = 25;
+    private const int MaxModelFeaturesLength      = 500;
+    private const int MinModelFeaturesLength      = 25;
     
     private const int MaxDecorativeElementsLength = 500;
     private const int MinDecorativeElementsLength = 25;
     
-    private const int MaxEquipmentLength = 500;
-    private const int MinEquipmentLength = 25;
+    private const int MaxEquipmentLength          = 500;
+    private const int MinEquipmentLength          = 25;
     
-    private const int MaxCompositionLength = 500;
-    private const int MinCompositionLength = 25;
+    private const int MaxCompositionLength        = 500;
+    private const int MinCompositionLength        = 25;
     
-    private const int MaxCaringOfThingsLength = 500;
-    private const int MinCaringOfThingsLength = 25;
+    private const int MaxCaringOfThingsLength     = 500;
+    private const int MinCaringOfThingsLength     = 25;
     
     private ProductDetailEntity() { }
 
