@@ -19,6 +19,7 @@ public class Category
     
     public string? Description { get; private set; }
     
+    
     public bool IsDeleted { get; private set; }
     
     public DateTimeOffset CreatedAt { get; private set; } 
@@ -42,14 +43,8 @@ public class Category
         string nameRu,
         string? description = null)
     {
-        string trimmedName   = name.Trim();
-        string trimmedNameRu = nameRu.Trim();
-        
-        if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category nameRu length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
-        
-        if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category nameRu ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+        string trimmedName   = CategoryNameValidation(name);
+        string trimmedNameRu = CategoryNameRuValidation(nameRu);
         
         var category = new Category()
         {
@@ -63,13 +58,39 @@ public class Category
 
         if (!string.IsNullOrWhiteSpace(description))
         {
-            string trimmedDescription = description.Trim();
-            
-            if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
-                throw new DomainException($"Category description length must be between {MaxDescriptionLength} and {MinDescriptionLength}.");
+            string trimmedDescription = CategoryDescriptionValidation(description);
 
             category.Description = trimmedDescription;
         }
+        
+        return category;
+    }
+
+    public static Category Reconstitute(
+        int id,
+        string name,
+        string normalizedName,
+        string nameRu,
+        string normalizedNameRu,
+        string description,
+        bool isDeleted,
+        DateTimeOffset createdAt,
+        DateTimeOffset? updatedAt,
+        DateTimeOffset? deletedAt)
+    {
+        var category = new Category()
+        {
+            Id = id,
+            Name = name,
+            NormalizedName = normalizedName,
+            NameRu = nameRu,
+            NormalizedNameRu = normalizedNameRu,
+            Description = description,
+            IsDeleted = isDeleted,
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt,
+            DeletedAt = deletedAt
+        };
         
         return category;
     }
@@ -80,15 +101,9 @@ public class Category
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
-        if(string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Category nameRu cannot be null or whitespace.");
-        
-        string trimmedName = name.Trim();
+        string trimmedName = CategoryNameValidation(name);
         
         if (trimmedName == Name) return;
-        
-        if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category nameRu length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
         Name = trimmedName;
         NormalizedName = trimmedName.ToUpperInvariant();
@@ -102,15 +117,9 @@ public class Category
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
-        if(string.IsNullOrWhiteSpace(nameRu))
-            throw new DomainException("Category nameRu ru cannot be null or whitespace.");
-        
-        string trimmedNameRu = nameRu.Trim();
+        string trimmedNameRu = CategoryNameRuValidation(nameRu);
         
         if (trimmedNameRu == NameRu) return;
-        
-        if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category nameRu ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
         NameRu = trimmedNameRu;
         NormalizedNameRu = trimmedNameRu.ToUpperInvariant();
@@ -124,12 +133,9 @@ public class Category
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
-        string trimmedDescription = description.Trim();
+        string trimmedDescription = CategoryDescriptionValidation(description);
         
         if (trimmedDescription == Description) return;
-            
-        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
-            throw new DomainException($"Category description length must be between {MaxDescriptionLength} and {MinDescriptionLength}.");
 
         Description = trimmedDescription;
         UpdatedAt = now;
@@ -256,5 +262,41 @@ public class Category
     {
         if (IsDeleted)
             throw new DomainException(message ?? "Category is deleted.");
+    }
+
+    private static string CategoryNameValidation(string name)
+    {
+        var trimmedName = name.Trim();
+        
+        if(string.IsNullOrWhiteSpace(trimmedName))
+            throw new DomainException("Category name cannot be null or whitespace.");
+        
+        if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
+            throw new DomainException($"Category nameRu length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+
+        return trimmedName;
+    }
+    
+    private static string CategoryNameRuValidation(string nameRu)
+    {
+        string trimmedNameRu = nameRu.Trim();
+        
+        if(string.IsNullOrWhiteSpace(trimmedNameRu))
+            throw new DomainException("Category name ru cannot be null or whitespace.");
+        
+        if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
+            throw new DomainException($"Category nameRu ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+
+        return trimmedNameRu;
+    }
+    
+    private static string CategoryDescriptionValidation(string description)
+    {
+        var trimmedDescription = description.Trim();
+        
+        if(description.Length is > MaxDescriptionLength or < MinDescriptionLength)
+            throw new DomainException($"Category description length must be between {MaxDescriptionLength} and {MinDescriptionLength}.");
+
+        return trimmedDescription;
     }
 }

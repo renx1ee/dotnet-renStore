@@ -8,7 +8,7 @@ namespace RenStore.Catalog.Domain.Entities;
 /// </summary>
 public class ProductVariant
 {
-    private readonly List<ProductAttributeEntity> _attributes = new();
+    private readonly List<ProductAttribute> _attributes = new();
     private readonly List<ProductPriceHistoryEntity> _priceHistory = new();
     private readonly List<ProductImageEntity> _images = new();
     
@@ -32,12 +32,14 @@ public class ProductVariant
     public string Url { get; private set; }
     public Guid ProductId { get; private set; }
     public int ColorId { get; private set; }
-    public IReadOnlyCollection<ProductAttributeEntity> ProductAttributes => _attributes.AsReadOnly();
+    public IReadOnlyCollection<ProductAttribute> ProductAttributes => _attributes.AsReadOnly();
     public IReadOnlyCollection<ProductPriceHistoryEntity> PriceHistories => _priceHistory.AsReadOnly();
     public IReadOnlyCollection<ProductImageEntity> Images => _images.AsReadOnly();
 
-    private const int MaxProductLength = 500;
-    private const int MinProductLength = 25;
+    #region Main
+    
+    private const int MaxProductNameLength = 500;
+    private const int MinProductNameLength = 25;
     
     private ProductVariant() { }
 
@@ -49,24 +51,19 @@ public class ProductVariant
         int inStock,
         string url)
     {
-        if (productId == Guid.Empty)
-            throw new DomainException("Product Id cannot be guid empty.");
-        
-        if (colorId <= 0)
-            throw new DomainException("Color Id cannot be less then 1.");
+        ValidateProductId(productId);
+
+        ValidateColorId(colorId);
 
         var trimmedName = name.Trim();
+
+        ValidateName(trimmedName);
         
-        if(trimmedName.Length is < 25 or > 500)
-            throw new DomainException("Product name must be < 500 and > 25.");
-        
-        if(inStock < 0)
-            throw new DomainException("InStock cannot be less then 0.");
+        ValidateInStock(inStock);
 
         string trimmedUrl = url.Trim();
-        
-        if (string.IsNullOrWhiteSpace(trimmedUrl))
-            throw new DomainException("Url cannot be string empty.");
+
+        ValidateUrl(trimmedUrl);
         
         var variant = new ProductVariant()
         {
@@ -82,6 +79,45 @@ public class ProductVariant
         return variant;
     }
 
+    public static ProductVariant Reconstitute(
+        Guid id,
+        Guid productId,
+        int colorId,
+        string name,
+        string normalizedName,
+        Rating rating,
+        long article,
+        int inStock,
+        int sales,
+        bool isAvailable,
+        string url,
+        bool isDeleted,
+        DateTimeOffset createdAt,
+        DateTimeOffset? uploadAt,
+        DateTimeOffset? deletedAt)
+    {
+        var variant = new ProductVariant()
+        {
+            Id = id,
+            ProductId = productId,
+            ColorId = colorId,
+            Name = name,
+            NormalizedName = normalizedName,
+            Rating = rating,
+            Article = article,
+            Sales = sales,
+            IsAvailable = isAvailable,
+            InStock = inStock,
+            Url = url,
+            IsDeleted = isDeleted,
+            CreatedAt = createdAt,
+            UpdatedAt = uploadAt,
+            DeletedAt = deletedAt
+        };
+
+        return variant;
+    }
+
     public void ChangeName(
         DateTimeOffset now,
         string name)
@@ -92,8 +128,7 @@ public class ProductVariant
         
         if (trimmedName == Name) return;
         
-        if(trimmedName.Length is < 25 or > 500)
-            throw new DomainException("Product name must be 15-500 characters.");
+        ValidateName(trimmedName);
 
         Name = trimmedName;
         NormalizedName = trimmedName.ToUpperInvariant();
@@ -188,7 +223,63 @@ public class ProductVariant
         UpdatedAt = now;
     }
 
-    public void AddAttribute()
+    public void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Product Variant already was deleted.");
+    }
+
+    private static void ValidateProductId(Guid productId)
+    {
+        if (productId == Guid.Empty)
+            throw new DomainException("Product Id cannot be guid empty.");
+    }
+    
+    private static void ValidateColorId(int colorId)
+    {
+        if (colorId <= 0)
+            throw new DomainException("Color Id cannot be less then 1.");
+    }
+    
+    private static void ValidateName(string name)
+    {
+        if(name.Length is < MinProductNameLength or > MaxProductNameLength)
+            throw new DomainException("Product name must be < 500 and > 25.");
+    }
+    
+    private static void ValidateUrl(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+            throw new DomainException("Url cannot be string empty.");
+    }
+    
+    private static void ValidateInStock(int inStock)
+    {
+        if(inStock < 0)
+            throw new DomainException("InStock cannot be less then 0.");
+    }
+    
+    #endregion
+
+    #region Attributes
+
+    public void AddAttributeToVariant(
+        DateTimeOffset now,
+        string key,
+        string value)
+    {
+        var attribute = ProductAttribute.Create(
+            key: key,
+            value: value,
+            productVariantId: Id,
+            now: now);
+
+        UpdatedAt = now;
+        
+        _attributes.Add(attribute);
+    }
+
+    public void ChangeAttributeKeyToVariant()
     {
         
     }
@@ -198,14 +289,22 @@ public class ProductVariant
         
     }
     
+    
+
+    #endregion
+    
+    #region Details
+
+    
+
+    #endregion
+    
+    #region Images
+
     public void AddImage()
     {
         
     }
 
-    public void EnsureNotDeleted(string? message = null)
-    {
-        if (IsDeleted)
-            throw new DomainException(message ?? "Product Variant already was deleted.");
-    }
+    #endregion
 }

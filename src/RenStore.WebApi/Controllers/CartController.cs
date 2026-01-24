@@ -32,7 +32,7 @@ public class CartController(IMapper mapper, JwtProvider jwtProvider) : BaseContr
             new AddToCartDto
             {
                 ProductId = productId, 
-                Amount = amount
+                InStock = amount
             });
         
         command.UserId = userId;
@@ -49,7 +49,7 @@ public class CartController(IMapper mapper, JwtProvider jwtProvider) : BaseContr
         await Mediator.Send(new RemoveFromCartCommand()
         {
             ItemId = id,
-            Amount = (uint)amount
+            InStock = (uint)amount
         });
         return NoContent();
     }

@@ -24,7 +24,7 @@ public class ProductClothSizeConfiguration : IEntityTypeConfiguration<ProductClo
             .IsRequired();
         
         builder
-            .Property(s => s.Amount)
+            .Property(s => s.InStock)
             .HasColumnName("amount")
             .IsRequired();
         

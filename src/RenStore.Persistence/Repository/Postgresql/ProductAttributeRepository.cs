@@ -39,7 +39,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
     }
     
     public async Task<Guid> CreateAsync(
-        ProductAttributeEntity attribute, 
+        ProductAttribute attribute, 
         CancellationToken cancellationToken)
     {
         var result = await _context.ProductAttributes.AddAsync(attribute, cancellationToken);
@@ -49,7 +49,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
     }
 
     public async Task UpdateAsync(
-        ProductAttributeEntity attribute,
+        ProductAttribute attribute,
         CancellationToken cancellationToken)
     {
         var existingAttribute = await this.GetByIdAsync(attribute.Id, cancellationToken);
@@ -66,7 +66,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<ProductAttributeEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductAttribute>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductAttributeSortBy sortBy = ProductAttributeSortBy.Id,
         uint pageCount = 25,
@@ -99,7 +99,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
                 ";
 
             return await connection
-                .QueryAsync<ProductAttributeEntity>(
+                .QueryAsync<ProductAttribute>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -112,7 +112,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
         }
     }
 
-    public async Task<ProductAttributeEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductAttribute?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -133,7 +133,7 @@ public class ProductAttributeRepository : IProductAttributeRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductAttributeEntity>(
+                .QueryFirstOrDefaultAsync<ProductAttribute>(
                     sql, new
                     {
                         Id = id
@@ -145,9 +145,9 @@ public class ProductAttributeRepository : IProductAttributeRepository
         }
     }
 
-    public async Task<ProductAttributeEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductAttribute?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductAttributeEntity), id);
+            ?? throw new NotFoundException(typeof(ProductAttribute), id);
     }
 }

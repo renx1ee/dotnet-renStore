@@ -270,7 +270,7 @@ public class ProductRepository : IProductRepository
             @"
                 SELECT
                     pcs.""cloth_size_id""          AS ClothSizeId,
-                    pcs.""amount""                 AS Amount,
+                    pcs.""amount""                 AS InStock,
                     pcs.""cloth_size""             AS ClothSize,
                     pcs.""product_cloth_id""       AS ProductClothId
                 FROM ""product_cloth_sizes""       AS pcs                  

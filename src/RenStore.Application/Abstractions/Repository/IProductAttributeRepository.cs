@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductAttributeEntity"/>.
+/// Repository with working with <see cref="ProductAttribute"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductAttributeRepository
@@ -18,7 +18,7 @@ public interface IProductAttributeRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductAttributeEntity attribute,
+        ProductAttribute attribute,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product attribute in the database.
@@ -28,7 +28,7 @@ public interface IProductAttributeRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product attribute is not found.</exception>
     Task UpdateAsync(
-        ProductAttributeEntity attribute,
+        ProductAttribute attribute,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product attribute from database by ID.
@@ -47,7 +47,7 @@ public interface IProductAttributeRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product attribute entities.</returns>
-    Task<IEnumerable<ProductAttributeEntity>> FindAllAsync(
+    Task<IEnumerable<ProductAttribute>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductAttributeSortBy sortBy = ProductAttributeSortBy.Id,
         uint pageCount = 25,
@@ -59,7 +59,7 @@ public interface IProductAttributeRepository
     /// <param name="id">The product attribute unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product attribute entity if found; overwise <c>null</c>.</returns>
-    Task<ProductAttributeEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductAttribute?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product attribute by ID.
     /// </summary>
@@ -67,5 +67,5 @@ public interface IProductAttributeRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product attribute entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product attribute is not found.</exception>
-    Task<ProductAttributeEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductAttribute?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

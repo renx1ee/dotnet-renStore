@@ -81,7 +81,7 @@ public class PaymentRepository : IPaymentRepository
                 @$" 
                     SELECT 
                         ""payment_id""      AS Id,
-                        ""amount""          AS Amount,
+                        ""amount""          AS InStock,
                         ""original_amount"" AS OriginalAmount,
                         ""commission""      AS Commission,
                         ""tax_amount""      AS TaxAmount,
@@ -133,7 +133,7 @@ public class PaymentRepository : IPaymentRepository
                 @$" 
                     SELECT 
                         ""payment_id""        AS Id,
-                        ""amount""          AS Amount,
+                        ""amount""          AS InStock,
                         ""original_amount"" AS OriginalAmount,
                         ""commission""      AS Commission,
                         ""tax_amount""      AS TaxAmount,
@@ -200,7 +200,7 @@ public class PaymentRepository : IPaymentRepository
                 @$" 
                     SELECT 
                         ""payment_id""      AS Id,
-                        ""amount""          AS Amount,
+                        ""amount""          AS InStock,
                         ""original_amount"" AS OriginalAmount,
                         ""commission""      AS Commission,
                         ""tax_amount""      AS TaxAmount,

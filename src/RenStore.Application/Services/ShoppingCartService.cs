@@ -26,7 +26,7 @@ public class ShoppingCartService
         try
         {
             var result = shoppingCartItems.Select(cart => 
-                cart.Product.Price * cart.Amount)
+                cart.Product.Price * cart.InStock)
                 .Sum();
             
             logger.LogInformation("Get shopping cart method is stopped.");

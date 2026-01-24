@@ -5,9 +5,9 @@ using RenStore.Catalog.Domain.Entities;
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class ProductAttributeConfiguration 
-    : IEntityTypeConfiguration<ProductAttributeEntity>
+    : IEntityTypeConfiguration<ProductAttribute>
 {
-    public void Configure(EntityTypeBuilder<ProductAttributeEntity> builder)
+    public void Configure(EntityTypeBuilder<ProductAttribute> builder)
     {
         builder
             .ToTable("product_attributes");

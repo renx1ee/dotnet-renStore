@@ -19,7 +19,7 @@ public class ProductAttributeRepositoryTest
        _context = TestDatabaseFixture.CreateReadyContext();
        _productAttributeRepository = new ProductAttributeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var productAttribute = new ProductAttributeEntity()
+       var productAttribute = new ProductAttribute()
        {
            Id = Guid.NewGuid(),
            Key = "test",
@@ -48,7 +48,7 @@ public class ProductAttributeRepositoryTest
        _context = TestDatabaseFixture.CreateReadyContext();
        _productAttributeRepository = new ProductAttributeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productAttribute = new ProductAttributeEntity();
+       var productAttribute = new ProductAttribute();
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
            await _productAttributeRepository
@@ -63,7 +63,7 @@ public class ProductAttributeRepositoryTest
        _context = TestDatabaseFixture.CreateReadyContext();
        _productAttributeRepository = new ProductAttributeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productAttribute = new ProductAttributeEntity()
+       var productAttribute = new ProductAttribute()
        {
            Id = Guid.NewGuid(),
            Key = "test",
@@ -114,7 +114,7 @@ public class ProductAttributeRepositoryTest
        _productAttributeRepository = new ProductAttributeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var productAttribute = new ProductAttributeEntity()
+       var productAttribute = new ProductAttribute()
        {
            Id = Guid.NewGuid(),
            Key = "test",

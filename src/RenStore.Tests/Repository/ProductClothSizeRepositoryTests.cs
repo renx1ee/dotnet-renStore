@@ -24,7 +24,7 @@ public class ProductClothSizeRepositoryTests
        {
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
-           Amount = 27,
+           InStock = 27,
            ProductClothId = TestDataConstants.ProductClothIdForUpdate
        };
        // Act
@@ -39,7 +39,7 @@ public class ProductClothSizeRepositoryTests
        Assert.NotNull(productSizeExists);
        Assert.Equal(clothSize.Id, productSizeExists.Id);
        Assert.Equal(clothSize.ClothSize, productSizeExists.ClothSize);
-       Assert.Equal(clothSize.Amount, productSizeExists.Amount);
+       Assert.Equal(clothSize.InStock, productSizeExists.InStock);
        Assert.Equal(clothSize.ProductClothId, productSizeExists.ProductClothId);
     }
 
@@ -68,7 +68,7 @@ public class ProductClothSizeRepositoryTests
        {
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
-           Amount = 27,
+           InStock = 27,
            ProductClothId = Guid.NewGuid()
        };
        // Act & Assert
@@ -94,7 +94,7 @@ public class ProductClothSizeRepositoryTests
            Assert.Fail();
        
        clothSizeExists.ClothSize = ClothesSizes.XXXL;
-       clothSizeExists.Amount = clothSizeExists.Amount - 1;
+       clothSizeExists.InStock = clothSizeExists.InStock - 1;
        
        await _productClothSizeRepository.UpdateAsync(clothSizeExists, CancellationToken.None);
        // Assert
@@ -105,7 +105,7 @@ public class ProductClothSizeRepositoryTests
        
        Assert.NotNull(clothSizeResult);
        Assert.Equal(clothSizeExists.ClothSize, clothSizeResult.ClothSize);
-       Assert.Equal(clothSizeExists.Amount, clothSizeResult.Amount);
+       Assert.Equal(clothSizeExists.InStock, clothSizeResult.InStock);
     }
 
     [Fact]
@@ -119,7 +119,7 @@ public class ProductClothSizeRepositoryTests
        {
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
-           Amount = 27,
+           InStock = 27,
            ProductClothId = TestDataConstants.ProductClothIdForUpdate
        };
        // Assert

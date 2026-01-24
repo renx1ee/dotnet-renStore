@@ -58,19 +58,11 @@ public class ProductDetailEntity
         string? caringOfThings = null,
         TypeOfPackaging? typeOfPackaging = null)
     {
-        if(countryOfManufactureId <= 0)
-            throw new DomainException("Product Detail country of manufacture ID must be more then 0.");
-        
-        if(productVariantId == Guid.Empty)
-            throw new DomainException("Product Detail product variant id cannot be guid empty.");
-        
-        if(string.IsNullOrWhiteSpace(description))
-            throw new DomainException("Product Detail Description cannot be null or whitespace.");
-        
-        var trimmedDescription = description.Trim();
-        
-        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
-            throw new DomainException($"Product Detail Description length must between {MaxDescriptionLength} and {MinDescriptionLength}.");
+        CountryOfManufactureValidate(countryOfManufactureId);
+
+        ProductVariantIdValidate(productVariantId);
+
+        var trimmedDescription = DescriptionValidate(description);
         
         var detail = new ProductDetailEntity()
         {
@@ -81,59 +73,71 @@ public class ProductDetailEntity
             IsDeleted = false
         };
 
-        if (!string.IsNullOrWhiteSpace(modelFeatures))
-        {
-            var trimmedModelFeatures = modelFeatures.Trim();
+        var trimmedModelFeatures = ModelFeaturesValidation(modelFeatures);
         
-            if(trimmedModelFeatures.Length is > MaxModelFeaturesLength or < MinModelFeaturesLength)
-                throw new DomainException($"Product Detail model features length must between {MaxModelFeaturesLength} and {MinModelFeaturesLength}.");
-
+        if(!string.IsNullOrEmpty(trimmedModelFeatures))
             detail.ModelFeatures = trimmedModelFeatures;
-        }
         
-        if (!string.IsNullOrWhiteSpace(decorativeElements))
-        {
-            var trimmedDecorativeElements = decorativeElements.Trim();
+        var trimmedDecorativeElements = DecorativeElementsValidation(decorativeElements);
         
-            if(trimmedDecorativeElements.Length is > MaxDecorativeElementsLength or < MinDecorativeElementsLength)
-                throw new DomainException($"Product Detail decorative elements length must between {MaxDecorativeElementsLength} and {MinDecorativeElementsLength}.");
-
+        if (!string.IsNullOrEmpty(trimmedDecorativeElements))
             detail.DecorativeElements = trimmedDecorativeElements;
-        }
-        
-        if (!string.IsNullOrWhiteSpace(equipment))
-        {
-            var trimmedEquipment = equipment.Trim();
-        
-            if(trimmedEquipment.Length is > MaxEquipmentLength or < MinEquipmentLength)
-                throw new DomainException($"Product Detail equipment length must between {MaxEquipmentLength} and {MinEquipmentLength}.");
 
+        var trimmedEquipment = EquipmentValidation(equipment);
+        
+        if (!string.IsNullOrEmpty(equipment))
             detail.Equipment = trimmedEquipment;
-        }
-        
-        if (!string.IsNullOrWhiteSpace(composition))
-        {
-            var trimmedComposition = composition.Trim();
-        
-            if(trimmedComposition.Length is > MaxCompositionLength or < MinCompositionLength)
-                throw new DomainException($"Product Detail composition length must between {MaxCompositionLength} and {MinCompositionLength}.");
 
+        var trimmedComposition = CompositionValidation(composition);
+        
+        if (!string.IsNullOrEmpty(composition))
             detail.Composition = trimmedComposition;
-        }
-        
-        if (!string.IsNullOrWhiteSpace(caringOfThings))
-        {
-            var trimmedCaringOfThings = caringOfThings.Trim();
-        
-            if(trimmedCaringOfThings.Length is > MaxCaringOfThingsLength or < MinCaringOfThingsLength)
-                throw new DomainException($"Product Detail caring of things length must between {MaxCaringOfThingsLength} and {MinCaringOfThingsLength}.");
 
+        var trimmedCaringOfThings = CaringOfThingsValidation(caringOfThings);
+        
+        if (!string.IsNullOrEmpty(caringOfThings))
             detail.CaringOfThings = trimmedCaringOfThings;
-        }
-
+        
         if (typeOfPackaging.HasValue)
             detail.TypeOfPacking = typeOfPackaging;
         
+        return detail;
+    }
+
+    public static ProductDetailEntity Reconstitute(
+        Guid id,
+        int countryOfManufactureId,
+        Guid productVariantId,
+        string description,
+        string modelFeatures,
+        string decorativeElements,
+        string equipment,
+        string composition,
+        string caringOfThings,
+        TypeOfPackaging? typeOfPackaging,
+        bool isDeleted,
+        DateTimeOffset createdAt,
+        DateTimeOffset updatedAt,
+        DateTimeOffset deletedAt)
+    {
+        var detail = new ProductDetailEntity()
+        {
+            Id = id,
+            Description = description,
+            ModelFeatures = modelFeatures,
+            DecorativeElements = decorativeElements,
+            Equipment = equipment,
+            Composition = composition,
+            CaringOfThings = caringOfThings,
+            TypeOfPacking = typeOfPackaging,
+            CountryOfManufactureId = countryOfManufactureId,
+            ProductVariantId = productVariantId,
+            IsDeleted = isDeleted,
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt,
+            DeletedAt = deletedAt,
+        };
+
         return detail;
     }
 
@@ -143,13 +147,7 @@ public class ProductDetailEntity
     {
         EnsureNotDeleted();
         
-        if(string.IsNullOrWhiteSpace(description))
-            throw new DomainException("Product Detail Description cannot be null or whitespace.");
-        
-        var trimmedDescription = description.Trim();
-        
-        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
-            throw new DomainException($"Product Detail Description length must between {MaxDescriptionLength} and {MinDescriptionLength}.");
+        var trimmedDescription = DescriptionValidate(description);
         
         if(Description == trimmedDescription) return;
 
@@ -163,13 +161,7 @@ public class ProductDetailEntity
     {
         EnsureNotDeleted();
         
-        if(string.IsNullOrWhiteSpace(modelFeatures))
-            throw new DomainException("Product Detail model features cannot be null or whitespace.");
-        
-        var trimmedModelFeatures = modelFeatures.Trim();
-        
-        if(trimmedModelFeatures.Length is > MaxModelFeaturesLength or < MinModelFeaturesLength)
-            throw new DomainException($"Product Detail model features length must between {MaxModelFeaturesLength} and {MinModelFeaturesLength}.");
+        var trimmedModelFeatures = ModelFeaturesValidation(modelFeatures);
         
         if(ModelFeatures == trimmedModelFeatures) return;
 
@@ -183,13 +175,10 @@ public class ProductDetailEntity
     {
         EnsureNotDeleted();
         
-        if(string.IsNullOrWhiteSpace(decorativeElements))
+        var trimmedDecorativeElements = DecorativeElementsValidation(decorativeElements);
+        
+        if(string.IsNullOrEmpty(trimmedDecorativeElements))
             throw new DomainException("Product Detail decorative elements cannot be null or whitespace.");
-        
-        var trimmedDecorativeElements = decorativeElements.Trim();
-        
-        if(trimmedDecorativeElements.Length is > MaxDecorativeElementsLength or < MinDecorativeElementsLength)
-            throw new DomainException($"Product Detail decorative elements length must between {MaxDecorativeElementsLength} and {MinDecorativeElementsLength}.");
         
         if(DecorativeElements == trimmedDecorativeElements) return;
 
@@ -203,13 +192,10 @@ public class ProductDetailEntity
     {
         EnsureNotDeleted();
         
-        if(string.IsNullOrWhiteSpace(equipment))
+        var trimmedEquipment = EquipmentValidation(equipment);
+        
+        if (string.IsNullOrEmpty(trimmedEquipment))
             throw new DomainException("Product Detail equipment cannot be null or whitespace.");
-        
-        var trimmedEquipment = equipment.Trim();
-        
-        if(trimmedEquipment.Length is > MaxEquipmentLength or < MinEquipmentLength)
-            throw new DomainException($"Product Detail equipment length must between {MaxEquipmentLength} and {MinEquipmentLength}.");
         
         if(Equipment == trimmedEquipment) return;
 
@@ -223,13 +209,10 @@ public class ProductDetailEntity
     {
         EnsureNotDeleted();
         
-        if(string.IsNullOrWhiteSpace(composition))
+        var trimmedComposition = CompositionValidation(composition);
+        
+        if (string.IsNullOrEmpty(composition))
             throw new DomainException("Product Detail composition cannot be null or whitespace.");
-        
-        var trimmedComposition = composition.Trim();
-        
-        if(trimmedComposition.Length is > MaxCompositionLength or < MinCompositionLength)
-            throw new DomainException($"Product Detail composition length must between {MaxCompositionLength} and {MinCompositionLength}.");
         
         if(Composition == trimmedComposition) return;
 
@@ -243,13 +226,10 @@ public class ProductDetailEntity
     {
         EnsureNotDeleted();
         
-        if(string.IsNullOrWhiteSpace(caringOfThings))
+        var trimmedCaringOfThings = CaringOfThingsValidation(caringOfThings);
+        
+        if (string.IsNullOrEmpty(caringOfThings))
             throw new DomainException("Product Detail Caring Of Things cannot be null or whitespace.");
-        
-        var trimmedCaringOfThings = caringOfThings.Trim();
-        
-        if(trimmedCaringOfThings.Length is > MaxCaringOfThingsLength or < MinCaringOfThingsLength)
-            throw new DomainException($"Product Detail Caring Of Things length must between {MaxCaringOfThingsLength} and {MinCaringOfThingsLength}.");
         
         if(CaringOfThings == trimmedCaringOfThings) return;
 
@@ -275,6 +255,8 @@ public class ProductDetailEntity
         
         if(countryOfManufactureId <= 0)
             throw new DomainException("Product Detail country of manufacture ID must be more then 0.");
+        
+        if(CountryOfManufactureId == countryOfManufactureId) return;
 
         CountryOfManufactureId = countryOfManufactureId;
         UpdatedAt = now;
@@ -303,5 +285,95 @@ public class ProductDetailEntity
     {
         if (IsDeleted)
             throw new DomainException("Product Detail already was deleted.");
+    }
+
+    private static void CountryOfManufactureValidate(int countryOfManufactureId)
+    {
+        if(countryOfManufactureId <= 0)
+            throw new DomainException("Product Detail country of manufacture ID must be more then 0.");
+    }
+    
+    private static void ProductVariantIdValidate(Guid productVariantId)
+    {
+        if(productVariantId == Guid.Empty)
+            throw new DomainException("Product Detail product variant id cannot be guid empty.");
+    }
+    
+    private static string DescriptionValidate(string description)
+    {
+        if(string.IsNullOrWhiteSpace(description))
+            throw new DomainException("Product Detail Description cannot be null or whitespace.");
+        
+        var trimmedDescription = description.Trim();
+        
+        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
+            throw new DomainException($"Product Detail Description length must between {MaxDescriptionLength} and {MinDescriptionLength}.");
+
+        return trimmedDescription;
+    }
+
+    private static string ModelFeaturesValidation(string? modelFeatures)
+    {
+        if (string.IsNullOrWhiteSpace(modelFeatures)) 
+            return string.Empty;
+        
+        var trimmedModelFeatures = modelFeatures.Trim();
+        
+        if(trimmedModelFeatures.Length is > MaxModelFeaturesLength or < MinModelFeaturesLength)
+            throw new DomainException($"Product Detail model features length must between {MaxModelFeaturesLength} and {MinModelFeaturesLength}.");
+
+        return trimmedModelFeatures;
+    }
+    
+    private static string DecorativeElementsValidation(string? decorativeElements)
+    {
+        if(string.IsNullOrWhiteSpace(decorativeElements))
+            return string.Empty;
+        
+        var trimmedDecorativeElements = decorativeElements.Trim();
+        
+        if(trimmedDecorativeElements.Length is > MaxDecorativeElementsLength or < MinDecorativeElementsLength)
+            throw new DomainException($"Product Detail decorative elements length must between {MaxDecorativeElementsLength} and {MinDecorativeElementsLength}.");
+
+        return trimmedDecorativeElements;
+    }
+    
+    private static string EquipmentValidation(string? equipment)
+    {
+        if(string.IsNullOrWhiteSpace(equipment))
+            return string.Empty;
+        
+        var trimmedEquipment = equipment.Trim();
+        
+        if(trimmedEquipment.Length is > MaxEquipmentLength or < MinEquipmentLength)
+            throw new DomainException($"Product Detail equipment length must between {MaxEquipmentLength} and {MinEquipmentLength}.");
+
+        return trimmedEquipment;
+    }
+    
+    private static string CompositionValidation(string? composition)
+    {
+        if(string.IsNullOrWhiteSpace(composition))
+            return string.Empty;
+        
+        var trimmedComposition = composition.Trim();
+        
+        if(trimmedComposition.Length is > MaxCompositionLength or < MinCompositionLength)
+            throw new DomainException($"Product Detail composition length must between {MaxCompositionLength} and {MinCompositionLength}.");
+
+        return trimmedComposition;
+    }
+    
+    private static string CaringOfThingsValidation(string? caringOfThings)
+    {
+        if(string.IsNullOrWhiteSpace(caringOfThings))
+            return string.Empty;
+        
+        var trimmedCaringOfThings = caringOfThings.Trim();
+        
+        if(trimmedCaringOfThings.Length is > MaxCaringOfThingsLength or < MinCaringOfThingsLength)
+            throw new DomainException($"Product Detail caring of things length must between {MaxCaringOfThingsLength} and {MinCaringOfThingsLength}.");
+
+        return trimmedCaringOfThings;
     }
 }

@@ -288,7 +288,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<long>("Amount")
+                    b.Property<long>("InStock")
                         .HasMaxLength(5)
                         .HasColumnType("bigint");
 
@@ -659,7 +659,7 @@ namespace RenStore.Identity.DuendeServer.WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<long>("Amount")
+                    b.Property<long>("InStock")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("bigint")

@@ -23,4 +23,14 @@ public class Product
 
         return product;
     }
+    
+    public static Product Reconstitute()
+    {
+        var product = new Product()
+        {
+            
+        };
+
+        return product;
+    }
 }

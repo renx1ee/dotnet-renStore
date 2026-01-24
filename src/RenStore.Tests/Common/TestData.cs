@@ -911,10 +911,10 @@ public static class TestData
         },
     };
 
-    public static readonly IList<ProductAttributeEntity> ProductAttributes = new[]
+    public static readonly IList<ProductAttribute> ProductAttributes = new[]
     {
         // For Edit
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductAttributeIdForUpdate,
             Key = "attribute_name_for_update",
@@ -922,56 +922,56 @@ public static class TestData
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate
         },
         // For Delete
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductAttributeIdForDelete,
             Key = "attribute_name_for_delete",
             Value = "attribute_value_for_delete",
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductAttributeIdForGetting1,
             Key = "attribute_name_for_getting_1",
             Value = "attribute_value_for_getting_1",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductVariantIdForGetting2,
             Key = "attribute_name_for_getting_2",
             Value = "attribute_value_for_getting_2",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductVariantIdForGetting3,
             Key = "attribute_name_for_getting_3",
             Value = "attribute_value_for_getting_3",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductVariantIdForGetting4,
             Key = "attribute_name_for_getting_4",
             Value = "attribute_value_for_getting_4",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting4
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductVariantIdForGetting5,
             Key = "attribute_name_for_getting_5",
             Value = "attribute_value_for_getting_5",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting5
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductVariantIdForGetting6,
             Key = "attribute_name_for_getting_6",
             Value = "attribute_value_for_getting_6",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting6
         },
-        new ProductAttributeEntity()
+        new ProductAttribute()
         {
             Id = TestDataConstants.ProductVariantIdForGetting7,
             Key = "attribute_name_for_getting_7",
@@ -1098,7 +1098,7 @@ public static class TestData
         {
             Id = TestDataConstants.ProductClothSizeIdForUpdate,
             ClothSize = ClothesSizes.S,
-            Amount = 34,
+            InStock = 34,
             ProductClothId = TestDataConstants.ProductClothIdForUpdate
         },
         // For Delete
@@ -1106,112 +1106,112 @@ public static class TestData
         {
             Id = TestDataConstants.ProductClothSizeIdForDelete,
             ClothSize = ClothesSizes.L,
-            Amount = 18,
+            InStock = 18,
             ProductClothId = TestDataConstants.ProductClothIdForDelete
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting1,
             ClothSize = ClothesSizes.M,
-            Amount = 19,
+            InStock = 19,
             ProductClothId = TestDataConstants.ProductClothIdForGetting1
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting2,
             ClothSize = ClothesSizes.XS,
-            Amount = 24,
+            InStock = 24,
             ProductClothId = TestDataConstants.ProductClothIdForGetting2
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting3,
             ClothSize = ClothesSizes.S,
-            Amount = 15,
+            InStock = 15,
             ProductClothId = TestDataConstants.ProductClothIdForGetting3
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting4,
             ClothSize = ClothesSizes.XXS,
-            Amount = 64,
+            InStock = 64,
             ProductClothId = TestDataConstants.ProductClothIdForGetting4
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting5,
             ClothSize = ClothesSizes.S,
-            Amount = 325,
+            InStock = 325,
             ProductClothId = TestDataConstants.ProductClothIdForGetting5
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting6,
             ClothSize = ClothesSizes.XL,
-            Amount = 90,
+            InStock = 90,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting7,
             ClothSize = ClothesSizes.XXS,
-            Amount = 3,
+            InStock = 3,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting8,
             ClothSize = ClothesSizes.XS,
-            Amount = 62,
+            InStock = 62,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting9,
             ClothSize = ClothesSizes.S,
-            Amount = 84,
+            InStock = 84,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting10,
             ClothSize = ClothesSizes.M,
-            Amount = 14,
+            InStock = 14,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting11,
             ClothSize = ClothesSizes.L,
-            Amount = 53,
+            InStock = 53,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting12,
             ClothSize = ClothesSizes.XL,
-            Amount = 8,
+            InStock = 8,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting13,
             ClothSize = ClothesSizes.XXL,
-            Amount = 2,
+            InStock = 2,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting14,
             ClothSize = ClothesSizes.XXL,
-            Amount = 85,
+            InStock = 85,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSizeEntity()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting15,
             ClothSize = ClothesSizes.XXXL,
-            Amount = 44,
+            InStock = 44,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         }
     };

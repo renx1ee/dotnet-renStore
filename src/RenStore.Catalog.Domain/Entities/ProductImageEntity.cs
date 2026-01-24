@@ -37,8 +37,7 @@ public class ProductImageEntity
     private const short MinImageSortOrder       = 1;
     
     private ProductImageEntity() { }
-
-    // TODO: move the validation in a separate methods
+    
     public static ProductImageEntity Create(
         DateTimeOffset now,
         Guid productVariantId,
@@ -86,6 +85,41 @@ public class ProductImageEntity
             Weight = weight,
             Height = height,
             IsDeleted = false,
+        };
+
+        return image;
+    }
+    
+    public static ProductImageEntity Reconstitute(
+        Guid id,
+        Guid productVariantId,
+        string originalFileName,
+        string storagePath,
+        long fileSizeBytes,
+        bool isMain,
+        short sortOrder,
+        int weight, 
+        int height,
+        bool isDeleted,
+        DateTimeOffset uploadAt,
+        DateTimeOffset? updatedAt,
+        DateTimeOffset? deletedAt)
+    {
+        var image = new ProductImageEntity()
+        {
+            Id = id,
+            ProductVariantId = productVariantId,
+            OriginalFileName = originalFileName,
+            StoragePath = storagePath,
+            FileSizeBytes = fileSizeBytes,
+            IsMain = isMain,
+            SortOrder = sortOrder,
+            Weight = weight,
+            Height = height,
+            IsDeleted = isDeleted,
+            UploadedAt = uploadAt,
+            UpdatedAt = updatedAt,
+            DeletedAt = deletedAt
         };
 
         return image;
@@ -174,6 +208,7 @@ public class ProductImageEntity
             return;
         
         FileSizeBytes = fileSizeBytes;
+        UpdatedAt = now;
     }
 
     public void Delete(DateTimeOffset now)

@@ -40,7 +40,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ProductDetailEntity> ProductDetails { get; set; }
     public DbSet<ProductClothEntity> ProductClothes { get; set; }
     public DbSet<ProductClothSizeEntity> ProductClothSizes { get; set; }
-    public DbSet<ProductAttributeEntity> ProductAttributes { get; set; }
+    public DbSet<ProductAttribute> ProductAttributes { get; set; }
     public DbSet<ProductQuestionEntity> ProductQuestions { get; set; }
     public DbSet<ProductAnswerEntity> ProductAnswers { get; set; }
     public DbSet<ProductPriceHistoryEntity> PriceHistories { get; set; }
