@@ -701,7 +701,7 @@ public static class TestData
         }
     };
 
-    public static readonly IList<ProductVariant> ProductVariants = new[]
+    public static readonly IList<ProductVariant> ProductVariantIds = new[]
     {
         // For Edit
         new ProductVariant()
@@ -833,10 +833,10 @@ public static class TestData
         }
     };
 
-    public static readonly IList<ProductClothEntity> ProductClothes = new[]
+    public static readonly IList<ProductCloth> ProductClothes = new[]
     {
         // For Edit
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForUpdate,
             Gender = Gender.Unisex,
@@ -846,7 +846,7 @@ public static class TestData
             ProductId = TestDataConstants.ProductIdForUpdate
         },
         // For Delete
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForDelete,
             Gender = Gender.Unisex,
@@ -855,7 +855,7 @@ public static class TestData
             TheCut = TheCut.Free,
             ProductId = TestDataConstants.ProductIdForDelete
         },
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForGetting1,
             Gender = Gender.Woman,
@@ -864,7 +864,7 @@ public static class TestData
             TheCut = TheCut.Free,
             ProductId = TestDataConstants.ProductIdForGetting1
         },
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForGetting2,
             Gender = Gender.Man,
@@ -873,7 +873,7 @@ public static class TestData
             TheCut = TheCut.Free,
             ProductId = TestDataConstants.ProductIdForGetting2
         },
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForGetting3,
             Gender = Gender.Unisex,
@@ -882,7 +882,7 @@ public static class TestData
             TheCut = TheCut.Free,
             ProductId = TestDataConstants.ProductIdForGetting3
         },
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForGetting4,
             Gender = Gender.Man,
@@ -891,7 +891,7 @@ public static class TestData
             TheCut = TheCut.Free,
             ProductId = TestDataConstants.ProductIdForGetting4
         },
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForGetting5,
             Gender = Gender.Unisex,
@@ -900,7 +900,7 @@ public static class TestData
             TheCut = TheCut.Free,
             ProductId = TestDataConstants.ProductIdForGetting5
         },
-        new ProductClothEntity()
+        new ProductCloth()
         {
             Id = TestDataConstants.ProductClothIdForGetting6,
             Gender = Gender.Woman,
@@ -981,10 +981,10 @@ public static class TestData
         
     };
 
-    public static readonly IList<ProductDetailEntity> ProductDetails = new[]
+    public static readonly IList<ProductDetail> ProductDetails = new[]
     {
         // For Edit
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForUpdate,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -998,7 +998,7 @@ public static class TestData
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate
         },
         // For Delete
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForDelete,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1011,7 +1011,7 @@ public static class TestData
             CountryOfManufactureId = TestDataConstants.CountryIdForDelete,
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete
         },
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForGetting1,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1024,7 +1024,7 @@ public static class TestData
             CountryOfManufactureId = TestDataConstants.CountryIdForGetting1,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
         },
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForGetting2,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1037,7 +1037,7 @@ public static class TestData
             CountryOfManufactureId = TestDataConstants.CountryIdForGetting2,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2
         },
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForGetting3,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1050,7 +1050,7 @@ public static class TestData
             CountryOfManufactureId = TestDataConstants.CountryIdForGetting3,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3
         },
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForGetting4,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1063,7 +1063,7 @@ public static class TestData
             CountryOfManufactureId = TestDataConstants.CountryIdForGetting4,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting4
         },
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForGetting5,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1076,7 +1076,7 @@ public static class TestData
             CountryOfManufactureId = TestDataConstants.CountryIdForGetting5,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting5
         },
-        new ProductDetailEntity()
+        new ProductDetail()
         {
             Id = TestDataConstants.ProductDetailIdForGetting6,
             Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -1091,10 +1091,10 @@ public static class TestData
         }
     };
 
-    public static readonly IList<ProductClothSizeEntity> ProductClothSizes = new[]
+    public static readonly IList<ProductClothSize> ProductClothSizes = new[]
     {
         // For Edit
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForUpdate,
             ClothSize = ClothesSizes.S,
@@ -1102,112 +1102,112 @@ public static class TestData
             ProductClothId = TestDataConstants.ProductClothIdForUpdate
         },
         // For Delete
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForDelete,
             ClothSize = ClothesSizes.L,
             InStock = 18,
             ProductClothId = TestDataConstants.ProductClothIdForDelete
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting1,
             ClothSize = ClothesSizes.M,
             InStock = 19,
             ProductClothId = TestDataConstants.ProductClothIdForGetting1
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting2,
             ClothSize = ClothesSizes.XS,
             InStock = 24,
             ProductClothId = TestDataConstants.ProductClothIdForGetting2
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting3,
             ClothSize = ClothesSizes.S,
             InStock = 15,
             ProductClothId = TestDataConstants.ProductClothIdForGetting3
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting4,
             ClothSize = ClothesSizes.XXS,
             InStock = 64,
             ProductClothId = TestDataConstants.ProductClothIdForGetting4
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting5,
             ClothSize = ClothesSizes.S,
             InStock = 325,
             ProductClothId = TestDataConstants.ProductClothIdForGetting5
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting6,
             ClothSize = ClothesSizes.XL,
             InStock = 90,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting7,
             ClothSize = ClothesSizes.XXS,
             InStock = 3,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting8,
             ClothSize = ClothesSizes.XS,
             InStock = 62,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting9,
             ClothSize = ClothesSizes.S,
             InStock = 84,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting10,
             ClothSize = ClothesSizes.M,
             InStock = 14,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting11,
             ClothSize = ClothesSizes.L,
             InStock = 53,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting12,
             ClothSize = ClothesSizes.XL,
             InStock = 8,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting13,
             ClothSize = ClothesSizes.XXL,
             InStock = 2,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting14,
             ClothSize = ClothesSizes.XXL,
             InStock = 85,
             ProductClothId = TestDataConstants.ProductClothIdForGetting6
         },
-        new ProductClothSizeEntity()
+        new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting15,
             ClothSize = ClothesSizes.XXXL,
@@ -1216,10 +1216,10 @@ public static class TestData
         }
     };
 
-    public static readonly IList<ProductPriceHistoryEntity> PriceHistories = new[]
+    public static readonly IList<ProductPriceHistory> PriceHistories = new[]
     {
         // For Edit
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForUpdate,
             Price = 2990,
@@ -1232,7 +1232,7 @@ public static class TestData
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate
         },
         // For Delete
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForDelete,
             Price = 3000,
@@ -1244,7 +1244,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting1,
             Price = 2990,
@@ -1256,7 +1256,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting2,
             Price = 2990,
@@ -1268,7 +1268,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting3,
             Price = 2990,
@@ -1280,7 +1280,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting4,
             Price = 2990,
@@ -1292,7 +1292,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting4
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting5,
             Price = 2990,
@@ -1304,7 +1304,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting5
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting6,
             Price = 2990,
@@ -1316,7 +1316,7 @@ public static class TestData
             ChangedBy = "seller",
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting6
         },
-        new ProductPriceHistoryEntity()
+        new ProductPriceHistory()
         {
             Id = TestDataConstants.ProductPriceHistoryIdForGetting7,
             Price = 4000,
@@ -1330,10 +1330,10 @@ public static class TestData
         },
     };
 
-    public static readonly IList<ProductImageEntity> ProductImages = new[]
+    public static readonly IList<ProductImage> ProductImages = new[]
     {
         // For Edit
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForUpdate,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1347,7 +1347,7 @@ public static class TestData
             ProductVariantId = TestDataConstants.ProductVariantIdForUpdate
         },
         // For Delete
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForDelete,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1360,7 +1360,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForDelete
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting1,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1373,7 +1373,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting1
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting2,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1386,7 +1386,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting2
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting3,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1399,7 +1399,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting3
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting4,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1412,7 +1412,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting4
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting5,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1425,7 +1425,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting5
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting6,
             OriginalFileName = Guid.NewGuid().ToString(),
@@ -1438,7 +1438,7 @@ public static class TestData
             Height = 500,
             ProductVariantId = TestDataConstants.ProductVariantIdForGetting6
         },
-        new ProductImageEntity()
+        new ProductImage()
         {
             Id = TestDataConstants.ProductImageIdForGetting7,
             OriginalFileName = Guid.NewGuid().ToString(),

@@ -5,7 +5,8 @@ namespace RenStore.Catalog.Domain.Entities;
 /// <summary>
 /// Represents a product image physical entity with lifecycle and invariants.
 /// </summary>
-public class ProductImageEntity
+public class ProductImage
+    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
 {
     private readonly ProductVariant? _productVariant;
     
@@ -19,10 +20,6 @@ public class ProductImageEntity
     public int Weight { get; private set; }
     public int Height { get; private set; }
     public Guid ProductVariantId { get; private set; }
-    
-    public bool IsDeleted { get; private set; }
-    public DateTimeOffset? DeletedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; private set; }
 
     private const int MaxProductImagePathLength = 500;
     private const int MinProductImagePathLength = 25;
@@ -36,9 +33,9 @@ public class ProductImageEntity
     private const short MaxImageSortOrder       = 50;
     private const short MinImageSortOrder       = 1;
     
-    private ProductImageEntity() { }
+    private ProductImage() { }
     
-    public static ProductImageEntity Create(
+    internal static ProductImage Create(
         DateTimeOffset now,
         Guid productVariantId,
         string originalFileName,
@@ -73,7 +70,7 @@ public class ProductImageEntity
         if (height is > MaxImageDimension or < MinImageDimension)
             throw new DomainException($"Product image height order must be between {MaxImageDimension} and {MinImageDimension}.");
         
-        var image = new ProductImageEntity()
+        var image = new ProductImage()
         {
             ProductVariantId = productVariantId,
             OriginalFileName = originalFileName,
@@ -90,8 +87,7 @@ public class ProductImageEntity
         return image;
     }
     
-    public static ProductImageEntity Reconstitute(
-        Guid id,
+    public static ProductImage Reconstitute(
         Guid productVariantId,
         string originalFileName,
         string storagePath,
@@ -105,9 +101,9 @@ public class ProductImageEntity
         DateTimeOffset? updatedAt,
         DateTimeOffset? deletedAt)
     {
-        var image = new ProductImageEntity()
+        var image = new ProductImage()
         {
-            Id = id,
+            Id = Guid.NewGuid(),
             ProductVariantId = productVariantId,
             OriginalFileName = originalFileName,
             StoragePath = storagePath,
@@ -125,6 +121,7 @@ public class ProductImageEntity
         return image;
     }
 
+    // TODO: сделать проверку, что только 1 изображение может быть основным
     public void SetAsMain(DateTimeOffset now)
     {
         EnsureNotDeleted();
@@ -210,32 +207,4 @@ public class ProductImageEntity
         FileSizeBytes = fileSizeBytes;
         UpdatedAt = now;
     }
-
-    public void Delete(DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-
-        IsDeleted = true;
-        
-        DeletedAt = now;
-        UpdatedAt = now;
-    }
-    
-    public void Restore(DateTimeOffset now)
-    {
-        if (!IsDeleted)
-            throw new DomainException("Product Image is not deleted!");
-        
-        IsDeleted = false;
-        
-        DeletedAt = null;
-        UpdatedAt = now;
-    }
-
-    private void EnsureNotDeleted()
-    {
-        if (IsDeleted)
-            throw new DomainException("Product Image already was deleted!");
-    }
-    
 }

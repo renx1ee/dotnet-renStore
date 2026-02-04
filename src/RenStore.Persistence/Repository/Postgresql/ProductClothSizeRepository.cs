@@ -38,7 +38,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
     }
     
     public async Task<Guid> CreateAsync(
-        ProductClothSizeEntity clothSize, 
+        ProductClothSize clothSize, 
         CancellationToken cancellationToken)
     {
         var result = await _context.ProductClothSizes.AddAsync(clothSize, cancellationToken);
@@ -48,7 +48,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
     }
 
     public async Task UpdateAsync(
-        ProductClothSizeEntity clothSize,
+        ProductClothSize clothSize,
         CancellationToken cancellationToken)
     {
         var existingClothSize = await this.GetByIdAsync(clothSize.Id, cancellationToken);
@@ -65,7 +65,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<ProductClothSizeEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductClothSize>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductClothSizeSortBy sortBy = ProductClothSizeSortBy.Id,
         uint pageCount = 25,
@@ -99,7 +99,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
                 ";
 
             return await connection
-                .QueryAsync<ProductClothSizeEntity>(
+                .QueryAsync<ProductClothSize>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -112,7 +112,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
         }
     }
 
-    public async Task<ProductClothSizeEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductClothSize?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -133,7 +133,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductClothSizeEntity>(
+                .QueryFirstOrDefaultAsync<ProductClothSize>(
                     sql, new
                     {
                         Id = id
@@ -145,9 +145,9 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
         }
     }
 
-    public async Task<ProductClothSizeEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductClothSize?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductClothSizeEntity), id);
+            ?? throw new NotFoundException(typeof(ProductClothSize), id);
     }
 }

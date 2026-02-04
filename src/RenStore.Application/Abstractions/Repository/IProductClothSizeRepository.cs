@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductClothSizeEntity"/>.
+/// Repository with working with <see cref="ProductClothSize"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductClothSizeRepository
@@ -18,7 +18,7 @@ public interface IProductClothSizeRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductClothSizeEntity clothSize,
+        ProductClothSize clothSize,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product cloth size in the database.
@@ -28,7 +28,7 @@ public interface IProductClothSizeRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product cloth size is not found.</exception>
     Task UpdateAsync(
-        ProductClothSizeEntity clothSize,
+        ProductClothSize clothSize,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product cloth size from database by ID.
@@ -47,7 +47,7 @@ public interface IProductClothSizeRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product cloth size entities.</returns>
-    Task<IEnumerable<ProductClothSizeEntity>> FindAllAsync(
+    Task<IEnumerable<ProductClothSize>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductClothSizeSortBy sortBy = ProductClothSizeSortBy.Id,
         uint pageCount = 25,
@@ -59,7 +59,7 @@ public interface IProductClothSizeRepository
     /// <param name="id">The product cloth size unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product cloth size entity if found; overwise <c>null</c>.</returns>
-    Task<ProductClothSizeEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductClothSize?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product cloth size by ID.
     /// </summary>
@@ -67,5 +67,5 @@ public interface IProductClothSizeRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product cloth size entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product cloth size is not found.</exception>
-    Task<ProductClothSizeEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductClothSize?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

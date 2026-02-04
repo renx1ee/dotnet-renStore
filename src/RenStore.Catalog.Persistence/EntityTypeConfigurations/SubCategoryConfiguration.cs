@@ -1,4 +1,4 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Entities;
 
@@ -19,7 +19,7 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .HasColumnName("sub_category_id");
         
         builder
-            .Property(x => x.Key)
+            .Property(x => x.Name)
             .HasColumnName("sub_category_name")
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)
@@ -31,10 +31,6 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)
             .IsRequired();
-        
-        builder
-            .HasIndex(x => x.NormalizedName)
-            .IsUnique();
         
         builder
             .Property(x => x.NameRu)
@@ -51,10 +47,6 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .IsRequired();
         
         builder
-            .HasIndex(x => x.NormalizedNameRu)
-            .IsUnique();
-        
-        builder
             .Property(x => x.Description)
             .HasColumnName("sub_category_description")
             .HasColumnType("varchar(500)")
@@ -65,14 +57,23 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .Property(x => x.IsActive)
             .HasColumnName("is_active")
             .HasColumnType("boolean")
-            .HasDefaultValue("true")
+            .HasDefaultValue("false")
             .IsRequired();
         
         builder
             .Property(x => x.CreatedAt)
             .HasColumnName("created_date")
-            .HasDefaultValueSql("now()")
             .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+            
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired(false);
         
         builder
             .Property(x => x.CategoryId)
@@ -80,8 +81,16 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .IsRequired();
 
         builder
-            .HasOne(x => x.Category)
+            .HasOne<Category>()
             .WithMany(x => x.SubCategories)
             .HasForeignKey(x => x.CategoryId);
+        
+        builder
+            .HasIndex(x => x.NormalizedName)
+            .IsUnique();
+        
+        builder
+            .HasIndex(x => x.NormalizedNameRu)
+            .IsUnique();
     }
-}*/
+}

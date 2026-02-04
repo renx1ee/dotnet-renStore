@@ -38,7 +38,7 @@ public class ProductImageRepository : IProductImageRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
 
-    public async Task<Guid> CreateAsync(ProductImageEntity image, CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(ProductImage image, CancellationToken cancellationToken)
     {
         var result = await _context.AddAsync(image, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -46,7 +46,7 @@ public class ProductImageRepository : IProductImageRepository
         return result.Entity.Id;
     }
 
-    public async Task UpdateAsync(ProductImageEntity image, CancellationToken cancellationToken)
+    public async Task UpdateAsync(ProductImage image, CancellationToken cancellationToken)
     {
         var existsImage = await this.GetByIdAsync(image.Id, cancellationToken);
         
@@ -62,7 +62,7 @@ public class ProductImageRepository : IProductImageRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<ProductImageEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductImage>> FindAllAsync(
         CancellationToken cancellationToken,
         uint pageCount = 25,
         uint page = 1,
@@ -101,7 +101,7 @@ public class ProductImageRepository : IProductImageRepository
                     OFFSET @Offset;
                 ";
 
-            return await connection.QueryAsync<ProductImageEntity>(
+            return await connection.QueryAsync<ProductImage>(
                 sql, new
                 {
                     Offset = (int)offset,
@@ -114,7 +114,7 @@ public class ProductImageRepository : IProductImageRepository
         }
     }
 
-    public async Task<ProductImageEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductImage?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -141,7 +141,7 @@ public class ProductImageRepository : IProductImageRepository
                 ";
             
             return await connection
-                .QueryFirstOrDefaultAsync<ProductImageEntity>(
+                .QueryFirstOrDefaultAsync<ProductImage>(
                     sql: sql, 
                     param: new { Id = id });
         }
@@ -151,10 +151,10 @@ public class ProductImageRepository : IProductImageRepository
         }
     }
     
-    public async Task<ProductImageEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductImage> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken) 
-               ?? throw new NotFoundException(typeof(ProductImageEntity), id);
+               ?? throw new NotFoundException(typeof(ProductImage), id);
     }
 
 }

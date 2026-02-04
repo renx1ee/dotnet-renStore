@@ -75,7 +75,7 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
 
         /*builder
             .HasOne(v => v.Product)
-            .WithMany(p => p.ProductVariants)
+            .WithMany(p => p.ProductVariantIds)
             .HasForeignKey(v => v.ProductId);*/
 
         builder
@@ -84,7 +84,7 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
         
         /*builder
             .HasOne(v => v.Color)
-            .WithMany(c => c.ProductVariants)
+            .WithMany(c => c.ProductVariantIds)
             .HasForeignKey(v => v.ColorId);*/
         
         builder

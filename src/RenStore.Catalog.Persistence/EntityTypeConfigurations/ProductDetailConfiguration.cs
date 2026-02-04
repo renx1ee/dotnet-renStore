@@ -1,12 +1,12 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetailEntity>
+public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetail>
 {
-    public void Configure(EntityTypeBuilder<ProductDetailEntity> builder)
+    public void Configure(EntityTypeBuilder<ProductDetail> builder)
     {
         builder
             .ToTable("product_details");
@@ -21,7 +21,7 @@ public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetail
         builder
             .Property(x => x.Description)
             .HasColumnName("description")
-            .HasMaxLength(2500)
+            .HasMaxLength(500)
             .IsRequired();
         
         builder
@@ -58,25 +58,20 @@ public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetail
             .Property(x => x.TypeOfPacking)
             .HasColumnName("type_of_packing")
             .IsRequired(false);
-                
-        /*builder
-            .HasOne(x => x.CountryOfManufacture)
-            .WithMany(x => x.ProductDetails)
-            .HasForeignKey(x => x.CountryOfManufactureId)
-            .HasConstraintName("country_id");#1#
         
         builder
             .Property(x => x.CountryOfManufactureId)
-            .HasColumnName("country_id");
+            .HasColumnName("country_id")
+            .IsRequired();
 
-        builder
+        /*builder
             .HasOne(x => x.ProductVariant)
             .WithOne(x => x.ProductDetails)
-            .HasForeignKey<ProductDetailEntity>(x => x.ProductVariantId)
-            .HasConstraintName("product_variant_id");
+            .HasForeignKey<ProductDetail>(x => x.ProductVariantId)
+            .HasConstraintName("product_variant_id");*/
 
         builder
             .Property(x => x.ProductVariantId)
             .HasColumnName("product_variant_id");
     }
-}*/
+}

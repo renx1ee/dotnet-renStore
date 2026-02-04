@@ -51,13 +51,13 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasColumnName("category_id");
 
         builder
-            .HasMany(p => p.ProductVariants)
+            .HasMany(p => p.ProductVariantIds)
             .WithOne(v => v.Product)
             .HasForeignKey(x => x.ProductId);
 
         builder
             .HasOne(p => p.ProductCloth)
             .WithOne(c => c.Product)
-            .HasForeignKey<ProductClothEntity>(p => p.ProductId);
+            .HasForeignKey<ProductCloth>(p => p.ProductId);
     }
 }*/

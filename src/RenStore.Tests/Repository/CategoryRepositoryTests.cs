@@ -66,7 +66,7 @@ public class CategoryRepositoryTests
             NormalizedNameRu = "ТЕСТ",
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.OccurredAt
         };
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async () => 
@@ -92,7 +92,7 @@ public class CategoryRepositoryTests
             NormalizedNameRu = TestDataConstants.CategoryNameRuForGetting1.ToUpper(),
             Description = Guid.NewGuid().ToString(),
             IsActive = true,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.OccurredAt
         };
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(async () => 

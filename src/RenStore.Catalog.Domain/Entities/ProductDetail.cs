@@ -6,7 +6,8 @@ namespace RenStore.Catalog.Domain.Entities;
 /// <summary>
 /// Represents a product Detail physical entity with lifecycle and invariants.
 /// </summary>
-public class ProductDetailEntity
+public class ProductDetail
+    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
 {
     public Guid Id { get; private set; }
     public string Description { get; private set; } = string.Empty;
@@ -17,13 +18,7 @@ public class ProductDetailEntity
     public string CaringOfThings { get; private set; } = string.Empty;
     public TypeOfPackaging? TypeOfPacking { get; private set; }
     public int CountryOfManufactureId { get; private set; }
-    
-    public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; private set; }
-    public DateTimeOffset? DeletedAt { get; private set; }
-    
-    public ProductVariant? ProductVariant { get; private set; }
     public Guid ProductVariantId { get; private set; }
 
     private const int MaxDescriptionLength        = 500;
@@ -44,9 +39,9 @@ public class ProductDetailEntity
     private const int MaxCaringOfThingsLength     = 500;
     private const int MinCaringOfThingsLength     = 25;
     
-    private ProductDetailEntity() { }
+    private ProductDetail() { }
 
-    public static ProductDetailEntity Create(
+    internal static ProductDetail Create(
         DateTimeOffset now,
         int countryOfManufactureId,
         Guid productVariantId,
@@ -64,7 +59,7 @@ public class ProductDetailEntity
 
         var trimmedDescription = DescriptionValidate(description);
         
-        var detail = new ProductDetailEntity()
+        var detail = new ProductDetail()
         {
             Description = trimmedDescription,
             CreatedAt = now,
@@ -104,7 +99,7 @@ public class ProductDetailEntity
         return detail;
     }
 
-    public static ProductDetailEntity Reconstitute(
+    public static ProductDetail Reconstitute(
         Guid id,
         int countryOfManufactureId,
         Guid productVariantId,
@@ -120,7 +115,7 @@ public class ProductDetailEntity
         DateTimeOffset updatedAt,
         DateTimeOffset deletedAt)
     {
-        var detail = new ProductDetailEntity()
+        var detail = new ProductDetail()
         {
             Id = id,
             Description = description,
@@ -260,31 +255,6 @@ public class ProductDetailEntity
 
         CountryOfManufactureId = countryOfManufactureId;
         UpdatedAt = now;
-    }
-
-    public void Delete(DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-        
-        IsDeleted = true;
-        DeletedAt = now;
-        UpdatedAt = now;
-    }
-    
-    public void Restore(DateTimeOffset now)
-    {
-        if(!IsDeleted)
-            throw new DomainException("Product Detail not was deleted.");
-
-        IsDeleted = false;
-        UpdatedAt = now;
-        DeletedAt = null;
-    }
-
-    private void EnsureNotDeleted()
-    {
-        if (IsDeleted)
-            throw new DomainException("Product Detail already was deleted.");
     }
 
     private static void CountryOfManufactureValidate(int countryOfManufactureId)

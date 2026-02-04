@@ -4,9 +4,9 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductPriceHistoryConfiguration : IEntityTypeConfiguration<ProductPriceHistoryEntity>
+public class ProductPriceHistoryConfiguration : IEntityTypeConfiguration<ProductPriceHistory>
 {
-    public void Configure(EntityTypeBuilder<ProductPriceHistoryEntity> builder)
+    public void Configure(EntityTypeBuilder<ProductPriceHistory> builder)
     {
         builder
             .ToTable("product_price_histories");

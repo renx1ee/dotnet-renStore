@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductClothEntity"/>.
+/// Repository with working with <see cref="ProductCloth"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductClothRepository
@@ -18,7 +18,7 @@ public interface IProductClothRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductClothEntity cloth,
+        ProductCloth cloth,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product cloth in the database.
@@ -28,7 +28,7 @@ public interface IProductClothRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product cloth is not found.</exception>
     Task UpdateAsync(
-        ProductClothEntity cloth,
+        ProductCloth cloth,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product cloth from database by ID.
@@ -47,7 +47,7 @@ public interface IProductClothRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product cloth entities.</returns>
-    Task<IEnumerable<ProductClothEntity>> FindAllAsync(
+    Task<IEnumerable<ProductCloth>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductClothSortBy sortBy = ProductClothSortBy.Id,
         uint pageCount = 25,
@@ -59,7 +59,7 @@ public interface IProductClothRepository
     /// <param name="id">The product cloth unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product cloth entity if found; overwise <c>null</c>.</returns>
-    Task<ProductClothEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductCloth?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product cloth by ID.
     /// </summary>
@@ -67,5 +67,5 @@ public interface IProductClothRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product cloth entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product cloth is not found.</exception>
-    Task<ProductClothEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductCloth?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

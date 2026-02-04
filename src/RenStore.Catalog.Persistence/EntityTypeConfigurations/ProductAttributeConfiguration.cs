@@ -1,4 +1,4 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Entities;
 
@@ -30,7 +30,29 @@ public class ProductAttributeConfiguration
             .IsRequired();
         
         builder
-            .HasOne(x => x.ProductVariant)
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .HasColumnType("boolean")
+            .HasDefaultValue("false")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.CreatedAt)
+            .HasColumnName("created_date")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+            
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired(false);
+        
+        builder
+            .HasOne<ProductVariant>()
             .WithMany(x => x.ProductAttributes)
             .HasForeignKey(x => x.ProductVariantId)
             .HasConstraintName("product_variant_id");
@@ -39,4 +61,4 @@ public class ProductAttributeConfiguration
             .Property(x => x.ProductVariantId)
             .HasColumnName("product_variant_id");
     }
-}*/
+}

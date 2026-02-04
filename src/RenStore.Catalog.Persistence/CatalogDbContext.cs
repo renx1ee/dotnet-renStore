@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence;
 
@@ -8,4 +9,15 @@ public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbCo
     {
         base.OnModelCreating(modelBuilder);
     }
+    
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<SubCategory> SubCategories { get; set; }
+    public DbSet<Color> Colors { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductVariant> Variants { get; set; }
+    public DbSet<ProductAttribute> Attributes { get; set; }
+    public DbSet<ProductDetail> Details { get; set; }
+    public DbSet<ProductCloth> Cloths { get; set; }
+    public DbSet<ProductClothSize> Sizes { get; set; }
+    public DbSet<ProductImage> Images { get; set; }
 }

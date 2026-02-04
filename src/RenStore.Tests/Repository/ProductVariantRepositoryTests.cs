@@ -37,7 +37,7 @@ public class ProductVariantRepositoryTests
        var result = await _productVariantRepository.CreateAsync(productVariant, CancellationToken.None);
        // Assert
        Assert.Equal(productVariant.Id, result);
-       var productVariantExists = await _context.ProductVariants
+       var productVariantExists = await _context.ProductVariantIds
            .AsNoTracking()
            .FirstOrDefaultAsync(p => 
                p.Id == productVariant.Id);
@@ -136,7 +136,7 @@ public class ProductVariantRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productVariantExists = await _context.ProductVariants
+       var productVariantExists = await _context.ProductVariantIds
            .AsNoTracking()
            .FirstOrDefaultAsync(p => 
                p.Id == TestDataConstants.ProductVariantIdForUpdate);
@@ -153,7 +153,7 @@ public class ProductVariantRepositoryTests
        
        await _productVariantRepository.UpdateAsync(productVariantExists, CancellationToken.None);
        // Assert
-       var productVariantResult = await _context.ProductVariants
+       var productVariantResult = await _context.ProductVariantIds
            .AsNoTracking()
            .FirstOrDefaultAsync(s => 
                s.Id == TestDataConstants.ProductVariantIdForUpdate);
@@ -202,7 +202,7 @@ public class ProductVariantRepositoryTests
        _productVariantRepository = new ProductVariantRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Assert
-       var productVariantExists = await _context.ProductVariants
+       var productVariantExists = await _context.ProductVariantIds
            .AsNoTracking()
            .FirstOrDefaultAsync(s => 
                s.Id == TestDataConstants.ProductVariantIdForDelete);
@@ -212,7 +212,7 @@ public class ProductVariantRepositoryTests
            TestDataConstants.ProductVariantIdForDelete, 
            CancellationToken.None);
        // Assert
-       var productVariantResult = await _context.ProductVariants
+       var productVariantResult = await _context.ProductVariantIds
            .FirstOrDefaultAsync(s => 
                s.Id == TestDataConstants.ProductVariantIdForDelete);
        Assert.Null(productVariantResult);

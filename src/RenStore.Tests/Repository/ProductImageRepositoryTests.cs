@@ -19,7 +19,7 @@ public class ProductImageRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productImageRepository = new ProductImageRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var productImage = new ProductImageEntity()
+       var productImage = new ProductImage()
        {
            Id = Guid.NewGuid(),
            OriginalFileName = Guid.NewGuid().ToString(),
@@ -52,7 +52,7 @@ public class ProductImageRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
         _productImageRepository = new ProductImageRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productImage = new ProductImageEntity();
+       var productImage = new ProductImage();
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
            await _productImageRepository
@@ -67,7 +67,7 @@ public class ProductImageRepositoryTests
         _context = TestDatabaseFixture.CreateReadyContext();
         _productImageRepository = new ProductImageRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productImage = new ProductImageEntity()
+       var productImage = new ProductImage()
        {
            Id = Guid.NewGuid(),
            OriginalFileName = Guid.NewGuid().ToString(),
@@ -134,7 +134,7 @@ public class ProductImageRepositoryTests
         _productImageRepository = new ProductImageRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var productImage = new ProductImageEntity()
+       var productImage = new ProductImage()
        {
            Id = Guid.NewGuid(),
            OriginalFileName = Guid.NewGuid().ToString(),

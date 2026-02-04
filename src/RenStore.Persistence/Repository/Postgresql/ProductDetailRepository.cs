@@ -38,7 +38,7 @@ public class ProductDetailRepository : IProductDetailRepository
     }
 
     public async Task<Guid> CreateAsync(
-        ProductDetailEntity detail, 
+        ProductDetail detail, 
         CancellationToken cancellationToken)
     {
         var result = await _context.ProductDetails.AddAsync(detail, cancellationToken);
@@ -48,7 +48,7 @@ public class ProductDetailRepository : IProductDetailRepository
     }
 
     public async Task UpdateAsync(
-        ProductDetailEntity detail,
+        ProductDetail detail,
         CancellationToken cancellationToken)
     {
         var existingDetail = await this.GetByIdAsync(detail.Id, cancellationToken);
@@ -65,7 +65,7 @@ public class ProductDetailRepository : IProductDetailRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<ProductDetailEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductDetail>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductDetailSortBy sortBy = ProductDetailSortBy.Id,
         uint pageCount = 25,
@@ -104,7 +104,7 @@ public class ProductDetailRepository : IProductDetailRepository
                 ";
 
             return await connection
-                .QueryAsync<ProductDetailEntity>(
+                .QueryAsync<ProductDetail>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -117,7 +117,7 @@ public class ProductDetailRepository : IProductDetailRepository
         }
     }
 
-    public async Task<ProductDetailEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductDetail?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -144,7 +144,7 @@ public class ProductDetailRepository : IProductDetailRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductDetailEntity>(
+                .QueryFirstOrDefaultAsync<ProductDetail>(
                     sql, new
                     {
                         Id = id
@@ -156,9 +156,9 @@ public class ProductDetailRepository : IProductDetailRepository
         }
     }
 
-    public async Task<ProductDetailEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductDetail?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductDetailEntity), id);
+            ?? throw new NotFoundException(typeof(ProductDetail), id);
     }
 }

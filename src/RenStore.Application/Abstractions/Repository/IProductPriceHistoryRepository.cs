@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductPriceHistoryEntity"/>.
+/// Repository with working with <see cref="ProductPriceHistory"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductPriceHistoryRepository
@@ -18,7 +18,7 @@ public interface IProductPriceHistoryRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductPriceHistoryEntity priceHistory,
+        ProductPriceHistory priceHistory,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product price history in the database.
@@ -28,7 +28,7 @@ public interface IProductPriceHistoryRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product price history is not found.</exception>
     Task UpdateAsync(
-        ProductPriceHistoryEntity priceHistory,
+        ProductPriceHistory priceHistory,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product price history from database by ID.
@@ -47,7 +47,7 @@ public interface IProductPriceHistoryRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product price history entities.</returns>
-    Task<IEnumerable<ProductPriceHistoryEntity>> FindAllAsync(
+    Task<IEnumerable<ProductPriceHistory>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductPriceHistorySortBy sortBy = ProductPriceHistorySortBy.Id,
         uint pageCount = 25,
@@ -59,7 +59,7 @@ public interface IProductPriceHistoryRepository
     /// <param name="id">The product price history unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product price history entity if found; overwise <c>null</c>.</returns>
-    Task<ProductPriceHistoryEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductPriceHistory?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product price history by ID.
     /// </summary>
@@ -67,5 +67,5 @@ public interface IProductPriceHistoryRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product price history entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product price history is not found.</exception>
-    Task<ProductPriceHistoryEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductPriceHistory?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

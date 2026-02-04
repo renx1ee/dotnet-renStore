@@ -6,25 +6,22 @@ namespace RenStore.Catalog.Domain.Entities;
 /// <summary>
 /// Represents a product cloth size physical entity with lifecycle and invariants.
 /// </summary>
-public class ProductClothSizeEntity
+public class ProductClothSize
+    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
 {
-    private ProductClothEntity? _productCloth;
+    private ProductCloth? _productCloth;
     
     public Guid Id { get; private set; }
     public ClothesSizes? ClothSize { get; private set; }
     public int InStock { get; private set; }
     public bool IsAvailable { get; private set; }
     public Guid ProductClothId { get; private set; }
-    
-    public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; private set; }
-    public DateTimeOffset? DeletedAt { get; private set; }
 
     private const int MaxInStock = 100000;
     private const int MinInStock = 0;
     
-    public static ProductClothSizeEntity Create(
+    internal static ProductClothSize Create(
         ClothesSizes clothesSizes,
         int inStock,
         Guid productClothId,
@@ -34,7 +31,7 @@ public class ProductClothSizeEntity
 
         InStockValidate(inStock);
         
-        var size = new ProductClothSizeEntity()
+        var size = new ProductClothSize()
         {
             ProductClothId = productClothId,
             InStock = inStock,
@@ -51,7 +48,7 @@ public class ProductClothSizeEntity
         return size;
     }
     
-    public static ProductClothSizeEntity Reconstitute(
+    public static ProductClothSize Reconstitute(
         Guid id,
         ClothesSizes size,
         int amount,
@@ -62,7 +59,7 @@ public class ProductClothSizeEntity
         DateTimeOffset? updatedAt,
         DateTimeOffset? deletedAt)
     {
-        var clothSize = new ProductClothSizeEntity()
+        var clothSize = new ProductClothSize()
         {
             Id = id,
             ClothSize = size,
@@ -139,33 +136,6 @@ public class ProductClothSizeEntity
         UpdatedAt = now;
     }
     
-    public void Delete(DateTimeOffset now)
-    {
-        if(IsDeleted)
-            throw new DomainException("Product Cloth size already was deleted.");
-
-        IsDeleted = true;
-        UpdatedAt = now;
-        DeletedAt = now;
-    }
-    
-    public void Restore(DateTimeOffset now)
-    {
-        if(!IsDeleted)
-            throw new DomainException("Product Cloth size is not deleted.");
-        
-        IsDeleted = false;
-        
-        DeletedAt = null;
-        UpdatedAt = now;
-    }
-
-    private void EnsureNotDeleted()
-    {
-        if(IsDeleted)
-            throw new DomainException("Product Cloth size already was deleted.");
-    }
-
     private static void ProductClothIdValidate(Guid productClothId)
     {
         if(productClothId == Guid.Empty)

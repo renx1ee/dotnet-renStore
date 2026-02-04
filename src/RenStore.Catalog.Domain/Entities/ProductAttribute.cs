@@ -6,18 +6,13 @@ namespace RenStore.Catalog.Domain.Entities;
 /// Represents a product attribute physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductAttribute
+    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
 {
-    private ProductVariant? _productVariant { get; set; }
-    
     public Guid Id { get; private set; }
     public string Key { get; private set; } 
     public string Value { get; private set; }
     public Guid ProductVariantId { get; private set; }
-    
-    public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; private set; }
-    public DateTimeOffset? DeletedAt { get; private set; }
 
     private const int MaxKeyLength   = 100;
     private const int MinKeyLength   = 1;
@@ -27,7 +22,7 @@ public class ProductAttribute
 
     private ProductAttribute() { }
 
-    public static ProductAttribute Create(
+    internal static ProductAttribute Create(
         string key,
         string value,
         Guid productVariantId,
@@ -101,31 +96,6 @@ public class ProductAttribute
 
         Value = trimmedValue;
         UpdatedAt = now;
-    }
-
-    public void Delete(DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-
-        IsDeleted = true;
-        DeletedAt = now;
-        UpdatedAt = now;
-    }
-    
-    public void Restore(DateTimeOffset now)
-    {
-        if(!IsDeleted)
-            throw new DomainException($"Product attribute is not deleted!");
-
-        IsDeleted = false;
-        UpdatedAt = now;
-        DeletedAt = null;
-    }
-    
-    private void EnsureNotDeleted()
-    {
-        if(IsDeleted)
-            throw new DomainException("Product attribute already was deleted!");
     }
 
     private static string KeyValidation(string key)

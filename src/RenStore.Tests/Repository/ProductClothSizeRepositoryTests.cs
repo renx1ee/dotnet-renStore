@@ -20,7 +20,7 @@ public class ProductClothSizeRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productClothSizeRepository = new ProductClothSizeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var clothSize = new ProductClothSizeEntity()
+       var clothSize = new ProductClothSize()
        {
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
@@ -49,7 +49,7 @@ public class ProductClothSizeRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productClothSizeRepository = new ProductClothSizeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var clothSize = new ProductClothSizeEntity();
+       var clothSize = new ProductClothSize();
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
            await _productClothSizeRepository
@@ -64,7 +64,7 @@ public class ProductClothSizeRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productClothSizeRepository = new ProductClothSizeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var clothSize = new ProductClothSizeEntity()
+       var clothSize = new ProductClothSize()
        {
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
@@ -115,7 +115,7 @@ public class ProductClothSizeRepositoryTests
        _productClothSizeRepository = new ProductClothSizeRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var clothSize = new ProductClothSizeEntity()
+       var clothSize = new ProductClothSize()
        {
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,

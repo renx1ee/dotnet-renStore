@@ -7,9 +7,10 @@ namespace RenStore.Catalog.Domain.Entities;
 /// <summary>
 /// Represents a product cloth physical entity with lifecycle and invariants.
 /// </summary>
-public class ProductClothEntity
+public class ProductCloth
+    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
 {
-    private List<ProductClothSizeEntity> _clothSizes = new();
+    private List<ProductClothSize> _clothSizes = new();
     private Product? _product;
     
     public Guid Id { get; private set; }
@@ -18,16 +19,12 @@ public class ProductClothEntity
     public Neckline? Neckline { get; private set; }
     public TheCut? TheCut { get; private set; }
     public Guid ProductId { get; private set; }
-    
-    public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; private set; }
-    public DateTimeOffset? DeletedAt { get; private set; }
-    public IReadOnlyCollection<ProductClothSizeEntity>? ClothSizes => _clothSizes.AsReadOnly();
+    public IReadOnlyCollection<ProductClothSize>? ClothSizes => _clothSizes.AsReadOnly();
     
-    private ProductClothEntity() { }
+    private ProductCloth() { }
 
-    public static ProductClothEntity Create(
+    public static ProductCloth Create(
         Gender? gender,
         Season? season,
         Neckline? neckline,
@@ -37,7 +34,7 @@ public class ProductClothEntity
     {
         ProductIdValidate(productId);
         
-        var cloth = new ProductClothEntity()
+        var cloth = new ProductCloth()
         {
             ProductId = productId,
             IsDeleted = false,
@@ -59,7 +56,7 @@ public class ProductClothEntity
         return cloth;
     }
     
-    public static ProductClothEntity Reconstitute(
+    public static ProductCloth Reconstitute(
         Guid id,
         Gender? gender,
         Season? season,
@@ -71,7 +68,7 @@ public class ProductClothEntity
         DateTimeOffset? updatedAt,
         DateTimeOffset? deletedAt)
     {
-        var cloth = new ProductClothEntity()
+        var cloth = new ProductCloth()
         {
             Id = id,
             Gender = gender,
@@ -134,33 +131,6 @@ public class ProductClothEntity
 
         TheCut = theCut;
         UpdatedAt = now;
-    }
-    
-    public void Delete(DateTimeOffset now)
-    {
-        if(IsDeleted)
-            throw new DomainException("Product Cloth already was deleted.");
-
-        IsDeleted = true;
-        UpdatedAt = now;
-        DeletedAt = now;
-    }
-    
-    public void Restore(DateTimeOffset now)
-    {
-        if(!IsDeleted)
-            throw new DomainException("Product Cloth is not deleted.");
-        
-        IsDeleted = false;
-        
-        DeletedAt = null;
-        UpdatedAt = now;
-    }
-
-    private void EnsureNotDeleted()
-    {
-        if(IsDeleted)
-            throw new DomainException("Product Cloth already was deleted.");
     }
 
     private static void ProductIdValidate(Guid productId)

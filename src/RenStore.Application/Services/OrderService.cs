@@ -22,7 +22,6 @@ public class OrderService
         return random.Next(1000, 9999);
     }
 
-    // TODO: доделать
     public async Task<DeliveryStatus> ChangeOrderDeliveryStatus()
     {
         return DeliveryStatus.AwaitingConfirmation;

@@ -37,7 +37,7 @@ public class TestDatabaseFixture : IDisposable
         context.AspNetUsers.AddRange(TestData.Users);
         context.Sellers.AddRange(TestData.Sellers);
         context.Products.AddRange(TestData.Products);
-        context.ProductVariants.AddRange(TestData.ProductVariants);
+        context.ProductVariantIds.AddRange(TestData.ProductVariantIds);
         context.ProductClothes.AddRange(TestData.ProductClothes);
         context.ProductAttributes.AddRange(TestData.ProductAttributes);
         context.ProductDetails.AddRange(TestData.ProductDetails);

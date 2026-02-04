@@ -19,7 +19,7 @@ public class ProductPriceHistoryRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productPriceHistoryRepository = new ProductPriceHistoryRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var priceHistory = new ProductPriceHistoryEntity()
+       var priceHistory = new ProductPriceHistory()
        {
            Id = Guid.NewGuid(),
            Price = 4500,
@@ -51,7 +51,7 @@ public class ProductPriceHistoryRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productPriceHistoryRepository = new ProductPriceHistoryRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var priceHistory = new ProductPriceHistoryEntity();
+       var priceHistory = new ProductPriceHistory();
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
            await _productPriceHistoryRepository
@@ -66,7 +66,7 @@ public class ProductPriceHistoryRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productPriceHistoryRepository = new ProductPriceHistoryRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var priceHistory = new ProductPriceHistoryEntity()
+       var priceHistory = new ProductPriceHistory()
        {
            Id = Guid.NewGuid(),
            Price = 4500,
@@ -135,7 +135,7 @@ public class ProductPriceHistoryRepositoryTests
        _productPriceHistoryRepository = new ProductPriceHistoryRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var priceHistory = new ProductPriceHistoryEntity()
+       var priceHistory = new ProductPriceHistory()
        {
            Id = Guid.NewGuid(),
            Price = 4500,

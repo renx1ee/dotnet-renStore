@@ -20,7 +20,7 @@ public class ProductDetailRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productDetailRepository = new ProductDetailRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var productDetail = new ProductDetailEntity()
+       var productDetail = new ProductDetail()
        {
            Id = Guid.NewGuid(),
            Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -61,7 +61,7 @@ public class ProductDetailRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productDetailRepository = new ProductDetailRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productDetail = new ProductDetailEntity();
+       var productDetail = new ProductDetail();
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
            await _productDetailRepository
@@ -76,7 +76,7 @@ public class ProductDetailRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productDetailRepository = new ProductDetailRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productDetail = new ProductDetailEntity()
+       var productDetail = new ProductDetail()
        {
            Id = Guid.NewGuid(),
            Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -103,7 +103,7 @@ public class ProductDetailRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _productDetailRepository = new ProductDetailRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productDetail = new ProductDetailEntity()
+       var productDetail = new ProductDetail()
        {
            Id = Guid.NewGuid(),
            Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",
@@ -170,7 +170,7 @@ public class ProductDetailRepositoryTests
        _productDetailRepository = new ProductDetailRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var productDetail = new ProductDetailEntity()
+       var productDetail = new ProductDetail()
        {
            Id = Guid.NewGuid(),
            Description = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi placeat minima recusandae libero earum praesentium aspernatur, ipsam sunt. Nostrum ipsum sapiente corporis porro debitis perferendis autem enim nulla impedit cumque.",

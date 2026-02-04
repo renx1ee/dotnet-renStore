@@ -1,6 +1,7 @@
 namespace RenStore.Catalog.Domain.Entities;
 
-public class ProductPriceHistoryEntity
+public class ProductPriceHistory
+    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
 {
     public Guid Id { get; private set; }
     public decimal Price { get; private set; }

@@ -38,7 +38,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
     }
     
     public async Task<Guid> CreateAsync(
-        ProductPriceHistoryEntity priceHistory, 
+        ProductPriceHistory priceHistory, 
         CancellationToken cancellationToken)
     {
         var result = await _context.PriceHistories.AddAsync(priceHistory, cancellationToken);
@@ -48,7 +48,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
     }
 
     public async Task UpdateAsync(
-        ProductPriceHistoryEntity priceHistory,
+        ProductPriceHistory priceHistory,
         CancellationToken cancellationToken)
     {
         var existingAttribute = await this.GetByIdAsync(priceHistory.Id, cancellationToken);
@@ -65,7 +65,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<ProductPriceHistoryEntity>> FindAllAsync(
+    public async Task<IEnumerable<ProductPriceHistory>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductPriceHistorySortBy sortBy = ProductPriceHistorySortBy.Id,
         uint pageCount = 25,
@@ -103,7 +103,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
                 ";
 
             return await connection
-                .QueryAsync<ProductPriceHistoryEntity>(
+                .QueryAsync<ProductPriceHistory>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -116,7 +116,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
         }
     }
 
-    public async Task<ProductPriceHistoryEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductPriceHistory?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -142,7 +142,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductPriceHistoryEntity>(
+                .QueryFirstOrDefaultAsync<ProductPriceHistory>(
                     sql, new
                     {
                         Id = id
@@ -154,9 +154,9 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
         }
     }
 
-    public async Task<ProductPriceHistoryEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProductPriceHistory?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductPriceHistoryEntity), id);
+            ?? throw new NotFoundException(typeof(ProductPriceHistory), id);
     }
 }

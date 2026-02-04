@@ -4,9 +4,9 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductClothConfiguration : IEntityTypeConfiguration<ProductClothEntity>
+public class ProductClothConfiguration : IEntityTypeConfiguration<ProductCloth>
 {
-    public void Configure(EntityTypeBuilder<ProductClothEntity> builder)
+    public void Configure(EntityTypeBuilder<ProductCloth> builder)
     {
         builder
             .ToTable("product_clothes");
@@ -41,7 +41,7 @@ public class ProductClothConfiguration : IEntityTypeConfiguration<ProductClothEn
         builder
             .HasOne(c => c.Product)
             .WithOne(p => p.ProductCloth)
-            .HasForeignKey<ProductClothEntity>(c => c.ProductId)
+            .HasForeignKey<ProductCloth>(c => c.ProductId)
             .HasConstraintName("product_id");
 
         builder

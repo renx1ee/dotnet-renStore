@@ -4,9 +4,9 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImageEntity>
+public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
 {
-    public void Configure(EntityTypeBuilder<ProductImageEntity> builder)
+    public void Configure(EntityTypeBuilder<ProductImage> builder)
     {
         builder
             .ToTable("product_images");

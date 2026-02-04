@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository with working with <see cref="ProductDetailEntity"/>.
+/// Repository with working with <see cref="ProductDetail"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductDetailRepository
@@ -18,7 +18,7 @@ public interface IProductDetailRepository
     /// <param name="cancellationToken">CancellationToken.</param>
     /// <returns>ID of created entity.</returns>
     Task<Guid> CreateAsync(
-        ProductDetailEntity detail,
+        ProductDetail detail,
         CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing product detail in the database.
@@ -28,7 +28,7 @@ public interface IProductDetailRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when product detail is not found.</exception>
     Task UpdateAsync(
-        ProductDetailEntity detail,
+        ProductDetail detail,
         CancellationToken cancellationToken);
     /// <summary>
     /// Delete a product detail from database by ID.
@@ -47,7 +47,7 @@ public interface IProductDetailRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product detail entities.</returns>
-    Task<IEnumerable<ProductDetailEntity>> FindAllAsync(
+    Task<IEnumerable<ProductDetail>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductDetailSortBy sortBy = ProductDetailSortBy.Id,
         uint pageCount = 25,
@@ -59,7 +59,7 @@ public interface IProductDetailRepository
     /// <param name="id">The product detail unique identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product detail entity if found; overwise <c>null</c>.</returns>
-    Task<ProductDetailEntity?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductDetail?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Gets a product detail by ID.
     /// </summary>
@@ -67,5 +67,5 @@ public interface IProductDetailRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The product detail entity if found.</returns>
     /// /// <exception cref="NotFoundException">Thrown when product detail is not found.</exception>
-    Task<ProductDetailEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ProductDetail?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

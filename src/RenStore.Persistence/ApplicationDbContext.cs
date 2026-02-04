@@ -37,17 +37,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<City> Cities { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductVariant> ProductVariants { get; set; }
-    public DbSet<ProductDetailEntity> ProductDetails { get; set; }
-    public DbSet<ProductClothEntity> ProductClothes { get; set; }
-    public DbSet<ProductClothSizeEntity> ProductClothSizes { get; set; }
+    public DbSet<ProductDetail> ProductDetails { get; set; }
+    public DbSet<ProductCloth> ProductClothes { get; set; }
+    public DbSet<ProductClothSize> ProductClothSizes { get; set; }
     public DbSet<ProductAttribute> ProductAttributes { get; set; }
     public DbSet<ProductQuestionEntity> ProductQuestions { get; set; }
     public DbSet<ProductAnswerEntity> ProductAnswers { get; set; }
-    public DbSet<ProductPriceHistoryEntity> PriceHistories { get; set; }
+    public DbSet<ProductPriceHistory> PriceHistories { get; set; }
     public DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
     public DbSet<ShoppingCartItemEntity> ShoppingCartItems { get; set; }
     public DbSet<ReviewEntity> Reviews { get; set; }
-    public DbSet<ProductImageEntity> ProductImages { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<SellerImageEntity> SellerImages { get; set; }
     public DbSet<UserImageEntity> UserImages { get; set; }
     public DbSet<AnswerComplainEntity> AnswerComplains { get; set; }

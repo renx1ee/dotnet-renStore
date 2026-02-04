@@ -21,7 +21,7 @@ public class ProductClothRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _clothRepository = new ProductClothRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arranges
-       var productCloth = new ProductClothEntity()
+       var productCloth = new ProductCloth()
        {
            Id = Guid.NewGuid(),
            Gender = Gender.Unisex,
@@ -54,7 +54,7 @@ public class ProductClothRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _clothRepository = new ProductClothRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productCloth = new ProductClothEntity();
+       var productCloth = new ProductCloth();
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
            await _clothRepository
@@ -69,7 +69,7 @@ public class ProductClothRepositoryTests
        _context = TestDatabaseFixture.CreateReadyContext();
        _clothRepository = new ProductClothRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
-       var productCloth = new ProductClothEntity()
+       var productCloth = new ProductCloth()
        {
            Id = TestDataConstants.ProductClothIdForGetting1,
            Gender = Gender.Unisex,
@@ -126,7 +126,7 @@ public class ProductClothRepositoryTests
        _clothRepository = new ProductClothRepository(_context, TestDatabaseFixture.ConnectionString);
        // Arrange
        // Act
-       var productCloth = new ProductClothEntity()
+       var productCloth = new ProductCloth()
        {
            Id = Guid.NewGuid(),
            Gender = Gender.Unisex,
