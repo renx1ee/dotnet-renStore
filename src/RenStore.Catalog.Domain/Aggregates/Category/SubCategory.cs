@@ -1,12 +1,12 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Category;
 
 /// <summary>
 /// Represents a sub category physical entity with lifecycle and invariants.
 /// </summary>
 public class SubCategory : 
-    RenStore.Catalog.Domain.Entities.CategoryRulesBase
+    CategoryRulesBase
 {
     public int Id { get; private set; }
     public string Name { get; private set; }
@@ -16,6 +16,9 @@ public class SubCategory :
     public string? Description { get; private set; }
     public bool IsActive { get; private set; } // TODO:
     public DateTimeOffset CreatedAt { get; private set; } 
+    
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
     public int CategoryId { get; private set; }
     
     private SubCategory() { }
@@ -128,6 +131,12 @@ public class SubCategory :
 
         Description = trimmedDescription;
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
     
     private static void CategoryIdValidation(int categoryId)

@@ -1,12 +1,13 @@
+using RenStore.Catalog.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Category;
 
 /// <summary>
 /// Represents a category physical entity with lifecycle and invariants.
 /// </summary>
 public class Category :
-    RenStore.Catalog.Domain.Entities.CategoryRulesBase
+    CategoryRulesBase
 {
     private readonly List<SubCategory> _subCategories = new();
     
@@ -18,6 +19,9 @@ public class Category :
     public string? Description { get; private set; }
     public bool IsActive { get; private set; } // TODO:
     public DateTimeOffset CreatedAt { get; private set; } 
+    
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
     public IReadOnlyCollection<SubCategory> SubCategories => _subCategories.AsReadOnly();
     
     private Category() { }
@@ -124,5 +128,11 @@ public class Category :
 
         Description = trimmedDescription;
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
 }

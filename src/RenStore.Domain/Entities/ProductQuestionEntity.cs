@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Domain.Entities;
 
 namespace RenStore.Catalog.Domain.Entities;

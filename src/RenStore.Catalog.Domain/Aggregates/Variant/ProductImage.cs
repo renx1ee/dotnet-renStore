@@ -1,12 +1,14 @@
+using RenStore.Catalog.Domain.Entities;
+using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
 /// <summary>
 /// Represents a product image physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductImage
-    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
+    : EntityWithSoftDeleteBase
 {
     private readonly ProductVariant? _productVariant;
     
@@ -20,6 +22,8 @@ public class ProductImage
     public int Weight { get; private set; }
     public int Height { get; private set; }
     public Guid ProductVariantId { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
 
     private const int MaxProductImagePathLength = 500;
     private const int MinProductImagePathLength = 25;
@@ -206,5 +210,11 @@ public class ProductImage
         
         FileSizeBytes = fileSizeBytes;
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
 }

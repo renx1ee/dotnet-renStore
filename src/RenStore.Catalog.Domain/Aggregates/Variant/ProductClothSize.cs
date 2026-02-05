@@ -1,13 +1,14 @@
 using RenStore.Catalog.Domain.Enums.Clothes;
+using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
 /// <summary>
 /// Represents a product cloth size physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductClothSize
-    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
+    : EntityWithSoftDeleteBase
 {
     private ProductCloth? _productCloth;
     
@@ -17,6 +18,8 @@ public class ProductClothSize
     public bool IsAvailable { get; private set; }
     public Guid ProductClothId { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
 
     private const int MaxInStock = 100000;
     private const int MinInStock = 0;
@@ -134,6 +137,12 @@ public class ProductClothSize
         
         IsAvailable = InStock > 0;
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
     
     private static void ProductClothIdValidate(Guid productClothId)

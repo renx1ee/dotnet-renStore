@@ -1,17 +1,19 @@
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.Enums.Clothes;
+using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
 /// <summary>
 /// Represents a product cloth physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductCloth
-    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
+    : EntityWithSoftDeleteBase
 {
     private List<ProductClothSize> _clothSizes = new();
-    private Product? _product;
+    private Product.Product? _product;
     
     public Guid Id { get; private set; }
     public Gender? Gender { get; private set; }
@@ -20,6 +22,8 @@ public class ProductCloth
     public TheCut? TheCut { get; private set; }
     public Guid ProductId { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
     public IReadOnlyCollection<ProductClothSize>? ClothSizes => _clothSizes.AsReadOnly();
     
     private ProductCloth() { }
@@ -131,6 +135,12 @@ public class ProductCloth
 
         TheCut = theCut;
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
 
     private static void ProductIdValidate(Guid productId)

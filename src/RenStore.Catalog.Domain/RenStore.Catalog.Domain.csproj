@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Aggregates\" />
       <Folder Include="Constants\" />
       <Folder Include="Interfaces\" />
       <Folder Include="ReadModels\" />

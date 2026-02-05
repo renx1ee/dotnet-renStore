@@ -1,9 +1,10 @@
+using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Category;
 
 public abstract class CategoryRulesBase :
-    RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
+    EntityWithSoftDeleteBase
 {
     private const int MaxCategoryNameLength = 100;
     private const int MinCategoryNameLength = 2;

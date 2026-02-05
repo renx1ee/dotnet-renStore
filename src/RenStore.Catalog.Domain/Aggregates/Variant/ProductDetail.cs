@@ -1,13 +1,14 @@
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
 /// <summary>
 /// Represents a product Detail physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductDetail
-    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
+    : EntityWithSoftDeleteBase
 {
     public Guid Id { get; private set; }
     public string Description { get; private set; } = string.Empty;
@@ -20,6 +21,8 @@ public class ProductDetail
     public int CountryOfManufactureId { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public Guid ProductVariantId { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
 
     private const int MaxDescriptionLength        = 500;
     private const int MinDescriptionLength        = 25;
@@ -255,6 +258,12 @@ public class ProductDetail
 
         CountryOfManufactureId = countryOfManufactureId;
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
 
     private static void CountryOfManufactureValidate(int countryOfManufactureId)

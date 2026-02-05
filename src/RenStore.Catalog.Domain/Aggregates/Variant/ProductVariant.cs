@@ -1,20 +1,22 @@
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 using RenStore.SharedKernal.Domain.ValueObjects;
 
-namespace RenStore.Catalog.Domain.Entities;
+namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
 /// <summary>
 /// Represents a product variant physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductVariant
-    : RenStore.Catalog.Domain.Entities.EntityWithSoftDeleteBase
+    : EntityWithSoftDeleteBase
 {
     private readonly List<ProductAttribute> _attributes = new();
     private readonly List<ProductPriceHistory> _priceHistory = new();
     private readonly List<ProductImage> _images = new();
     
-    private readonly Product _product;
+    private readonly Product.Product _product;
     
     private Color _color;
     private ProductDetail _productDetails;
@@ -32,6 +34,9 @@ public class ProductVariant
     public DateTimeOffset CreatedAt { get; private set; }
     public Guid ProductId { get; private set; }
     public int ColorId { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; protected set; }
+    
     public IReadOnlyCollection<ProductAttribute> ProductAttributes => _attributes.AsReadOnly();
     public IReadOnlyCollection<ProductPriceHistory> PriceHistories => _priceHistory.AsReadOnly();
     public IReadOnlyCollection<ProductImage> Images => _images.AsReadOnly();
@@ -339,6 +344,12 @@ public class ProductVariant
         /*result.Delete(now);*/
         _images.Remove(result);
         UpdatedAt = now;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+            throw new DomainException(message ?? "Entity is deleted.");
     }
     
     private static void ValidateProductId(Guid productId)

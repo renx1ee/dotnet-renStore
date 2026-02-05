@@ -2,61 +2,90 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.SharedKernal.Domain.ValueObjects;
 
-public class Rating
+/// <summary>
+/// Value Object for working with Rating.
+/// </summary>
+public sealed class Rating
 {
-    private const decimal MinRating = 0;
-    private const decimal MaxRating = 5;
-    
     /// <summary>
-    /// Итоговый рейтинг.
-    /// </summary>
-    public decimal Value { get; }
-    
-    /// <summary>
-    /// Общее количество оценок.
+    /// Total number of ratings.
+    /// (Общее количество оценок.)
     /// </summary>
     public int TotalRatings { get; }
     
     /// <summary>
-    /// Сумма всех оценок.
+    /// Sum of all ratings.
+    /// (Сумма всех оценок.)
     /// </summary>
     public decimal TotalScore { get; }
 
-    private Rating(
-        decimal value,
-        int totalRatings,
-        decimal totalScore)
-    {
-        Value = value;
-        TotalRatings = totalRatings;
-        TotalScore = totalScore;
-    }
+    /// <summary>
+    /// Average rating value from total scores and ratings count.
+    /// (Вычисляемый итоговый рейтинг.)
+    /// </summary>
+    public decimal Value => TotalRatings == 0
+        ? 0
+        : TotalScore / TotalRatings;
+    
+    private const decimal MinRating = 0;
+    private const decimal MaxRating = 5;
 
-    public static Rating Create(
-        decimal value,
+    private Rating(
         int totalRatings,
         decimal totalScore)
     {
-        if (value < MinRating || value > MaxRating)
-            throw new DomainException($"Rating must be between {MinRating} and {MaxRating}.");
+        if (totalRatings < 0)
+            throw new DomainException("Total ratings count cannot be negative.");
         
-        if(totalScore < 0)
+        if (totalScore < 0)
             throw new DomainException("Total score cannot be negative.");
 
         if (totalRatings > 0)
-            value = totalScore / totalRatings;
+        {
+            var value = totalScore / totalRatings;
+            if(value is > MaxRating or < MinRating)
+                throw new DomainException($"Rating must be between {MinRating} and {MaxRating}.");
+        }
+        
+        TotalRatings = totalRatings;
+        TotalScore = totalScore;
+    }
+    
+    /// <summary>
+    /// Add a rating score to an existing rating.
+    /// </summary>
+    /// <param name="score">Rating value.</param>
+    /// <returns></returns>
+    /// <exception cref="DomainException">Throws if score less than <see cref="MinRating"/> or more then <see cref="MaxRating"/>.</exception>
+    public Rating Add(decimal score)
+    {
+        if(score is > MaxRating or < MinRating)
+            throw new DomainException($"Score must be between {MinRating} and {MaxRating}.");
 
         return new Rating(
-            value: value,
-            totalRatings: totalRatings,
-            totalScore: totalScore);
+            totalRatings: TotalRatings + 1,
+            totalScore: TotalScore + score);
     }
 
-    public void Add(
-        decimal value,
-        int totalRatings,
-        decimal totalScore)
-    {
-        
-    }
+    /// <summary>
+    /// Creates an Empty Rating.
+    /// </summary>
+    public static Rating Empty() => 
+        new Rating(0, 0);
+
+    /// <summary>
+    /// Reconstitute rating from persisted state.
+    /// Intended for restoring state, not for normal creation.
+    /// </summary>
+    /// <param name="totalRatings">Total Ratings.</param>
+    /// <param name="totalScore">Total Scores.</param>
+    /// <returns>Restored rating.</returns>
+    public static Rating From(int totalRatings, decimal totalScore) => 
+        new Rating(totalRatings: totalRatings, 
+                   totalScore: totalScore);
+
+    public override bool Equals(object? obj) 
+        => obj is Rating other
+           && TotalRatings == other.TotalRatings
+           && TotalScore == other.TotalScore;
 }

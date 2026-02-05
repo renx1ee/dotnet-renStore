@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.ValueObjects;
 using RenStore.SharedKernal.Domain.Exceptions;
 

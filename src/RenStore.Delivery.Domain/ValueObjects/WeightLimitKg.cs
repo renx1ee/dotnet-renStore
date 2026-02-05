@@ -1,6 +1,6 @@
 namespace RenStore.Delivery.Domain.ValueObjects;
 
-public class WeightLimitKg
+public sealed class WeightLimitKg
 {
     private const decimal MaxWeight = 1000m;
     private const decimal MinWeight = 0m;

@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.DTOs.Product.FullPage;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;

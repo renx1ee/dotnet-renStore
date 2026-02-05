@@ -3,7 +3,7 @@ using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Delivery.Domain.ValueObjects;
 
-public class FullMultiplyAddress
+public sealed class FullMultiplyAddress
 {
     public string Russian { get; private set; }
     public string English { get; private set; }
