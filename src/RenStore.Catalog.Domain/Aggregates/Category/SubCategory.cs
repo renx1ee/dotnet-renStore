@@ -5,8 +5,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Category;
 /// <summary>
 /// Represents a sub category physical entity with lifecycle and invariants.
 /// </summary>
-public class SubCategory : 
-    CategoryRulesBase
+public class SubCategory : CategoryRulesBase
 {
     public int Id { get; private set; }
     public string Name { get; private set; }
@@ -15,10 +14,10 @@ public class SubCategory :
     public string NormalizedNameRu { get; private set; }
     public string? Description { get; private set; }
     public bool IsActive { get; private set; } // TODO:
+    public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; } 
-    
-    public DateTimeOffset? UpdatedAt { get; protected set; }
-    public DateTimeOffset? DeletedAt { get; protected set; }
+    public DateTimeOffset? UpdatedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
     public int CategoryId { get; private set; }
     
     private SubCategory() { }

@@ -1,4 +1,3 @@
-using RenStore.SharedKernal.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
@@ -7,22 +6,16 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 /// Represents a product attribute physical entity with lifecycle and invariants.
 /// </summary>
 public class ProductAttribute
-    : EntityWithSoftDeleteBase
 {
     public Guid Id { get; private set; }
     public string Key { get; private set; } 
     public string Value { get; private set; }
     public Guid ProductVariantId { get; private set; }
+    public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; protected set; }
-    public DateTimeOffset? DeletedAt { get; protected set; }
-
-    private const int MaxKeyLength   = 100;
-    private const int MinKeyLength   = 1;
+    public DateTimeOffset? UpdatedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
     
-    private const int MaxValueLength = 500;
-    private const int MinValueLength = 1;
-
     private ProductAttribute() { }
 
     internal static ProductAttribute Create(
@@ -31,21 +24,14 @@ public class ProductAttribute
         Guid productVariantId,
         DateTimeOffset now)
     {
-        ProductVariantValidation(productVariantId);
-        
-        var trimmedKey   = KeyValidation(key);
-        var trimmedValue = ValueValidation(value);
-        
-        var attribute = new ProductAttribute()
+        return new ProductAttribute()
         {
-            Key = trimmedKey.ToUpperInvariant(),
-            Value = trimmedValue,
+            Key = key.ToUpperInvariant(),
+            Value = value,
             ProductVariantId = productVariantId,
             CreatedAt = now,
             IsDeleted = false
         };
-
-        return attribute;
     }
     
     public static ProductAttribute Reconstitute(
@@ -79,7 +65,7 @@ public class ProductAttribute
     {
         EnsureNotDeleted();
         
-        var trimmedKey = KeyValidation(key);
+        var trimmedKey = ProductAttributeRules.KeyNormalizeAndValidate(key);
         
         if(Key == key) return;
 
@@ -93,11 +79,29 @@ public class ProductAttribute
     {
         EnsureNotDeleted();
         
-        var trimmedValue = ValueValidation(value);
+        var trimmedValue = ProductAttributeRules.ValueNormalizeAndValidate(value);
         
         if(Value == value) return;
 
         Value = trimmedValue;
+        UpdatedAt = now;
+    }
+
+    internal void Delete(DateTimeOffset now)
+    {
+        if (IsDeleted)
+            throw new DomainException("The attribute already was deleted.");
+
+        IsDeleted = true;
+        UpdatedAt = now;
+    }
+    
+    internal void Restore(DateTimeOffset now)
+    {
+        if (!IsDeleted)
+            throw new DomainException("The attribute was not deleted.");
+
+        IsDeleted = true;
         UpdatedAt = now;
     }
     
@@ -105,37 +109,5 @@ public class ProductAttribute
     {
         if (IsDeleted)
             throw new DomainException(message ?? "Entity is deleted.");
-    }
-
-    private static string KeyValidation(string key)
-    {
-        if(string.IsNullOrWhiteSpace(key))
-            throw new DomainException($"Attribute key cannot be null or whitespace."); 
-        
-        string trimmedKey = key.Trim();
-        
-        if (trimmedKey.Length is > MaxKeyLength or < MinKeyLength)
-            throw new DomainException($"Attribute key must be between {MaxKeyLength} and {MinKeyLength}.");
-
-        return trimmedKey;
-    }
-    
-    private static string ValueValidation(string value)
-    {
-        if(string.IsNullOrWhiteSpace(value))
-            throw new DomainException($"Attribute value cannot be null or whitespace."); 
-        
-        var trimmedValue = value.Trim();
-        
-        if (trimmedValue.Length is > MaxValueLength or < MinValueLength)
-            throw new DomainException($"Attribute value must be between {MaxValueLength} and {MinValueLength}.");
-
-        return trimmedValue;
-    }
-    
-    private static void ProductVariantValidation(Guid productVariantId)
-    {
-        if(productVariantId == Guid.Empty)
-            throw new DomainException($"ProductVariantId cannot be guid empty.");
     }
 }

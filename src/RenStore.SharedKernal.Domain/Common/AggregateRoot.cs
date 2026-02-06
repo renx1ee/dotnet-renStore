@@ -1,5 +1,3 @@
-using RenStore.SharedKernal.Domain.Entities;
-
 namespace RenStore.SharedKernal.Domain.Common;
 
 public abstract class AggregateRoot

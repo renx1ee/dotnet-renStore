@@ -53,7 +53,7 @@ public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetail
             .Property(x => x.CaringOfThings)
             .HasColumnName("caring_of_things")
             .HasMaxLength(500)
-            .IsRequired();
+            .IsRequired(false);
 
         builder
             .Property(x => x.TypeOfPacking)
