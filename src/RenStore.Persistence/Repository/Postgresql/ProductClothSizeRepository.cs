@@ -90,7 +90,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
                         ""cloth_size_id""    AS Id,
                         ""cloth_size""       AS ClothSizes,
                         ""amount""           AS InStock,
-                        ""product_cloth_id"" AS ProductClothId
+                        ""product_cloth_id"" AS ProductVariantId
                     FROM
                         ""product_cloth_sizes""
                     ORDER BY 
@@ -126,7 +126,7 @@ public class ProductClothSizeRepository : IProductClothSizeRepository
                         ""cloth_size_id""    AS Id,
                         ""cloth_size""       AS ClothSizes,
                         ""amount""           AS InStock,
-                        ""product_cloth_id"" AS ProductClothId
+                        ""product_cloth_id"" AS ProductVariantId
                     FROM
                         ""product_cloth_sizes""
                     WHERE 

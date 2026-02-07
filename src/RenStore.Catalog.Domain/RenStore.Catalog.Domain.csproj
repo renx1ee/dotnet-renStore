@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Constants\" />
       <Folder Include="Events\Variant\" />
       <Folder Include="Interfaces\" />
       <Folder Include="ReadModels\" />

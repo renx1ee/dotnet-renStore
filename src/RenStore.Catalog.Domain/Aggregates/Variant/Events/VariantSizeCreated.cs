@@ -2,13 +2,11 @@ using RenStore.Catalog.Domain.Enums;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
 
-public record VariantCreated(
+public record VariantSizeCreated(
     DateTimeOffset OccurredAt,
     Guid VariantId,
-    Guid ProductId,
-    int ColorId,
-    string Name,
+    Guid VariantSizeId,
     int InStock,
+    LetterSize LetterSize,
     SizeSystem SizeSystem,
-    SizeType SizeType,
-    string Url);
+    SizeType SizeType);

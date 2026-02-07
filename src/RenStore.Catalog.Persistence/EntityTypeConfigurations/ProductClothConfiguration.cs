@@ -51,6 +51,6 @@ public class ProductClothConfiguration : IEntityTypeConfiguration<ProductCloth>
         builder
             .HasMany(c => c.ClothSizes)
             .WithOne(s => s.ProductCloth)
-            .HasForeignKey(s => s.ProductClothId);
+            .HasForeignKey(s => s.ProductVariantId);
     }
 }*/

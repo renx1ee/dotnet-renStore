@@ -31,11 +31,11 @@ public class ProductClothSizeConfiguration : IEntityTypeConfiguration<ProductClo
         builder
             .HasOne(s => s.ProductCloth)
             .WithMany(c => c.ClothSizes)
-            .HasForeignKey(s => s.ProductClothId)
+            .HasForeignKey(s => s.ProductVariantId)
             .HasConstraintName("product_cloth_id");
 
         builder
-            .Property(s => s.ProductClothId)
+            .Property(s => s.ProductVariantId)
             .HasColumnName("product_cloth_id");
     }
 }*/

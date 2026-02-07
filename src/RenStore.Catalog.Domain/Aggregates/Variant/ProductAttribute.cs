@@ -89,20 +89,16 @@ public class ProductAttribute
 
     internal void Delete(DateTimeOffset now)
     {
-        if (IsDeleted)
-            throw new DomainException("The attribute already was deleted.");
-
         IsDeleted = true;
+        DeletedAt = now;
         UpdatedAt = now;
     }
     
     internal void Restore(DateTimeOffset now)
     {
-        if (!IsDeleted)
-            throw new DomainException("The attribute was not deleted.");
-
         IsDeleted = true;
         UpdatedAt = now;
+        DeletedAt = null;
     }
     
     private void EnsureNotDeleted(string? message = null)

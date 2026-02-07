@@ -1,6 +1,6 @@
-/*using System.Data.Common;
-using System.Runtime.CompilerServices;
-using System.Text;
+/*using SizeSystem.Data.Common;
+using SizeSystem.Runtime.CompilerServices;
+using SizeSystem.Text;
 using Dapper;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;

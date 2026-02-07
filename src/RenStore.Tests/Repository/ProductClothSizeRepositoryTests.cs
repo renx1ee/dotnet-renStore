@@ -25,7 +25,7 @@ public class ProductClothSizeRepositoryTests
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
            InStock = 27,
-           ProductClothId = TestDataConstants.ProductClothIdForUpdate
+           ProductVariantId = TestDataConstants.ProductClothIdForUpdate
        };
        // Act
        var result = await _productClothSizeRepository.CreateAsync(clothSize, CancellationToken.None);
@@ -40,7 +40,7 @@ public class ProductClothSizeRepositoryTests
        Assert.Equal(clothSize.Id, productSizeExists.Id);
        Assert.Equal(clothSize.ClothSize, productSizeExists.ClothSize);
        Assert.Equal(clothSize.InStock, productSizeExists.InStock);
-       Assert.Equal(clothSize.ProductClothId, productSizeExists.ProductClothId);
+       Assert.Equal(clothSize.ProductVariantId, productSizeExists.ProductVariantId);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class ProductClothSizeRepositoryTests
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
            InStock = 27,
-           ProductClothId = Guid.NewGuid()
+           ProductVariantId = Guid.NewGuid()
        };
        // Act & Assert
        await Assert.ThrowsAsync<DbUpdateException>(async() => 
@@ -120,7 +120,7 @@ public class ProductClothSizeRepositoryTests
            Id = Guid.NewGuid(),
            ClothSize = ClothesSizes.XS,
            InStock = 27,
-           ProductClothId = TestDataConstants.ProductClothIdForUpdate
+           ProductVariantId = TestDataConstants.ProductClothIdForUpdate
        };
        // Assert
            await Assert.ThrowsAsync<NotFoundException>(async () =>

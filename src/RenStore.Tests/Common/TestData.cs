@@ -1099,7 +1099,7 @@ public static class TestData
             Id = TestDataConstants.ProductClothSizeIdForUpdate,
             ClothSize = ClothesSizes.S,
             InStock = 34,
-            ProductClothId = TestDataConstants.ProductClothIdForUpdate
+            ProductVariantId = TestDataConstants.ProductClothIdForUpdate
         },
         // For Delete
         new ProductClothSize()
@@ -1107,112 +1107,112 @@ public static class TestData
             Id = TestDataConstants.ProductClothSizeIdForDelete,
             ClothSize = ClothesSizes.L,
             InStock = 18,
-            ProductClothId = TestDataConstants.ProductClothIdForDelete
+            ProductVariantId = TestDataConstants.ProductClothIdForDelete
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting1,
             ClothSize = ClothesSizes.M,
             InStock = 19,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting1
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting1
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting2,
             ClothSize = ClothesSizes.XS,
             InStock = 24,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting2
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting2
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting3,
             ClothSize = ClothesSizes.S,
             InStock = 15,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting3
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting3
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting4,
             ClothSize = ClothesSizes.XXS,
             InStock = 64,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting4
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting4
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting5,
             ClothSize = ClothesSizes.S,
             InStock = 325,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting5
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting5
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting6,
             ClothSize = ClothesSizes.XL,
             InStock = 90,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting7,
             ClothSize = ClothesSizes.XXS,
             InStock = 3,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting8,
             ClothSize = ClothesSizes.XS,
             InStock = 62,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting9,
             ClothSize = ClothesSizes.S,
             InStock = 84,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting10,
             ClothSize = ClothesSizes.M,
             InStock = 14,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting11,
             ClothSize = ClothesSizes.L,
             InStock = 53,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting12,
             ClothSize = ClothesSizes.XL,
             InStock = 8,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting13,
             ClothSize = ClothesSizes.XXL,
             InStock = 2,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting14,
             ClothSize = ClothesSizes.XXL,
             InStock = 85,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         },
         new ProductClothSize()
         {
             Id = TestDataConstants.ProductClothSizeIdForGetting15,
             ClothSize = ClothesSizes.XXXL,
             InStock = 44,
-            ProductClothId = TestDataConstants.ProductClothIdForGetting6
+            ProductVariantId = TestDataConstants.ProductClothIdForGetting6
         }
     };
 

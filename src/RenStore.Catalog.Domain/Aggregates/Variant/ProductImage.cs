@@ -165,6 +165,7 @@ public class ProductImage
     internal void Delete(DateTimeOffset now)
     {
         IsDeleted = true;
+        DeletedAt = now;
         UpdatedAt = now;
     }
     
@@ -172,6 +173,7 @@ public class ProductImage
     {
         IsDeleted = true;
         UpdatedAt = now;
+        DeletedAt = null;
     }
     
     private void EnsureNotDeleted(string? message = null)

@@ -273,7 +273,7 @@ public class ProductRepository : IProductRepository
                     pcs.""cloth_size_id""          AS ClothSizeId,
                     pcs.""amount""                 AS InStock,
                     pcs.""cloth_size""             AS ClothSize,
-                    pcs.""product_cloth_id""       AS ProductClothId
+                    pcs.""product_cloth_id""       AS ProductVariantId
                 FROM ""product_cloth_sizes""       AS pcs                  
                 INNER JOIN ""product_clothes""     AS pc
                     ON pc.product_cloth_id = pcs.product_cloth_id                              
