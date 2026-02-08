@@ -4,11 +4,30 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.ValueObjects;
 
+/// <summary>
+/// Represents a product size with international system conversions.
+/// Provides unified size handling across different measurement systems and product types.
+/// </summary>
 public sealed class Size
 {
+    /// <summary>
+    /// Alphanumeric size designation.
+    /// </summary>
     public LetterSize LetterSize { get; }
-    public decimal? Number { get; set; }
+    
+    /// <summary>
+    /// Numeric equivalent of the letter size in the specified measurement system.
+    /// </summary>
+    public decimal? Number { get; }
+    
+    /// <summary>
+    /// Category of product sizing (Clothes or Shoes).
+    /// </summary>
     public SizeType Type { get; }
+    
+    /// <summary>
+    /// Measurement system.
+    /// </summary>
     public SizeSystem System { get; }
 
     private Size(
@@ -23,6 +42,20 @@ public sealed class Size
         Number = number;
     }
 
+    /// <summary>
+    /// Creates a Size value object with automatic numeric conversion.
+    /// </summary>
+    /// <param name="size">Alphanumeric size designation</param>
+    /// <param name="type">Product type (Clothes/Shoes)</param>
+    /// <param name="system">Measurement system (RU/US/EU)</param>
+    /// <returns>A new Size value object with converted numeric value</returns>
+    /// <exception cref="DomainException">
+    /// Thrown when the combination of size, type, and system is unsupported
+    /// </exception>
+    /// <remarks>
+    /// Automatically converts letter sizes to their numeric equivalents using predefined dictionaries.
+    /// The conversion depends on both the measurement system and product type.
+    /// </remarks>
     public static Size Create(
         LetterSize size,
         SizeType type,
@@ -45,12 +78,13 @@ public sealed class Size
             number: number, 
             system: system); 
     }
-
+    
+    // TODO:
     public static void Validate(
         LetterSize size,
         SizeType type,
         SizeSystem system)
     {
-        
+        // TODO:
     }
 }

@@ -19,6 +19,11 @@ public class ProductPriceHistory
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
     
+    /// <summary>
+    /// Ensures the attribute is not deleted before performing operations.
+    /// </summary>
+    /// <param name="message">Optional custom error message</param>
+    /// <exception cref="DomainException">Thrown when attribute is deleted</exception>
     private void EnsureNotDeleted(string? message = null)
     {
         if (IsDeleted)

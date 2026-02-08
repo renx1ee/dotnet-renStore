@@ -260,6 +260,29 @@ public class ProductVariant
         return variant;
     }
     
+    /// <summary>
+    /// Adds detailed technical and descriptive information to this product variant.
+    /// Includes manufacturing details, materials, care instructions, and product features.
+    /// </summary>
+    /// <param name="now">Timestamp for creation audit</param>
+    /// <param name="countryOfManufactureId">Country where the product was manufactured</param>
+    /// <param name="description">Full product description for customers</param>
+    /// <param name="modelFeatures">Key features and specifications of this model</param>
+    /// <param name="decorativeElements">Decorative or design elements</param>
+    /// <param name="equipment">Included accessories and packaging contents</param>
+    /// <param name="composition">Material composition and percentages</param>
+    /// <param name="caringOfThings">Care and maintenance instructions</param>
+    /// <param name="typeOfPackaging">Type of packaging (optional)</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Details already exist for this variant
+    /// - Required fields fail validation
+    /// - Country ID is invalid
+    /// </exception>
+    /// <remarks>
+    /// Details can only be added once per variant. Use UpdateDetails to modify existing information.
+    /// </remarks>
     public void AddDetails(
         DateTimeOffset now,
         int countryOfManufactureId,
@@ -302,6 +325,24 @@ public class ProductVariant
             TypeOfPackaging: typeOfPackaging ?? null));
     }
 
+    /// <summary>
+    /// Adds a new size option with inventory to this product variant.
+    /// Each variant can have multiple size options with independent stock levels.
+    /// </summary>
+    /// <param name="letterSize">Alphanumeric size designation (e.g., "M", "10", "42")</param>
+    /// <param name="inStock">Available quantity for this specific size</param>
+    /// <param name="now">Timestamp for creation audit</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant ID is invalid
+    /// - Stock quantity is negative
+    /// - Size already exists for this variant
+    /// - Size is incompatible with variant's SizeType/SizeSystem
+    /// </exception>
+    /// <remarks>
+    /// Size validation ensures compatibility with the variant's SizeType (Clothes/Shoes)
+    /// and SizeSystem (RU/US/EU). Each size maintains its own stock level.
+    /// </remarks>
     public void AddSize(
         LetterSize letterSize,
         int inStock,
@@ -330,6 +371,24 @@ public class ProductVariant
             SizeType: SizeType));
     }
     
+    /// <summary>
+    /// Adds a descriptive attribute to this product variant.
+    /// Attributes represent specific features or specifications (e.g., "Material: Cotton", "Screen Size: 6.1").
+    /// </summary>
+    /// <param name="now">Timestamp for creation audit</param>
+    /// <param name="key">Attribute category or name (e.g., "Material", "Weight")</param>
+    /// <param name="value">Attribute specification (e.g., "Leather", "1.5kg")</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Maximum attribute limit reached
+    /// - Key or value fails validation (empty, too long, etc.)
+    /// - Variant ID is invalid
+    /// </exception>
+    /// <remarks>
+    /// Attributes help customers filter and compare products. 
+    /// Each variant can have multiple attributes describing its unique characteristics.
+    /// </remarks>
     public void AddAttribute(
         DateTimeOffset now,
         string key,
@@ -350,6 +409,28 @@ public class ProductVariant
             Value: trimmedValue));
     }
     
+    /// <summary>
+    /// Adds a product image to this variant with metadata and display rules.
+    /// Images are used for visual presentation in catalog listings and product pages.
+    /// </summary>
+    /// <param name="now">Timestamp for creation audit</param>
+    /// <param name="originalFileName">Original uploaded file name</param>
+    /// <param name="storagePath">Path to stored image file</param>
+    /// <param name="fileSizeBytes">Size of image file in bytes</param>
+    /// <param name="isMain">Whether this is the primary display image</param>
+    /// <param name="sortOrder">Display order in image gallery (lower = first)</param>
+    /// <param name="weight">Image width in pixels</param>
+    /// <param name="height">Image height in pixels</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Maximum image limit reached
+    /// - Image metadata fails validation (size, dimensions, etc.)
+    /// </exception>
+    /// <remarks>
+    /// Only one image can be marked as main. If <paramref name="isMain"/> is true,
+    /// any existing main image will be demoted. Images are displayed according to sort order.
+    /// </remarks>
     public void AddImage(
         DateTimeOffset now,
         string originalFileName,
@@ -408,6 +489,21 @@ public class ProductVariant
         EnsureNotDeleted();
     }
     
+    /// <summary>
+    /// Publishes this variant, making it visible and available for purchase in the catalog.
+    /// Enforces business rules requiring complete product information before publication.
+    /// </summary>
+    /// <param name="now">Timestamp for publication</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Variant has no images (visual representation required)
+    /// - Variant has no product details (specifications required)
+    /// </exception>
+    /// <remarks>
+    /// Publishing is a business transaction that makes the variant available to customers.
+    /// Unpublished variants remain in the system but are not visible in the public catalog.
+    /// </remarks>
     public void Publish(DateTimeOffset now)
     {
         EnsureNotDeleted();
@@ -423,6 +519,21 @@ public class ProductVariant
             OccurredAt: now));
     }
     
+    /// <summary>
+    /// Updates the display name of this product variant.
+    /// The normalized version (uppercase) is automatically regenerated for search consistency.
+    /// </summary>
+    /// <param name="now">Timestamp for the update audit</param>
+    /// <param name="name">New customer-facing variant name</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Name fails validation (length 25-500 characters)
+    /// </exception>
+    /// <remarks>
+    /// If the new name is identical to the current name (after trimming), no changes are made.
+    /// The change is idempotent and only triggers events when actual modification occurs.
+    /// </remarks>
     public void ChangeName(
         DateTimeOffset now,
         string name)
@@ -441,6 +552,21 @@ public class ProductVariant
             Name: trimmedName));
     }
     
+    /// <summary>
+    /// Increases the available inventory quantity for this variant.
+    /// Used for restocking from suppliers or correcting inventory discrepancies.
+    /// </summary>
+    /// <param name="now">Timestamp for stock update</param>
+    /// <param name="count">Number of units to add to inventory (must be positive)</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Count is zero or negative
+    /// </exception>
+    /// <remarks>
+    /// Adding stock may automatically re-enable availability if the variant was out of stock.
+    /// Stock additions are additive and can be performed multiple times.
+    /// </remarks>
     public void AddToStock(
         DateTimeOffset now,
         int count)
@@ -456,6 +582,22 @@ public class ProductVariant
             Count: count));
     }
     
+    /// <summary>
+    /// Decreases the available inventory quantity for this variant.
+    /// Used for order fulfillment, inventory adjustments, or returns processing.
+    /// </summary>
+    /// <param name="now">Timestamp for stock update</param>
+    /// <param name="count">Number of units to remove from inventory</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Variant is available and count is zero or negative
+    /// - Requested count exceeds available inventory
+    /// </exception>
+    /// <remarks>
+    /// When inventory reaches zero, the variant automatically becomes unavailable for purchase.
+    /// This method validates stock availability before processing the removal.
+    /// </remarks>
     public void RemoveFromStock(
         DateTimeOffset now,
         int count)
@@ -474,6 +616,22 @@ public class ProductVariant
             Count: count));
     }
 
+    /// <summary>
+    /// Records a customer purchase of this variant, updating sales metrics.
+    /// This is a business transaction representing actual sales to customers.
+    /// </summary>
+    /// <param name="now">Timestamp of the sale</param>
+    /// <param name="count">Number of units purchased in this transaction</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Count is zero or negative
+    /// - Insufficient stock available (handled by stock validation in order processing)
+    /// </exception>
+    /// <remarks>
+    /// Sales are recorded separately from stock adjustments to track revenue and popularity.
+    /// Stock reduction should be handled through <see cref="RemoveFromStock"/> in a coordinated transaction.
+    /// </remarks>
     public void Sell(
         DateTimeOffset now,
         int count)
@@ -491,6 +649,22 @@ public class ProductVariant
         
     }
     
+    /// <summary>
+    /// Updates the average customer rating for this product variant.
+    /// Calculated from customer reviews and feedback scores.
+    /// </summary>
+    /// <param name="score">New average rating score</param>
+    /// <param name="now">Timestamp for rating update</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Score is outside valid rating range (handled by validation rules)
+    /// </exception>
+    /// <remarks>
+    /// Ratings typically range from 0.0 to 5.0 or similar scale.
+    /// This method accepts pre-calculated averages; individual review processing
+    /// should be handled separately in a review aggregation service.
+    /// </remarks>
     public void UpdateRating(
         decimal score,
         DateTimeOffset now)
@@ -503,6 +677,23 @@ public class ProductVariant
             Score: score));
     }
     
+    /// <summary>
+    /// Explicitly sets the availability status of this variant for purchase.
+    /// Overrides automatic availability determined by stock levels and business rules.
+    /// </summary>
+    /// <param name="isAvailable">New availability status</param>
+    /// <param name="now">Timestamp for status change</param>
+    /// <exception cref="DomainException">
+    /// Thrown when variant is deleted
+    /// </exception>
+    /// <remarks>
+    /// This manual control allows:
+    /// - Temporarily disabling a variant (e.g., for maintenance)
+    /// - Seasonal availability management
+    /// - Manual re-enabling despite zero stock
+    /// 
+    /// No change occurs if the requested status matches current status.
+    /// </remarks>
     public void SetAvailability(
         bool isAvailable,
         DateTimeOffset now)
@@ -517,6 +708,23 @@ public class ProductVariant
             IsAvailable: isAvailable));
     }
     
+    /// <summary>
+    /// Designates a specific image as the primary display image for this variant.
+    /// The main image is featured prominently in catalog listings and product pages.
+    /// </summary>
+    /// <param name="now">Timestamp for status change</param>
+    /// <param name="imageId">Identifier of the image to promote</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Variant is deleted
+    /// - Image with specified ID is not found
+    /// - Image is already deleted
+    /// </exception>
+    /// <remarks>
+    /// If another image is currently marked as main, it will be demoted automatically.
+    /// No action is taken if the specified image is already the main image.
+    /// Only one image can be designated as main at any time.
+    /// </remarks>
     public void MarkImageAsMain(
         DateTimeOffset now,
         Guid imageId)
@@ -544,12 +752,26 @@ public class ProductVariant
                 ImageId: currentMain.Id));
         }
         
-        Raise(new VariantImageMainUnset(
+        Raise(new VariantImageMainSet(
             OccurredAt: now,
             VariantId: Id,
             ImageId: imageId));
     }
     
+    /// <summary>
+    /// Removes a specific attribute from this product variant.
+    /// Used when attribute information is no longer relevant or correct.
+    /// </summary>
+    /// <param name="now">Timestamp for deletion audit</param>
+    /// <param name="attributeId">Identifier of the attribute to remove</param>
+    /// <exception cref="DomainException">
+    /// Thrown when attribute with specified ID is not found in this variant
+    /// </exception>
+    /// <remarks>
+    /// This is a logical deletion that removes the attribute from display,
+    /// but may preserve it for audit purposes in the underlying storage.
+    /// The attribute must exist and belong to this variant to be deleted.
+    /// </remarks>
     public void DeleteAttribute(
         DateTimeOffset now,
         Guid attributeId)
@@ -566,11 +788,26 @@ public class ProductVariant
             AttributeId: attributeId));
     }
     
+    /// <summary>
+    /// Marks a product image as deleted, removing it from display in the catalog.
+    /// Implements soft deletion for potential recovery and audit trail.
+    /// </summary>
+    /// <param name="now">Timestamp for deletion audit</param>
+    /// <param name="imageId">Identifier of the image to delete</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Image with specified ID is not found
+    /// - Image is already marked as deleted
+    /// </exception>
+    /// <remarks>
+    /// If the deleted image was marked as main, the main image status should be
+    /// reassigned to another available image or cleared.
+    /// Deleted images may be retained in storage for compliance or recovery purposes.
+    /// </remarks>
     public void DeleteImage(
         DateTimeOffset now,
         Guid imageId)
     {
-        // TODO: сделать проверку, если есть всего изображение, можно ли его удалять
         var existingImage = _images.FirstOrDefault(x => x.Id == imageId);
 
         if (existingImage == null)
@@ -585,6 +822,22 @@ public class ProductVariant
             ImageId: imageId));
     }
     
+    /// <summary>
+    /// Removes a specific size option from this product variant's available selections.
+    /// Used when a size is discontinued, out of stock permanently, or no longer manufactured.
+    /// </summary>
+    /// <param name="now">Timestamp for deletion audit</param>
+    /// <param name="variantSizeId">Identifier of the size option to remove</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Size option with specified ID is not found
+    /// - Size option is already marked as deleted
+    /// </exception>
+    /// <remarks>
+    /// Size deletion affects customers who may have previously purchased this size.
+    /// Consider alternatives like marking as "out of stock" instead of deletion for better UX.
+    /// Removal is logical (soft delete) for historical order reference.
+    /// </remarks>
     public void DeleteSize(
         DateTimeOffset now,
         Guid variantSizeId)
@@ -603,6 +856,20 @@ public class ProductVariant
             VariantSizeId: variantSizeId));
     }
     
+    /// <summary>
+    /// Restores a previously deleted attribute to this product variant.
+    /// Reverses the effect of <see cref="DeleteAttribute"/> while preserving the attribute's history.
+    /// </summary>
+    /// <param name="now">Timestamp for restoration audit</param>
+    /// <param name="attributeId">Identifier of the attribute to restore</param>
+    /// <exception cref="DomainException">
+    /// Thrown when attribute with specified ID is not found in this variant
+    /// </exception>
+    /// <remarks>
+    /// Restoration makes the attribute visible again in product listings and specifications.
+    /// The attribute must have been previously deleted to be eligible for restoration.
+    /// Restoration preserves the attribute's original data and relationships.
+    /// </remarks>
     public void RestoreAttribute(
         DateTimeOffset now,
         Guid attributeId)
@@ -618,6 +885,22 @@ public class ProductVariant
             AttributeId: attributeId));
     }
     
+    /// <summary>
+    /// Restores a previously deleted product image, making it visible in the catalog again.
+    /// Reverses the effect of <see cref="DeleteImage"/> while preserving the image's metadata.
+    /// </summary>
+    /// <param name="now">Timestamp for restoration audit</param>
+    /// <param name="imageId">Identifier of the image to restore</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Image with specified ID is not found
+    /// - Image is not currently marked as deleted
+    /// </exception>
+    /// <remarks>
+    /// Restored images regain their previous display position and properties.
+    /// The image file must still exist in storage for successful restoration.
+    /// Restoration does not automatically re-mark the image as main if it was previously.
+    /// </remarks>
     public void RestoreImage(
         DateTimeOffset now,
         Guid imageId)
@@ -636,6 +919,22 @@ public class ProductVariant
             ImageId: imageId));
     }
 
+    /// <summary>
+    /// Restores a previously deleted size option, making it available for purchase again.
+    /// Reverses the effect of <see cref="DeleteSize"/> while preserving the size's configuration.
+    /// </summary>
+    /// <param name="now">Timestamp for restoration audit</param>
+    /// <param name="variantSizeId">Identifier of the size option to restore</param>
+    /// <exception cref="DomainException">
+    /// Thrown when:
+    /// - Size option with specified ID is not found
+    /// - Size option is not currently marked as deleted
+    /// </exception>
+    /// <remarks>
+    /// Restored sizes regain their previous stock levels and availability status.
+    /// Customers can once again select this size when purchasing the variant.
+    /// Consider verifying manufacturer availability before restoring discontinued sizes.
+    /// </remarks>
     public void RestoreSize(
         DateTimeOffset now,
         Guid variantSizeId)
@@ -825,6 +1124,11 @@ public class ProductVariant
         }
     }
     
+    /// <summary>
+    /// Ensures the attribute is not deleted before performing operations.
+    /// </summary>
+    /// <param name="message">Optional custom error message</param>
+    /// <exception cref="DomainException">Thrown when attribute is deleted</exception>
     private void EnsureNotDeleted(string? message = null)
     {
         if (Status == ProductVariantStatus.IsDeleted)
