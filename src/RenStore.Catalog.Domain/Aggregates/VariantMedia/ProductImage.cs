@@ -1,6 +1,7 @@
+using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Aggregates.Variant;
+namespace RenStore.Catalog.Domain.Aggregates.VariantMedia;
 
 /// <summary>
 /// Represents a product image physical entity with lifecycle and invariants.
@@ -10,8 +11,8 @@ public class ProductImage
     private readonly ProductVariant? _productVariant;
     
     public Guid Id { get; private set; }
-    public string OriginalFileName { get; private set; } = string.Empty;
-    public string StoragePath { get; private set; } = string.Empty;
+    public string OriginalFileName { get; private set; }
+    public string StoragePath { get; private set; }
     public long FileSizeBytes { get; private set; }
     public bool IsMain { get; private set; }
     public short SortOrder { get; private set; } 
@@ -53,7 +54,72 @@ public class ProductImage
         };
     }
     
-    public static ProductImage Reconstitute(
+    internal void SetAsMain(DateTimeOffset now)
+    {
+        if(IsMain) return;
+
+        IsMain = true;
+        UpdatedAt = now;
+    }
+    
+    internal void UnsetAsMain(DateTimeOffset now)
+    {
+        if(!IsMain) return;
+
+        IsMain = false;
+        UpdatedAt = now;
+    }
+
+    internal void ChangeSortOrder(
+        DateTimeOffset now,
+        short sortOrder)
+    {
+        SortOrder = sortOrder;
+        UpdatedAt = now;
+    }
+
+    internal void ChangeStoragePath(
+        DateTimeOffset now,
+        string storagePath)
+    {
+        StoragePath = storagePath;
+        UpdatedAt = now;
+    }
+
+    internal void ChangeDimension(
+        DateTimeOffset now,
+        int weight,
+        int height)
+    {
+        Weight = weight;
+        Height = height;
+
+        UpdatedAt = now;
+    }
+
+    internal void ChangeFileSizeBytes(
+        DateTimeOffset now,
+        long fileSizeBytes)
+    {
+        FileSizeBytes = fileSizeBytes;
+        UpdatedAt = now;
+    }
+    
+    internal void Delete(DateTimeOffset now)
+    {
+        IsDeleted = true;
+        DeletedAt = now;
+        UpdatedAt = now;
+    }
+    
+    internal void Restore(DateTimeOffset now)
+    {
+        IsDeleted = true;
+        UpdatedAt = now;
+        DeletedAt = null;
+    }
+}
+    /*internal static ProductImage Reconstitute(
         Guid productVariantId,
         string originalFileName,
         string storagePath,
@@ -83,107 +149,4 @@ public class ProductImage
             UpdatedAt = updatedAt,
             DeletedAt = deletedAt
         };
-    }
-    
-    public void SetAsMain(DateTimeOffset now)
-    {
-        if(IsMain) return;
-
-        IsMain = true;
-        UpdatedAt = now;
-    }
-    
-    public void UnsetAsMain(DateTimeOffset now)
-    {
-        if(!IsMain) return;
-
-        IsMain = false;
-        UpdatedAt = now;
-    }
-
-    public void ChangeSortOrder(
-        DateTimeOffset now,
-        short sortOrder)
-    {
-        EnsureNotDeleted();
-        
-        if(SortOrder == sortOrder) return;
-
-        SortOrder = sortOrder;
-        UpdatedAt = now;
-    }
-
-    public void ChangeStoragePath(
-        DateTimeOffset now,
-        string storagePath)
-    {
-        EnsureNotDeleted();
-
-        ProductImageRules.StoragePathValidate(storagePath);
-        
-        if(StoragePath == storagePath) return;
-
-        StoragePath = storagePath;
-        UpdatedAt = now;
-    }
-
-    public void ChangeDimension(
-        DateTimeOffset now,
-        int weight,
-        int height)
-    {
-        EnsureNotDeleted();
-
-        ProductImageRules.WeightAndHeightValidate(
-            weight: weight, 
-            height: height);
-
-        if(Weight == weight && Height == height) 
-            return;
-        
-        Weight = weight;
-        Height = height;
-
-        UpdatedAt = now;
-    }
-
-    public void ChangeFileSizeBytes(
-        DateTimeOffset now,
-        long fileSizeBytes)
-    {
-        EnsureNotDeleted();
-        
-        ProductImageRules.FileSizeBytesValidate(fileSizeBytes);
-
-        if(FileSizeBytes == fileSizeBytes)
-            return;
-        
-        FileSizeBytes = fileSizeBytes;
-        UpdatedAt = now;
-    }
-    
-    internal void Delete(DateTimeOffset now)
-    {
-        IsDeleted = true;
-        DeletedAt = now;
-        UpdatedAt = now;
-    }
-    
-    internal void Restore(DateTimeOffset now)
-    {
-        IsDeleted = true;
-        UpdatedAt = now;
-        DeletedAt = null;
-    }
-    
-    /// <summary>
-    /// Ensures the attribute is not deleted before performing operations.
-    /// </summary>
-    /// <param name="message">Optional custom error message</param>
-    /// <exception cref="DomainException">Thrown when attribute is deleted</exception>
-    private void EnsureNotDeleted(string? message = null)
-    {
-        if (IsDeleted)
-            throw new DomainException(message ?? "Entity is deleted.");
-    }
-}
+    }*/

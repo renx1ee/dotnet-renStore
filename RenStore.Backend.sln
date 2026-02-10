@@ -87,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Catalog.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Catalog.Persistence", "src\RenStore.Catalog.Persistence\RenStore.Catalog.Persistence.csproj", "{CFC793E1-1088-49CE-8561-465A701A4699}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Catalog.Tests", "tests\RenStore.Catalog.Tests\RenStore.Catalog.Tests.csproj", "{01E9DA64-A0A8-4D3E-B542-42867249DEF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,10 @@ Global
 		{CFC793E1-1088-49CE-8561-465A701A4699}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFC793E1-1088-49CE-8561-465A701A4699}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFC793E1-1088-49CE-8561-465A701A4699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E9DA64-A0A8-4D3E-B542-42867249DEF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E9DA64-A0A8-4D3E-B542-42867249DEF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E9DA64-A0A8-4D3E-B542-42867249DEF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E9DA64-A0A8-4D3E-B542-42867249DEF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,6 +207,7 @@ Global
 		{384F46A7-2DBC-4000-BA83-3BE09F02AEFF} = {D9CF08F0-C0C8-4B64-8FA3-2AD2F2566372}
 		{6B006520-07C9-48C4-AC4E-04F25120C9EE} = {D9CF08F0-C0C8-4B64-8FA3-2AD2F2566372}
 		{CFC793E1-1088-49CE-8561-465A701A4699} = {2D46B172-4978-4A20-82CA-467301B1B593}
+		{01E9DA64-A0A8-4D3E-B542-42867249DEF2} = {279C902D-4DFE-4EFC-B477-50B791824D3F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {057C7BB5-998A-46BB-97AF-CF22F6A756CA}

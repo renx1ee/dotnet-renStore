@@ -9,8 +9,6 @@ public class UnitOfWork : IUnitOfWork
     private readonly ApplicationDbContext _context;
     
     public IProductRepository Products { get; private set; }
-    public IProductClothRepository ProductClothes { get; private set; }
-    public IProductClothSizeRepository ProductClothSizes { get; private set; }
     public IProductVariantRepository ProductVariants { get; private set; }
     public IProductDetailRepository ProductDetails { get; private set; }
     public IProductPriceHistoryRepository PriceHistories { get; private set; }
@@ -21,8 +19,6 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(
         ApplicationDbContext context,
         IProductRepository productRepository,
-        IProductClothRepository productClothRepository,
-        IProductClothSizeRepository productClothSizeRepository,
         IProductVariantRepository productVariantRepository,
         IProductDetailRepository productDetailsRepository,
         IProductPriceHistoryRepository priceHistoryRepository,
@@ -30,8 +26,6 @@ public class UnitOfWork : IUnitOfWork
     {
         this._context = context;
         this.Products = productRepository;
-        this.ProductClothes = productClothRepository;
-        this.ProductClothSizes = productClothSizeRepository;
         this.ProductVariants = productVariantRepository;
         this.ProductDetails = productDetailsRepository;
         this.PriceHistories = priceHistoryRepository;

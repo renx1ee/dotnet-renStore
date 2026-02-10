@@ -2,6 +2,7 @@
 using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
+using RenStore.Catalog.Domain.Aggregates.VariantMedia;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Entities;
@@ -13,7 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());
+        /*modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());*/
         modelBuilder.ApplyConfiguration(new ShoppingCartConfiguration());
         modelBuilder.ApplyConfiguration(new ShoppingCartItemConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewConfiguration());
@@ -41,8 +42,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductVariant> ProductVariants { get; set; }
     public DbSet<ProductDetail> ProductDetails { get; set; }
-    public DbSet<ProductCloth> ProductClothes { get; set; }
-    public DbSet<ProductClothSize> ProductClothSizes { get; set; }
+    /*public DbSet<ProductCloth> ProductClothes { get; set; }
+    public DbSet<ProductClothSize> ProductClothSizes { get; set; }*/
     public DbSet<ProductAttribute> ProductAttributes { get; set; }
     public DbSet<ProductQuestionEntity> ProductQuestions { get; set; }
     public DbSet<ProductAnswerEntity> ProductAnswers { get; set; }

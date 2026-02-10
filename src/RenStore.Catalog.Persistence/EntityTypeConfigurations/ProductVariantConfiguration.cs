@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Entities;
-using RenStore.Domain.Entities;
 
-namespace RenStore.Persistence.EntityTypeConfigurations;
+namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVariant>
 {
@@ -51,11 +49,11 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .HasIndex(v => v.Article)
             .IsUnique();
         
-        builder
+        /*builder
             .Property(v => v.InStock)
             .HasColumnName("in_stock")
             .HasDefaultValue(0)
-            .IsRequired();
+            .IsRequired();*/
         
         builder
             .Property(v => v.IsAvailable)

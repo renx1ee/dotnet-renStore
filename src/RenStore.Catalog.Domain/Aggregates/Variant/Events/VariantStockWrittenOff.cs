@@ -1,3 +1,5 @@
+using RenStore.Catalog.Domain.Enums;
+
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
 
 /// <summary>
@@ -12,7 +14,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
 /// When inventory reaches zero, the variant typically becomes unavailable for purchase.
 /// Multiple events may represent a single transaction involving multiple units.
 /// </remarks>
-public record VariantRemovedFromStock(
+public record VariantStockWrittenOff(
     DateTimeOffset OccurredAt,
+    WriteOffReason Reason,
     Guid VariantId,
     int Count);

@@ -5,8 +5,6 @@ namespace RenStore.Application.UnitOfWork;
 public interface IUnitOfWork : IDisposable
 {
     IProductRepository Products { get; }
-    IProductClothRepository ProductClothes { get; }
-    IProductClothSizeRepository ProductClothSizes { get; }
     IProductVariantRepository ProductVariants { get; }
     IProductDetailRepository ProductDetails { get; }
     IProductPriceHistoryRepository PriceHistories{ get; }

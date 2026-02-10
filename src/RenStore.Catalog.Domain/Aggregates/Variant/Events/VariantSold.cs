@@ -11,7 +11,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
 /// This domain event is raised after successful order fulfillment.
 /// Multiple events may be raised for a single order containing multiple variants.
 /// </remarks>
-public record SaleOfVariantOccurred(
+public record VariantSold(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     int Count);

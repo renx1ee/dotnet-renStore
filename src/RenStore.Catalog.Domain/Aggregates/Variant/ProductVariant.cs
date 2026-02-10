@@ -15,11 +15,11 @@ public class ProductVariant
 {
     private readonly List<ProductAttribute> _attributes = new();
     private readonly List<ProductPriceHistory> _priceHistory = new();
-    private readonly List<ProductImage> _images = new();
     private readonly List<VariantSize> _sizes = new();
     
     private Color _color;
-    private ProductDetail _productDetails;
+    private ProductDetail _details;
+    private VariantStock _stock;
     
     /// <summary>
     /// Unique identifier of the product variant.
@@ -50,28 +50,9 @@ public class ProductVariant
     public long Article { get; private set; }
     
     /// <summary>
-    /// Available inventory quantity for this product variant.
-    /// </summary>
-    public int InStock { get; private set; }
-    
-    /// <summary>
-    /// Total number of unit sold for this product variant. 
-    /// </summary>
-    /// <remarks>
-    /// Include on each successful order.
-    /// Does not include cancelled or returned items. // TODO:
-    /// </remarks>
-    public int Sales { get; private set; }
-    
-    /// <summary>
     /// Current lifecycle state on this product variant.
     /// </summary>
     public ProductVariantStatus Status { get; private set; }
-    
-    /// <summary>
-    /// Indicates whether this variant is currently available for purchase.
-    /// </summary>
-    public bool IsAvailable { get; private set; }  
     
     /// <summary>
     /// Measurement system used for sizing in this product variant.
@@ -90,6 +71,14 @@ public class ProductVariant
     /// Used to generate permanent links in the catalog and for search engine optimization.
     /// </summary>
     public string Url { get; private set; }
+    
+    /// <summary>
+    /// Indicates whether this variant is currently available for purchase.
+    /// </summary>
+    public bool IsAvailable => 
+        Status == ProductVariantStatus.Published 
+        && _stock != null
+        && _stock.InStock > 0;
     
     /// <summary>
     /// Date when the product was created.
@@ -127,78 +116,11 @@ public class ProductVariant
     public IReadOnlyCollection<ProductPriceHistory> PriceHistories => _priceHistory.AsReadOnly();
     
     /// <summary>
-    /// The collection of images associated with this variant.
-    /// </summary>
-    public IReadOnlyCollection<ProductImage> Images => _images.AsReadOnly();
-    
-    /// <summary>
     /// The collection of sizes associated with this variant.
     /// </summary>
     public IReadOnlyCollection<VariantSize> Sizes => _sizes.AsReadOnly();
     
     private ProductVariant() { }
-    
-    /// <summary>
-    /// Initializes or updates a product variant aggregate with the specified values.
-    /// Ensures that the aggregate invariants are respected and records necessary events.
-    /// </summary>
-    /// <param name="id">Unique identifier of the variant product aggregate.</param>
-    /// <param name="productId">Unique identifier of the product.</param>
-    /// <param name="colorId">Unique identifier of the color.</param>
-    /// <param name="name">Display the name of this specific variant.</param>
-    /// <param name="normalizedName">Uppercase normalized version of the variant name for case-insensitive operations.</param>
-    /// <param name="rating">Customer rating and review score for this product variant.</param>
-    /// <param name="article">Internal article number that uniquely identifies this product variant.</param>
-    /// <param name="inStock">Available inventory quantity for this product variant.</param>
-    /// <param name="sales">Total number of unit sold for this product variant.</param>
-    /// <param name="isAvailable">Indicates whether this variant is currently available for purchase.</param>
-    /// <param name="url">SEO-friendly URL slug for this product variant.</param>
-    /// <param name="sizeSystem">Measurement system used for sizing in this product variant.</param>
-    /// <param name="sizeType">Category of sizing applicable to this product variant.</param>
-    /// <param name="createdAt">Date when the product was created.</param>
-    /// <param name="uploadAt">Date when the product was updated.</param>
-    /// <param name="deletedAt">Date when the product was deleted.</param>
-    /// <returns></returns>
-    public static ProductVariant Reconstitute(
-        Guid id,
-        Guid productId,
-        int colorId,
-        string name,
-        string normalizedName,
-        Rating rating,
-        long article,
-        int inStock,
-        int sales,
-        bool isAvailable,
-        string url,
-        SizeSystem sizeSystem,
-        SizeType sizeType,
-        DateTimeOffset createdAt,
-        DateTimeOffset? uploadAt,
-        DateTimeOffset? deletedAt)
-    {
-        var variant = new ProductVariant()
-        {
-            Id = id,
-            ProductId = productId,
-            ColorId = colorId,
-            Name = name,
-            NormalizedName = normalizedName,
-            Rating = rating,
-            Article = article,
-            Sales = sales,
-            IsAvailable = isAvailable,
-            SizeSystem = sizeSystem,
-            SizeType = sizeType,
-            InStock = inStock,
-            Url = url,
-            CreatedAt = createdAt,
-            UpdatedAt = uploadAt,
-            DeletedAt = deletedAt
-        };
-
-        return variant;
-    }
     
     /// <summary>
     /// Create a new product variant in the system, linked to a specific product.
@@ -296,7 +218,7 @@ public class ProductVariant
     {
         EnsureNotDeleted();
         
-        if (_productDetails != null)
+        if (_details != null)
             throw new DomainException("Product details already was created!");
 
         ProductDetailRules.CountryOfManufactureValidate(countryOfManufactureId);
@@ -348,7 +270,8 @@ public class ProductVariant
         int inStock,
         DateTimeOffset now)
     {
-        VariantSizeRules.ProductVariantIdValidate(Id);
+        EnsureNotDeleted();
+        
         VariantSizeRules.InStockValidate(inStock);
 
         if (_sizes.Any(x => x.Size.LetterSize == letterSize))
@@ -409,114 +332,10 @@ public class ProductVariant
             Value: trimmedValue));
     }
     
-    /// <summary>
-    /// Adds a product image to this variant with metadata and display rules.
-    /// Images are used for visual presentation in catalog listings and product pages.
-    /// </summary>
-    /// <param name="now">Timestamp for creation audit</param>
-    /// <param name="originalFileName">Original uploaded file name</param>
-    /// <param name="storagePath">Path to stored image file</param>
-    /// <param name="fileSizeBytes">Size of image file in bytes</param>
-    /// <param name="isMain">Whether this is the primary display image</param>
-    /// <param name="sortOrder">Display order in image gallery (lower = first)</param>
-    /// <param name="weight">Image width in pixels</param>
-    /// <param name="height">Image height in pixels</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Maximum image limit reached
-    /// - Image metadata fails validation (size, dimensions, etc.)
-    /// </exception>
-    /// <remarks>
-    /// Only one image can be marked as main. If <paramref name="isMain"/> is true,
-    /// any existing main image will be demoted. Images are displayed according to sort order.
-    /// </remarks>
-    public void AddImage(
-        DateTimeOffset now,
-        string originalFileName,
-        string storagePath,
-        long fileSizeBytes,
-        bool isMain,
-        short sortOrder,
-        int weight, 
-        int height)
-    {
-        EnsureNotDeleted();
-
-        ProductVariantRules.MaxImagesCountValidation(_images.Count);
-
-        var imageId = Guid.NewGuid();
-        
-        ProductImageRules.CreateProductImageValidation(
-            imageId: imageId,
-            productVariantId: Id,
-            originalFileName: originalFileName,
-            storagePath: storagePath,
-            fileSizeBytes: fileSizeBytes,
-            sortOrder: sortOrder,
-            weight: weight,
-            height: height);
-        
-        if (isMain)
-        {
-            var currentMain = _images.FirstOrDefault(x => x.IsMain);
-
-            if (currentMain != null)
-            {
-                Raise(new VariantImageMainUnset(
-                    OccurredAt: now,
-                    VariantId: Id,
-                    ImageId: currentMain.Id));
-            }
-        }
-        
-        Raise(new VariantImageCreated(
-            OccurredAt: now,
-            ImageId: imageId,
-            VariantId: Id,
-            OriginalFileName: originalFileName,
-            StoragePath: storagePath,
-            FileSizeBytes: fileSizeBytes,
-            IsMain: isMain,
-            SortOrder: sortOrder,
-            Weight: weight,
-            Height: height));
-    }
-    
     // TODO:
     public void ChangeColor()
     {
         EnsureNotDeleted();
-    }
-    
-    /// <summary>
-    /// Publishes this variant, making it visible and available for purchase in the catalog.
-    /// Enforces business rules requiring complete product information before publication.
-    /// </summary>
-    /// <param name="now">Timestamp for publication</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Variant has no images (visual representation required)
-    /// - Variant has no product details (specifications required)
-    /// </exception>
-    /// <remarks>
-    /// Publishing is a business transaction that makes the variant available to customers.
-    /// Unpublished variants remain in the system but are not visible in the public catalog.
-    /// </remarks>
-    public void Publish(DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-        
-        if (!_images.Any())
-            throw new DomainException("Variant must have images.");
-        
-        if (_productDetails == null)
-            throw new DomainException("Variant must have details.");
-        
-        Raise(new VariantPublished(
-            VariantId: Id,
-            OccurredAt: now));
     }
     
     /// <summary>
@@ -573,20 +392,23 @@ public class ProductVariant
     {
         EnsureNotDeleted();
 
-        if (count <= 0)
-            throw new DomainException("Cannot sell 0 or less products.");
+        if (Status != ProductVariantStatus.Published)
+            throw new DomainException("Variant is not published.");
+        
+        _stock.ValidateAdd(count);
 
         Raise(new VariantStockAdded(
             OccurredAt: now,
             VariantId: Id,
             Count: count));
     }
-    
+
     /// <summary>
     /// Decreases the available inventory quantity for this variant.
     /// Used for order fulfillment, inventory adjustments, or returns processing.
     /// </summary>
     /// <param name="now">Timestamp for stock update</param>
+    /// <param name="reason"></param> // TODO:
     /// <param name="count">Number of units to remove from inventory</param>
     /// <exception cref="DomainException">
     /// Thrown when:
@@ -598,55 +420,54 @@ public class ProductVariant
     /// When inventory reaches zero, the variant automatically becomes unavailable for purchase.
     /// This method validates stock availability before processing the removal.
     /// </remarks>
-    public void RemoveFromStock(
+    public void StockWriteOff(
         DateTimeOffset now,
+        WriteOffReason reason,
         int count)
     {
         EnsureNotDeleted();
-
-        if (IsAvailable && count <= 0)
-            throw new DomainException("Cannot sell 0 or less products.");
         
-        if(count > InStock)
-            throw new DomainException("The count of sells exceed available count.");
+        if (Status != ProductVariantStatus.Published)
+            throw new DomainException("Variant is not published.");
 
-        Raise(new VariantRemovedFromStock(
+        _stock.ValidateRemove(count);
+
+        Raise(new VariantStockWrittenOff(
             OccurredAt: now,
             VariantId: Id,
+            Reason: reason,
             Count: count));
     }
-
-    /// <summary>
-    /// Records a customer purchase of this variant, updating sales metrics.
-    /// This is a business transaction representing actual sales to customers.
-    /// </summary>
-    /// <param name="now">Timestamp of the sale</param>
-    /// <param name="count">Number of units purchased in this transaction</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Count is zero or negative
-    /// - Insufficient stock available (handled by stock validation in order processing)
-    /// </exception>
-    /// <remarks>
-    /// Sales are recorded separately from stock adjustments to track revenue and popularity.
-    /// Stock reduction should be handled through <see cref="RemoveFromStock"/> in a coordinated transaction.
-    /// </remarks>
+    
     public void Sell(
         DateTimeOffset now,
         int count)
     {
         EnsureNotDeleted();
         
-        Raise(new SaleOfVariantOccurred(
+        if (Status != ProductVariantStatus.Published)
+            throw new DomainException("Variant is not published.");
+        
+        _stock.ValidateSell(count);
+        
+        Raise(new VariantSold(
             OccurredAt: now,
             VariantId: Id,
             Count: count));
     }
-    // TODO:
-    public void CancelSell()
+    
+    public void ReturnSale(
+        int count,
+        DateTimeOffset now)
     {
+        EnsureNotDeleted();
         
+        _stock.ValidateReturnSell(count);
+        
+        Raise(new VariantSaleReturned(
+            OccurredAt: now,
+            VariantId: Id,
+            Count: count));
     }
     
     /// <summary>
@@ -671,91 +492,24 @@ public class ProductVariant
     {
         EnsureNotDeleted();
         
+        Rating.AddRatingValidate(score);
+        
         Raise(new VariantAverageRatingUpdated(
             VariantId: Id,
             OccurredAt: now,
             Score: score));
     }
     
-    /// <summary>
-    /// Explicitly sets the availability status of this variant for purchase.
-    /// Overrides automatic availability determined by stock levels and business rules.
-    /// </summary>
-    /// <param name="isAvailable">New availability status</param>
-    /// <param name="now">Timestamp for status change</param>
-    /// <exception cref="DomainException">
-    /// Thrown when variant is deleted
-    /// </exception>
-    /// <remarks>
-    /// This manual control allows:
-    /// - Temporarily disabling a variant (e.g., for maintenance)
-    /// - Seasonal availability management
-    /// - Manual re-enabling despite zero stock
-    /// 
-    /// No change occurs if the requested status matches current status.
-    /// </remarks>
-    public void SetAvailability(
-        bool isAvailable,
-        DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-        
-        if(IsAvailable == isAvailable) return;
-        
-        Raise(new VariantAvailabilityUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            IsAvailable: isAvailable));
-    }
     
-    /// <summary>
-    /// Designates a specific image as the primary display image for this variant.
-    /// The main image is featured prominently in catalog listings and product pages.
-    /// </summary>
-    /// <param name="now">Timestamp for status change</param>
-    /// <param name="imageId">Identifier of the image to promote</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Image with specified ID is not found
-    /// - Image is already deleted
-    /// </exception>
-    /// <remarks>
-    /// If another image is currently marked as main, it will be demoted automatically.
-    /// No action is taken if the specified image is already the main image.
-    /// Only one image can be designated as main at any time.
-    /// </remarks>
-    public void MarkImageAsMain(
-        DateTimeOffset now,
-        Guid imageId)
+    
+    public void Delete(DateTimeOffset now)
     {
-        EnsureNotDeleted();
-
-        var currentImage = _images.FirstOrDefault(x => x.Id == imageId);
-
-        if (currentImage == null)
-            throw new DomainException("Image was not found.");
+        if (Status == ProductVariantStatus.IsDeleted)
+            throw new DomainException("Cannot delete already deleted variant.");
         
-        if(currentImage.IsDeleted)
-            throw new DomainException("Cannot mark already deleted image as main.");
-        
-        var currentMain = _images.FirstOrDefault(x => x.IsMain);
-        
-        if(currentMain?.Id == imageId)
-            return;
-
-        if (currentMain != null)
-        {
-            Raise(new VariantImageMainUnset(
-                OccurredAt: now,
-                VariantId: Id,
-                ImageId: currentMain.Id));
-        }
-        
-        Raise(new VariantImageMainSet(
-            OccurredAt: now,
+        Raise(new ProductVariantRemoved(
             VariantId: Id,
-            ImageId: imageId));
+            OccurredAt: now));
     }
     
     /// <summary>
@@ -776,6 +530,8 @@ public class ProductVariant
         DateTimeOffset now,
         Guid attributeId)
     {
+        EnsureNotDeleted();
+        
         var existingAttribute = _attributes.FirstOrDefault(x => x.Id == attributeId);
 
         if (existingAttribute == null)
@@ -788,39 +544,7 @@ public class ProductVariant
             AttributeId: attributeId));
     }
     
-    /// <summary>
-    /// Marks a product image as deleted, removing it from display in the catalog.
-    /// Implements soft deletion for potential recovery and audit trail.
-    /// </summary>
-    /// <param name="now">Timestamp for deletion audit</param>
-    /// <param name="imageId">Identifier of the image to delete</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Image with specified ID is not found
-    /// - Image is already marked as deleted
-    /// </exception>
-    /// <remarks>
-    /// If the deleted image was marked as main, the main image status should be
-    /// reassigned to another available image or cleared.
-    /// Deleted images may be retained in storage for compliance or recovery purposes.
-    /// </remarks>
-    public void DeleteImage(
-        DateTimeOffset now,
-        Guid imageId)
-    {
-        var existingImage = _images.FirstOrDefault(x => x.Id == imageId);
-
-        if (existingImage == null)
-            throw new DomainException("Product image not exists.");
-        
-        if (existingImage.IsDeleted)
-            throw new DomainException("The image already was deleted.");
-        
-        Raise(new VariantImageRemoved(
-            OccurredAt: now,
-            VariantId: Id,
-            ImageId: imageId));
-    }
+    
     
     /// <summary>
     /// Removes a specific size option from this product variant's available selections.
@@ -842,6 +566,8 @@ public class ProductVariant
         DateTimeOffset now,
         Guid variantSizeId)
     {
+        EnsureNotDeleted();
+        
         var existingSize = _sizes.FirstOrDefault(x => x.Id == variantSizeId);
 
         if (existingSize == null)
@@ -874,6 +600,8 @@ public class ProductVariant
         DateTimeOffset now,
         Guid attributeId)
     {
+        EnsureNotDeleted();
+        
         var existingAttribute = _attributes.FirstOrDefault(x => x.Id == attributeId);
 
         if (existingAttribute == null)
@@ -883,40 +611,6 @@ public class ProductVariant
             OccurredAt: now,
             VariantId: Id,
             AttributeId: attributeId));
-    }
-    
-    /// <summary>
-    /// Restores a previously deleted product image, making it visible in the catalog again.
-    /// Reverses the effect of <see cref="DeleteImage"/> while preserving the image's metadata.
-    /// </summary>
-    /// <param name="now">Timestamp for restoration audit</param>
-    /// <param name="imageId">Identifier of the image to restore</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Image with specified ID is not found
-    /// - Image is not currently marked as deleted
-    /// </exception>
-    /// <remarks>
-    /// Restored images regain their previous display position and properties.
-    /// The image file must still exist in storage for successful restoration.
-    /// Restoration does not automatically re-mark the image as main if it was previously.
-    /// </remarks>
-    public void RestoreImage(
-        DateTimeOffset now,
-        Guid imageId)
-    {
-        var existingImage = _images.FirstOrDefault(x => x.Id == imageId);
-
-        if (existingImage == null)
-            throw new DomainException("Product image not exists.");
-        
-        if (!existingImage.IsDeleted)
-            throw new DomainException("The image was not deleted.");
-        
-        Raise(new VariantImageRestored(
-            OccurredAt: now,
-            VariantId: Id,
-            ImageId: imageId));
     }
 
     /// <summary>
@@ -939,6 +633,8 @@ public class ProductVariant
         DateTimeOffset now,
         Guid variantSizeId)
     {
+        EnsureNotDeleted();
+        
         var existingSize = _sizes.FirstOrDefault(x => x.Id == variantSizeId);
 
         if (existingSize == null)
@@ -964,15 +660,16 @@ public class ProductVariant
                 ColorId = e.ColorId;
                 Name = e.Name;
                 NormalizedName = e.Name.ToUpperInvariant();
-                InStock = e.InStock;
+                _stock = VariantStock.Create(e.InStock);
                 Url = e.Url;
-                IsAvailable = false;
                 SizeSystem = e.SizeSystem;
                 SizeType = e.SizeType;
+                Status = ProductVariantStatus.Draft;
+                Rating = Rating.Empty();
                 break;
             
             case VariantDetailsCreated e:
-                _productDetails = ProductDetail.Create(
+                _details = ProductDetail.Create(
                     id: e.Id,
                     now: e.OccurredAt,
                     countryOfManufactureId: e.CountryOfManufactureId,
@@ -994,22 +691,6 @@ public class ProductVariant
                     value: e.Value,
                     productVariantId: e.VariantId,
                     now: e.OccurredAt));
-                
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantImageCreated e:
-                _images.Add(ProductImage.Create(
-                    now: e.OccurredAt,
-                    imageId: e.ImageId,
-                    productVariantId: e.VariantId,
-                    originalFileName: e.OriginalFileName,
-                    storagePath: e.StoragePath,
-                    fileSizeBytes: e.FileSizeBytes,
-                    isMain: e.IsMain,
-                    sortOrder: e.SortOrder,
-                    weight: e.Weight,
-                    height: e.Height));
                 
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -1039,22 +720,17 @@ public class ProductVariant
                 break;
             
             case VariantStockAdded e:
-                InStock += e.Count;
+                _stock.Apply(e);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantRemovedFromStock e:
-                InStock -= e.Count;
-
-                if (InStock <= 0)
-                    IsAvailable = false;
-                
+            case VariantStockWrittenOff e:
+                _stock.Apply(e);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case SaleOfVariantOccurred e:
-                RemoveFromStock(e.OccurredAt, e.Count);
-                Sales += e.Count;
+            case VariantSold e:
+                _stock.Apply(e);
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -1063,20 +739,14 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantAvailabilityUpdated e:
-                IsAvailable = e.IsAvailable;
+            case VariantSaleReturned e:
+                _stock.Apply(e);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantImageMainUnset e:
-                _images.Single(x => x.Id == e.ImageId)
-                    .UnsetAsMain(e.OccurredAt);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantImageMainSet e:
-                _images.Single(x => x.Id == e.ImageId)
-                    .SetAsMain(e.OccurredAt);
+            case ProductVariantRemoved e:
+                Status = ProductVariantStatus.IsDeleted;
+                DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -1087,24 +757,10 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantImageRemoved e:
-                _images
-                    .Single(x => x.Id == e.ImageId)
-                    .Delete(e.OccurredAt);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
             case VariantSizeRemoved e:
                 _sizes
                     .Single(x => x.Id == e.VariantSizeId)
                     .Delete(e.OccurredAt);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantImageRestored e:
-                _images
-                    .Single(x => x.Id == e.ImageId)
-                    .Restore(e.OccurredAt);
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -1137,5 +793,13 @@ public class ProductVariant
 }
 
 // TODO: сделать создание
+//  «нельзя удалить main без переназначения»
 //  1) цвета, истории цен,
 //  2) сделат методы для изменеия SizeType, SizeSystem (тобиж изменение таблицы размеров)
+//  - ⚠️ Это очень опасная операция:
+//  - размеры уже существуют
+//  - размеры привязаны к старой таблице
+//  - Правильно:
+//  - либо запретить изменение
+//  - либо делать mass migration event (VariantSizeSystemChanged) с пересозданием размеров
+//  добавить isAvailable в продажи и тд

@@ -56,12 +56,8 @@ public sealed class Rating
     /// </summary>
     /// <param name="score">Rating value.</param>
     /// <returns></returns>
-    /// <exception cref="DomainException">Throws if score less than <see cref="MinRating"/> or more then <see cref="MaxRating"/>.</exception>
     public Rating Add(decimal score)
     {
-        if(score is > MaxRating or < MinRating)
-            throw new DomainException($"Score must be between {MinRating} and {MaxRating}.");
-
         return new Rating(
             totalRatings: TotalRatings + 1,
             totalScore: TotalScore + score);
@@ -88,4 +84,10 @@ public sealed class Rating
         => obj is Rating other
            && TotalRatings == other.TotalRatings
            && TotalScore == other.TotalScore;
+
+    public static void AddRatingValidate(decimal score)
+    {
+        if(score is > MaxRating or < MinRating)
+            throw new DomainException($"Score must be between {MinRating} and {MaxRating}.");
+    }
 }

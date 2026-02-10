@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Variant;
+/*using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
@@ -69,4 +69,4 @@ public interface IProductClothSizeRepository
     /// <returns>The product cloth size entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product cloth size is not found.</exception>
     Task<ProductClothSize?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-}
+}*/

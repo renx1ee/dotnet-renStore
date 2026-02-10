@@ -29,23 +29,6 @@ internal static class VariantSizeRules
     }
     
     /// <summary>
-    /// Validates a product variant identifier for size association.
-    /// </summary>
-    /// <param name="productVariantId">Variant identifier to validate</param>
-    /// <exception cref="DomainException">
-    /// Thrown when identifier is <see cref="Guid.Empty"/>
-    /// </exception>
-    /// <remarks>
-    /// Ensures size options are properly linked to a parent product variant.
-    /// Note: Parameter name suggests it might have been renamed from productVariantId.
-    /// </remarks>
-    internal static void ProductVariantIdValidate(Guid productVariantId)
-    {
-        if(productVariantId == Guid.Empty)
-            throw new DomainException("Variant size Id cannot be guid empty.");
-    }
-    
-    /// <summary>
     /// Validates inventory quantity for a size option.
     /// </summary>
     /// <param name="amount">Inventory quantity to validate</param>
