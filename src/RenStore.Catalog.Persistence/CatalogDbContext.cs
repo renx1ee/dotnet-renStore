@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Aggregates.VariantMedia;
+using RenStore.Catalog.Domain.Aggregates.VariantAttributes;
 using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence;
@@ -19,8 +19,8 @@ public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbCo
     public DbSet<Color> Colors { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductVariant> Variants { get; set; }
-    public DbSet<ProductAttribute> Attributes { get; set; }
-    public DbSet<ProductDetail> Details { get; set; }
+    public DbSet<VariantAttribute> Attributes { get; set; }
+    /*public DbSet<ProductDetail> Details { get; set; }*/
     public DbSet<VariantSize> Cloths { get; set; }
     public DbSet<ProductImage> Images { get; set; }
 }

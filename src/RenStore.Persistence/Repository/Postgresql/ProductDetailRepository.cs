@@ -1,4 +1,4 @@
-using Dapper;
+/*using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using RenStore.Catalog.Domain.Aggregates.Variant;
@@ -162,4 +162,4 @@ public class ProductDetailRepository : IProductDetailRepository
         return await this.FindByIdAsync(id, cancellationToken)
             ?? throw new NotFoundException(typeof(ProductDetail), id);
     }
-}
+}*/

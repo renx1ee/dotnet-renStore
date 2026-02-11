@@ -1,6 +1,6 @@
+using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ValueObjects;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
@@ -66,61 +66,38 @@ public class VariantSize
         };
     }
     // TODO: need to check if the Size already exists
-    public void ChangeSize(
+    internal void ChangeSize(
         DateTimeOffset now,
         Size size)
     {
-        EnsureNotDeleted();
-        
         if(Size == size) return;
 
         Size = size;
         UpdatedAt = now;
     }
     
-    public void SetStock(
+    internal void SetStock(
         DateTimeOffset now,
         int newStock)
     {
-        EnsureNotDeleted();
-        
-        VariantSizeRules.InStockValidate(newStock);
-        
-        if(InStock == newStock) return;
-
         IsAvailable = newStock > 0;
         InStock = newStock;
         UpdatedAt = now;
     }
     
-    public void AddToStock(
+    internal void AddToStock(
         DateTimeOffset now,
         int count)
     {
-        EnsureNotDeleted();
-        
-        VariantSizeRules.ChangeCountValidate(count);
-
-        var newStock = InStock + count;
-        
-        VariantSizeRules.InStockValidate(newStock);
-
-        InStock = newStock;
+        InStock += count;
         IsAvailable = InStock > 0;
         UpdatedAt = now;
     }
     
-    public void RemoveFromStock(
+    internal void RemoveFromStock(
         DateTimeOffset now,
         int count)
     {
-        EnsureNotDeleted();
-
-        VariantSizeRules.ChangeCountValidate(count);
-        
-        if(count > InStock)
-            throw new DomainException("The count of sells exceed available count.");
-
         InStock -= count;
         
         IsAvailable = InStock > 0;
@@ -139,16 +116,5 @@ public class VariantSize
         IsDeleted = true;
         UpdatedAt = now;
         DeletedAt = null;
-    }
-    
-    /// <summary>
-    /// Ensures the attribute is not deleted before performing operations.
-    /// </summary>
-    /// <param name="message">Optional custom error message</param>
-    /// <exception cref="DomainException">Thrown when attribute is deleted</exception>
-    private void EnsureNotDeleted(string? message = null)
-    {
-        if (IsDeleted)
-            throw new DomainException(message ?? "Entity is deleted.");
     }
 }

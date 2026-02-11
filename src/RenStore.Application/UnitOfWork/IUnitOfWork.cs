@@ -6,7 +6,7 @@ public interface IUnitOfWork : IDisposable
 {
     IProductRepository Products { get; }
     IProductVariantRepository ProductVariants { get; }
-    IProductDetailRepository ProductDetails { get; }
+    /*IProductDetailRepository ProductDetails { get; }*/
     IProductPriceHistoryRepository PriceHistories{ get; }
     IProductAttributeRepository ProductAttributes { get; }
     

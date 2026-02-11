@@ -4,5 +4,6 @@ public enum ProductVariantStatus
 {
     Published,
     IsDeleted,
-    Draft
+    Draft,
+    Archived
 }

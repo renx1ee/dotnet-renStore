@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Variant;
+using RenStore.Catalog.Domain.Aggregates.VariantAttributes;
 using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class ProductAttributeConfiguration 
-    : IEntityTypeConfiguration<ProductAttribute>
+    : IEntityTypeConfiguration<VariantAttribute>
 {
-    public void Configure(EntityTypeBuilder<ProductAttribute> builder)
+    public void Configure(EntityTypeBuilder<VariantAttribute> builder)
     {
         builder
             .ToTable("product_attributes");

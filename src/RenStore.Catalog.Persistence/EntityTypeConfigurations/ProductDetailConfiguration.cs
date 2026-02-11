@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
@@ -69,10 +69,10 @@ public class ProductDetailConfiguration : IEntityTypeConfiguration<ProductDetail
             .HasOne(x => x.ProductVariant)
             .WithOne(x => x.ProductDetails)
             .HasForeignKey<ProductDetail>(x => x.ProductVariantId)
-            .HasConstraintName("product_variant_id");*/
+            .HasConstraintName("product_variant_id");#1#
 
         builder
             .Property(x => x.ProductVariantId)
             .HasColumnName("product_variant_id");
     }
-}
+}*/

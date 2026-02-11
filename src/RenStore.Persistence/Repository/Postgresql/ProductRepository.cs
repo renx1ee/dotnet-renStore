@@ -217,7 +217,7 @@ public class ProductRepository : IProductRepository
         const string variantSql = 
             @"
                 SELECT
-                    pv.""product_variant_id""      AS VariantId,
+                    pv.""product_variant_id""      AS StockId,
                     pv.""variant_name""            AS Key,
                     pv.""normalized_variant_name"" AS NormalizedName,
                     pv.""rating""                  AS Rating,

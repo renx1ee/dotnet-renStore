@@ -31,7 +31,7 @@ public class PublishService
             throw new DomainException("Variant must have details.");
         
         Raise(new VariantPublished(
-            VariantId: Id,
+            StockId: Id,
             OccurredAt: now));
     }*/
 }

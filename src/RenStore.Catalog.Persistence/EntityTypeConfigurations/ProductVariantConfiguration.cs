@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 
@@ -53,7 +53,7 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .Property(v => v.InStock)
             .HasColumnName("in_stock")
             .HasDefaultValue(0)
-            .IsRequired();*/
+            .IsRequired();#1#
         
         builder
             .Property(v => v.IsAvailable)
@@ -75,7 +75,7 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
         /*builder
             .HasOne(v => v.Product)
             .WithMany(p => p.ProductVariantIds)
-            .HasForeignKey(v => v.ProductId);*/
+            .HasForeignKey(v => v.ProductId);#1#
 
         builder
             .Property(v => v.ProductId)
@@ -84,7 +84,7 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
         /*builder
             .HasOne(v => v.Color)
             .WithMany(c => c.ProductVariantIds)
-            .HasForeignKey(v => v.ColorId);*/
+            .HasForeignKey(v => v.ColorId);#1#
         
         builder
             .Property(v => v.ColorId)
@@ -92,16 +92,16 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
 
         /*builder
             .HasOne(v => v.ProductDetails)
-            .WithOne(d => d.ProductVariant);*/
+            .WithOne(d => d.ProductVariant);#1#
         
         /*builder
             .HasMany(v => v.ProductAttributes)
             .WithOne(a => a.ProductVariant)
-            .HasForeignKey(a => a.ProductVariantId);*/
+            .HasForeignKey(a => a.ProductVariantId);#1#
         
         builder
             .HasMany(v => v.PriceHistories)
             .WithOne(p => p.ProductVariant)
             .HasForeignKey(v => v.ProductVariantId);
     }
-}
+}*/
