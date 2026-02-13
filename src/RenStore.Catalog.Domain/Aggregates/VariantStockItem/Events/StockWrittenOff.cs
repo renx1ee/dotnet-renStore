@@ -1,6 +1,6 @@
 using RenStore.Catalog.Domain.Enums;
 
-namespace RenStore.Catalog.Domain.Aggregates.StockItem.Events;
+namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
 
 /// <summary>
 /// Records a reduction in available inventory for a product variant.

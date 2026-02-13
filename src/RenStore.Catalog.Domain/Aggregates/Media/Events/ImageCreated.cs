@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Image;
+namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 /// <summary>
 /// Records the addition of a visual asset to a product variant.
@@ -19,7 +19,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Image;
 /// SortOrder determines display sequence (lower numbers appear first).
 /// Images are required before a variant can be published to the catalog.
 /// </remarks>
-public record VariantImageCreated(
+public record ImageCreated(
     DateTimeOffset OccurredAt,
     Guid ImageId,
     Guid VariantId,

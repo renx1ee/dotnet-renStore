@@ -1,11 +1,12 @@
 using RenStore.Catalog.Domain.Enums;
 
-namespace RenStore.Catalog.Domain.Aggregates.Variant;
+namespace RenStore.Catalog.Domain.Aggregates.VariantDetails;
 
 /// <summary>
 /// Represents a product Detail physical entity with lifecycle and invariants.
 /// </summary>
 internal class ProductDetail
+    : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     public Guid Id { get; private set; }
     public string Description { get; private set; } 
@@ -116,6 +117,14 @@ internal class ProductDetail
     {
         CountryOfManufactureId = countryOfManufactureId;
         UpdatedAt = now;
+    }
+    
+    protected override void Apply(object @event)
+    {
+        switch (@event)
+        {
+            
+        }
     }
 }
 

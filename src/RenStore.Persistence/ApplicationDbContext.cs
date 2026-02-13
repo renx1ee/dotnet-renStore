@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Domain.Aggregates.Attribute;
 using RenStore.Catalog.Domain.Aggregates.Category;
+using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Aggregates.VariantAttributes;

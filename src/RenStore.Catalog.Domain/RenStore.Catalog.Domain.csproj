@@ -7,10 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Aggregates\VariantDetails\" />
-      <Folder Include="Aggregates\VariantMedia\" />
       <Folder Include="Aggregates\VariantPriceHistory\" />
-      <Folder Include="Aggregates\VariantSizes\" />
       <Folder Include="Interfaces\" />
       <Folder Include="ReadModels\" />
     </ItemGroup>

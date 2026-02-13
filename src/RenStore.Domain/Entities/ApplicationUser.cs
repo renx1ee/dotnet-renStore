@@ -1,5 +1,5 @@
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using RenStore.Delivery.Domain.Entities;
 
 namespace RenStore.Domain.Entities;

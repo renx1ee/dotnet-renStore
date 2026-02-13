@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
 
-public record VariantAttributeValueUpdated(
+public record AttributeValueUpdated(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid AttributeId,

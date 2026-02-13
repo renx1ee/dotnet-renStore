@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
 /// <summary>
 /// Records the addition of a descriptive attribute to a product variant.
@@ -12,8 +12,9 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
 /// Attributes are used for filtering, comparison, and detailed product specifications.
 /// Keys and values are normalized and validated before event creation.
 /// </remarks>
-public record VariantAttributeCreated(
+public record AttributeCreated(
     DateTimeOffset OccurredAt,
     Guid VariantId,
+    Guid AttributeId,
     string Key,
     string Value);

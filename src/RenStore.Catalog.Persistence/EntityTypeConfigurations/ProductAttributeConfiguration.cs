@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Catalog.Domain.Aggregates.Attribute;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Aggregates.VariantAttributes;
 using RenStore.Catalog.Domain.Entities;
@@ -53,11 +54,11 @@ public class ProductAttributeConfiguration
             .HasColumnName("deleted_date")
             .IsRequired(false);
         
-        builder
+        /*builder
             .HasOne<ProductVariant>()
             .WithMany(x => x.ProductAttributes)
             .HasForeignKey(x => x.ProductVariantId)
-            .HasConstraintName("product_variant_id");
+            .HasConstraintName("product_variant_id");*/
 
         builder
             .Property(x => x.ProductVariantId)

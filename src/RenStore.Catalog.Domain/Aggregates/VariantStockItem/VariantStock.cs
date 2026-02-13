@@ -1,7 +1,8 @@
-using RenStore.Catalog.Domain.Aggregates.StockItem.Events;
+using RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
+using RenStore.Catalog.Domain.Aggregates.VariantStockItem.Rules;
 using RenStore.Catalog.Domain.Enums;
 
-namespace RenStore.Catalog.Domain.Aggregates.StockItem;
+namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem;
 
 /// <summary>
 /// Represents a variant stock physical entity with lifecycle and invariants.

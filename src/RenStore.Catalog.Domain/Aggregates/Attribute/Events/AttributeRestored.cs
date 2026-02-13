@@ -11,7 +11,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
 /// Restoration preserves the attribute's original data and business context.
 /// Used in scenarios like data correction, seasonal availability, or supplier changes.
 /// </remarks>
-public record VariantAttributeRestored(
+public record AttributeRestored(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid AttributeId);

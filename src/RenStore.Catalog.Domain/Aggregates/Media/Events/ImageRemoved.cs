@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Image;
+namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 /// <summary>
 /// Records the removal of an image from a product variant.
@@ -12,7 +12,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Image;
 /// If the removed image was designated as main, the main status should be reassigned.
 /// Removal may trigger cleanup of associated storage resources.
 /// </remarks>
-public record VariantImageRemoved(
+public record ImageRemoved(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid ImageId);

@@ -39,7 +39,6 @@ internal static class ProductImageRules
     /// Used during image upload and processing workflows.
     /// </remarks>
     internal static void CreateProductImageValidation(
-        Guid imageId,
         Guid productVariantId,
         string originalFileName,
         string storagePath,
@@ -48,7 +47,6 @@ internal static class ProductImageRules
         int weight, 
         int height)
     {
-        ImageIdValidate(imageId);
         ProductVariantIdValidate(productVariantId);
         OriginalFilenameValidate(originalFileName);
         StoragePathValidate(storagePath);

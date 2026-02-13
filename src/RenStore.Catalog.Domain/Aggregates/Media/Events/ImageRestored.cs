@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Image;
+namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 /// <summary>
 /// Records the restoration of a previously removed image to a product variant.
@@ -12,7 +12,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Image;
 /// Restoration preserves the image's original metadata and relationships.
 /// The image does not automatically regain main status upon restoration.
 /// </remarks>
-public record VariantImageRestored(
+public record ImageRestored(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid ImageId);

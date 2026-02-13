@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.StockItem.Events;
+namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
 
 /// <summary>
 /// Records an increase in available inventory for a product variant.

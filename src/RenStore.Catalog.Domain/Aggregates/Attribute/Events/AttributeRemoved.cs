@@ -11,7 +11,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
 /// Removal is typically a soft delete for audit trail preservation.
 /// Historical attributes may still be referenced in past orders or analytics.
 /// </remarks>
-public record VariantAttributeRemoved(
+public record AttributeRemoved(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid AttributeId);

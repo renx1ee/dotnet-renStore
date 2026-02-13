@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.Domain.DomainService;
 
-public class PublishService
+public class VariantPublishService
 {
     /// <summary>
     /// Publishes this variant, making it visible and available for purchase in the catalog.

@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.StockItem.Events;
+namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
 
 /// <summary>
 /// Represents a business transaction where customers purchased units of this product variant.

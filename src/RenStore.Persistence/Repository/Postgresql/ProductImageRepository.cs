@@ -1,6 +1,7 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;

@@ -9,12 +9,9 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 /// </summary>
 public class VariantSize
 {
-    private ProductVariant? _productVariant;
-    
     public Guid Id { get; private set; }
     public int InStock { get; private set; }
     public Size Size { get; private set; } // TODO:
-    public SizeSystem SizeSystem { get; private set; }
     public bool IsAvailable { get; private set; }
     public Guid ProductVariantId { get; private set; }
     public bool IsDeleted { get; private set; }
@@ -22,34 +19,8 @@ public class VariantSize
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
     
-    public static VariantSize Reconstitute(
-        Guid id,
-        Size size,
-        SizeSystem sizeSystem, // TODO:
-        int amount,
-        bool isAvailable,
-        Guid productClothId,
-        bool isDeleted,
-        DateTimeOffset createdAt,
-        DateTimeOffset? updatedAt,
-        DateTimeOffset? deletedAt)
-    {
-        return new VariantSize()
-        {
-            Id = id,
-            SizeSystem = sizeSystem,
-            Size = size,
-            InStock = amount,
-            IsAvailable = isAvailable,
-            ProductVariantId = productClothId,
-            IsDeleted = isDeleted,
-            CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
-            DeletedAt = deletedAt
-        };
-    }
-    
     internal static VariantSize Create(
+        Guid id,
         Size size,
         int inStock,
         Guid variantId,
@@ -57,6 +28,7 @@ public class VariantSize
     {
         return new VariantSize()
         {
+            Id = id,
             ProductVariantId = variantId,
             InStock = inStock,
             CreatedAt = now,
@@ -113,8 +85,37 @@ public class VariantSize
     
     internal void Restore(DateTimeOffset now)
     {
-        IsDeleted = true;
+        IsDeleted = false;
         UpdatedAt = now;
         DeletedAt = null;
     }
 }
+
+/*
+ public static VariantSize Reconstitute(
+       Guid id,
+       Size size,
+       SizeSystem sizeSystem, // TODO:
+       int amount,
+       bool isAvailable,
+       Guid productClothId,
+       bool isDeleted,
+       DateTimeOffset createdAt,
+       DateTimeOffset? updatedAt,
+       DateTimeOffset? deletedAt)
+   {
+       return new VariantSize()
+       {
+           Id = id,
+           SizeSystem = sizeSystem,
+           Size = size,
+           InStock = amount,
+           IsAvailable = isAvailable,
+           ProductVariantId = productClothId,
+           IsDeleted = isDeleted,
+           CreatedAt = createdAt,
+           UpdatedAt = updatedAt,
+           DeletedAt = deletedAt
+       };
+   }
+ */

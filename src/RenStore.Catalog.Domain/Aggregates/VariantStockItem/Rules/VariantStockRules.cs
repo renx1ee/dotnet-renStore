@@ -1,6 +1,6 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Aggregates.StockItem;
+namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem.Rules;
 
 internal static class VariantStockRules
 {
