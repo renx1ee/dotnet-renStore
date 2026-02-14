@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Attribute;
-using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Aggregates.VariantAttributes;
-using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 

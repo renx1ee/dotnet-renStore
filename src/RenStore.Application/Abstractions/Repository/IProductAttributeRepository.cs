@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Attribute;
+/*using RenStore.Catalog.Domain.Aggregates.Attribute;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Aggregates.VariantAttributes;
 using RenStore.Catalog.Domain.Entities;
@@ -71,4 +71,4 @@ public interface IProductAttributeRepository
     /// <returns>The product attribute entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product attribute is not found.</exception>
     Task<VariantAttribute?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-}
+}*/

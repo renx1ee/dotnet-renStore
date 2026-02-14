@@ -8,8 +8,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// </summary>
 /// <param name="OccurredAt">Timestamp when the size was added</param>
 /// <param name="VariantId">Identifier of the product variant</param>
-/// <param name="VariantSizeId">Unique identifier for this size option</param>
-/// <param name="InStock">Initial inventory quantity for this specific size</param>
+/// <param name="SizeId">Unique identifier for this size option</param>
 /// <param name="LetterSize">Alphanumeric size designation (e.g., "M", "10", "42")</param>
 /// <param name="SizeSystem">Measurement system (RU/US/EU)</param>
 /// <param name="SizeType">Category (Clothes/Shoes)</param>
@@ -20,9 +19,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// </remarks>
 public record VariantSizeCreated(
     DateTimeOffset OccurredAt,
+    Guid SizeId,
     Guid VariantId,
-    Guid VariantSizeId,
-    int InStock,
     LetterSize LetterSize,
     SizeSystem SizeSystem,
     SizeType SizeType);

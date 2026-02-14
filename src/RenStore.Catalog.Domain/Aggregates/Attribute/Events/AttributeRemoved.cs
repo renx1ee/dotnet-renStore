@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
 /// <summary>
 /// Records the removal of an attribute from a product variant.

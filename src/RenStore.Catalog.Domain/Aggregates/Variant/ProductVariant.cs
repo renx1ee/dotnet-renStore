@@ -1,11 +1,8 @@
 using RenStore.Catalog.Domain.Aggregates.Variant.Events;
-using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
-using RenStore.Catalog.Domain.Aggregates.Variant.Events.Details;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 using RenStore.Catalog.Domain.Aggregates.VariantDetails;
-using RenStore.Catalog.Domain.Aggregates.VariantSizes.Events;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ValueObjects;
@@ -20,7 +17,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 public class ProductVariant
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
-    
     private readonly List<ProductPriceHistory> _priceHistory = new(); // вынести в аггрегат
     private readonly List<VariantSize> _sizes = new();
     private readonly List<Guid> _imageIds = new();
@@ -67,6 +63,11 @@ public class ProductVariant
     /// Used to generate permanent links in the catalog and for search engine optimization.
     /// </summary>
     public string Url { get; private set; }
+    
+    /// <summary>
+    /// Image Unique Identifier //TODO:
+    /// </summary>
+    public Guid MainImageId { get; private set; }
     
     /// <summary>
     /// Measurement system used for sizing in this product variant.
@@ -137,7 +138,6 @@ public class ProductVariant
     /// <param name="colorId">The unique color identifier.</param>
     /// <param name="name">Display the name of this specific variant.
     /// Length must be between 25 and 500 characters after trimming.</param>
-    /// <param name="inStock">Available inventory quantity for this product variant.</param>
     /// <param name="sizeSystem">Measurement system used for sizing in this product variant.
     /// Determines which size chart applies and how sizes are displayed to customers.</param>
     /// <param name="sizeType">Category of sizing applicable to this product variant.</param>
@@ -155,7 +155,6 @@ public class ProductVariant
         Guid productId,
         int colorId,
         string name,
-        /*int inStock,*/
         SizeSystem sizeSystem,
         SizeType sizeType,
         string url)
@@ -178,7 +177,6 @@ public class ProductVariant
                 ProductId: productId,
                 ColorId: colorId,
                 Name: trimmedName,
-                /*InStock: inStock,*/
                 Url: trimmedUrl,
                 SizeSystem: sizeSystem,
                 SizeType: sizeType,
@@ -291,221 +289,21 @@ public class ProductVariant
     
     #endregion
 
-    #region Details
-
-    /// <summary>
-    /// Adds detailed technical and descriptive information to this product variant.
-    /// Includes manufacturing details, materials, care instructions, and product features.
-    /// </summary>
-    /// <param name="now">Timestamp for creation audit</param>
-    /// <param name="countryOfManufactureId">Country where the product was manufactured</param>
-    /// <param name="description">Full product description for customers</param>
-    /// <param name="modelFeatures">Key features and specifications of this model</param>
-    /// <param name="decorativeElements">Decorative or design elements</param>
-    /// <param name="equipment">Included accessories and packaging contents</param>
-    /// <param name="composition">Material composition and percentages</param>
-    /// <param name="caringOfThings">Care and maintenance instructions</param>
-    /// <param name="typeOfPackaging">Type of packaging (optional)</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Details already exist for this variant
-    /// - Required fields fail validation
-    /// - Country ID is invalid
-    /// </exception>
-    /// <remarks>
-    /// Details can only be added once per variant. Use UpdateDetails to modify existing information.
-    /// </remarks>
-    public void AddDetails(
+    public void SetMainImageId(
         DateTimeOffset now,
-        int countryOfManufactureId,
-        string description,
-        string modelFeatures,
-        string decorativeElements,
-        string equipment,
-        string composition,
-        string caringOfThings,
-        TypeOfPackaging? typeOfPackaging = null)
+        Guid imageId)
     {
-        EnsureNotDeleted();
+        if (imageId == Guid.Empty)
+            throw new DomainException("Main image ID cannot be guid empty.");
         
-        if (_details != null)
-            throw new DomainException("Product details already was created!");
-
-        ProductDetailRules.CountryOfManufactureValidate(countryOfManufactureId);
-        ProductDetailRules.ProductVariantIdValidate(Id);
-
-        var trimmedDescription              = ProductDetailRules.DescriptionNormalizedAndValidate(description);
-        var trimmedComposition        = ProductDetailRules.CompositionNormalizedAndValidate(composition);
-        var trimmedModelFeatures      = ProductDetailRules.ModelFeaturesNormalizedAndValidate(modelFeatures);
-        var trimmedDecorativeElements = ProductDetailRules.DecorativeElementsNormalizedAndValidate(decorativeElements);
-        var trimmedEquipment          = ProductDetailRules.EquipmentNormalizedAndValidate(equipment);
-        var trimmedCaringOfThings     = ProductDetailRules.CaringOfThingsNormalizedAndValidate(caringOfThings);
-
-        var detailId = Guid.NewGuid();
-        
-        Raise(new VariantDetailsCreated(
-            OccurredAt: now,
-            Id: detailId,
-            VariantId: Id,
-            CountryOfManufactureId: countryOfManufactureId,
-            ModelFeatures: trimmedModelFeatures,
-            DecorativeElements: trimmedDecorativeElements,
-            Equipment: trimmedEquipment,
-            Description: trimmedDescription,
-            Composition: trimmedComposition,
-            CaringOfThings: trimmedCaringOfThings,
-            TypeOfPackaging: typeOfPackaging ?? null));
-    }
-
-    
-    public void ChangeDetailDescription(
-        DateTimeOffset now,
-        string description)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        var trimmedDescription = ProductDetailRules.DescriptionNormalizedAndValidate(description);
-        
-        if(_details.Description == trimmedDescription) return;
-        
-        Raise(new VariantDetailsDescriptionUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            Description: trimmedDescription));
-    }
-
-    public void ChangeDetailModelFeatures(
-        DateTimeOffset now,
-        string modelFeatures)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        var trimmedModelFeatures = ProductDetailRules.ModelFeaturesNormalizedAndValidate(modelFeatures);
-        
-        if(_details.ModelFeatures == trimmedModelFeatures) return;
-        
-        Raise(new VariantDetailsModelFeaturesUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            ModelFeatures: trimmedModelFeatures));
-    }
-
-    public void ChangeDetailDecorativeElements(
-        DateTimeOffset now,
-        string decorativeElements)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        var trimmedDecorativeElements = ProductDetailRules.DecorativeElementsNormalizedAndValidate(decorativeElements);
-        
-        if(string.IsNullOrEmpty(trimmedDecorativeElements))
-            throw new DomainException("Product Detail decorative elements cannot be null or whitespace.");
-        
-        if(_details.DecorativeElements == trimmedDecorativeElements) return;
-        
-        Raise(new VariantDetailsDecorativeElementsUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            DecorativeElements: trimmedDecorativeElements));
-    }
-
-    public void ChangeDetailEquipment(
-        DateTimeOffset now,
-        string equipment)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        var trimmedEquipment = ProductDetailRules.EquipmentNormalizedAndValidate(equipment);
-        
-        if (string.IsNullOrEmpty(trimmedEquipment))
-            throw new DomainException("Product Detail equipment cannot be null or whitespace.");
-        
-        if(_details.Equipment == trimmedEquipment) return;
-        
-        Raise(new VariantDetailsEquipmentUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            Equipment: trimmedEquipment));
-    }
-
-    public void ChangeDetailComposition(
-        DateTimeOffset now,
-        string composition)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        var trimmedComposition = ProductDetailRules.CompositionNormalizedAndValidate(composition);
-        
-        if (string.IsNullOrEmpty(composition))
-            throw new DomainException("Product Detail composition cannot be null or whitespace.");
-        
-        if(_details.Composition == trimmedComposition) return;
-        
-        Raise(new VariantDetailsCompositionUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            Composition: trimmedComposition));
-    }
-
-    public void ChangeDetailCaringOfThings(
-        DateTimeOffset now,
-        string caringOfThings)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        var trimmedCaringOfThings = ProductDetailRules.CaringOfThingsNormalizedAndValidate(caringOfThings);
-        
-        if (string.IsNullOrEmpty(caringOfThings))
-            throw new DomainException("Product Detail Caring Of Things cannot be null or whitespace.");
-        
-        if(_details.CaringOfThings == trimmedCaringOfThings) return;
-        
-        Raise(new VariantDetailsCaringOfThingsUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            CaringOfThings: trimmedCaringOfThings));
-    }
-
-    public void ChangeDetailTypeOfPacking(
-        DateTimeOffset now,
-        TypeOfPackaging typeOfPackaging)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        Raise(new VariantDetailsTypeOfPackingUpdated(
-            OccurredAt: now,
-            VariantId: Id,
-            TypeOfPackaging: typeOfPackaging));
-    }
-
-    public void ChangeCountryOfManufactureId(
-        DateTimeOffset now,
-        int countryOfManufactureId)
-    {
-        EnsureNotDeleted();
-        EnsureNotEmptyDetails();
-        
-        if(countryOfManufactureId <= 0)
-            throw new DomainException("Product Detail country of manufacture ID must be more then 0.");
-        
-        if(_details.CountryOfManufactureId == countryOfManufactureId) 
+        if(imageId == MainImageId) 
             return;
         
-        Raise(new VariantDetailsCountryOfManufactureIdUpdated(
+        Raise(new MainImageIdSet(
             OccurredAt: now,
             VariantId: Id,
-            CountryOfManufactureId: countryOfManufactureId));
+            ImageId: imageId));
     }
-    
-    #endregion
 
     #region size
 
@@ -514,7 +312,6 @@ public class ProductVariant
     /// Each variant can have multiple size options with independent stock levels.
     /// </summary>
     /// <param name="letterSize">Alphanumeric size designation (e.g., "M", "10", "42")</param>
-    /// <param name="inStock">Available quantity for this specific size</param>
     /// <param name="now">Timestamp for creation audit</param>
     /// <exception cref="DomainException">
     /// Thrown when:
@@ -529,97 +326,30 @@ public class ProductVariant
     /// </remarks>
     public void AddSize(
         LetterSize letterSize,
-        int inStock,
         DateTimeOffset now)
     {
         EnsureNotDeleted();
-        
-        VariantSizeRules.InStockValidate(inStock);
 
         if (_sizes.Any(x => x.Size.LetterSize == letterSize))
             throw new DomainException("The size already exits in the system.");
-
+        
+        //TODO:  нужно убедиться, что SizeType согласован с категорией продукта,
+        // иначе можно добавить несовместимый размер.
+        
         Size.Validate(
             size: letterSize, 
             type: SizeType, 
-            system: SizeSystem);
+            system: SizeSystem); 
         
-        var variantSizeId = Guid.NewGuid();
+        var sizeId = Guid.NewGuid();
         
         Raise(new VariantSizeCreated(
             OccurredAt: now,
-            VariantSizeId: variantSizeId,
+            SizeId: sizeId,
             VariantId: Id,
-            InStock: inStock,
             LetterSize: letterSize,
             SizeSystem: SizeSystem,
             SizeType: SizeType));
-    }
-    
-    public void SetSizeStock(
-        DateTimeOffset now,
-        Guid sizeId,
-        int newStock)
-    {
-        EnsureNotDeleted();
-
-        var size = GetSize(sizeId);
-        SizeEnsureNotDeleted(size);
-        
-        VariantSizeRules.InStockValidate(newStock);
-        
-        if(size.InStock == newStock) return;
-        
-        Raise(new VariantSizeStockSetted(
-            OccurredAt: now,
-            VariantId: Id,
-            VariantSizeId: sizeId,
-            NewStock: newStock));
-    }
-    
-    public void AddToSizeStock(
-        DateTimeOffset now,
-        Guid sizeId,
-        int count)
-    {
-        EnsureNotDeleted();
-
-        var size = GetSize(sizeId);
-        SizeEnsureNotDeleted(size);
-        
-        VariantSizeRules.ChangeCountValidate(count);
-
-        var newStock = size.InStock + count;
-        
-        VariantSizeRules.InStockValidate(newStock);
-        
-        Raise(new VariantSizeStockAdded(
-            OccurredAt: now,
-            VariantId: Id,
-            VariantSizeId: sizeId,
-            Count: count));
-    }
-    
-    public void RemoveFromSizeStock(
-        DateTimeOffset now,
-        Guid sizeId,
-        int count)
-    {
-        EnsureNotDeleted();
-
-        var size = GetSize(sizeId);
-        SizeEnsureNotDeleted(size);
-        
-        VariantSizeRules.ChangeCountValidate(count);
-        
-        if(count > size.InStock)
-            throw new DomainException("The count of sells exceed available count.");
-        
-        Raise(new VariantSizeRemovedFromStock(
-            OccurredAt: now,
-            VariantId: Id,
-            VariantSizeId: sizeId,
-            Count: count));
     }
     
     /// <summary>
@@ -627,7 +357,7 @@ public class ProductVariant
     /// Used when a size is discontinued, out of stock permanently, or no longer manufactured.
     /// </summary>
     /// <param name="now">Timestamp for deletion audit</param>
-    /// <param name="variantSizeId">Identifier of the size option to remove</param>
+    /// <param name="sizeId">Identifier of the size option to remove</param>
     /// <exception cref="DomainException">
     /// Thrown when:
     /// - Size option with specified ID is not found
@@ -640,23 +370,17 @@ public class ProductVariant
     /// </remarks>
     public void DeleteSize(
         DateTimeOffset now,
-        Guid variantSizeId)
+        Guid sizeId)
     {
         EnsureNotDeleted();
-        
-        var existingSize = _sizes
-            .FirstOrDefault(x => x.Id == variantSizeId);
 
-        if (existingSize == null)
-            throw new DomainException("The letterSize is not found.");
-        
-        if(existingSize.IsDeleted)
-            throw new DomainException("Cannot dele already deleted letterSize.");
+        var size = GetSize(sizeId);
+        SizeEnsureNotDeleted(size);
         
         Raise(new VariantSizeRemoved(
             OccurredAt: now,
             VariantId: Id,
-            VariantSizeId: variantSizeId));
+            VariantSizeId: sizeId));
     }
     
     /// <summary>
@@ -664,7 +388,7 @@ public class ProductVariant
     /// Reverses the effect of <see cref="DeleteSize"/> while preserving the size's configuration.
     /// </summary>
     /// <param name="now">Timestamp for restoration audit</param>
-    /// <param name="variantSizeId">Identifier of the size option to restore</param>
+    /// <param name="sizeId">Identifier of the size option to restore</param>
     /// <exception cref="DomainException">
     /// Thrown when:
     /// - Size option with specified ID is not found
@@ -677,119 +401,17 @@ public class ProductVariant
     /// </remarks>
     public void RestoreSize(
         DateTimeOffset now,
-        Guid variantSizeId)
+        Guid sizeId)
     {
         EnsureNotDeleted();
         
-        var existingSize = _sizes.FirstOrDefault(x => x.Id == variantSizeId);
-
-        if (existingSize == null)
-            throw new DomainException("Product size not exists.");
-        
-        if (!existingSize.IsDeleted)
-            throw new DomainException("The size was not deleted.");
+        var size = GetSize(sizeId);
+        SizeEnsureNotDeleted(size);
         
         Raise(new VariantSizeRestored(
             OccurredAt: now,
             VariantId: Id,
-            VariantSizeId: variantSizeId));
-    }
-
-    #endregion
-
-    #region Attribute
-
-    public void AddAttributeId(
-        DateTimeOffset now,
-        Guid attributeId)
-    {
-        EnsureNotDeleted();
-        
-        ProductVariantRules.MaxAttributesCountValidation(_attributeIds.Count + 1);
-        
-        if (_attributeIds.Contains(attributeId))
-            throw new DomainException("Attribute already exists.");
-        
-        Raise(new VariantAttributeAdded(
-            OccurredAt: now,
-            VariantId: Id,
-            AttributeId: attributeId));
-    }
-    
-    public void RemoveAttributeId(
-        DateTimeOffset now,
-        Guid attributeId)
-    {
-        EnsureNotDeleted();
-
-        if (!_attributeIds.Contains(attributeId))
-            throw new DomainException("Attribute does not exist.");
-        
-        Raise(new VariantAttributeRemoved(
-            OccurredAt: now,
-            VariantId: Id,
-            AttributeId: attributeId));
-    }
-
-    #endregion
-
-    #region Image
-
-    public void AddImageId(
-        DateTimeOffset now,
-        Guid imageId)
-    {
-        EnsureNotDeleted();
-        
-        ProductVariantRules.MaxImagesCountValidation(_imageIds.Count + 1);
-
-        if (_imageIds.Contains(imageId))
-            throw new DomainException("Image already exists.");
-        
-        Raise(new VariantImageAdded(
-            OccurredAt: now,
-            VariantId: Id,
-            ImageId: imageId));
-    }
-    
-    public void MarkImageAsMain(
-        DateTimeOffset now,
-        Guid imageId)
-    {
-        /*EnsureNotDeleted();
-
-        var currentMain = _imageIds.FirstOrDefault(x => x.IsMain);
-
-        if(currentMain?.Id == imageId)
-            return;
-
-        if (currentMain != null)
-        {
-            Raise(new ImageMainUnset(
-                OccurredAt: now,
-                VariantId: Id,
-                ImageId: currentMain.Id));
-        }
-
-        Raise(new ImageMainSet(
-            OccurredAt: now,
-            VariantId: Id,
-            ImageId: imageId));*/
-    }
-    
-    public void RemoveImageId(
-        DateTimeOffset now,
-        Guid imageId)
-    {
-        EnsureNotDeleted();
-
-        if (!_imageIds.Contains(imageId))
-            throw new DomainException("Image does not exist.");
-        
-        Raise(new VariantImageRemoved(
-            OccurredAt: now,
-            VariantId: Id,
-            ImageId: imageId));
+            VariantSizeId: sizeId));
     }
 
     #endregion
@@ -805,7 +427,6 @@ public class ProductVariant
                 ColorId = e.ColorId;
                 Name = e.Name;
                 NormalizedName = e.Name.ToUpperInvariant();
-                /*_stock = VariantStock.Create(e.InStock);*/ // TODO:
                 Url = e.Url;
                 SizeSystem = e.SizeSystem;
                 SizeType = e.SizeType;
@@ -813,52 +434,20 @@ public class ProductVariant
                 Rating = Rating.Empty();
                 break;
             
-            case VariantDetailsCreated e:
-                _details = ProductDetail.Create(
-                    id: e.Id,
-                    now: e.OccurredAt,
-                    countryOfManufactureId: e.CountryOfManufactureId,
-                    productVariantId: e.VariantId,
-                    description: e.Description,
-                    composition: e.Composition,
-                    caringOfThings: e.CaringOfThings,
-                    typeOfPackaging: e.TypeOfPackaging, 
-                    modelFeatures: e.ModelFeatures, 
-                    decorativeElements: e.DecorativeElements, 
-                    equipment: e.Equipment);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
             case VariantSizeCreated e:
                 _sizes.Add(VariantSize.Create(
-                    id: e.VariantSizeId,
+                    id: e.SizeId,
                     now: e.OccurredAt,
                     size: Size.Create(
                         size: e.LetterSize, 
                         type: e.SizeType, 
-                        system: e.SizeSystem),
-                    inStock: e.InStock,
+                        system: e.SizeSystem),// TODO:
                     variantId: e.VariantId));
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantAttributeAdded e:
-                _attributeIds.Add(e.AttributeId);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantImageAdded e:
-                _imageIds.Add(e.ImageId);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantAttributeRemoved e:
-                _attributeIds.Remove(e.AttributeId);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantPublished e:
-                Status = ProductVariantStatus.Published;
+            case MainImageIdSet e:
+                MainImageId = e.ImageId;
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -875,95 +464,6 @@ public class ProductVariant
             
             case VariantAverageRatingUpdated e:
                 Rating = Rating.Add(e.Score);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantImageMainSet e:
-                // TODO:
-                break;
-            
-            case VariantDetailsCaringOfThingsUpdated e:
-                _details.ChangeCaringOfThings(
-                    now: e.OccurredAt,
-                    caringOfThings: e.CaringOfThings);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsCompositionUpdated e:
-                _details.ChangeComposition(
-                    now: e.OccurredAt,
-                    composition: e.Composition);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsCountryOfManufactureIdUpdated e:
-                _details.ChangeCountryOfManufactureId(
-                    now: e.OccurredAt,
-                    countryOfManufactureId: e.CountryOfManufactureId);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsDecorativeElementsUpdated e:
-                _details.ChangeDecorativeElements(
-                    now: e.OccurredAt,
-                    decorativeElements: e.DecorativeElements);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsDescriptionUpdated e:
-                _details.ChangeDescription(
-                    now: e.OccurredAt,
-                    description: e.Description);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsEquipmentUpdated e:
-                _details.ChangeEquipment(
-                    now: e.OccurredAt,
-                    equipment: e.Equipment);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsModelFeaturesUpdated e:
-                _details.ChangeModelFeatures(
-                    now: e.OccurredAt,
-                    modelFeatures: e.ModelFeatures);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantDetailsTypeOfPackingUpdated e:
-                _details.ChangeTypeOfPacking(
-                    now: e.OccurredAt,
-                    typeOfPackaging: e.TypeOfPackaging);
-                    UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantSizeStockSetted e:
-                _sizes.Single(x => x.Id == e.VariantSizeId)
-                    .SetStock(
-                        now: e.OccurredAt,
-                        newStock: e.NewStock);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantSizeStockAdded e:
-                _sizes.Single(x => x.Id == e.VariantSizeId)
-                    .AddToStock(
-                        now: e.OccurredAt,
-                        count: e.Count);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantSizeRemovedFromStock e:
-                _sizes.Single(x => x.Id == e.VariantSizeId)
-                    .RemoveFromStock(
-                        now: e.OccurredAt,
-                        count: e.Count);
-                UpdatedAt = e.OccurredAt;
-                break;
-            
-            case VariantImageRemoved e:
-                _imageIds.Remove(e.ImageId);
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -1020,16 +520,6 @@ public class ProductVariant
 
         return size;
     }
-    
-    /// <summary>
-    /// Ensures the variant details is not empty before performing operations.
-    /// </summary>
-    /// <exception cref="DomainException">Thrown when details is deleted</exception>
-    private void EnsureNotEmptyDetails()
-    {
-        if (_details == null)
-            throw new DomainException("Cannot change empty details");
-    }
 }
 
 
@@ -1041,9 +531,6 @@ public class ProductVariant
 // TODO: создать коллекцию с IDs аттрибутов, и сделать проверку на макс колличество аттрибутов
 //  if (_attributeIds.Count >= MAX_ATTRIBUTES)
 //  ProductAttributeRules.MaxAttributesCountValidation(_attributes.Count);
-
-
-
 
 // TODO:
 //  throw new DomainException("Maximum number of attributes reached.");
@@ -1062,3 +549,10 @@ public class ProductVariant
 //  - либо запретить изменение
 //  - либо делать mass migration event (VariantSizeSystemChanged) с пересозданием размеров
 //  добавить isAvailable в продажи и тд
+
+// TODO:
+// if (variantSizeRepository.ExistsByVariantId(variantId))
+// throw new DomainException("Size already exists");
+// Уникальный индекс в БД (практичный)
+// UNIQUE (VariantId)
+// UNIQUE (VariantId, LetterSize)

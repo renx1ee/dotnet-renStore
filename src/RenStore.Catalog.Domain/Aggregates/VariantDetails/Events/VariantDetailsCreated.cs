@@ -1,6 +1,6 @@
 using RenStore.Catalog.Domain.Enums;
 
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Details;
+namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 
 /// <summary>
 /// Records the addition of detailed technical and descriptive information to a product variant.

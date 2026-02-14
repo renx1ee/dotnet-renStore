@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Details;
+namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 
 public record VariantDetailsModelFeaturesUpdated(
     DateTimeOffset OccurredAt,

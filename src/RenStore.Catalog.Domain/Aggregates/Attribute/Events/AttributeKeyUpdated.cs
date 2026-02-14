@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
 public record AttributeKeyUpdated(
     DateTimeOffset OccurredAt,

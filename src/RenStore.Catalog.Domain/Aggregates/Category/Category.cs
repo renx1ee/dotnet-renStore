@@ -1,4 +1,3 @@
-using RenStore.Catalog.Domain.Entities;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Category;

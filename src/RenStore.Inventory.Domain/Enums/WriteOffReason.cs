@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Enums;
+namespace RenStore.Inventory.Domain.Enums;
 
 public enum WriteOffReason
 {

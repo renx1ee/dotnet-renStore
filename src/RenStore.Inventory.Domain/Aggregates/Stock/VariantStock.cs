@@ -1,9 +1,9 @@
-using RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
-using RenStore.Catalog.Domain.Aggregates.VariantStockItem.Rules;
-using RenStore.Catalog.Domain.Enums;
+using RenStore.Inventory.Domain.Aggregates.Stock.Events;
+using RenStore.Inventory.Domain.Aggregates.Stock.Rules;
+using RenStore.Inventory.Domain.Enums;
 
-namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem;
-
+namespace RenStore.Inventory.Domain.Aggregates.Stock;
+// TODO: unique index в БД на VariantId: unique index в БД на VariantId
 /// <summary>
 /// Represents a variant stock physical entity with lifecycle and invariants.
 /// </summary>
@@ -40,9 +40,9 @@ public sealed class VariantStock
     public DateTimeOffset? UpdatedAt { get; private set; }
     
     /// <summary>
-    /// Unique identifier of the product variant.
+    /// Unique identifier of the variant size.
     /// </summary>
-    public Guid VariantId { get; private set; }
+    public Guid SizeId { get; private set; }
     
     private VariantStock() { }
 
@@ -58,12 +58,11 @@ public sealed class VariantStock
         VariantStockRules.ProductVariantIdValidate(variantId);
 
         var stockId = Guid.NewGuid();
-        
         var variant = new VariantStock();
         
         variant.Raise(new StockCreated(
             OccurredAt: now,
-            VariantId: variantId,
+            SizeId: variantId,
             StockId: stockId,
             InitialStock: initialStock));
 
@@ -74,6 +73,8 @@ public sealed class VariantStock
         DateTimeOffset now,
         int count)
     {
+        // TODO: разобраться с валидацией
+        VariantStockRules.InStockValidate(count);
         VariantStockRules.AddToStockValidation(count);
 
         Raise(new StockAdded(
@@ -87,7 +88,9 @@ public sealed class VariantStock
         WriteOffReason reason,
         int count)
     {
+        // TODO: разобраться с валидацией
         VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
+        VariantStockRules.ChangeCountValidate(count);
 
         Raise(new StockWrittenOff(
             OccurredAt: now,
@@ -100,7 +103,9 @@ public sealed class VariantStock
         DateTimeOffset now,
         int count)
     {
+        // TODO: разобраться с валидацией
         VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
+        VariantStockRules.ChangeCountValidate(count);
         
         Raise(new StockSold(
             OccurredAt: now,
@@ -112,12 +117,32 @@ public sealed class VariantStock
         int count,
         DateTimeOffset now)
     {
+        // TODO: разобраться с валидацией
         VariantStockRules.ReturnSoldValidation(count, Sales);
+        VariantStockRules.ChangeCountValidate(count);
         
         Raise(new StockSaleReturned(
             OccurredAt: now,
             StockId: Id,
             Count: count));
+    }
+    
+    public void SetStock(
+        DateTimeOffset now,
+        Guid sizeId,
+        int newStock)
+    {
+        // TODO: разобраться с валидацией
+        VariantStockRules.InStockValidate(newStock);
+        VariantStockRules.ChangeCountValidate(newStock);
+        
+        if(InStock == newStock) return;
+        
+        Raise(new StockSet(
+            OccurredAt: now,
+            SizeId: Id,
+            VariantSizeId: sizeId,
+            NewStock: newStock));
     }
     
     protected override void Apply(object @event)
@@ -127,7 +152,7 @@ public sealed class VariantStock
             case StockCreated e:
                 Id = e.StockId;
                 CreatedAt = e.OccurredAt;
-                VariantId = e.VariantId;
+                SizeId = e.SizeId;
                 InStock = e.InitialStock;
                 Sales = 0;
                 break;
@@ -153,7 +178,11 @@ public sealed class VariantStock
                 Sales -= e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
+            
+            case StockSet e:
+                InStock = e.NewStock;
+                UpdatedAt = e.OccurredAt;
+                break;
         }
     }
 }
-// TODO: unique index в БД на VariantId: unique index в БД на VariantId

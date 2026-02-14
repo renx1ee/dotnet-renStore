@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
+namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
 public record StockSaleReturned(
     DateTimeOffset OccurredAt,

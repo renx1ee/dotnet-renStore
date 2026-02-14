@@ -370,13 +370,13 @@ public class Product
                 break;
             
             case ProductVariantReferenceCreated e:
-                UpdatedAt = e.OccurredAt;
                 _productVariantIds.Add(e.ProductVariantId);
+                UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductVariantReferenceRemoved e:
-                UpdatedAt = e.OccurredAt;
                 _productVariantIds.Remove(e.ProductVariantId);
+                UpdatedAt = e.OccurredAt;
                 break;
         }
     }

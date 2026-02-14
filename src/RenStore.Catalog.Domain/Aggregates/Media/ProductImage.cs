@@ -129,13 +129,15 @@ public class ProductImage
             FileSizeBytes: fileSizeBytes));
     }
     
-    public void Delete(DateTimeOffset now)
+    public void Delete(
+        DateTimeOffset now,
+        Guid variantId)
     {
         EnsureNotDeleted();
         
         Raise(new ImageRemoved(
             OccurredAt: now,
-            VariantId: Id,
+            VariantId: variantId,
             ImageId: Id));
     }
 

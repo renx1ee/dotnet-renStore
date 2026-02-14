@@ -1,4 +1,4 @@
-using Dapper;
+/*using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using RenStore.Catalog.Domain.Aggregates.Attribute;
@@ -153,4 +153,4 @@ public class ProductAttributeRepository : IProductAttributeRepository
         return await this.FindByIdAsync(id, cancellationToken)
             ?? throw new NotFoundException(typeof(VariantAttribute), id);
     }
-}
+}*/

@@ -1,4 +1,4 @@
-using RenStore.Domain.Repository;
+/*using RenStore.Domain.Repository;
 
 namespace RenStore.Application.UnitOfWork;
 
@@ -6,7 +6,7 @@ public interface IUnitOfWork : IDisposable
 {
     IProductRepository Products { get; }
     IProductVariantRepository ProductVariants { get; }
-    /*IProductDetailRepository ProductDetails { get; }*/
+    /*IProductDetailRepository ProductDetails { get; }#1#
     IProductPriceHistoryRepository PriceHistories{ get; }
     IProductAttributeRepository ProductAttributes { get; }
     
@@ -14,4 +14,4 @@ public interface IUnitOfWork : IDisposable
     Task BeginTransactionAsync(CancellationToken calcellationToken);
     Task CommitAsync(CancellationToken calcellationToken);
     Task RollbackAsync(CancellationToken calcellationToken);
-}
+}*/

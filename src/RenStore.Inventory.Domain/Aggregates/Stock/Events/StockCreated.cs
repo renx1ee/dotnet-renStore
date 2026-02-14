@@ -1,7 +1,7 @@
-namespace RenStore.Catalog.Domain.Aggregates.VariantStockItem.Events;
+namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
 public record StockCreated(
     DateTimeOffset OccurredAt,
     Guid StockId,
-    Guid VariantId,
+    Guid SizeId,
     int InitialStock);

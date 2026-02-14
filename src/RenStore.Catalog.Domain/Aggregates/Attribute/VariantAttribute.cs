@@ -1,6 +1,5 @@
 using RenStore.Catalog.Domain.Aggregates.Attribute.Events;
-using RenStore.Catalog.Domain.Aggregates.VariantAttributes.Events;
-using RenStore.Catalog.Domain.Aggregates.VariantAttributes.Rules;
+using RenStore.Catalog.Domain.Aggregates.Attribute.Rules;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Attribute;
@@ -80,8 +79,9 @@ public class VariantAttribute
         return attribute;
     }
     
-    public void ChangeAttributeKey(
+    public void ChangeKey(
         DateTimeOffset now,
+        Guid variantId,
         Guid attributeId,
         string key)
     {
@@ -94,13 +94,14 @@ public class VariantAttribute
         
         Raise(new AttributeKeyUpdated(
             OccurredAt: now,
-            VariantId: Id,
+            VariantId: variantId,
             AttributeId: attributeId,
             Key: trimmedKey));
     }
     
-    public void ChangeAttributeValue(
+    public void ChangeValue(
         DateTimeOffset now,
+        Guid variantId,
         Guid attributeId,
         string value)
     {
@@ -113,13 +114,14 @@ public class VariantAttribute
         
         Raise(new AttributeValueUpdated(
             OccurredAt: now,
-            VariantId: Id,
+            VariantId: variantId,
             AttributeId: attributeId,
             Value: trimmedValue));
     }
     
-    public void DeleteAttribute(
+    public void Delete(
         DateTimeOffset now,
+        Guid variantId,
         Guid attributeId)
     {
         if (IsDeleted)
@@ -127,20 +129,21 @@ public class VariantAttribute
         
         Raise(new AttributeRemoved(
             OccurredAt: now,
-            VariantId: Id,
+            VariantId: variantId,
             AttributeId: attributeId));
     }
     
-    public void RestoreAttribute(
+    public void Restore(
         DateTimeOffset now,
+        Guid variantId,
         Guid attributeId)
     {
-        if (IsDeleted)
+        if (!IsDeleted)
             throw new DomainException("Attribute wasn't deleted.");
         
         Raise(new AttributeRestored(
             OccurredAt: now,
-            VariantId: Id,
+            VariantId: variantId,
             AttributeId: attributeId));
     }
     

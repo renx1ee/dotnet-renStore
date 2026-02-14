@@ -4,7 +4,6 @@ using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Aggregates.VariantAttributes;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Domain.Entities;
