@@ -7,7 +7,6 @@ public class ShoppingCartEntity
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser? User { get; set; }
     public IEnumerable<ShoppingCartItemEntity>? Items { get; set; }
 }
 

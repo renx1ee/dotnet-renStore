@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RenStore.Application\RenStore.Application.csproj" />
+    <ProjectReference Include="..\RenStore.Identity.Domain\RenStore.Identity.Domain.csproj" />
     <ProjectReference Include="..\RenStore.Persistence\RenStore.Persistence.csproj" />
   </ItemGroup>
 

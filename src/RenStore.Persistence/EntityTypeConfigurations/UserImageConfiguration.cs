@@ -61,11 +61,6 @@ public class UserImageConfiguration : IEntityTypeConfiguration<UserImageEntity>
             .IsRequired();
 
         builder
-            .HasOne(x => x.User)
-            .WithMany(x => x.Images)
-            .HasForeignKey(x => x.UserId);
-
-        builder
             .Property(x => x.UserId)
             .HasColumnName("user_id");
     }

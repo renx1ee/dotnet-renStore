@@ -1,3 +1,4 @@
+/*
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RenStore.Domain.Entities;
@@ -86,7 +87,7 @@ public class UserService : ControllerBase
 
         await httpContextAccessor.HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
-            claimsPrincipal);*/
+            claimsPrincipal);#1#
     }
 
     public async Task Logout()
@@ -156,3 +157,4 @@ public class UserService : ControllerBase
         return false;
     }
 }
+*/

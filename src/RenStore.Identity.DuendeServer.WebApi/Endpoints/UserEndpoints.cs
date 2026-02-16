@@ -1,4 +1,4 @@
-using Duende.IdentityServer.Extensions;
+/*using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Identity;
 using RenStore.Domain.Entities;
 using RenStore.Identity.DuendeServer.WebAPI.DTOs;
@@ -177,4 +177,4 @@ public static class UserEndpoints
     {
         return Results.Ok();
     }
-}
+}*/

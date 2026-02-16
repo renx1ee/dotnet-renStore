@@ -17,5 +17,4 @@ public class ReviewComplainEntity
     public Guid ReviewId { get; set; }
     public ReviewEntity? Review { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser? User { get; set; }
 }

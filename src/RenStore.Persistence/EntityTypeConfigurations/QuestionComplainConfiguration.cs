@@ -74,11 +74,6 @@ public class QuestionComplainConfiguration : IEntityTypeConfiguration<QuestionCo
             .IsRequired();
 
         builder
-            .HasOne(x => x.User)
-            .WithMany(x => x.QuestionComplains)
-            .HasForeignKey(x => x.UserId);
-
-        builder
             .Property(x => x.UserId)
             .HasColumnName("user_id")
             .IsRequired();

@@ -1,10 +1,8 @@
 using RenStore.Identity.DuendeServer.WebAPI.Data.IdentityConfigurations;
 using RenStore.Identity.DuendeServer.WebAPI.Service;
 using RenStore.Identity.DuendeServer.WebAPI.Data;
-using RenStore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RenStore.Identity.DuendeServer.WebAPI.Endpoints;
 using RenStore.Identity.DuendeServer.WebAPI.Extensions;
 using RenStore.Identity.DuendeServer.WebAPI.Senders;
 using RenStore.Identity.DuendeServer.WebAPI.Services;
@@ -20,11 +18,11 @@ builder.Services.AddDbContext<AuthDbContext>(optoins =>
 
 builder.Services.AddApiAuthentication();
 
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+/*builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<AuthDbContext>()
     .AddSignInManager<SignInManager<ApplicationUser>>()
     .AddRoleManager<RoleManager<ApplicationRole>>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders();*/
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -55,7 +53,7 @@ builder.Services.AddIdentityServer()
     .AddDeveloperSigningCredential();
 
 builder.Services.AddScoped<JwtProvider>();
-builder.Services.AddScoped<UserService>();
+/*builder.Services.AddScoped<UserService>();*/
 builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
 builder.Services.AddScoped<ICacheSender, CacheSender>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -84,7 +82,7 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
     var roles = new[] { "AuthUser", "Admin", "Manager" };
@@ -101,7 +99,7 @@ using (var scope = app.Services.CreateScope())
                     });
         }
     }
-}
+}*/
 
 using (var scope = app.Services.CreateScope())
 {
@@ -131,6 +129,6 @@ app.UseSwaggerUI(config =>
     config.SwaggerEndpoint("swagger/v1/swagger.json", "Shop API");
 });
 
-app.MapUserEndpoints();
+/*app.MapUserEndpoints();*/
 
 app.Run();

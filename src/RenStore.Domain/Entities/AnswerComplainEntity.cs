@@ -17,5 +17,5 @@ public class AnswerComplainEntity
     public Guid ProductAnswerId { get; set; }
     /*public ProductAnswerEntity? ProductAnswer { get; set; }*/
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser? User { get; set; }
+    /*public ApplicationUser? User { get; set; }*/
 }

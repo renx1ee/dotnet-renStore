@@ -68,11 +68,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
             .Property(x => x.UserId)
             .HasColumnName("user_id")
             .IsRequired();
-
-        builder
-            .HasOne(x => x.User)
-            .WithMany(x => x.Orders)
-            .HasForeignKey(x => x.UserId);
         
         builder
             .Property(x => x.PromoCodeId)

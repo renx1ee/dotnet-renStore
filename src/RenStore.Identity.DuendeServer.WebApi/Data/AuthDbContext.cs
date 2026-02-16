@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
+using RenStore.Identity.Domain.Entities;
 
 namespace RenStore.Identity.DuendeServer.WebAPI.Data;
 
@@ -11,7 +12,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ApplicationUser>(entity =>
+        /*modelBuilder.Entity<ApplicationUser>(entity =>
             entity.ToTable(name: "AspNetUsers"));
         modelBuilder.Entity<IdentityUserRole<string>>(entity =>
             entity.ToTable(name: "UserRoles"));
@@ -22,7 +23,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
         modelBuilder.Entity<IdentityUserToken<string>>(entity =>
             entity.ToTable(name: "UserTokens"));
         modelBuilder.Entity<IdentityRoleClaim<string>>(entity =>
-            entity.ToTable(name: "RoleClaim"));
+            entity.ToTable(name: "RoleClaim"));*/
         
         /*modelBuilder.ApplyConfiguration(new ProductConfiguration());*/
         

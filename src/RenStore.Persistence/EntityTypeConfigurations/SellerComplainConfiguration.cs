@@ -74,11 +74,6 @@ public class SellerComplainConfiguration : IEntityTypeConfiguration<SellerCompla
             .IsRequired();
 
         builder
-            .HasOne(x => x.User)
-            .WithMany(x => x.SellerComplains)
-            .HasForeignKey(x => x.UserId);
-
-        builder
             .Property(x => x.UserId)
             .HasColumnName("user_id")
             .IsRequired();

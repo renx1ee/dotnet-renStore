@@ -32,7 +32,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnModelCreating(modelBuilder);
     }
     
-    public DbSet<ApplicationUser> AspNetUsers { get; set; }
+    /*public DbSet<ApplicationUser> AspNetUsers { get; set; }*/
     public DbSet<SellerEntity> Sellers { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<Address> Addresses { get; set; }
@@ -48,7 +48,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<VariantAttribute> ProductAttributes { get; set; }
     public DbSet<ProductQuestionEntity> ProductQuestions { get; set; }
     public DbSet<ProductAnswerEntity> ProductAnswers { get; set; }
-    public DbSet<ProductPriceHistory> PriceHistories { get; set; }
+    public DbSet<PriceHistory> PriceHistories { get; set; }
     public DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
     public DbSet<ShoppingCartItemEntity> ShoppingCartItems { get; set; }
     public DbSet<ReviewEntity> Reviews { get; set; }

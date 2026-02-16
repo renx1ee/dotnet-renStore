@@ -18,7 +18,6 @@ public class OrderEntity
     public DateTime? ShippedAt { get; set; }
     public DateTime? CancelledAt { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser? User { get; set; }
     public Guid PromoCodeId { get; set; }
     public PromoCodeEntity? PromoCode { get; set; }
     public DeliveryOrder? DeliveryOrder { get; set; }

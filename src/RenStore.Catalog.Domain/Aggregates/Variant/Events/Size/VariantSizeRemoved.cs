@@ -6,7 +6,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// </summary>
 /// <param name="OccurredAt">Timestamp when the size was removed</param>
 /// <param name="VariantId">Identifier of the product variant</param>
-/// <param name="VariantSizeId">Identifier of the removed size option</param>
+/// <param name="SizeId">Identifier of the removed size option</param>
 /// <remarks>
 /// Size removal affects:
 /// - Current purchase options for customers
@@ -19,4 +19,4 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 public record VariantSizeRemoved(
     DateTimeOffset OccurredAt,
     Guid VariantId,
-    Guid VariantSizeId);
+    Guid SizeId);

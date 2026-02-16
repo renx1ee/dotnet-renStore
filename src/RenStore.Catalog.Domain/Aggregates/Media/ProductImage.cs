@@ -141,14 +141,16 @@ public class ProductImage
             ImageId: Id));
     }
 
-    public void Restore(DateTimeOffset now)
+    public void Restore(
+        DateTimeOffset now,
+        Guid variantId)
     {
         if(!IsDeleted)
             throw new DomainException("Image was not deleted.");
         
         Raise(new ImageRestored(
             OccurredAt: now,
-            VariantId: Id,
+            VariantId: variantId,
             ImageId: Id));
     }
     

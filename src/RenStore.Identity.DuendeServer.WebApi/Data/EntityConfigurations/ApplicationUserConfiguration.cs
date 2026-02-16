@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using RenStore.Domain.Entities;
+using RenStore.Identity.Domain.Entities;
 
 namespace RenStore.Identity.DuendeServer.WebAPI.Data.EntityConfigurations;
 

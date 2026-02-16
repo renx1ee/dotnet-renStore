@@ -12,5 +12,4 @@ public class UserImageEntity
     public int Weight { get; set; }
     public int Height { get; set; }
     public string UserId { get; set; }
-    public ApplicationUser? User { get; set; }
 }

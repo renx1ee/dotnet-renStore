@@ -34,11 +34,6 @@ public class ShoppingCartConfiguration : IEntityTypeConfiguration<ShoppingCartEn
             .Property(x => x.UpdatedAt)
             .HasColumnName("updated_date")
             .IsRequired(false);
-
-        builder
-            .HasOne(x => x.User)
-            .WithOne(x => x.Cart)
-            .HasForeignKey<ShoppingCartEntity>(x => x.UserId);
         
         builder
             .Property(x => x.UserId)

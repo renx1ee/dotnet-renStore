@@ -16,6 +16,6 @@ public class SellerComplainEntity
     public long SellerId { get; set; }
     public SellerEntity? Seller { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser? User { get; set; }
+    /*public ApplicationUser? User { get; set; }*/
     // public ModeratorEntity? Moderator { get; set; }
 }

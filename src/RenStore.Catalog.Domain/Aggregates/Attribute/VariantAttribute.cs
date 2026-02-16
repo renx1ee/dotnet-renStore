@@ -66,7 +66,6 @@ public class VariantAttribute
         var trimmedValue = ProductAttributeRules.ValueNormalizeAndValidate(value);
 
         var attributeId = Guid.NewGuid();
-
         var attribute = new VariantAttribute();
         
         attribute.Raise(new AttributeCreated(
@@ -152,6 +151,7 @@ public class VariantAttribute
         switch (@event)
         {
             case AttributeCreated e:
+                Id = e.AttributeId;
                 Key = e.Key;
                 Value = e.Value;
                 ProductVariantId = e.VariantId;

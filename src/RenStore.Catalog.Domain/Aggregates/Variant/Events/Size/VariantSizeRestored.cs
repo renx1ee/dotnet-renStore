@@ -6,7 +6,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// </summary>
 /// <param name="OccurredAt">Timestamp when the size was restored</param>
 /// <param name="VariantId">Identifier of the product variant</param>
-/// <param name="VariantSizeId">Identifier of the restored size option</param>
+/// <param name="SizeId">Identifier of the restored size option</param>
 /// <remarks>
 /// Used for scenarios like:
 /// - Supplier restocking discontinued sizes
@@ -18,4 +18,4 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 public record VariantSizeRestored(
     DateTimeOffset OccurredAt,
     Guid VariantId,
-    Guid VariantSizeId);
+    Guid SizeId);

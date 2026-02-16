@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using RenStore.Domain.Entities;
+using RenStore.Identity.Domain.Entities;
 
 namespace RenStore.Identity.DuendeServer.WebAPI.Data.IdentityConfigurations;
 

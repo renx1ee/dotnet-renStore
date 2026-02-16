@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Aggregates\VariantPriceHistory\" />
       <Folder Include="Interfaces\" />
       <Folder Include="ReadModels\" />
     </ItemGroup>

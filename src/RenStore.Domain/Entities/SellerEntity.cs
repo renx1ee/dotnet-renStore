@@ -11,7 +11,6 @@ public class SellerEntity
     public bool IsBlocked { get; set; } = false;
     public string Url { get; set; } = string.Empty;
     public string ApplicationUserId { get; set; } = string.Empty;
-    public ApplicationUser? ApplicationUser { get; set; }
     /*public IEnumerable<Product>? Products { get; set; }*/
     public IEnumerable<SellerImageEntity>? SellerImages { get; set; }
     /*public IEnumerable<ProductAnswerEntity>? ProductAnswers { get; set; }*/

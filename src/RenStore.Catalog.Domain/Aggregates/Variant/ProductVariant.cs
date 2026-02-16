@@ -1,15 +1,18 @@
 using RenStore.Catalog.Domain.Aggregates.Variant.Events;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 using RenStore.Catalog.Domain.Aggregates.VariantDetails;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ValueObjects;
+using RenStore.SharedKernal.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 using RenStore.SharedKernal.Domain.ValueObjects;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
+// TODO: 339 line
 
 /// <summary>
 /// Represents a product variant physical entity with lifecycle and invariants.
@@ -17,7 +20,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 public class ProductVariant
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
-    private readonly List<ProductPriceHistory> _priceHistory = new(); // вынести в аггрегат
+    private readonly List<PriceHistory> _priceHistory = new(); // вынести в аггрегат
     private readonly List<VariantSize> _sizes = new();
     private readonly List<Guid> _imageIds = new();
     private readonly List<Guid> _attributeIds = new();
@@ -109,7 +112,7 @@ public class ProductVariant
     /// <summary>
     /// The collection of price history associated with this variant.
     /// </summary>
-    public IReadOnlyCollection<ProductPriceHistory> PriceHistories => _priceHistory.AsReadOnly();
+    public IReadOnlyCollection<PriceHistory> PriceHistories => _priceHistory.AsReadOnly();
     
     /// <summary>
     /// The collection of sizes associated with this variant.
@@ -380,7 +383,7 @@ public class ProductVariant
         Raise(new VariantSizeRemoved(
             OccurredAt: now,
             VariantId: Id,
-            VariantSizeId: sizeId));
+            SizeId: sizeId));
     }
     
     /// <summary>
@@ -406,12 +409,40 @@ public class ProductVariant
         EnsureNotDeleted();
         
         var size = GetSize(sizeId);
-        SizeEnsureNotDeleted(size);
+        
+        if(!size.IsDeleted)
+            throw new DomainException("Size is not deleted.");
         
         Raise(new VariantSizeRestored(
             OccurredAt: now,
             VariantId: Id,
-            VariantSizeId: sizeId));
+            SizeId: sizeId));
+    }
+
+    public void AddPriceToSize(
+        DateTimeOffset now,
+        DateTimeOffset validFrom,
+        decimal amount,
+        Currency currency,
+        Guid sizeId)
+    {
+        EnsureNotDeleted();
+        
+        var size = GetSize(sizeId);
+        SizeEnsureNotDeleted(size);
+        
+        PriceHistoryRules.ValidateSizeId(sizeId);
+        PriceHistoryRules.ValidatePrice(amount);
+
+        var priceId = Guid.NewGuid();
+        
+        Raise(new PriceCreated(
+            OccurredAt: now,
+            EffectiveFrom: validFrom,
+            PriceId: priceId,
+            PriceAmount: amount,
+            Currency: currency,
+            SizeId: sizeId));
     }
 
     #endregion
@@ -446,6 +477,25 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
+            case PriceCreated e:
+                var createdSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
+                                  ?? throw new DomainException("Variant size is not found.");
+                
+                createdSize.CloseCurrentPrice(e.OccurredAt);
+                
+                createdSize.AddPrice(
+                        now: e.OccurredAt,
+                        newPrice: new PriceHistory(
+                            now: e.OccurredAt,
+                            startDate: e.EffectiveFrom,
+                            priceId: e.PriceId,
+                            sizeId: e.SizeId,
+                            price: e.PriceAmount,
+                            currency: e.Currency));
+                
+                UpdatedAt = e.OccurredAt;
+                break;
+            
             case MainImageIdSet e:
                 MainImageId = e.ImageId;
                 UpdatedAt = e.OccurredAt;
@@ -474,16 +524,18 @@ public class ProductVariant
                 break;
             
             case VariantSizeRemoved e:
-                _sizes
-                    .Single(x => x.Id == e.VariantSizeId)
-                    .Delete(e.OccurredAt);
+                var removedSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
+                                  ?? throw new DomainException("Variant size is not found.");
+                
+                removedSize.Delete(e.OccurredAt);
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case VariantSizeRestored e:
-                _sizes
-                    .Single(x => x.Id == e.VariantSizeId)
-                    .Restore(e.OccurredAt);
+                var restoredSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
+                                  ?? throw new DomainException("Variant size is not found.");
+                
+                restoredSize.Restore(e.OccurredAt);
                 UpdatedAt = e.OccurredAt;
                 break;
         }

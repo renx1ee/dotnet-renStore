@@ -64,11 +64,6 @@ public class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
             .IsRequired();
 
         builder
-            .HasOne(x => x.ApplicationUser)
-            .WithMany(x => x.Reviews)
-            .HasForeignKey(x => x.UserId);
-
-        builder
             .Property(x => x.UserId)
             .HasColumnName("user_id");
         

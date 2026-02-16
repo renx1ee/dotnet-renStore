@@ -39,7 +39,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
     }
     
     public async Task<Guid> CreateAsync(
-        ProductPriceHistory priceHistory, 
+        PriceHistory priceHistory, 
         CancellationToken cancellationToken)
     {
         var result = await _context.PriceHistories.AddAsync(priceHistory, cancellationToken);
@@ -49,7 +49,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
     }
 
     public async Task UpdateAsync(
-        ProductPriceHistory priceHistory,
+        PriceHistory priceHistory,
         CancellationToken cancellationToken)
     {
         var existingAttribute = await this.GetByIdAsync(priceHistory.Id, cancellationToken);
@@ -66,7 +66,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<IEnumerable<ProductPriceHistory>> FindAllAsync(
+    public async Task<IEnumerable<PriceHistory>> FindAllAsync(
         CancellationToken cancellationToken,
         ProductPriceHistorySortBy sortBy = ProductPriceHistorySortBy.Id,
         uint pageCount = 25,
@@ -104,7 +104,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
                 ";
 
             return await connection
-                .QueryAsync<ProductPriceHistory>(
+                .QueryAsync<PriceHistory>(
                     sql, new
                     {
                         Count = (int)pageCount,
@@ -117,7 +117,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
         }
     }
 
-    public async Task<ProductPriceHistory?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<PriceHistory?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -143,7 +143,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
                 ";
 
             return await connection
-                .QueryFirstOrDefaultAsync<ProductPriceHistory>(
+                .QueryFirstOrDefaultAsync<PriceHistory>(
                     sql, new
                     {
                         Id = id
@@ -155,9 +155,9 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
         }
     }
 
-    public async Task<ProductPriceHistory?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<PriceHistory?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(typeof(ProductPriceHistory), id);
+            ?? throw new NotFoundException(typeof(PriceHistory), id);
     }
 }

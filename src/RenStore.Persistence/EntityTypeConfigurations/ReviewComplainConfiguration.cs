@@ -74,11 +74,6 @@ public class ReviewComplainConfiguration : IEntityTypeConfiguration<ReviewCompla
             .IsRequired();
 
         builder
-            .HasOne(x => x.User)
-            .WithMany(x => x.ReviewComplains)
-            .HasForeignKey(x => x.UserId);
-
-        builder
             .Property(x => x.UserId)
             .HasColumnName("user_id")
             .IsRequired();

@@ -13,7 +13,6 @@ public class ReviewEntity
     public DateTime? ModeratedDate = null;
     public ReviewStatus Status { get; set; }
     public bool? IsApproved = null;
-    public ApplicationUser? ApplicationUser { get; set; }
     public string UserId { get; set; }
     /*public ProductVariant? ProductVariant { get; set; }*/
     public Guid ProductVariantId { get; set; }

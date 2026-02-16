@@ -1,4 +1,6 @@
 using RenStore.Catalog.Domain.ValueObjects;
+using RenStore.SharedKernal.Domain.Enums;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
@@ -7,6 +9,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 /// </summary>
 public class VariantSize
 {
+    private readonly List<PriceHistory> _prices;
+    
     public Guid Id { get; private set; }
     public Size Size { get; private set; } // TODO:
     public Guid ProductVariantId { get; private set; }
@@ -14,6 +18,8 @@ public class VariantSize
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
+
+    public IReadOnlyList<PriceHistory> Prices => _prices.AsReadOnly();
     
     internal static VariantSize Create(
         Guid id,
@@ -30,16 +36,27 @@ public class VariantSize
             IsDeleted = false
         };
     }
-    
-    // TODO: need to check if the Size already exists
-    private void ChangeSize(
-        DateTimeOffset now,
-        Size size)
-    {
-        if(Size == size) return;
 
-        Size = size;
+    internal void AddPrice(
+        DateTimeOffset now,
+        PriceHistory newPrice)
+    {
+        _prices.Add(newPrice);
+        
         UpdatedAt = now;
+    }
+
+    internal void CloseCurrentPrice(DateTimeOffset now)
+    {
+        var activePrices = _prices.Where(x => x.IsActive).ToList();
+        
+        if (activePrices.Any())
+        {
+            foreach (var item in activePrices)
+                item.Deactivate(now);
+            
+            UpdatedAt = now;
+        }
     }
     
     internal void Delete(DateTimeOffset now)
@@ -54,6 +71,17 @@ public class VariantSize
         IsDeleted = false;
         UpdatedAt = now;
         DeletedAt = null;
+    }
+    
+    // TODO: need to check if the Size already exists
+    private void ChangeSize(
+        DateTimeOffset now,
+        Size size)
+    {
+        if(Size == size) return;
+
+        Size = size;
+        UpdatedAt = now;
     }
 }
 
