@@ -25,4 +25,8 @@
       <Folder Include="UnitTets\Persistence\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

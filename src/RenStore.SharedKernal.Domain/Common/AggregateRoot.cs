@@ -2,25 +2,26 @@ namespace RenStore.SharedKernal.Domain.Common;
 
 public abstract class AggregateRoot
 {
-    private readonly List<object> _domainEvents = new();
+    private readonly List<object> _uncommittedEvents = new();
     
     public Guid Id { get; protected set; }
     public int Version { get; private set; }
 
-    public IReadOnlyCollection<object> DomainEvents => _domainEvents.AsReadOnly();
+    public IReadOnlyCollection<object> GetUncommittedEvents() => 
+        _uncommittedEvents.AsReadOnly();
 
     protected void Raise(object @event)
     {
-        _domainEvents.Add(@event);
+        _uncommittedEvents.Add(@event);
         Apply(@event);
         Version++;
     }
 
     protected abstract void Apply(object @event);
 
-    public void ClearDomainEvents()
+    public void UncommittedEventsClear()
     {
-        _domainEvents.Clear();
+        _uncommittedEvents.Clear();
     }
     
     protected void LoadFromHistory(IEnumerable<object> history)
