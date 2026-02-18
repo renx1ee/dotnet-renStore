@@ -12,19 +12,19 @@ internal static class ProductDetailRules
     private const int MinDescriptionLength        = 25;
     
     private const int MaxModelFeaturesLength      = 500;
-    private const int MinModelFeaturesLength      = 25;
+    private const int MinModelFeaturesLength      = 5;
     
     private const int MaxDecorativeElementsLength = 500;
-    private const int MinDecorativeElementsLength = 25;
+    private const int MinDecorativeElementsLength = 5;
     
     private const int MaxEquipmentLength          = 500;
-    private const int MinEquipmentLength          = 25;
+    private const int MinEquipmentLength          = 5;
     
     private const int MaxCompositionLength        = 500;
-    private const int MinCompositionLength        = 25;
+    private const int MinCompositionLength        = 5;
     
     private const int MaxCaringOfThingsLength     = 500;
-    private const int MinCaringOfThingsLength     = 25;
+    private const int MinCaringOfThingsLength     = 5;
     
     /// <summary>
     /// Validates the country of manufacture identifier.
@@ -95,10 +95,10 @@ internal static class ProductDetailRules
     /// Describes technical specifications and unique features of the product model.
     /// Optional field; returns empty string if null or whitespace.
     /// </remarks>
-    internal static string ModelFeaturesNormalizedAndValidate(string? modelFeatures)
+    internal static string? ModelFeaturesNormalizedAndValidate(string? modelFeatures)
     {
         if (string.IsNullOrWhiteSpace(modelFeatures)) 
-            return string.Empty;
+            return null;
         
         var trimmedModelFeatures = modelFeatures.Trim();
         
@@ -120,10 +120,10 @@ internal static class ProductDetailRules
     /// Describes aesthetic and design elements of the product.
     /// Optional field; particularly relevant for fashion and home decor items.
     /// </remarks>
-    internal static string DecorativeElementsNormalizedAndValidate(string? decorativeElements)
+    internal static string? DecorativeElementsNormalizedAndValidate(string? decorativeElements)
     {
         if(string.IsNullOrWhiteSpace(decorativeElements))
-            return string.Empty;
+            return null;
         
         var trimmedDecorativeElements = decorativeElements.Trim();
         
@@ -145,10 +145,10 @@ internal static class ProductDetailRules
     /// Lists items included with the product (batteries, cables, manuals, etc.).
     /// Important for setting customer expectations and avoiding returns.
     /// </remarks>
-    internal static string EquipmentNormalizedAndValidate(string? equipment)
+    internal static string? EquipmentNormalizedAndValidate(string? equipment)
     {
         if(string.IsNullOrWhiteSpace(equipment))
-            return string.Empty;
+            return null;
         
         var trimmedEquipment = equipment.Trim();
         
@@ -170,7 +170,7 @@ internal static class ProductDetailRules
     /// Specifies materials and their percentages (e.g., "100% Cotton", "Leather 80%, Polyester 20%").
     /// Required for apparel, textiles, and regulated products.
     /// </remarks>
-    internal static string CompositionNormalizedAndValidate(string? composition)
+    internal static string CompositionNormalizedAndValidate(string composition)
     {
         if(string.IsNullOrWhiteSpace(composition))
             return string.Empty;
@@ -195,10 +195,10 @@ internal static class ProductDetailRules
     /// Provides washing, cleaning, and maintenance guidelines.
     /// Important for product longevity and customer satisfaction.
     /// </remarks>
-    internal static string CaringOfThingsNormalizedAndValidate(string? caringOfThings)
+    internal static string? CaringOfThingsNormalizedAndValidate(string? caringOfThings)
     {
         if(string.IsNullOrWhiteSpace(caringOfThings))
-            return string.Empty;
+            return null;
         
         var trimmedCaringOfThings = caringOfThings.Trim();
         

@@ -52,7 +52,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ShoppingCartEntity> ShoppingCarts { get; set; }
     public DbSet<ShoppingCartItemEntity> ShoppingCartItems { get; set; }
     public DbSet<ReviewEntity> Reviews { get; set; }
-    public DbSet<ProductImage> ProductImages { get; set; }
+    public DbSet<VariantImage> ProductImages { get; set; }
     public DbSet<SellerImageEntity> SellerImages { get; set; }
     public DbSet<UserImageEntity> UserImages { get; set; }
     public DbSet<AnswerComplainEntity> AnswerComplains { get; set; }

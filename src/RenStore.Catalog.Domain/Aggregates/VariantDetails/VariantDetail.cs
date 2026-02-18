@@ -8,7 +8,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails;
 /// <summary>
 /// Represents a product Detail physical entity with lifecycle and invariants.
 /// </summary>
-public class ProductDetail
+public class VariantDetail
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     public Guid Id { get; private set; }
@@ -18,44 +18,44 @@ public class ProductDetail
     public string? DecorativeElements { get; private set; } 
     public string? Equipment { get; private set; }
     public string? CaringOfThings { get; private set; } 
-    public TypeOfPackaging? TypeOfPacking { get; private set; }
+    public TypeOfPacking? TypeOfPacking { get; private set; }
     public int CountryOfManufactureId { get; private set; }
     public Guid ProductVariantId { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
     
-    private ProductDetail() { }
+    private VariantDetail() { }
 
-    public static ProductDetail Create(
+    public static VariantDetail Create(
         DateTimeOffset now,
-        Guid productVariantId,
+        Guid variantId,
         int countryOfManufactureId,
         string description,
         string composition,
         string? caringOfThings = null,
-        TypeOfPackaging? typeOfPackaging = null,
+        TypeOfPacking? typeOfPackaging = null,
         string? modelFeatures = null,
         string? decorativeElements = null,
         string? equipment = null)
     {
         ProductDetailRules.CountryOfManufactureValidate(countryOfManufactureId);
-        ProductDetailRules.ProductVariantIdValidate(productVariantId);
+        ProductDetailRules.ProductVariantIdValidate(variantId);
 
-        var trimmedDescription = ProductDetailRules.DescriptionNormalizedAndValidate(description);
-        var trimmedComposition = ProductDetailRules.CompositionNormalizedAndValidate(composition);
-        var trimmedModelFeatures = ProductDetailRules.ModelFeaturesNormalizedAndValidate(modelFeatures);
+        var trimmedDescription              = ProductDetailRules.DescriptionNormalizedAndValidate(description);
+        var trimmedComposition        = ProductDetailRules.CompositionNormalizedAndValidate(composition);
+        
+        var trimmedModelFeatures      = ProductDetailRules.ModelFeaturesNormalizedAndValidate(modelFeatures);
         var trimmedDecorativeElements = ProductDetailRules.DecorativeElementsNormalizedAndValidate(decorativeElements);
-        var trimmedEquipment = ProductDetailRules.EquipmentNormalizedAndValidate(equipment);
-        var trimmedCaringOfThings = ProductDetailRules.CaringOfThingsNormalizedAndValidate(caringOfThings);
+        var trimmedEquipment          = ProductDetailRules.EquipmentNormalizedAndValidate(equipment);
+        var trimmedCaringOfThings     = ProductDetailRules.CaringOfThingsNormalizedAndValidate(caringOfThings);
 
         var detailId = Guid.NewGuid();
-
-        var details = new ProductDetail();
+        var details = new VariantDetail();
 
         details.Raise(new VariantDetailsCreated(
             OccurredAt: now,
-            Id: detailId,
-            VariantId: productVariantId,
+            DetailId: detailId,
+            VariantId: variantId,
             CountryOfManufactureId: countryOfManufactureId,
             ModelFeatures: trimmedModelFeatures,
             DecorativeElements: trimmedDecorativeElements,
@@ -63,14 +63,13 @@ public class ProductDetail
             Description: trimmedDescription,
             Composition: trimmedComposition,
             CaringOfThings: trimmedCaringOfThings,
-            TypeOfPackaging: typeOfPackaging ?? null));
+            TypeOfPackaging: typeOfPackaging));
 
         return details;
     }
     
-    public void ChangeDetailDescription(
+    public void ChangeDescription(
         DateTimeOffset now,
-        Guid variantId,
         string description)
     {
         var trimmedDescription = ProductDetailRules
@@ -80,127 +79,124 @@ public class ProductDetail
         
         Raise(new VariantDetailsDescriptionUpdated(
             OccurredAt: now,
-            VariantId: variantId,
+            DetailId: Id,
             Description: trimmedDescription));
     }
 
-    public void ChangeDetailModelFeatures(
+    public void ChangeModelFeatures(
         DateTimeOffset now,
-        Guid variantId,
-        string? modelFeatures)
+        string modelFeatures)
     {
         var trimmedModelFeatures = ProductDetailRules
             .ModelFeaturesNormalizedAndValidate(modelFeatures);
+            
+        if (string.IsNullOrEmpty(trimmedModelFeatures))
+            throw new DomainException(
+                "Model features cannot be null.");
         
         if(ModelFeatures == trimmedModelFeatures) return;
         
         Raise(new VariantDetailsModelFeaturesUpdated(
             OccurredAt: now,
-            VariantId: variantId,
             ModelFeatures: trimmedModelFeatures));
     }
 
-    public void ChangeDetailDecorativeElements(
+    public void ChangeDecorativeElements(
         DateTimeOffset now,
-        Guid variantId,
         string? decorativeElements)
     {
         var trimmedDecorativeElements = ProductDetailRules
             .DecorativeElementsNormalizedAndValidate(decorativeElements);
         
         if(string.IsNullOrEmpty(trimmedDecorativeElements))
-            throw new DomainException("Product Detail decorative elements cannot be null or whitespace.");
+            throw new DomainException(
+                "Product Detail decorative elements cannot be null or whitespace.");
         
         if(DecorativeElements == trimmedDecorativeElements) return;
         
         Raise(new VariantDetailsDecorativeElementsUpdated(
             OccurredAt: now,
-            VariantId: variantId,
             DecorativeElements: trimmedDecorativeElements));
     }
 
-    public void ChangeDetailEquipment(
+    public void ChangeEquipment(
         DateTimeOffset now,
-        Guid variantId,
         string? equipment)
     {
         var trimmedEquipment = ProductDetailRules
             .EquipmentNormalizedAndValidate(equipment);
         
         if (string.IsNullOrEmpty(trimmedEquipment))
-            throw new DomainException("Product Detail equipment cannot be null or whitespace.");
+            throw new DomainException(
+                "Product Detail equipment cannot be null or whitespace.");
         
         if(Equipment == trimmedEquipment) return;
         
         Raise(new VariantDetailsEquipmentUpdated(
             OccurredAt: now,
-            VariantId: variantId,
             Equipment: trimmedEquipment));
     }
 
-    public void ChangeDetailComposition(
+    public void ChangeComposition(
         DateTimeOffset now,
-        Guid variantId,
         string composition)
     {
         var trimmedComposition = ProductDetailRules
             .CompositionNormalizedAndValidate(composition);
         
-        if (string.IsNullOrEmpty(composition))
-            throw new DomainException("Product Detail composition cannot be null or whitespace.");
+        if (string.IsNullOrEmpty(trimmedComposition))
+            throw new DomainException(
+                "Product Detail composition cannot be null or whitespace.");
         
         if(Composition == trimmedComposition) return;
         
         Raise(new VariantDetailsCompositionUpdated(
             OccurredAt: now,
-            VariantId: variantId,
             Composition: trimmedComposition));
     }
 
-    public void ChangeDetailCaringOfThings(
+    public void ChangeCaringOfThings(
         DateTimeOffset now,
-        Guid variantId,
         string? caringOfThings)
     {
         var trimmedCaringOfThings = ProductDetailRules
             .CaringOfThingsNormalizedAndValidate(caringOfThings);
         
-        if (string.IsNullOrEmpty(caringOfThings))
-            throw new DomainException("Product Detail Caring Of Things cannot be null or whitespace.");
+        if (string.IsNullOrEmpty(trimmedCaringOfThings))
+            throw new DomainException(
+                "Product Detail Caring Of Things cannot be null or whitespace.");
         
         if(CaringOfThings == trimmedCaringOfThings) return;
         
         Raise(new VariantDetailsCaringOfThingsUpdated(
             OccurredAt: now,
-            VariantId: variantId,
             CaringOfThings: trimmedCaringOfThings));
     }
 
-    public void ChangeDetailTypeOfPacking(
+    public void ChangeTypeOfPacking(
         DateTimeOffset now,
-        Guid variantId,
-        TypeOfPackaging typeOfPackaging)
+        TypeOfPacking typeOfPacking)
     {
+        if (TypeOfPacking == typeOfPacking) return;
+        
         Raise(new VariantDetailsTypeOfPackingUpdated(
             OccurredAt: now,
-            VariantId: variantId,
-            TypeOfPackaging: typeOfPackaging));
+            TypeOfPacking: typeOfPacking));
     }
 
     public void ChangeCountryOfManufactureId(
         DateTimeOffset now,
-        Guid variantId,
         int countryOfManufactureId)
     {
         if(countryOfManufactureId <= 0)
-            throw new DomainException("Product Detail country of manufacture ID must be more then 0.");
+            throw new DomainException(
+                "Product Detail country of manufacture ID must be more then 0.");
         
         if(CountryOfManufactureId == countryOfManufactureId) 
             return;
         
         Raise(new VariantDetailsCountryOfManufactureIdUpdated(
             OccurredAt: now,
-            VariantId: variantId,
             CountryOfManufactureId: countryOfManufactureId));
     }
     
@@ -209,7 +205,7 @@ public class ProductDetail
         switch (@event)
         {
             case VariantDetailsCreated e:
-                Id = e.Id;
+                Id = e.DetailId;
                 CreatedAt = e.OccurredAt;
                 CountryOfManufactureId = e.CountryOfManufactureId;
                 ProductVariantId = e.VariantId;
@@ -258,7 +254,7 @@ public class ProductDetail
                 break;
             
             case VariantDetailsTypeOfPackingUpdated e:
-                TypeOfPacking = e.TypeOfPackaging;
+                TypeOfPacking = e.TypeOfPacking;
                 UpdatedAt = e.OccurredAt;
                 break;
         }

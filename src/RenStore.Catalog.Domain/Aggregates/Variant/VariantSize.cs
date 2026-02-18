@@ -13,7 +13,7 @@ public class VariantSize
     
     public Guid Id { get; private set; }
     public Size Size { get; private set; } // TODO:
-    public Guid ProductVariantId { get; private set; }
+    public Guid VariantId { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
@@ -30,7 +30,7 @@ public class VariantSize
         return new VariantSize()
         {
             Id = id,
-            ProductVariantId = variantId,
+            VariantId = variantId,
             CreatedAt = now,
             Size = size,
             IsDeleted = false

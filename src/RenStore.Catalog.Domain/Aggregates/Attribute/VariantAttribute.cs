@@ -1,5 +1,6 @@
 using RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 using RenStore.Catalog.Domain.Aggregates.Attribute.Rules;
+using RenStore.Catalog.Domain.ValueObjects;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Attribute;
@@ -20,17 +21,17 @@ public class VariantAttribute
     /// Attribute name.
     /// Stored in uppercase for case-insensitive operations.
     /// </summary>
-    public string Key { get; private set; } 
+    public AttributeKey Key { get; private set; } 
     
     /// <summary>
     /// Attribute specification or value.
     /// </summary>
-    public string Value { get; private set; }
+    public AttributeValue Value { get; private set; }
     
     /// <summary>
     /// Identifier of the product variant this attribute describes.
     /// </summary>
-    public Guid ProductVariantId { get; private set; }
+    public Guid VariantId { get; private set; }
     
     /// <summary>
     /// Indicates whether this attribute has been soft-deleted.
@@ -60,10 +61,11 @@ public class VariantAttribute
         string key,
         string value)
     {
-        ProductAttributeRules.ProductVariantIdNormalizeAndValidate(variantId);
-        
-        var trimmedKey   = ProductAttributeRules.KeyNormalizeAndValidate(key);
-        var trimmedValue = ProductAttributeRules.ValueNormalizeAndValidate(value);
+        ProductAttributeRules
+            .ProductVariantIdNormalizeAndValidate(variantId);
+
+        AttributeKey.KeyNormalizeAndValidate(key);
+        AttributeValue.ValueNormalizeAndValidate(value);
 
         var attributeId = Guid.NewGuid();
         var attribute = new VariantAttribute();
@@ -72,78 +74,67 @@ public class VariantAttribute
             VariantId: variantId,
             AttributeId: attributeId,
             OccurredAt: now,
-            Key: trimmedKey,
-            Value: trimmedValue));
+            Key: key,
+            Value: value));
 
         return attribute;
     }
     
     public void ChangeKey(
         DateTimeOffset now,
-        Guid variantId,
-        Guid attributeId,
         string key)
     {
         EnsureNotDeleted();
         
-        var trimmedKey = ProductAttributeRules
+        var trimmedKey = AttributeKey
             .KeyNormalizeAndValidate(key);
         
         if(Key == trimmedKey) return;
         
         Raise(new AttributeKeyUpdated(
             OccurredAt: now,
-            VariantId: variantId,
-            AttributeId: attributeId,
+            AttributeId: Id,
             Key: trimmedKey));
     }
     
     public void ChangeValue(
         DateTimeOffset now,
-        Guid variantId,
-        Guid attributeId,
         string value)
     {
         EnsureNotDeleted();
         
-        var trimmedValue = ProductAttributeRules
+        var trimmedValue = AttributeValue
             .ValueNormalizeAndValidate(value);
         
         if(Value == trimmedValue) return;
         
         Raise(new AttributeValueUpdated(
             OccurredAt: now,
-            VariantId: variantId,
-            AttributeId: attributeId,
+            AttributeId: Id,
             Value: trimmedValue));
     }
     
     public void Delete(
-        DateTimeOffset now,
-        Guid variantId,
-        Guid attributeId)
+        DateTimeOffset now)
     {
         if (IsDeleted)
-            throw new DomainException("Attribute already was deleted");
+            throw new DomainException(
+                "Attribute already was deleted");
         
         Raise(new AttributeRemoved(
-            OccurredAt: now,
-            VariantId: variantId,
-            AttributeId: attributeId));
+            OccurredAt: now));
     }
     
     public void Restore(
-        DateTimeOffset now,
-        Guid variantId,
-        Guid attributeId)
+        DateTimeOffset now)
     {
         if (!IsDeleted)
-            throw new DomainException("Attribute wasn't deleted.");
+            throw new DomainException(
+                "Attribute wasn't deleted.");
         
         Raise(new AttributeRestored(
             OccurredAt: now,
-            VariantId: variantId,
-            AttributeId: attributeId));
+            AttributeId: Id));
     }
     
     protected override void Apply(object @event)
@@ -152,20 +143,20 @@ public class VariantAttribute
         {
             case AttributeCreated e:
                 Id = e.AttributeId;
-                Key = e.Key;
-                Value = e.Value;
-                ProductVariantId = e.VariantId;
+                Key = AttributeKey.Create(e.Key);
+                Value = AttributeValue.Create(e.Value);
+                VariantId = e.VariantId;
                 CreatedAt = e.OccurredAt;
                 IsDeleted = false;
                 break;
             
             case AttributeKeyUpdated e:
-                Key = e.Key.ToUpperInvariant();
+                Key = AttributeKey.Create(e.Key);
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case AttributeValueUpdated e:
-                Value = e.Value;
+                Value = AttributeValue.Create(e.Value);
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -190,7 +181,8 @@ public class VariantAttribute
     private void EnsureNotDeleted()
     {
         if(IsDeleted)
-            throw new DomainException("Attribute already was deleted.");
+            throw new DomainException(
+                "Attribute already was deleted.");
     }
 }
 

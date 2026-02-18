@@ -22,15 +22,16 @@ public class OrderEntity
     public PromoCodeEntity? PromoCode { get; set; }
     public DeliveryOrder? DeliveryOrder { get; set; }
     public IEnumerable<PaymentEntity>? Payments { get; set; }
+}
 
-    /*public void AddItem(Product product, int quantity)
+/*public void AddItem(Product product, int quantity)
     {
         if (Status != OrderStatus.Pending)
             throw new DomainException("");
-        
+
         if (quantity <= 0)
             throw new DomainException("");
-        
+
         _items.Add(new OrderItemEntity());
     }
 
@@ -38,7 +39,7 @@ public class OrderEntity
     {
         if (Status != OrderStatus.Delivered)
             throw new DomainException("");
-        
+
         if (Status != OrderStatus.Delivered)
             throw new DomainException("");
 
@@ -48,4 +49,3 @@ public class OrderEntity
     public void RecalculateTotalPrice()
     {
     }*/
-}

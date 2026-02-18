@@ -58,7 +58,7 @@ public class ProductAttributeConfiguration
             .HasConstraintName("product_variant_id");*/
 
         builder
-            .Property(x => x.ProductVariantId)
+            .Property(x => x.VariantId)
             .HasColumnName("product_variant_id");
     }
 }

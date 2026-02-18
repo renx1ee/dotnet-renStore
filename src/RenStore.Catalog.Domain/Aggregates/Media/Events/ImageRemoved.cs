@@ -5,7 +5,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Images may be removed due to obsolescence, quality issues, or rights management.
 /// </summary>
 /// <param name="OccurredAt">Timestamp when the image was removed</param>
-/// <param name="VariantId">Identifier of the product variant</param>
 /// <param name="ImageId">Identifier of the removed image</param>
 /// <remarks>
 /// Typically implements soft deletion for potential recovery and audit purposes.
@@ -14,5 +13,4 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// </remarks>
 public record ImageRemoved(
     DateTimeOffset OccurredAt,
-    Guid VariantId,
     Guid ImageId);

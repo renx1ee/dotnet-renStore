@@ -5,7 +5,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Reinstates visual content that was temporarily unavailable or incorrectly deleted.
 /// </summary>
 /// <param name="OccurredAt">Timestamp when the image was restored</param>
-/// <param name="VariantId">Identifier of the product variant</param>
 /// <param name="ImageId">Identifier of the restored image</param>
 /// <remarks>
 /// Used for data correction, seasonal content rotation, or rights reacquisition.
@@ -14,5 +13,4 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// </remarks>
 public record ImageRestored(
     DateTimeOffset OccurredAt,
-    Guid VariantId,
     Guid ImageId);

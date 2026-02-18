@@ -7,7 +7,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media;
 /// <summary>
 /// Represents a product image physical entity with lifecycle and invariants.
 /// </summary>
-public class ProductImage
+public class VariantImage
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     public Guid Id { get; private set; }
@@ -18,15 +18,15 @@ public class ProductImage
     public short SortOrder { get; private set; } 
     public int Weight { get; private set; }
     public int Height { get; private set; }
-    public Guid ProductVariantId { get; private set; }
+    public Guid VariantId { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTimeOffset UploadedAt { get; private set; } 
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
     
-    private ProductImage() { }
+    private VariantImage() { }
     
-    internal static ProductImage Create(
+    public static VariantImage Create(
         DateTimeOffset now,
         Guid variantId,
         string originalFileName,
@@ -47,7 +47,7 @@ public class ProductImage
             height: height);
 
         var imageId = Guid.NewGuid();
-        var image = new ProductImage();
+        var image = new VariantImage();
         
         image.Raise(new ImageCreated(
             OccurredAt: now,
@@ -63,7 +63,7 @@ public class ProductImage
 
         return image;
     }
-    
+    // TODO: вынести выше
     public void ChangeSortOrder(
         DateTimeOffset now,
         short sortOrder)
@@ -110,7 +110,7 @@ public class ProductImage
         if(Weight == weight && Height == height) 
             return;
         
-        Raise(new ImageDimensionChanged(
+        Raise(new ImageDimensionUpdated(
             OccurredAt: now,
             ImageId: Id,
             Weight: weight,
@@ -130,27 +130,23 @@ public class ProductImage
     }
     
     public void Delete(
-        DateTimeOffset now,
-        Guid variantId)
+        DateTimeOffset now)
     {
         EnsureNotDeleted();
         
         Raise(new ImageRemoved(
             OccurredAt: now,
-            VariantId: variantId,
             ImageId: Id));
     }
 
     public void Restore(
-        DateTimeOffset now,
-        Guid variantId)
+        DateTimeOffset now)
     {
         if(!IsDeleted)
             throw new DomainException("Image was not deleted.");
         
         Raise(new ImageRestored(
             OccurredAt: now,
-            VariantId: variantId,
             ImageId: Id));
     }
     
@@ -178,7 +174,7 @@ public class ProductImage
         {
             case ImageCreated e:
                 Id = e.ImageId;
-                ProductVariantId = e.VariantId;
+                VariantId = e.VariantId;
                 OriginalFileName = e.OriginalFileName;
                 StoragePath = e.StoragePath;
                 UploadedAt = e.OccurredAt;
@@ -200,7 +196,7 @@ public class ProductImage
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageDimensionChanged e:
+            case ImageDimensionUpdated e:
                 Weight = e.Weight;
                 Height = e.Height;
                 UpdatedAt = e.OccurredAt;

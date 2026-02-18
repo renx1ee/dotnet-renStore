@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 /// <summary>
 /// Records a change to the display name of a product variant.

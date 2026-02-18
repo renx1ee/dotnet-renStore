@@ -25,7 +25,7 @@ public class UpdateProductDto
     public uint? QuantityPerPackage { get; set; }
     public string? Composition { get; set; }
     public ColorStatus? Color { get; set; }
-    public TypeOfPackaging? TypeOfPackaging { get; set; }
+    public TypeOfPacking? TypeOfPackaging { get; set; }
     public Neckline? Neckline { get; set; }
     public TheCut? TheCut { get; set; }
     public TypeOfPockets? TypeOfPockets { get; set; }

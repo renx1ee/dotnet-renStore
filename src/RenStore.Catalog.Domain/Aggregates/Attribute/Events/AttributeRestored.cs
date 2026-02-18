@@ -5,7 +5,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Reinstates attribute information that was temporarily unavailable or incorrectly deleted.
 /// </summary>
 /// <param name="OccurredAt">Timestamp when the attribute was restored</param>
-/// <param name="VariantId">Identifier of the product variant receiving the restored attribute</param>
 /// <param name="AttributeId">Identifier of the specific attribute being restored</param>
 /// <remarks>
 /// Restoration preserves the attribute's original data and business context.
@@ -13,5 +12,4 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// </remarks>
 public record AttributeRestored(
     DateTimeOffset OccurredAt,
-    Guid VariantId,
     Guid AttributeId);

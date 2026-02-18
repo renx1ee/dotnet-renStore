@@ -2,6 +2,7 @@ using RenStore.Catalog.Domain.Aggregates.Variant.Events;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 using RenStore.Catalog.Domain.Aggregates.VariantDetails;
 using RenStore.Catalog.Domain.Entities;
@@ -26,7 +27,7 @@ public class ProductVariant
     private readonly List<Guid> _attributeIds = new();
     
     private Color _color;
-    private ProductDetail _details;
+    private VariantDetail _details;
     
     /// <summary>
     /// Unique identifier of the product variant.
@@ -281,11 +282,23 @@ public class ProductVariant
             VariantId: Id));
     }
     
+    public void ToDraft(DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+        
+        if (Status == ProductVariantStatus.Draft)
+            return;
+        
+        Raise(new VariantDrafted(
+            OccurredAt: now,
+            VariantId: Id));
+    }
+    
     public void Delete(DateTimeOffset now)
     {
         EnsureNotDeleted("Cannot delete already deleted variant.");
         
-        Raise(new ProductVariantRemoved(
+        Raise(new VariantRemoved(
             VariantId: Id,
             OccurredAt: now));
     }
@@ -506,6 +519,11 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
+            case VariantDrafted e:
+                Status = ProductVariantStatus.Draft;
+                UpdatedAt = e.OccurredAt;
+                break;
+            
             case VariantNameUpdated e:
                 Name = e.Name;
                 NormalizedName = e.Name.ToUpperInvariant();
@@ -517,7 +535,7 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductVariantRemoved e:
+            case VariantRemoved e:
                 Status = ProductVariantStatus.IsDeleted;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
@@ -574,17 +592,13 @@ public class ProductVariant
     }
 }
 
-
-
-// TODO: Media — отдельный агрегат, а ProductVariant хранит только MainImageId.
+// TODO: в application service вынести проверки инвариантов:
+// Media — отдельный агрегат, а ProductVariant хранит только MainImageId.
 //  Это уже уровень архитектурного разделения bounded contexts.
 //  mark image as main
-
-// TODO: создать коллекцию с IDs аттрибутов, и сделать проверку на макс колличество аттрибутов
+// создать коллекцию с IDs аттрибутов, и сделать проверку на макс колличество аттрибутов
 //  if (_attributeIds.Count >= MAX_ATTRIBUTES)
 //  ProductAttributeRules.MaxAttributesCountValidation(_attributes.Count);
-
-// TODO:
 //  throw new DomainException("Maximum number of attributes reached.");
 //  if (Status != ProductVariantStatus.Published) - переносится в Application Layer
 //           throw new DomainException("Variant is not published."); 

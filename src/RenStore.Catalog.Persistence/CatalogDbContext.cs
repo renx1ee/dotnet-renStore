@@ -23,5 +23,5 @@ public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbCo
     public DbSet<VariantAttribute> Attributes { get; set; }
     /*public DbSet<ProductDetail> Details { get; set; }*/
     public DbSet<VariantSize> Cloths { get; set; }
-    public DbSet<ProductImage> Images { get; set; }
+    public DbSet<VariantImage> Images { get; set; }
 }

@@ -9,7 +9,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 internal static class ProductImageRules
 {
     private const int MaxProductImagePathLength = 500;
-    private const int MinProductImagePathLength = 25;
+    private const int MinProductImagePathLength = 15;
 
     private const long MaxFileSizeBytes         = 50 * 1024 * 1024; /* 50 mb */
     private const long MinFileSizeBytes         = 1;

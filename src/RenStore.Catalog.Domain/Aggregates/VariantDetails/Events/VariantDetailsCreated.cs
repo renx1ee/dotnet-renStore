@@ -7,7 +7,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 /// Provides comprehensive specifications for customer evaluation and regulatory compliance.
 /// </summary>
 /// <param name="OccurredAt">Timestamp when details were added</param>
-/// <param name="Id">Unique identifier for the details record</param>
+/// <param name="DetailId">Unique identifier for the details record</param>
 /// <param name="VariantId">Identifier of the described product variant</param>
 /// <param name="CountryOfManufactureId">Country where the product was manufactured</param>
 /// <param name="Description">Full product description for customers</param>
@@ -24,7 +24,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 /// </remarks>
 public record VariantDetailsCreated(
     DateTimeOffset OccurredAt,
-    Guid Id,
+    Guid DetailId,
     Guid VariantId,
     int CountryOfManufactureId,
     string Description,
@@ -33,4 +33,4 @@ public record VariantDetailsCreated(
     string? DecorativeElements,
     string? Equipment,
     string? CaringOfThings,
-    TypeOfPackaging? TypeOfPackaging);
+    TypeOfPacking? TypeOfPackaging);

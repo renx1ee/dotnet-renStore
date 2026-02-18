@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 /// <summary>
 /// Records when a product variant becomes publicly available in the catalog.

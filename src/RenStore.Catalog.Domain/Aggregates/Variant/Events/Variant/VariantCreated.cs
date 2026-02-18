@@ -1,6 +1,6 @@
 using RenStore.Catalog.Domain.Enums;
 
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 /*/// <param name="InStock">Initial inventory quantity</param>*/
 /// <summary>

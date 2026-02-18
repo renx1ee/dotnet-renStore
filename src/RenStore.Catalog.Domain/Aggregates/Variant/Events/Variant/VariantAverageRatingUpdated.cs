@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Aggregates.Variant.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 /// <summary>
 /// Records an update to the average customer rating of a product variant.

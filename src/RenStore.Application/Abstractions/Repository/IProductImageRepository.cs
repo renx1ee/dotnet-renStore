@@ -8,7 +8,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Domain.Repository;
 /// <summary>
-/// Repository for working with <see cref="ProductImage"/>.
+/// Repository for working with <see cref="VariantImage"/>.
 /// Provide basic CRUD operations and data retrieval methods with sorting and pagination.
 /// </summary>
 public interface IProductImageRepository
@@ -19,7 +19,7 @@ public interface IProductImageRepository
     /// <param name="image">The image entity to create.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>ID of the created entity.</returns>
-    Task<Guid> CreateAsync(ProductImage image, CancellationToken cancellationToken);
+    Task<Guid> CreateAsync(VariantImage image, CancellationToken cancellationToken);
     /// <summary>
     /// Edit an existing image in the database.
     /// </summary>
@@ -27,7 +27,7 @@ public interface IProductImageRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
     /// <exception cref="NotFoundException">Thrown when image is not found.</exception>
-    Task UpdateAsync(ProductImage image, CancellationToken cancellationToken);
+    Task UpdateAsync(VariantImage image, CancellationToken cancellationToken);
     /// <summary>
     /// Delete a image by ID.
     /// </summary>
@@ -45,7 +45,7 @@ public interface IProductImageRepository
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
     /// <returns>A collection of image entities.</returns>
-    Task<IEnumerable<ProductImage>> FindAllAsync(
+    Task<IEnumerable<VariantImage>> FindAllAsync(
         CancellationToken cancellationToken,
         uint pageCount = 25,
         uint page = 1,
@@ -57,7 +57,7 @@ public interface IProductImageRepository
     /// <param name="id">The image identifier.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The image entity if found; otherwise, <c>null</c>.</returns>
-    Task<ProductImage?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<VariantImage?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Finds an image by ID.
     /// </summary>
@@ -65,5 +65,5 @@ public interface IProductImageRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The image entity if found;</returns>
     /// <exception cref="NotFoundException">Thrown when image is not found.</exception>
-    Task<ProductImage> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<VariantImage> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

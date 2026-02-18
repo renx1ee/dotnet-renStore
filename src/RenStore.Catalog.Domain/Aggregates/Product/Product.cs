@@ -63,44 +63,6 @@ public class Product
     private Product() { }
     
     /// <summary>
-    /// Initializes or updates a product aggregate with the specified values.
-    /// Ensures that the aggregate invariants are respected and records necessary events.
-    /// </summary>
-    /// <param name="id">Unique identifier of the product aggregate.</param>
-    /// <param name="overallRating">Overall rating derived from all product variants.</param>
-    /// <param name="sellerId">Identifier of the seller who owns the product.</param>
-    /// <param name="subCategoryId">Identifier of the subcategory the product belongs to.</param>
-    /// <param name="status">Current lifecycle status of the product (e.g., Pending, Approved, Rejected).</param>
-    /// <param name="createdAt">Timestamp when the product was created.</param>
-    /// <param name="updatedAt">Timestamp of the last update to the product.</param>
-    /// <param name="deletedAt">Timestamp when the product was soft-deleted (null if active).</param>
-    /// <returns>The initialized or updated product aggregate.</returns>
-    public static Product Reconstitute(
-        Guid id,
-        Rating overallRating,
-        long sellerId,
-        int subCategoryId,
-        ProductStatus status,
-        DateTimeOffset createdAt,
-        DateTimeOffset? updatedAt,
-        DateTimeOffset? deletedAt)
-    {
-        var product = new Product()
-        {
-            Id = id,
-            OverallRating = overallRating,
-            SellerId = sellerId,
-            SubCategoryId = subCategoryId,
-            Status = status,
-            CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
-            DeletedAt = deletedAt
-        };
-
-        return product;
-    }
-    
-    /// <summary>
     /// Create a new product in the system, linked to a specific seller.
     /// The method checks business-rules:
     /// - The seller must exist and have the right to sell goods;
@@ -117,18 +79,17 @@ public class Product
         DateTimeOffset now)
     {
         SellerIdValidate(sellerId);
-
         SubCategoryIdValidate(subCategoryId);
 
         var product = new Product();
-
         var productId = Guid.NewGuid();
+        
         product.Raise(new ProductCreated(
-                ProductId: productId,
-                Status: ProductStatus.PendingModeration,
-                SellerId: sellerId,
-                SubCategoryId: subCategoryId,
-                OccurredAt: now));
+            ProductId: productId,
+            Status: ProductStatus.PendingModeration,
+            SellerId: sellerId,
+            SubCategoryId: subCategoryId,
+            OccurredAt: now));
 
         return product;
     }
@@ -147,35 +108,15 @@ public class Product
     {
         this.EndureNotDeleted();
 
-        VariantValidate(variantId);
+        VariantIdsValidate(variantId);
         
         Raise(new ProductVariantReferenceCreated(
             ProductId: Id,
-            ProductVariantId: variantId,
+            VariantId: variantId,
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Publish the product in the system.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    /// <exception cref="DomainException"></exception>
-    public void Publish(DateTimeOffset now)
-    {
-        this.EndureNotDeleted();
-        
-        if (!_productVariantIds.Any())
-            throw new DomainException("Product must have variants.");
-        
-        if(Status == ProductStatus.Published)
-            throw new DomainException("Product is already published.");
-
-        Raise(new ProductPublished(
-            ProductId: Id,
-            OccurredAt: now));
-    }
-    
-    /// <summary>
+    /*/// <summary>
     /// Register a new rating for the product.
     /// </summary>
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
@@ -184,12 +125,34 @@ public class Product
         DateTimeOffset now,
         decimal score)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductAverageRatingUpdated(
             ProductId: Id,
             OccurredAt: now,
             Score: score));
+    }*/
+    
+    /// <summary>
+    /// Publish the product in the system.
+    /// </summary>
+    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
+    /// <exception cref="DomainException"></exception>
+    public void MarkAsPublished(DateTimeOffset now)
+    {
+        EndureNotDeleted();
+        
+        if (!_productVariantIds.Any())
+            throw new DomainException(
+                "Product must have variants.");
+        
+        if(Status == ProductStatus.Published)
+            throw new DomainException(
+                "Product is already published.");
+
+        Raise(new ProductPublished(
+            ProductId: Id,
+            OccurredAt: now));
     }
 
     /// <summary>
@@ -199,7 +162,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void MarkAsRejected(DateTimeOffset now)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductRejected(
             ProductId: Id,
@@ -213,7 +176,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void MarkAsApproved(DateTimeOffset now)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductApproved(
             ProductId: Id,
@@ -227,7 +190,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void MarkAsDraft(DateTimeOffset now)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductMovedToDraft(
             ProductId: Id,
@@ -241,7 +204,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void MarkAsArchived(DateTimeOffset now)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductArchived(
             ProductId: Id,
@@ -255,7 +218,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void MarkAsHidden(DateTimeOffset now)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductHidden(
             ProductId: Id,
@@ -269,7 +232,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void Delete(DateTimeOffset now)
     {
-        this.EndureNotDeleted();
+        EndureNotDeleted();
         
         Raise(new ProductRemoved(
             ProductId: Id, 
@@ -282,15 +245,17 @@ public class Product
     /// </summary>
     /// <param name="variantId">Unique product variant id. The product variant ID must be existed in the system.</param>
     /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void DeleteVariantReference(
+    public void RemoveVariantReference(
         Guid variantId,
         DateTimeOffset now)
     {
+        EndureNotDeleted();
+        
         ProductVariantReferenceExists(variantId);
        
         Raise(new ProductVariantReferenceRemoved(
             ProductId: Id,
-            ProductVariantId: variantId,
+            VariantId: variantId,
             OccurredAt: now));
     }
     
@@ -328,10 +293,10 @@ public class Product
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductAverageRatingUpdated e:
+            /*case ProductAverageRatingUpdated e:
                 OverallRating = OverallRating.Add(e.Score);
                 UpdatedAt = e.OccurredAt;
-                break;
+                break;*/
             
             case ProductRejected e:
                 Status = ProductStatus.Rejected;
@@ -370,12 +335,12 @@ public class Product
                 break;
             
             case ProductVariantReferenceCreated e:
-                _productVariantIds.Add(e.ProductVariantId);
+                _productVariantIds.Add(e.VariantId);
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductVariantReferenceRemoved e:
-                _productVariantIds.Remove(e.ProductVariantId);
+                _productVariantIds.Remove(e.VariantId);
                 UpdatedAt = e.OccurredAt;
                 break;
         }
@@ -393,10 +358,13 @@ public class Product
             throw new DomainException("Variant does not exist.");
     }
     
-    private void VariantValidate(Guid variantId)
+    private void VariantIdsValidate(Guid variantId)
     {
         if (_productVariantIds.Count >= MaxVariantsCount)
             throw new DomainException($"Product variants count must be less than {MaxVariantsCount}.");
+
+        if (variantId == Guid.Empty)
+            throw new DomainException("Product variant Id cannot be empty guid.");
         
         if(_productVariantIds.Contains(variantId))
             throw new DomainException("Product variants reference already exists.");
@@ -414,3 +382,41 @@ public class Product
             throw new DomainException("Sub Category ID must be more than 0.");
     }
 }
+
+/*/// <summary>
+    /// Initializes or updates a product aggregate with the specified values.
+    /// Ensures that the aggregate invariants are respected and records necessary events.
+    /// </summary>
+    /// <param name="id">Unique identifier of the product aggregate.</param>
+    /// <param name="overallRating">Overall rating derived from all product variants.</param>
+    /// <param name="sellerId">Identifier of the seller who owns the product.</param>
+    /// <param name="subCategoryId">Identifier of the subcategory the product belongs to.</param>
+    /// <param name="status">Current lifecycle status of the product (e.g., Pending, Approved, Rejected).</param>
+    /// <param name="createdAt">Timestamp when the product was created.</param>
+    /// <param name="updatedAt">Timestamp of the last update to the product.</param>
+    /// <param name="deletedAt">Timestamp when the product was soft-deleted (null if active).</param>
+    /// <returns>The initialized or updated product aggregate.</returns>
+    public static Product Reconstitute(
+        Guid id,
+        Rating overallRating,
+        long sellerId,
+        int subCategoryId,
+        ProductStatus status,
+        DateTimeOffset createdAt,
+        DateTimeOffset? updatedAt,
+        DateTimeOffset? deletedAt)
+    {
+        var product = new Product()
+        {
+            Id = id,
+            OverallRating = overallRating,
+            SellerId = sellerId,
+            SubCategoryId = subCategoryId,
+            Status = status,
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt,
+            DeletedAt = deletedAt
+        };
+
+        return product;
+    }*/

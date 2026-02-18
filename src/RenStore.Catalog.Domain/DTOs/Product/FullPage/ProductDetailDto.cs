@@ -11,7 +11,7 @@ public record ProductDetailDto
     public string Equipment { get; set; } = string.Empty;
     public string Composition { get; set; } = string.Empty;
     public string CaringOfThings { get; set; } = string.Empty;
-    public TypeOfPackaging? TypeOfPacking { get; set; }
+    public TypeOfPacking? TypeOfPacking { get; set; }
     public int CountryOfManufactureId { get; set; }
     public Guid ProductVariantId { get; set; }
 }
