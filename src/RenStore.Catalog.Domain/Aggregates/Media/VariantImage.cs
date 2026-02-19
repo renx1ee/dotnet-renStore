@@ -38,11 +38,11 @@ public class VariantImage
         int height)
     {
         ProductImageRules.CreateProductImageValidation(
-            productVariantId: variantId,
+            productVariantId: variantId, // y
             originalFileName: originalFileName,
-            storagePath: storagePath,
-            fileSizeBytes: fileSizeBytes,
-            sortOrder: sortOrder,
+            storagePath: storagePath, // y
+            fileSizeBytes: fileSizeBytes, // y
+            sortOrder: sortOrder, // y
             weight: weight,
             height: height);
 
@@ -122,8 +122,12 @@ public class VariantImage
         long fileSizeBytes)
     {
         EnsureNotDeleted();
+        
+        ProductImageRules.FileSizeBytesValidate(fileSizeBytes);
+
+        if (FileSizeBytes == fileSizeBytes) return;
             
-        Raise(new ImageFileSizeBytesChanged(
+        Raise(new ImageFileSizeBytesUpdated(
             OccurredAt: now,
             ImageId: Id,
             FileSizeBytes: fileSizeBytes));
@@ -202,7 +206,7 @@ public class VariantImage
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageFileSizeBytesChanged e:
+            case ImageFileSizeBytesUpdated e:
                 FileSizeBytes = e.FileSizeBytes;
                 UpdatedAt = e.OccurredAt;
                 break;

@@ -21,7 +21,6 @@
     <ItemGroup>
       <Folder Include="UnitTets\Application\" />
       <Folder Include="UnitTets\Domain\Entities\" />
-      <Folder Include="UnitTets\Domain\ValueObjects\" />
       <Folder Include="UnitTets\Persistence\" />
     </ItemGroup>
 

@@ -20,10 +20,12 @@ internal static class ProductImageRules
     private const short MaxImageSortOrder       = 50;
     private const short MinImageSortOrder       = 1;
     
+    private const short MaxFileNameLaxLength    = 250;
+    private const short MinFileNameLaxLength    = 1;
+    
     /// <summary>
     /// Comprehensive validation for all product image creation parameters.
     /// </summary>
-    /// <param name="imageId">Unique identifier for the image</param>
     /// <param name="productVariantId">Parent variant identifier</param>
     /// <param name="originalFileName">Original uploaded file name</param>
     /// <param name="storagePath">Path to stored image file</param>
@@ -101,6 +103,9 @@ internal static class ProductImageRules
     {
         if (string.IsNullOrWhiteSpace(originalFileName))
             throw new DomainException("Product image file name cannot be string empty.");
+        
+        if(originalFileName.Length is > MaxFileNameLaxLength or < MinFileNameLaxLength)
+            throw new DomainException($"Original file name must be between {MaxFileNameLaxLength} and {MinFileNameLaxLength}.");
     }
 
     /// <summary>
