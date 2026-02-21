@@ -28,13 +28,12 @@ public class ProductQuestionConfiguration : IEntityTypeConfiguration<ProductQues
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
         
         /*builder
             .Property(x => x.ModeratedDate)
             .HasColumnName("moderated_date")
-            .HasDefaultValue(DateTime.UtcNow)
+        
             .IsRequired();*/
 
         builder

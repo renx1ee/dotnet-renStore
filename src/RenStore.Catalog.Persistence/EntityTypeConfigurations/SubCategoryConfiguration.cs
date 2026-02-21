@@ -17,39 +17,39 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
         
         builder
             .Property(x => x.Id)
-            .HasColumnName("sub_category_id");
+            .HasColumnName("id");
         
         builder
             .Property(x => x.Name)
-            .HasColumnName("sub_category_name")
+            .HasColumnName("name")
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)
             .IsRequired();
         
         builder
             .Property(x => x.NormalizedName)
-            .HasColumnName("normalized_sub_category_name")
+            .HasColumnName("normalized_name")
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)
             .IsRequired();
         
         builder
             .Property(x => x.NameRu)
-            .HasColumnName("sub_category_name_ru")
+            .HasColumnName("name_ru")
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)
             .IsRequired();
         
         builder
             .Property(x => x.NormalizedNameRu)
-            .HasColumnName("normalized_sub_category_name_ru")
+            .HasColumnName("normalized_name_ru")
             .HasColumnType("varchar(100)")
             .HasMaxLength(100)
             .IsRequired();
         
         builder
             .Property(x => x.Description)
-            .HasColumnName("sub_category_description")
+            .HasColumnName("description")
             .HasColumnType("varchar(500)")
             .HasMaxLength(500)
             .IsRequired(false);

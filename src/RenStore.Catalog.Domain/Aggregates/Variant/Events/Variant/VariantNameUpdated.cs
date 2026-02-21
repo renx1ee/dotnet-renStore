@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 /// <summary>
@@ -18,4 +20,5 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 public record VariantNameUpdated(
     DateTimeOffset OccurredAt,
     Guid VariantId,
-    string Name);
+    string Name)
+    : IDomainEvent;

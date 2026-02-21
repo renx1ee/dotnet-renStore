@@ -3,9 +3,8 @@ namespace RenStore.SharedKernal.Domain.Common;
 /// <summary>
 /// Represents common interface for Domain Events.
 /// </summary>
-public interface IDomainEvent
+public abstract record IDomainEvent
 {
-    Guid AggregateId { get; }
-    long Version { get; }
-    DateTimeOffset OccurredAt { get; }
+    public Guid EventId { get; init; } = Guid.NewGuid();
+    public DateTimeOffset OccurredAt { get; set; }
 }

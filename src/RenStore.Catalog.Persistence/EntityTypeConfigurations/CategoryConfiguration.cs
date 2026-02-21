@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Category;
-using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    public class CategoryConfiguration 
+        : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
@@ -17,32 +17,32 @@ namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
 
             builder
                 .Property(x => x.Id)
-                .HasColumnName("category_id");
+                .HasColumnName("id");
         
             builder
                 .Property(x => x.Name)
-                .HasColumnName("category_name")
+                .HasColumnName("name")
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100)
                 .IsRequired();
         
             builder
                 .Property(x => x.NormalizedName)
-                .HasColumnName("normalized_category_name")
+                .HasColumnName("normalized_name")
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100)
                 .IsRequired();
         
             builder
                 .Property(x => x.NameRu)
-                .HasColumnName("category_name_ru")
+                .HasColumnName("name_ru")
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100)
                 .IsRequired();
         
             builder
                 .Property(x => x.NormalizedNameRu)
-                .HasColumnName("normalized_category_name_ru")
+                .HasColumnName("normalized_name_ru")
                 .HasColumnType("varchar(100)")
                 .HasMaxLength(100)
                 .IsRequired();

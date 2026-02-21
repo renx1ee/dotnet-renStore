@@ -10,24 +10,32 @@ public class ProductAttributeConfiguration
     public void Configure(EntityTypeBuilder<VariantAttribute> builder)
     {
         builder
-            .ToTable("product_attributes");
+            .ToTable("variant_attributes");
         
         builder
             .HasKey(x => x.Id);
 
         builder
             .Property(x => x.Id)
-            .HasColumnName("attribute_id");
-        
+            .HasColumnName("id");
+
         builder
-            .Property(x => x.Key)
-            .HasColumnName("attribute_name")
-            .IsRequired();
-        
+            .OwnsOne(x => x.Key, key =>
+            {
+                key
+                    .Property(x => x.Key)
+                    .HasColumnName("key")
+                    .IsRequired();
+            });
+            
         builder
-            .Property(x => x.Value)
-            .HasColumnName("attribute_value")
-            .IsRequired();
+            .OwnsOne(x => x.Value, value =>
+            {
+                value
+                    .Property(x => x.Value)
+                    .HasColumnName("value")
+                    .IsRequired();
+            });
         
         builder
             .Property(x => x.IsDeleted)
@@ -50,15 +58,15 @@ public class ProductAttributeConfiguration
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
             .IsRequired(false);
-        
+
+        builder
+            .Property(x => x.VariantId)
+            .HasColumnName("product_variant_id");
+        // TODO:
         /*builder
             .HasOne<ProductVariant>()
             .WithMany(x => x.ProductAttributes)
             .HasForeignKey(x => x.ProductVariantId)
             .HasConstraintName("product_variant_id");*/
-
-        builder
-            .Property(x => x.VariantId)
-            .HasColumnName("product_variant_id");
     }
 }

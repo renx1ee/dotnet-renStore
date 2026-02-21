@@ -1,4 +1,5 @@
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 
@@ -23,4 +24,5 @@ public record VariantSizeCreated(
     Guid VariantId,
     LetterSize LetterSize,
     SizeSystem SizeSystem,
-    SizeType SizeType);
+    SizeType SizeType)
+    : IDomainEvent;

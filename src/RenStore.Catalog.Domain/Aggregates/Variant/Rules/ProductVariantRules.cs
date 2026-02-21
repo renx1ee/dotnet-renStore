@@ -9,7 +9,10 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 internal static class ProductVariantRules
 {
     private const int MaxProductNameLength = 500;
-    private const int MinProductNameLength = 25;
+    private const int MinProductNameLength = 10;
+    
+    private const int MaxUrlLength = 500;
+    private const int MinUrlLength = 25;
     
     /// <summary>
     /// Validates a product identifier for variant association.
@@ -43,20 +46,17 @@ internal static class ProductVariantRules
             throw new DomainException("Color Id cannot be less then 1.");
     }
     
-    /// <summary>
-    /// Validates a product variant display name.
-    /// </summary>
-    /// <param name="name">Variant name to validate</param>
-    /// <exception cref="DomainException">
-    /// Thrown when name length is outside allowed constraints (25-500 characters)
-    /// </exception>
-    /// <remarks>
-    /// Names should be descriptive enough for customer identification while maintaining reasonable length.
-    /// </remarks>
-    internal static void ValidateName(string name)
+    internal static string ValidateAndTrimName(string name)
     {
-        if(name.Length is < MinProductNameLength or > MaxProductNameLength)
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Name cannot be null or white space");
+        
+        var trimmedName = name.Trim();
+        
+        if(trimmedName.Length is < MinProductNameLength or > MaxProductNameLength)
             throw new DomainException($"Product name must be between {MinProductNameLength} and {MaxProductNameLength}.");
+
+        return trimmedName;
     }
     
     /// <summary>
@@ -69,9 +69,16 @@ internal static class ProductVariantRules
     /// <remarks>
     /// URL slugs are used for SEO-friendly product links and must be stable over time.
     /// </remarks>
-    internal static void ValidateUrl(string url)
+    internal static string ValidateAndTrimUrl(string url)
     {
         if (string.IsNullOrWhiteSpace(url))
             throw new DomainException("Url cannot be string empty.");
+
+        var trimmedUrl = url.Trim();
+        
+        if(trimmedUrl.Length is < MinUrlLength or > MaxUrlLength)
+            throw new DomainException($"Product url must be between {MinUrlLength} and {MaxUrlLength}.");
+
+        return trimmedUrl;
     }
 }

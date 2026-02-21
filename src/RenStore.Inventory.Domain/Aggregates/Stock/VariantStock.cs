@@ -1,6 +1,7 @@
 using RenStore.Inventory.Domain.Aggregates.Stock.Events;
 using RenStore.Inventory.Domain.Aggregates.Stock.Rules;
 using RenStore.Inventory.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Domain.Aggregates.Stock;
 // TODO: unique index в БД на VariantId: unique index в БД на VariantId
@@ -145,7 +146,7 @@ public sealed class VariantStock
             NewStock: newStock));
     }
     
-    protected override void Apply(object @event)
+    protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {

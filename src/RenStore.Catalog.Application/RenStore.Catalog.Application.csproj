@@ -8,6 +8,12 @@
 
     <ItemGroup>
       <Folder Include="Features\" />
+      <Folder Include="Interfaces\" />
+      <Folder Include="UnitOfWork\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
     </ItemGroup>
 
 </Project>

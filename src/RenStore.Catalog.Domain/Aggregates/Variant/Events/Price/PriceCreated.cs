@@ -1,3 +1,4 @@
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Enums;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
@@ -8,4 +9,5 @@ public record PriceCreated(
     Guid PriceId,
     Guid SizeId,
     Currency Currency,
-    decimal PriceAmount);
+    decimal PriceAmount)
+    : IDomainEvent;

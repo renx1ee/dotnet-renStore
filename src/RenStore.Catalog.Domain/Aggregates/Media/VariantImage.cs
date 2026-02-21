@@ -1,5 +1,6 @@
 using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Media;
@@ -18,11 +19,11 @@ public class VariantImage
     public short SortOrder { get; private set; } 
     public int Weight { get; private set; }
     public int Height { get; private set; }
-    public Guid VariantId { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTimeOffset UploadedAt { get; private set; } 
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
+    public Guid VariantId { get; private set; }
     
     private VariantImage() { }
     
@@ -38,11 +39,11 @@ public class VariantImage
         int height)
     {
         ProductImageRules.CreateProductImageValidation(
-            productVariantId: variantId, // y
+            productVariantId: variantId, 
             originalFileName: originalFileName,
-            storagePath: storagePath, // y
-            fileSizeBytes: fileSizeBytes, // y
-            sortOrder: sortOrder, // y
+            storagePath: storagePath, 
+            fileSizeBytes: fileSizeBytes, 
+            sortOrder: sortOrder, 
             weight: weight,
             height: height);
 
@@ -172,7 +173,7 @@ public class VariantImage
             ImageId: Id));
     }
     
-    protected override void Apply(object @event)
+    protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {

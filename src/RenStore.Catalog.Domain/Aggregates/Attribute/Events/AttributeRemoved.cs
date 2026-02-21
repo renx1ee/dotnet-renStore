@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
 /// <summary>
@@ -10,4 +12,5 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Historical attributes may still be referenced in past orders or analytics.
 /// </remarks>
 public record AttributeRemoved(
-    DateTimeOffset OccurredAt);
+    DateTimeOffset OccurredAt) 
+    : IDomainEvent;

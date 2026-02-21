@@ -1,5 +1,6 @@
 using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
 using RenStore.SharedKernal.Domain.ValueObjects;
 
@@ -18,20 +19,10 @@ public class Product
     /// </summary>
     public Guid Id { get; private set; }
     
-    /// <summary>
+    /*/// <summary>
     /// Overall rating calculated of all product variants.
     /// </summary>
-    public Rating OverallRating { get; private set; } 
-    
-    /// <summary>
-    /// Unique identifier of the seller.
-    /// </summary>
-    public long SellerId { get; private set; }
-    
-    /// <summary>
-    /// Unique identifier of the sub category.
-    /// </summary>
-    public int SubCategoryId { get; private set; }
+    public Rating OverallRating { get; private set; } */
     
     /// <summary>
     /// Current lifecycle status of the product.
@@ -52,6 +43,16 @@ public class Product
     /// Date when the product was deleted.
     /// </summary>
     public DateTimeOffset? DeletedAt { get; protected set; }
+    
+    /// <summary>
+    /// Unique identifier of the seller.
+    /// </summary>
+    public long SellerId { get; private set; }
+    
+    /// <summary>
+    /// Unique identifier of the sub category.
+    /// </summary>
+    public int SubCategoryId { get; private set; }
     
     /// <summary>
     /// The collection of product variant identifiers associated with this product.
@@ -268,14 +269,15 @@ public class Product
     public void Restore(DateTimeOffset now)
     {
         if(Status != ProductStatus.IsDeleted)
-            throw new DomainException("Cannot restore active entity.");
+            throw new DomainException(
+                "Cannot restore active entity.");
         
         Raise(new ProductRestored(
             ProductId: Id, 
             OccurredAt: now));
     }
     
-    protected override void Apply(object @event)
+    protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {
@@ -285,7 +287,7 @@ public class Product
                 SubCategoryId = e.SubCategoryId;
                 Status = e.Status;
                 CreatedAt = e.OccurredAt;
-                OverallRating = Rating.Empty();
+                /*OverallRating = Rating.Empty();*/
                 break;
             
             case ProductPublished e:

@@ -1,4 +1,5 @@
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 
@@ -33,4 +34,5 @@ public record VariantDetailsCreated(
     string? DecorativeElements,
     string? Equipment,
     string? CaringOfThings,
-    TypeOfPacking? TypeOfPackaging);
+    TypeOfPacking? TypeOfPackaging)
+    : IDomainEvent;

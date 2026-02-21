@@ -1,5 +1,8 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 public record VariantArchived(
     DateTimeOffset OccurredAt,
-    Guid VariantId);
+    Guid VariantId)
+    : IDomainEvent;

@@ -1,15 +1,16 @@
+using RenStore.Catalog.Domain.Aggregates.Category.Rules;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Category;
-
+// TODO:
 /// <summary>
 /// Represents a category physical entity with lifecycle and invariants.
 /// </summary>
-public class Category : CategoryRulesBase
+public class Category : CategoryRules
 {
     private readonly List<SubCategory> _subCategories = new();
     
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Name { get; private set; } 
     public string NormalizedName { get; private set; }
     public string NameRu { get; private set; } 
@@ -54,7 +55,7 @@ public class Category : CategoryRulesBase
     }
 
     public static Category Reconstitute(
-        int id,
+        Guid id,
         string name,
         string normalizedName,
         string nameRu,

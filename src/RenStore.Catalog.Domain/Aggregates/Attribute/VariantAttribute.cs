@@ -1,6 +1,7 @@
 using RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 using RenStore.Catalog.Domain.Aggregates.Attribute.Rules;
 using RenStore.Catalog.Domain.ValueObjects;
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Attribute;
@@ -29,11 +30,6 @@ public class VariantAttribute
     public AttributeValue Value { get; private set; }
     
     /// <summary>
-    /// Identifier of the product variant this attribute describes.
-    /// </summary>
-    public Guid VariantId { get; private set; }
-    
-    /// <summary>
     /// Indicates whether this attribute has been soft-deleted.
     /// </summary>
     public bool IsDeleted { get; private set; }
@@ -52,6 +48,11 @@ public class VariantAttribute
     /// Date when the product was deleted.
     /// </summary>
     public DateTimeOffset? DeletedAt { get; private set; }
+    
+    /// <summary>
+    /// Identifier of the product variant this attribute describes.
+    /// </summary>
+    public Guid VariantId { get; private set; }
     
     private VariantAttribute() { }
     
@@ -137,7 +138,7 @@ public class VariantAttribute
             AttributeId: Id));
     }
     
-    protected override void Apply(object @event)
+    protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {

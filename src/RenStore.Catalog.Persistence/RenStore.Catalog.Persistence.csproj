@@ -10,10 +10,11 @@
       <Folder Include="Read\Base\" />
       <Folder Include="Read\Quiries\Postgresql\" />
       <Folder Include="UnitOfWork\" />
-      <Folder Include="Write\Repositories\Postgresql\" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RenStore.Application\RenStore.Application.csproj" />
+      <ProjectReference Include="..\RenStore.Catalog.Application\RenStore.Catalog.Application.csproj" />
       <ProjectReference Include="..\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />
     </ItemGroup>
 

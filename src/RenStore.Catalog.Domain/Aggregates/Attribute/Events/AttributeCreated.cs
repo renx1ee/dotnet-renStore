@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
 /// <summary>
@@ -17,4 +19,5 @@ public record AttributeCreated(
     Guid VariantId,
     Guid AttributeId,
     string Key,
-    string Value);
+    string Value) 
+    : IDomainEvent;

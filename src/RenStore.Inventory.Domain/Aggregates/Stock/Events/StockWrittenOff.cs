@@ -1,4 +1,5 @@
 using RenStore.Inventory.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
@@ -18,4 +19,5 @@ public record StockWrittenOff(
     DateTimeOffset OccurredAt,
     WriteOffReason Reason,
     Guid StockId,
-    int Count);
+    int Count)
+    : IDomainEvent;

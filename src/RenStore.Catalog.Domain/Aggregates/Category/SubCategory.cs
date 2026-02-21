@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Aggregates.Category.Rules;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Category;
@@ -5,9 +6,9 @@ namespace RenStore.Catalog.Domain.Aggregates.Category;
 /// <summary>
 /// Represents a sub category physical entity with lifecycle and invariants.
 /// </summary>
-public class SubCategory : CategoryRulesBase
+public class SubCategory : CategoryRules
 {
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string NormalizedName { get; private set; }
     public string NameRu { get; private set; }
@@ -56,7 +57,7 @@ public class SubCategory : CategoryRulesBase
     }
     
     public static SubCategory Reconstitute(
-        int id,
+        Guid id,
         int categoryId,
         string name,
         string normalizedName,

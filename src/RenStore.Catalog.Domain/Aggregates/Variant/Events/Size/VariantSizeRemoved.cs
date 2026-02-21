@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 
 /// <summary>
@@ -19,4 +21,5 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 public record VariantSizeRemoved(
     DateTimeOffset OccurredAt,
     Guid VariantId,
-    Guid SizeId);
+    Guid SizeId)
+    : IDomainEvent;

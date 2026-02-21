@@ -1,8 +1,8 @@
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
-/*/// <param name="InStock">Initial inventory quantity</param>*/
 /// <summary>
 /// Records the creation of a new product variant in the catalog.
 /// Represents a specific configuration of a base product with unique attributes.
@@ -25,7 +25,7 @@ public record VariantCreated(
     Guid ProductId,
     int ColorId,
     string Name,
-    /*int InStock,*/
     SizeSystem SizeSystem,
     SizeType SizeType,
-    string Url);
+    string Url)
+    : IDomainEvent;

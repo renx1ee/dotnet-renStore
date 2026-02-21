@@ -1,6 +1,7 @@
 using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 using RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.VariantDetails;
@@ -19,10 +20,10 @@ public class VariantDetail
     public string? Equipment { get; private set; }
     public string? CaringOfThings { get; private set; } 
     public TypeOfPacking? TypeOfPacking { get; private set; }
-    public int CountryOfManufactureId { get; private set; }
-    public Guid ProductVariantId { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
+    public int CountryOfManufactureId { get; private set; }
+    public Guid VariantId { get; private set; }
     
     private VariantDetail() { }
 
@@ -200,7 +201,7 @@ public class VariantDetail
             CountryOfManufactureId: countryOfManufactureId));
     }
     
-    protected override void Apply(object @event)
+    protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {
@@ -208,7 +209,7 @@ public class VariantDetail
                 Id = e.DetailId;
                 CreatedAt = e.OccurredAt;
                 CountryOfManufactureId = e.CountryOfManufactureId;
-                ProductVariantId = e.VariantId;
+                VariantId = e.VariantId;
                 Description = e.Description;
                 Composition = e.Composition;
                 CaringOfThings = e.CaringOfThings;

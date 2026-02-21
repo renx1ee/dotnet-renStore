@@ -9,21 +9,22 @@ namespace RenStore.Delivery.Domain.Entities;
 public class DeliveryOrder
 {
     private readonly List<DeliveryTracking> _trackingHistory = new();
+    private PickupPoint _pickupPoint { get; }
+    private SortingCenter? _currentSortingCenter { get; }
+    private SortingCenter? _destinationSortingCenter { get; } 
+    private DeliveryTariff _tariff { get; }
     
     public Guid Id { get; private set; }
-    public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? DeliveredAt { get; private set; } = null;
-    public DateTimeOffset? DeletedAt { get; private set; } = null;
     public DeliveryStatus Status { get; private set; }
     public Guid OrderId { get; private set; }
     public int DeliveryTariffId { get; private set; }
-    private DeliveryTariff _tariff { get; }
     public long? CurrentSortingCenterId { get; private set; }
-    private SortingCenter? _currentSortingCenter { get; }
-    public long? DestinationSortingCenterId { get; private set; } 
-    private SortingCenter? _destinationSortingCenter { get; } 
+    public long? DestinationSortingCenterId { get; private set; }
     public long? PickupPointId { get; private set; }
-    private PickupPoint _pickupPoint { get; }
+    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset? DeliveredAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
+    
     public IReadOnlyCollection<DeliveryTracking> TrackingHistory => _trackingHistory;
     
     private DeliveryOrder() { }

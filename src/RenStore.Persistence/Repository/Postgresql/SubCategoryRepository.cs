@@ -11,7 +11,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class SubCategoryRepository : ISubCategoryRepository
+public class SubCategoryRepository /*: ISubCategoryRepository*/
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
@@ -40,7 +40,7 @@ public class SubCategoryRepository : ISubCategoryRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
     
-    public async Task<int> CreateAsync(SubCategory subCategory, CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(SubCategory subCategory, CancellationToken cancellationToken)
     {
         var result = await this._context.SubCategories.AddAsync(subCategory, cancellationToken);
         await this._context.SaveChangesAsync(cancellationToken);
@@ -55,7 +55,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         await this._context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var subCategory = await this.GetByIdAsync(id, cancellationToken);
         this._context.SubCategories.Remove(subCategory);
@@ -113,7 +113,7 @@ public class SubCategoryRepository : ISubCategoryRepository
     }
     
     public async Task<SubCategory?> FindByIdAsync(
-        int id, 
+        Guid id, 
         CancellationToken cancellationToken)
     {
         try
@@ -150,7 +150,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task<SubCategory> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<SubCategory> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
                ?? throw new NotFoundException(typeof(Category), id);

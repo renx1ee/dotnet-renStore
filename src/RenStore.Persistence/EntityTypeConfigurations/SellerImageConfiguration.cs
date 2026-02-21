@@ -47,7 +47,6 @@ public class SellerImageConfiguration : IEntityTypeConfiguration<SellerImageEnti
         builder
             .Property(x => x.UploadedAt)
             .HasColumnName("uploaded_date")
-            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
 
         builder

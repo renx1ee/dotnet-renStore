@@ -12,7 +12,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository /*: ICategoryRepository*/
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
@@ -41,7 +41,7 @@ public class CategoryRepository : ICategoryRepository
                                  ?? throw new ArgumentNullException($"DefaultConnection is null");
     }
     
-    public async Task<int> CreateAsync(Category category, CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(Category category, CancellationToken cancellationToken)
     {
         var result = await this._context.Categories.AddAsync(category, cancellationToken);
         await this._context.SaveChangesAsync(cancellationToken);
@@ -56,7 +56,7 @@ public class CategoryRepository : ICategoryRepository
         await this._context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var category = await this.GetByIdAsync(id, cancellationToken);
         this._context.Categories.Remove(category);
@@ -113,7 +113,7 @@ public class CategoryRepository : ICategoryRepository
     }
     
     public async Task<Category?> FindByIdAsync(
-        int id, 
+        Guid id, 
         CancellationToken cancellationToken)
     {
         try
@@ -149,7 +149,7 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<Category> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Category> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await this.FindByIdAsync(id, cancellationToken)
                ?? throw new NotFoundException(typeof(Category), id);

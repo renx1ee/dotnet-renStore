@@ -1,10 +1,11 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVariant>
+public class ProductVariantConfiguration 
+    : IEntityTypeConfiguration<ProductVariant>
 {
     public void Configure(EntityTypeBuilder<ProductVariant> builder)
     {
@@ -16,28 +17,18 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
 
         builder
             .Property(v => v.Id)
-            .HasColumnName("product_variant_id");
+            .HasColumnName("id");
 
         builder
             .Property(v => v.Name)
             .HasMaxLength(500)
-            .HasColumnName("variant_name")
+            .HasColumnName("name")
             .IsRequired();
 
         builder
             .Property(v => v.NormalizedName)
-            .HasColumnName("normalized_variant_name")
+            .HasColumnName("normalized_name")
             .HasMaxLength(500)
-            .IsRequired();
-
-        builder
-            .HasIndex(v => v.NormalizedName)
-            .IsUnique();
-
-        builder
-            .Property(v => v.Rating)
-            .HasColumnName("rating")
-            .HasDefaultValue(0)
             .IsRequired();
 
         builder
@@ -46,24 +37,8 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .IsRequired();
 
         builder
-            .HasIndex(v => v.Article)
-            .IsUnique();
-        
-        /*builder
-            .Property(v => v.InStock)
-            .HasColumnName("in_stock")
-            .HasDefaultValue(0)
-            .IsRequired();#1#
-        
-        builder
-            .Property(v => v.IsAvailable)
-            .HasColumnName("is_available")
-            .IsRequired();
-        
-        builder
-            .Property(v => v.CreatedAt)
-            .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
+            .Property(x => x.Status)
+            .HasColumnName("status")
             .IsRequired();
         
         builder
@@ -71,37 +46,41 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .HasColumnName("url")
             .HasMaxLength(500)
             .IsRequired();
-
-        /*builder
-            .HasOne(v => v.Product)
-            .WithMany(p => p.ProductVariantIds)
-            .HasForeignKey(v => v.ProductId);#1#
-
+        
+        builder
+            .Property(v => v.CreatedAt)
+            .HasColumnName("created_date")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+            
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired(false);
+        
         builder
             .Property(v => v.ProductId)
             .HasColumnName("product_id");
-        
-        /*builder
-            .HasOne(v => v.Color)
-            .WithMany(c => c.ProductVariantIds)
-            .HasForeignKey(v => v.ColorId);#1#
-        
+
         builder
             .Property(v => v.ColorId)
             .HasColumnName("color_id");
 
-        /*builder
-            .HasOne(v => v.ProductDetails)
-            .WithOne(d => d.ProductVariant);#1#
-        
-        /*builder
-            .HasMany(v => v.ProductAttributes)
-            .WithOne(a => a.ProductVariant)
-            .HasForeignKey(a => a.ProductVariantId);#1#
+        builder
+            .HasMany(x => x.Sizes)
+            .WithOne()
+            .HasForeignKey(x => x.VariantId);
         
         builder
-            .HasMany(v => v.PriceHistories)
-            .WithOne(p => p.ProductVariant)
-            .HasForeignKey(v => v.ProductVariantId);
+            .HasIndex(v => v.Article)
+            .IsUnique();
+        
+        builder
+            .HasIndex(v => v.NormalizedName)
+            .IsUnique();
     }
-}*/
+}

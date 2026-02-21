@@ -1,66 +1,67 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductPriceHistoryConfiguration : IEntityTypeConfiguration<ProductPriceHistory>
+public class ProductPriceHistoryConfiguration 
+    : IEntityTypeConfiguration<PriceHistory>
 {
-    public void Configure(EntityTypeBuilder<ProductPriceHistory> builder)
+    public void Configure(EntityTypeBuilder<PriceHistory> builder)
     {
         builder
-            .ToTable("product_price_histories");
+            .ToTable("price_history");
 
         builder
             .HasKey(x => x.Id);
         
         builder
             .Property(x => x.Id)
-            .HasColumnName("price_history_id");
+            .HasColumnName("id");
 
         builder
-            .Property(x => x.Price)
-            .HasColumnName("price")
+            .OwnsOne(x => x.Price, price =>
+            {
+                price
+                    .Property(x => x.Amount)
+                    .HasColumnName("price")
+                    .IsRequired();
+                
+                price 
+                    .Property(x => x.Currency)
+                    .HasColumnName("currency")
+                    .IsRequired();
+            });
+        
+        builder
+            .Property(x => x.ValidFrom)
+            .HasColumnName("valid_from")
             .IsRequired();
         
         builder
-            .Property(x => x.OldPrice)
-            .HasColumnName("old_price")
+            .Property(x => x.IsActive)
+            .HasColumnName("is_active")
             .IsRequired();
         
         builder
-            .Property(x => x.DiscountPrice)
-            .HasColumnName("discount_price")
+            .Property(x => x.CreatedAt)
+            .HasColumnName("created_date")
             .IsRequired();
         
         builder
-            .Property(x => x.DiscountPercent)
-            .HasColumnName("discount_percent")
-            .IsRequired();
-        
-        builder
-            .Property(x => x.StartDate)
-            .HasColumnName("start_date")
-            .IsRequired();
-        
-        builder
-            .Property(x => x.EndDate)
-            .HasColumnName("end_date")
+            .Property(x => x.DeactivatedAt)
+            .HasColumnName("deactivated_date")
             .IsRequired(false);
         
         builder
-            .Property(x => x.ChangedBy)
-            .HasColumnName("changed_by")
-            .IsRequired();
+            .Property(x => x.SizeId)
+            .HasColumnName("size_id");
 
-        builder
-            .HasOne(x => x.ProductVariant)
-            .WithMany(x => x.PriceHistories)
-            .HasForeignKey(x => x.ProductVariantId)
-            .HasConstraintName("product_variant_id");
-
-        builder
-            .Property(x => x.ProductVariantId)
-            .HasColumnName("product_variant_id");
+        /*builder
+            .HasOne(x => x.SizeId)
+            .WithMany()
+            .HasForeignKey(x => x.S)
+            .HasConstraintName("size_id");*/
     }
-}*/
+}

@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 /// <summary>
@@ -13,4 +15,5 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// </remarks>
 public record ImageRestored(
     DateTimeOffset OccurredAt,
-    Guid ImageId);
+    Guid ImageId)
+    : IDomainEvent;

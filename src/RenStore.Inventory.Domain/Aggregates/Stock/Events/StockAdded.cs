@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
 /// <summary>
@@ -18,4 +20,5 @@ namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 public record StockAdded(
     DateTimeOffset OccurredAt,
     Guid StockId,
-    int Count);
+    int Count)
+    : IDomainEvent;

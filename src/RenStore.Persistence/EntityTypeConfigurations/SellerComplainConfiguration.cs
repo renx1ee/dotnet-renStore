@@ -38,7 +38,6 @@ public class SellerComplainConfiguration : IEntityTypeConfiguration<SellerCompla
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
 
         builder

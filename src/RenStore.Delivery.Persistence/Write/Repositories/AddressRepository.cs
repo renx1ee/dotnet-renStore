@@ -18,7 +18,7 @@ internal sealed class AddressRepository
     {
         ArgumentNullException.ThrowIfNull(address);
         
-        await this._context.Addresses.AddAsync(address, cancellationToken);
+        await _context.Addresses.AddAsync(address, cancellationToken);
         
         return address.Id;
     }
@@ -33,20 +33,20 @@ internal sealed class AddressRepository
 
         if (addressesList.Count == 0) return;
         
-        await this._context.Addresses.AddRangeAsync(addressesList, cancellationToken);
+        await _context.Addresses.AddRangeAsync(addressesList, cancellationToken);
     }
 
     public void Remove(Address address)
     {
         ArgumentNullException.ThrowIfNull(address);
         
-        this._context.Addresses.Remove(address);
+        _context.Addresses.Remove(address);
     }
     
     public void RemoveRange(IReadOnlyCollection<Address> addressEntity)
     {
         ArgumentNullException.ThrowIfNull(addressEntity);
         
-        this._context.Addresses.RemoveRange(addressEntity);
+        _context.Addresses.RemoveRange(addressEntity);
     }
 }

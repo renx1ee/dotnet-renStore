@@ -26,7 +26,6 @@ public class ShoppingCartConfiguration : IEntityTypeConfiguration<ShoppingCartEn
 
         builder
             .Property(x => x.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow)
             .HasColumnName("created_date")
             .IsRequired();
         

@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 /// <summary>
@@ -29,4 +31,5 @@ public record ImageCreated(
     bool IsMain,
     short SortOrder,
     int Weight, 
-    int Height);
+    int Height)
+    : IDomainEvent;

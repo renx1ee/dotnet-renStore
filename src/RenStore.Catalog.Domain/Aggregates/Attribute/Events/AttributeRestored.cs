@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
 /// <summary>
@@ -12,4 +14,5 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// </remarks>
 public record AttributeRestored(
     DateTimeOffset OccurredAt,
-    Guid AttributeId);
+    Guid AttributeId) 
+    : IDomainEvent;

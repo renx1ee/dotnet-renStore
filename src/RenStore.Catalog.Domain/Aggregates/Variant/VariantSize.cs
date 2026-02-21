@@ -9,17 +9,22 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 /// </summary>
 public class VariantSize
 {
-    private readonly List<PriceHistory> _prices;
+    private readonly List<PriceHistory> _prices = new();
     
     public Guid Id { get; private set; }
-    public Size Size { get; private set; } // TODO:
-    public Guid VariantId { get; private set; }
+    public Size Size { get; private set; } 
     public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
-
+    public Guid VariantId { get; private set; }
+    
+    /// <summary>
+    /// The collection of price history associated with this variant.
+    /// </summary>
     public IReadOnlyList<PriceHistory> Prices => _prices.AsReadOnly();
+    
+    private VariantSize() { }
     
     internal static VariantSize Create(
         Guid id,

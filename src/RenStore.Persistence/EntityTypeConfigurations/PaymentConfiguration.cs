@@ -76,7 +76,6 @@ public class PaymentConfiguration : IEntityTypeConfiguration<PaymentEntity>
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
         
         builder

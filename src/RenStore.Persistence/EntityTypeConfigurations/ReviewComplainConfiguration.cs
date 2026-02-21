@@ -38,7 +38,6 @@ public class ReviewComplainConfiguration : IEntityTypeConfiguration<ReviewCompla
         builder
             .Property(x => x.CreatedDate)
             .HasColumnName("created_date")
-            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
 
         builder

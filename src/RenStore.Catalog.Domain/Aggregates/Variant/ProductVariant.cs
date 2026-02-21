@@ -8,6 +8,7 @@ using RenStore.Catalog.Domain.Aggregates.VariantDetails;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ValueObjects;
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 using RenStore.SharedKernal.Domain.ValueObjects;
@@ -21,7 +22,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant;
 public class ProductVariant
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
-    private readonly List<PriceHistory> _priceHistory = new(); // вынести в аггрегат
     private readonly List<VariantSize> _sizes = new();
     private readonly List<Guid> _imageIds = new();
     private readonly List<Guid> _attributeIds = new();
@@ -46,11 +46,12 @@ public class ProductVariant
     /// </summary>
     public string NormalizedName { get; private set; } 
     
-    /// <summary>
+    // вынести в отдельный контекст
+    /*/// <summary>
     /// Customer rating and review score for this product variant.
     /// Calculated from user reviews.
     /// </summary>
-    public Rating Rating { get; private set; } 
+    public Rating Rating { get; private set; } */
     
     /// <summary>
     /// Internal article number that uniquely identifies this product variant.
@@ -111,11 +112,6 @@ public class ProductVariant
     public int ColorId { get; private set; }
     
     /// <summary>
-    /// The collection of price history associated with this variant.
-    /// </summary>
-    public IReadOnlyCollection<PriceHistory> PriceHistories => _priceHistory.AsReadOnly();
-    
-    /// <summary>
     /// The collection of sizes associated with this variant.
     /// </summary>
     public IReadOnlyCollection<VariantSize> Sizes => _sizes.AsReadOnly();
@@ -166,11 +162,8 @@ public class ProductVariant
         ProductVariantRules.ValidateProductId(productId);
         ProductVariantRules.ValidateColorId(colorId);
 
-        var trimmedName = name.Trim();
-        ProductVariantRules.ValidateName(trimmedName);
-
-        string trimmedUrl = url.Trim();
-        ProductVariantRules.ValidateUrl(trimmedUrl);
+        var trimmedName = ProductVariantRules.ValidateAndTrimName(name);
+        string trimmedUrl = ProductVariantRules.ValidateAndTrimUrl(url);
         
         var variantId = Guid.NewGuid();
         var variant = new ProductVariant();
@@ -216,11 +209,9 @@ public class ProductVariant
     {
         EnsureNotDeleted();
         
-        string trimmedName = name.Trim();
+        string trimmedName = ProductVariantRules.ValidateAndTrimName(name);
         
         if (trimmedName == Name) return;
-        
-        ProductVariantRules.ValidateName(trimmedName);
 
         Raise(new VariantNameUpdated(
             OccurredAt: now,
@@ -228,7 +219,7 @@ public class ProductVariant
             Name: trimmedName));
     }
     
-    /// <summary>
+    /*/// <summary>
     /// Updates the average customer rating for this product variant.
     /// Calculated from customer reviews and feedback scores.
     /// </summary>
@@ -256,7 +247,7 @@ public class ProductVariant
             VariantId: Id,
             OccurredAt: now,
             Score: score));
-    }
+    }*/
 
     public void Activate(DateTimeOffset now)
     {
@@ -460,7 +451,7 @@ public class ProductVariant
 
     #endregion
     
-    protected override void Apply(object @event)
+    protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {
@@ -475,7 +466,7 @@ public class ProductVariant
                 SizeSystem = e.SizeSystem;
                 SizeType = e.SizeType;
                 Status = ProductVariantStatus.Draft;
-                Rating = Rating.Empty();
+                // Rating = Rating.Empty();
                 break;
             
             case VariantSizeCreated e:
@@ -530,10 +521,15 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantAverageRatingUpdated e:
-                Rating = Rating.Add(e.Score);
+            case VariantPublished e:
+                Status = ProductVariantStatus.Published;
                 UpdatedAt = e.OccurredAt;
                 break;
+            
+            /*case VariantAverageRatingUpdated e:
+                Rating = Rating.Add(e.Score);
+                UpdatedAt = e.OccurredAt;
+                break;*/
             
             case VariantRemoved e:
                 Status = ProductVariantStatus.IsDeleted;

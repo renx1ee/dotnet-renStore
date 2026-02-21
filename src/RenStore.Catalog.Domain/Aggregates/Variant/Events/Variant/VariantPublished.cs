@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 /// <summary>
@@ -16,4 +18,5 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 /// </remarks>
 public record VariantPublished(
     Guid VariantId,
-    DateTimeOffset OccurredAt);
+    DateTimeOffset OccurredAt)
+    : IDomainEvent;

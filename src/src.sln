@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Identity.DuendeSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Application", "RenStore.Application\RenStore.Application.csproj", "{09FB8C38-AC02-2C90-5CD3-C74B6ACE5EDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.ApiGateway", "RenStore.ApiGateway\RenStore.ApiGateway.csproj", "{91B4FA34-B646-48FC-9607-8FE6EF2D7E57}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Domain", "RenStore.Domain\RenStore.Domain.csproj", "{27F3CE6A-9532-E0F8-F240-270A3435F7B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Persistence", "RenStore.Persistence\RenStore.Persistence.csproj", "{3EE00368-E07C-A114-9B60-2BDB5A998F9F}"
@@ -49,10 +47,6 @@ Global
 		{4E229556-1BED-6F3F-F366-5220D063B42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E229556-1BED-6F3F-F366-5220D063B42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E229556-1BED-6F3F-F366-5220D063B42F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91B4FA34-B646-48FC-9607-8FE6EF2D7E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91B4FA34-B646-48FC-9607-8FE6EF2D7E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91B4FA34-B646-48FC-9607-8FE6EF2D7E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91B4FA34-B646-48FC-9607-8FE6EF2D7E57}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27F3CE6A-9532-E0F8-F240-270A3435F7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27F3CE6A-9532-E0F8-F240-270A3435F7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27F3CE6A-9532-E0F8-F240-270A3435F7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU

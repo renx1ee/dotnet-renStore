@@ -1,36 +1,42 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.Aggregates.Media;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
+public class ProductImageConfiguration 
+    : IEntityTypeConfiguration<VariantImage>
 {
-    public void Configure(EntityTypeBuilder<ProductImage> builder)
+    public void Configure(EntityTypeBuilder<VariantImage> builder)
     {
         builder
-            .ToTable("product_images");
+            .ToTable("variant_images");
 
         builder
             .HasKey(x => x.Id);
 
         builder
             .Property(x => x.Id)
-            .HasColumnName("product_image_id");
+            .HasColumnName("id");
 
         builder
             .Property(x => x.OriginalFileName)
             .HasColumnName("original_file_name")
+            .HasColumnType("varchar(250)")
+            .HasMaxLength(250)
             .IsRequired();
 
         builder
             .Property(x => x.StoragePath)
             .HasColumnName("storage_path")
+            .HasColumnType("varchar(500)")
+            .HasMaxLength(500)
             .IsRequired();
 
         builder
             .Property(x => x.FileSizeBytes)
             .HasColumnName("file_size_bites")
+            .HasColumnType("bigint")
             .IsRequired();
 
         builder
@@ -47,7 +53,6 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
         builder
             .Property(x => x.UploadedAt)
             .HasColumnName("uploaded_date")
-            .HasDefaultValue(DateTime.UtcNow)
             .IsRequired();
 
         builder
@@ -59,14 +64,25 @@ public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
             .Property(x => x.Height)
             .HasColumnName("height")
             .IsRequired();
-
+        
         builder
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .HasColumnType("boolean")
+            .HasDefaultValue("false")
+            .IsRequired();
+
+        /*
+         builder
             .HasOne(x => x.ProductVariant)
             .WithMany(x => x.Images)
-            .HasForeignKey(x => x.ProductVariantId);
+            .HasForeignKey(x => x.VariantId);
 
         builder
-            .Property(x => x.ProductVariantId)
+            .Property(x => x.VariantId)
             .HasColumnName("product_variant_id");
+        */
+        
+        // TODO:
     }
-}*/
+}
