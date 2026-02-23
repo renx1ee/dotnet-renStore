@@ -6,7 +6,7 @@ public class ProductTestBase
     {
         return Catalog.Domain.Aggregates.Product.Product.Create(
             sellerId: 12345,
-            subCategoryId: 3242,
+            subCategoryId: Guid.NewGuid(),
             now: DateTimeOffset.Now.AddHours(1));
     }
 }

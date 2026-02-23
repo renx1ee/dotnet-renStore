@@ -52,7 +52,7 @@ public class Product
     /// <summary>
     /// Unique identifier of the sub category.
     /// </summary>
-    public int SubCategoryId { get; private set; }
+    public Guid SubCategoryId { get; private set; }
     
     /// <summary>
     /// The collection of product variant identifiers associated with this product.
@@ -76,7 +76,7 @@ public class Product
     /// <returns>Created product entity with established business invariants.</returns>
     public static Product Create(
         long sellerId,
-        int subCategoryId,
+        Guid subCategoryId,
         DateTimeOffset now)
     {
         SellerIdValidate(sellerId);
@@ -391,10 +391,10 @@ public class Product
             throw new DomainException("Seller ID must be more than 0.");
     }
     
-    private static void SubCategoryIdValidate(int subCategoryId)
+    private static void SubCategoryIdValidate(Guid subCategoryId)
     {
-        if (subCategoryId <= 0)
-            throw new DomainException("Sub Category ID must be more than 0.");
+        if (subCategoryId == Guid.Empty)
+            throw new DomainException("Sub Category ID cannot be empty guid.");
     }
 }
 

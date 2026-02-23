@@ -14,7 +14,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 public record ProductCreated(
     Guid ProductId,
     long SellerId,
-    int SubCategoryId,
+    Guid SubCategoryId,
     ProductStatus Status,
     DateTimeOffset OccurredAt)
     : IDomainEvent

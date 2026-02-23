@@ -11,7 +11,7 @@ public class CreateTests
     {
         // Arrange
         var sellerId = 12345;
-        var subCategoryId = 3242;
+        var subCategoryId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
         
         // Act
@@ -41,15 +41,29 @@ public class CreateTests
     }
     
     [Theory]
-    [InlineData(1, 0)]
-    [InlineData(0, 1)]
-    [InlineData(-1, 0)]
-    [InlineData(1, -1)]
-    public void Should_Throw_WhenParametersAreInvalid(
-        long sellerId,
-        int subCategoryId)
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Should_Throw_WhenSellerIdIsInvalid(
+        long sellerId)
     {
         // Arrange
+        var subCategoryId = Guid.NewGuid();
+        var now = DateTimeOffset.Now;
+        
+        // Act
+        Assert.Throws<DomainException>(() => 
+            Catalog.Domain.Aggregates.Product.Product.Create(
+                sellerId: sellerId,
+                subCategoryId: subCategoryId,
+                now: now));
+    }
+    
+    [Fact]
+    public void Should_Throw_WhenSubCategoryIdIsInvalid()
+    {
+        // Arrange
+        var subCategoryId = Guid.Empty;
+        var sellerId = 12345;
         var now = DateTimeOffset.Now;
         
         // Act
