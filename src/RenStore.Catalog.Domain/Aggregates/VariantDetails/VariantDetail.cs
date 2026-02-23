@@ -260,6 +260,19 @@ public class VariantDetail
                 break;
         }
     }
+    
+    public static VariantDetail Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var variantDetail = new VariantDetail();
+        
+        foreach (var @event in history)
+        {
+            variantDetail.Apply(@event);
+            variantDetail.Version++;
+        }
+
+        return variantDetail;
+    }
 }
 
 /*

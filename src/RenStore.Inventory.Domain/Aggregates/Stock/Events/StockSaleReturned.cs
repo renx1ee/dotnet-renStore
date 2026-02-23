@@ -6,4 +6,7 @@ public record StockSaleReturned(
     DateTimeOffset OccurredAt,
     Guid StockId,
     int Count)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

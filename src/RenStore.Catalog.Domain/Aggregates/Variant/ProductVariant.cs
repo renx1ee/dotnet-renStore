@@ -554,6 +554,19 @@ public class ProductVariant
                 break;
         }
     }
+
+    public static ProductVariant Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var productVariant = new ProductVariant();
+
+        foreach (var @event in history)
+        {
+            productVariant.Apply(@event);
+            productVariant.Version++;
+        }
+
+        return productVariant;
+    }
     
     /// <summary>
     /// Ensures the product variant is not deleted before performing operations.

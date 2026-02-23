@@ -5,4 +5,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 public record VariantDetailsCompositionUpdated(
     DateTimeOffset OccurredAt,
     string Composition)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

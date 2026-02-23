@@ -78,6 +78,7 @@ public class VariantAttribute
             Key: key,
             Value: value));
 
+
         return attribute;
     }
     
@@ -173,6 +174,19 @@ public class VariantAttribute
                 UpdatedAt = e.OccurredAt;
                 break;
         }
+    }
+
+    public static VariantAttribute Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var variantAttribute = new VariantAttribute();
+
+        foreach (var @event in history)
+        {
+            variantAttribute.Apply(@event);
+            variantAttribute.Version++;
+        }
+
+        return variantAttribute;
     }
     
     /// <summary>

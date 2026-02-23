@@ -10,4 +10,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 public record ProductApproved(
     Guid ProductId,
     DateTimeOffset OccurredAt)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

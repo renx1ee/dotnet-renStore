@@ -6,4 +6,7 @@ public record ImageSortOrderUpdated(
     DateTimeOffset OccurredAt,
     Guid ImageId,
     short SortOrder)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

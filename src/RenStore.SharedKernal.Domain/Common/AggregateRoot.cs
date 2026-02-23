@@ -5,7 +5,7 @@ public abstract class AggregateRoot
     private readonly List<IDomainEvent> _uncommittedEvents = new();
     
     public Guid Id { get; protected set; }
-    public int Version { get; private set; }
+    public int Version { get; protected set; }
 
     public IReadOnlyCollection<IDomainEvent> GetUncommittedEvents() => 
         _uncommittedEvents.AsReadOnly();
@@ -22,14 +22,5 @@ public abstract class AggregateRoot
     public void UncommittedEventsClear()
     {
         _uncommittedEvents.Clear();
-    }
-    
-    protected void LoadFromHistory(IEnumerable<IDomainEvent> history)
-    {
-        foreach (var @event in history)
-        {
-            Apply(@event);
-            Version++;
-        }
     }
 }

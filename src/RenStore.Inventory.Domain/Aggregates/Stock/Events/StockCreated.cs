@@ -7,4 +7,7 @@ public record StockCreated(
     Guid StockId,
     Guid SizeId,
     int InitialStock)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

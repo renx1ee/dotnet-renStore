@@ -6,4 +6,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 public record VariantDetailsTypeOfPackingUpdated(
     DateTimeOffset OccurredAt,
     TypeOfPacking TypeOfPacking)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

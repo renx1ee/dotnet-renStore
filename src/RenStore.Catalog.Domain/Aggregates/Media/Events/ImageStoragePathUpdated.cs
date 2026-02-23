@@ -6,4 +6,7 @@ public record ImageStoragePathUpdated(
     DateTimeOffset OccurredAt,
     Guid ImageId,
     string StoragePath)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

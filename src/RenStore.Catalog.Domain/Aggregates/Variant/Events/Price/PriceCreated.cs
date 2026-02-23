@@ -10,4 +10,7 @@ public record PriceCreated(
     Guid SizeId,
     Currency Currency,
     decimal PriceAmount)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

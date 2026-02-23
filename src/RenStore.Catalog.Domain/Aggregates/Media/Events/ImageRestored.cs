@@ -16,4 +16,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 public record ImageRestored(
     DateTimeOffset OccurredAt,
     Guid ImageId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

@@ -19,4 +19,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 public record VariantPublished(
     Guid VariantId,
     DateTimeOffset OccurredAt)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

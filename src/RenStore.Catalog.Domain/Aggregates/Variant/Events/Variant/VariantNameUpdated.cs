@@ -21,4 +21,7 @@ public record VariantNameUpdated(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     string Name)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

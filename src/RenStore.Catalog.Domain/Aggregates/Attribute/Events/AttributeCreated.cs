@@ -20,4 +20,7 @@ public record AttributeCreated(
     Guid AttributeId,
     string Key,
     string Value) 
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

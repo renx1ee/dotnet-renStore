@@ -12,4 +12,7 @@ public record ProductVariantReferenceRemoved(
     Guid ProductId,
     Guid VariantId,
     DateTimeOffset OccurredAt)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

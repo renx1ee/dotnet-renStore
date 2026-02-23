@@ -5,4 +5,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 public record VariantArchived(
     DateTimeOffset OccurredAt,
     Guid VariantId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

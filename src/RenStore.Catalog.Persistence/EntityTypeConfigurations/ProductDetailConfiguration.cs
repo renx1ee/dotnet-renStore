@@ -73,6 +73,11 @@ public class ProductDetailConfiguration
             .IsRequired(false);
         
         builder
+            .Property(x => x.Version)
+            .HasColumnName("version")
+            .IsRequired();
+        
+        builder
             .Property(x => x.CountryOfManufactureId)
             .HasColumnName("country_id")
             .IsRequired();

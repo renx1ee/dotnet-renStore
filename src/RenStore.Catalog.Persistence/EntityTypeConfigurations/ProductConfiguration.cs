@@ -61,6 +61,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasColumnName("sub_category_id")
             .IsRequired();
         
+        builder
+            .Property(x => x.Version)
+            .HasColumnName("version")
+            .IsRequired();
+        
         /*builder
             .HasOne(p => p.Category)
             .WithMany(c => c.Products)

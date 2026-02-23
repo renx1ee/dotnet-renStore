@@ -2,7 +2,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Category.Rules;
 
-public abstract class CategoryRules 
+public static class CategoryRules 
 {
     private const int MaxCategoryNameLength = 100;
     private const int MinCategoryNameLength = 2;
@@ -10,7 +10,7 @@ public abstract class CategoryRules
     private const int MaxDescriptionLength  = 500;
     private const int MinDescriptionLength  = 1;
     
-    private protected static string NormalizeAndValidateName(string name)
+    internal static string NormalizeAndValidateName(string name)
     {
         var trimmedName = name.Trim();
         
@@ -23,7 +23,7 @@ public abstract class CategoryRules
         return trimmedName;
     }
     
-    private protected static string NormalizeAndValidateNameRu(string nameRu)
+    internal static string NormalizeAndValidateNameRu(string nameRu)
     {
         string trimmedNameRu = nameRu.Trim();
         
@@ -36,7 +36,7 @@ public abstract class CategoryRules
         return trimmedNameRu;
     }
     
-    private protected static string? NormalizeAndValidateDescription(string? description)
+    internal static string NormalizeAndValidateDescription(string? description)
     {
         if(description == null)
             throw new DomainException("Category description cannot be null.");

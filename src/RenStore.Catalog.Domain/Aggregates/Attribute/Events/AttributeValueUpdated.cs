@@ -6,4 +6,7 @@ public record AttributeValueUpdated(
     DateTimeOffset OccurredAt,
     Guid AttributeId,
     string Value) 
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

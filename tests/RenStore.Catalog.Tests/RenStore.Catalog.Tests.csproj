@@ -8,24 +8,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.collector" Version="6.0.2"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
-        <PackageReference Include="xunit" Version="2.9.2"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2"/>
+        <PackageReference Include="coverlet.collector" Version="6.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+        <PackageReference Include="Moq" Version="4.20.72" />
+        <PackageReference Include="xunit" Version="2.9.2" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
+        <Using Include="Xunit" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="UnitTets\Application\" />
       <Folder Include="UnitTets\Domain\Entities\" />
+      <Folder Include="UnitTets\Domain\Repositories\ProductRepository\" />
       <Folder Include="UnitTets\Persistence\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />
+      <ProjectReference Include="..\..\src\RenStore.Catalog.Persistence\RenStore.Catalog.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

@@ -19,4 +19,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 public record ImageMainUnset(
     DateTimeOffset OccurredAt,
     Guid ImageId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

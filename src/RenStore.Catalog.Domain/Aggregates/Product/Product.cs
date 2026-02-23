@@ -348,6 +348,19 @@ public class Product
         }
     }
 
+    public static Product Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var product = new Product();
+
+        foreach (var @event in history)
+        {
+            product.Apply(@event);
+            product.Version++;
+        }
+
+        return product;
+    }
+
     private void EndureNotDeleted()
     {
         if(Status == ProductStatus.IsDeleted)

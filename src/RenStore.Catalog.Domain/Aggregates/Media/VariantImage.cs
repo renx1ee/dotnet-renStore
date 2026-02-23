@@ -236,6 +236,19 @@ public class VariantImage
         }
     }
     
+    public static VariantImage Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var variantImage = new VariantImage();
+        
+        foreach (var @event in history)
+        {
+            variantImage.Apply(@event);
+            variantImage.Version++;
+        }
+
+        return variantImage;
+    }
+    
     /// <summary>
     /// Ensures the variant image is not deleted before performing operations.
     /// </summary>

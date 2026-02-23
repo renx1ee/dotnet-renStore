@@ -15,4 +15,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 public record AttributeRestored(
     DateTimeOffset OccurredAt,
     Guid AttributeId) 
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

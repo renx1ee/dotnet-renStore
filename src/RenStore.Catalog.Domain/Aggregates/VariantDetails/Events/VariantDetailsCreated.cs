@@ -35,4 +35,7 @@ public record VariantDetailsCreated(
     string? Equipment,
     string? CaringOfThings,
     TypeOfPacking? TypeOfPackaging)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

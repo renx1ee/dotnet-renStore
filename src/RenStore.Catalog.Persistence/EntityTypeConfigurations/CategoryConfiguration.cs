@@ -81,6 +81,11 @@ namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
                 .Property(x => x.DeletedAt)
                 .HasColumnName("deleted_date")
                 .IsRequired(false);
+            
+            builder
+                .Property(x => x.Version)
+                .HasColumnName("version")
+                .IsRequired();
         
             builder
                 .HasMany(x => x.SubCategories)

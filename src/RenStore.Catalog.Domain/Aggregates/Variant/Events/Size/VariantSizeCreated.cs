@@ -25,4 +25,7 @@ public record VariantSizeCreated(
     LetterSize LetterSize,
     SizeSystem SizeSystem,
     SizeType SizeType)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

@@ -32,4 +32,7 @@ public record ImageCreated(
     short SortOrder,
     int Weight, 
     int Height)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

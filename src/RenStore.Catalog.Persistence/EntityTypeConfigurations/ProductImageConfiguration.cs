@@ -54,6 +54,16 @@ public class ProductImageConfiguration
             .Property(x => x.UploadedAt)
             .HasColumnName("uploaded_date")
             .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired(false);
 
         builder
             .Property(x => x.Weight)
@@ -71,6 +81,15 @@ public class ProductImageConfiguration
             .HasColumnType("boolean")
             .HasDefaultValue("false")
             .IsRequired();
+        
+        builder
+            .Property(x => x.Version)
+            .HasColumnName("version")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.VariantId)
+            .HasColumnName("product_variant_id");
 
         /*
          builder
@@ -78,9 +97,7 @@ public class ProductImageConfiguration
             .WithMany(x => x.Images)
             .HasForeignKey(x => x.VariantId);
 
-        builder
-            .Property(x => x.VariantId)
-            .HasColumnName("product_variant_id");
+        
         */
         
         // TODO:

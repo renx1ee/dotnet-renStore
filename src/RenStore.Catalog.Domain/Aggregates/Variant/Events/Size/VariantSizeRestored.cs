@@ -21,4 +21,7 @@ public record VariantSizeRestored(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid SizeId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

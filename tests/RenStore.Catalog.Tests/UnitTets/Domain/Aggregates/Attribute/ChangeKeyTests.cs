@@ -17,7 +17,7 @@ public class ChangeKeyTests : AttributeTestBase
         string trimmedKey)
     {
         // Arrange
-        var now = DateTimeOffset.Now;
+        var now = DateTimeOffset.UtcNow;
         var attribute = CreateAttribute();
         
         // Act

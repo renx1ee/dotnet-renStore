@@ -62,6 +62,12 @@ public class ProductAttributeConfiguration
         builder
             .Property(x => x.VariantId)
             .HasColumnName("product_variant_id");
+        
+        builder
+            .Property(x => x.Version)
+            .HasColumnName("version")
+            .IsRequired();
+        
         // TODO:
         /*builder
             .HasOne<ProductVariant>()

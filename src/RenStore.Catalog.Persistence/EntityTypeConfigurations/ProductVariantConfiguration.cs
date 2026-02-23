@@ -69,6 +69,25 @@ public class ProductVariantConfiguration
         builder
             .Property(v => v.ColorId)
             .HasColumnName("color_id");
+        
+        builder
+            .Property(x => x.Version)
+            .HasColumnName("version")
+            .IsRequired();
+
+        builder
+            .Property(x => x.MainImageId)
+            .HasColumnName("main_image_id");
+        
+        builder
+            .Property(x => x.SizeSystem)
+            .HasColumnName("size_system")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.SizeType)
+            .HasColumnName("size_type")
+            .IsRequired();
 
         builder
             .HasMany(x => x.Sizes)

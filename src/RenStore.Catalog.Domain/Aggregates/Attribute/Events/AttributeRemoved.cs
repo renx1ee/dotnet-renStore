@@ -13,4 +13,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// </remarks>
 public record AttributeRemoved(
     DateTimeOffset OccurredAt) 
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

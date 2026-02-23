@@ -28,4 +28,7 @@ public record VariantCreated(
     SizeSystem SizeSystem,
     SizeType SizeType,
     string Url)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

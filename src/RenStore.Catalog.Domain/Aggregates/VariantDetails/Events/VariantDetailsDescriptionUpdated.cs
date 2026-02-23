@@ -6,4 +6,7 @@ public record VariantDetailsDescriptionUpdated(
     DateTimeOffset OccurredAt,
     string Description,
     Guid DetailId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

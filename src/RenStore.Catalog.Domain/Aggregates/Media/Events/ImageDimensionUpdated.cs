@@ -7,4 +7,7 @@ public record ImageDimensionUpdated(
     Guid ImageId,
     int Weight,
     int Height)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

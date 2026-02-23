@@ -5,4 +5,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 public record VariantDetailsDecorativeElementsUpdated(
     DateTimeOffset OccurredAt,
     string DecorativeElements)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

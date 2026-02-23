@@ -1,4 +1,5 @@
 using RenStore.Catalog.Domain.Aggregates.Category.Rules;
+using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Category;
@@ -6,7 +7,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Category;
 /// <summary>
 /// Represents a category physical entity with lifecycle and invariants.
 /// </summary>
-public class Category : CategoryRules
+public class Category 
+    : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     private readonly List<SubCategory> _subCategories = new();
     
@@ -31,11 +33,14 @@ public class Category : CategoryRules
         string nameRu,
         string? description = null)
     {
-        string trimmedName   = NormalizeAndValidateName(name);
-        string trimmedNameRu = NormalizeAndValidateNameRu(nameRu);
+        string trimmedName   = CategoryRules.NormalizeAndValidateName(name);
+        string trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
+
+        var categoryId = Guid.NewGuid();
         
         var category = new Category()
         {
+            Id = categoryId,
             Name = trimmedName,
             NormalizedName = trimmedName.ToUpperInvariant(),
             NameRu = trimmedNameRu,
@@ -46,7 +51,7 @@ public class Category : CategoryRules
 
         if (!string.IsNullOrWhiteSpace(description))
         {
-            string? trimmedDescription = NormalizeAndValidateDescription(description);
+            string? trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
 
             category.Description = trimmedDescription;
         }
@@ -89,7 +94,7 @@ public class Category : CategoryRules
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
-        string trimmedName = NormalizeAndValidateName(name);
+        string trimmedName = CategoryRules.NormalizeAndValidateName(name);
         
         if (trimmedName == Name) return;
 
@@ -105,7 +110,7 @@ public class Category : CategoryRules
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
-        string trimmedNameRu = NormalizeAndValidateNameRu(nameRu);
+        string trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
         
         if (trimmedNameRu == NameRu) return;
 
@@ -121,12 +126,30 @@ public class Category : CategoryRules
     {
         EnsureNotDeleted("Cannot change deleted category.");
         
-        string? trimmedDescription = NormalizeAndValidateDescription(description);
+        string? trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
         
         if (trimmedDescription == Description) return;
 
         Description = trimmedDescription;
         UpdatedAt = now;
+    }
+    // TODO:
+    protected override void Apply(IDomainEvent @event)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public static Category Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var category = new Category();
+        
+        foreach (var @event in history)
+        {
+            category.Apply(@event);
+            category.Version++;
+        }
+
+        return category;
     }
     
     private void EnsureNotDeleted(string? message = null)

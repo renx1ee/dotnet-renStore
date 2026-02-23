@@ -6,4 +6,7 @@ public record MainImageIdSet(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid ImageId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

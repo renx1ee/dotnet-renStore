@@ -5,4 +5,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 public record VariantDetailsCountryOfManufactureIdUpdated(
     DateTimeOffset OccurredAt,
     int CountryOfManufactureId)
-    : IDomainEvent;
+    : IDomainEvent
+{
+    public Guid EventId { get; init; } = Guid.NewGuid();
+}

@@ -6,7 +6,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Category;
 /// <summary>
 /// Represents a sub category physical entity with lifecycle and invariants.
 /// </summary>
-public class SubCategory : CategoryRules
+public class SubCategory
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
@@ -19,12 +19,12 @@ public class SubCategory : CategoryRules
     public DateTimeOffset CreatedAt { get; private set; } 
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
-    public int CategoryId { get; private set; }
+    public Guid CategoryId { get; private set; }
     
     private SubCategory() { }
 
     public static SubCategory Create(
-        int categoryId,
+        Guid categoryId,
         DateTimeOffset now,
         string name,
         string nameRu,
@@ -32,8 +32,8 @@ public class SubCategory : CategoryRules
     {
         CategoryIdValidation(categoryId);
         
-        string trimmedName   = NormalizeAndValidateName(name);
-        string trimmedNameRu = NormalizeAndValidateNameRu(nameRu);
+        string trimmedName   = CategoryRules.NormalizeAndValidateName(name);
+        string trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
         
         var category = new SubCategory()
         {
@@ -48,7 +48,7 @@ public class SubCategory : CategoryRules
 
         if (!string.IsNullOrWhiteSpace(description))
         {
-            string? trimmedDescription = NormalizeAndValidateDescription(description);
+            string? trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
             
             category.Description = trimmedDescription;
         }
@@ -58,7 +58,7 @@ public class SubCategory : CategoryRules
     
     public static SubCategory Reconstitute(
         Guid id,
-        int categoryId,
+        Guid categoryId,
         string name,
         string normalizedName,
         string nameRu,
@@ -93,7 +93,7 @@ public class SubCategory : CategoryRules
     {
         EnsureNotDeleted("Cannot change deleted sub category.");
         
-        string trimmedName = NormalizeAndValidateName(name);
+        string trimmedName = CategoryRules.NormalizeAndValidateName(name);
         
         if (trimmedName == Name) return;
 
@@ -109,7 +109,7 @@ public class SubCategory : CategoryRules
     {
         EnsureNotDeleted("Cannot change deleted sub category.");
         
-        string trimmedNameRu = NormalizeAndValidateNameRu(nameRu);
+        string trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
         
         if (trimmedNameRu == NameRu) return;
 
@@ -125,7 +125,7 @@ public class SubCategory : CategoryRules
     {
         EnsureNotDeleted("Cannot change deleted sub category.");
         
-        string? trimmedDescription = NormalizeAndValidateDescription(description);
+        string? trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
         
         if (trimmedDescription == Description) return;
 
@@ -139,9 +139,9 @@ public class SubCategory : CategoryRules
             throw new DomainException(message ?? "Entity is deleted.");
     }
     
-    private static void CategoryIdValidation(int categoryId)
+    private static void CategoryIdValidation(Guid categoryId)
     {
-        if(categoryId <= 0)
-            throw new DomainException("Category Id must be greater than 1.");
+        if(categoryId == Guid.Empty)
+            throw new DomainException("Category Id cannot be guid emtpy.");
     }
 }
