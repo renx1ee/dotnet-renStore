@@ -13,13 +13,11 @@ internal abstract class DapperQueryBase(
     DeliveryDbContext context,
     ILogger logger)
 {
-    private const uint MaxPageSize = 1000;
+    private const uint MaxPageSize            = 1000;
     protected const int CommandTimeoutSeconds = 30;
 
-    private readonly ILogger _logger            = logger
-                                                     ?? throw new ArgumentNullException(nameof(logger));
-    private readonly DeliveryDbContext _context = context
-                                                     ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogger _logger = logger             ?? throw new ArgumentNullException(nameof(logger));
+    private readonly DeliveryDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     
     /// <summary>
     /// Returns current database transaction if exists.

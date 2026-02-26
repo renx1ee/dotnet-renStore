@@ -59,5 +59,10 @@ public class EventStoreConfiguration
         builder
             .HasIndex(x => x.Version)
             .IsUnique();
+
+        builder
+            .HasIndex(x => new { x.AggregateId, x.Version })
+            .HasDatabaseName("ux_events_aggregate_id_version")
+            .IsUnique();
     }
 }

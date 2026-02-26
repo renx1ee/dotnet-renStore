@@ -46,6 +46,12 @@ internal static class ProductVariantRules
             throw new DomainException("Color Id cannot be less then 1.");
     }
     
+    internal static void ValidateArticle(long article)
+    {
+        if (article <= 0)
+            throw new DomainException("Article cannot be less then 1.");
+    }
+    
     internal static string ValidateAndTrimName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))

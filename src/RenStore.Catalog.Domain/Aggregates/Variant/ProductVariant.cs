@@ -129,7 +129,7 @@ public class ProductVariant
     private ProductVariant() { }
 
     #region Variant
-    
+
     /// <summary>
     /// Create a new product variant in the system, linked to a specific product.
     /// </summary>
@@ -141,6 +141,7 @@ public class ProductVariant
     /// <param name="sizeSystem">Measurement system used for sizing in this product variant.
     /// Determines which size chart applies and how sizes are displayed to customers.</param>
     /// <param name="sizeType">Category of sizing applicable to this product variant.</param>
+    /// <param name="article"></param>
     /// <param name="url">SEO-friendly URL slug for this product variant.
     /// Used to generate permanent links in the catalog and for search engine optimization.</param>
     /// <returns>Created product variant entity with established business invariants.</returns>
@@ -157,10 +158,12 @@ public class ProductVariant
         string name,
         SizeSystem sizeSystem,
         SizeType sizeType,
+        long article,
         string url)
     {
         ProductVariantRules.ValidateProductId(productId);
         ProductVariantRules.ValidateColorId(colorId);
+        ProductVariantRules.ValidateArticle(article);
 
         var trimmedName = ProductVariantRules.ValidateAndTrimName(name);
         string trimmedUrl = ProductVariantRules.ValidateAndTrimUrl(url);
@@ -177,6 +180,7 @@ public class ProductVariant
                 Url: trimmedUrl,
                 SizeSystem: sizeSystem,
                 SizeType: sizeType,
+                Article: article,
                 OccurredAt: now));
         
         return variant;
@@ -466,6 +470,7 @@ public class ProductVariant
                 SizeSystem = e.SizeSystem;
                 SizeType = e.SizeType;
                 Status = ProductVariantStatus.Draft;
+                Article = e.Article;
                 // Rating = Rating.Empty();
                 break;
             

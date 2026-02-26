@@ -4,14 +4,23 @@ using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Persistence;
 
-namespace RenStore.Catalog.Tests.UnitTets.Domain.Repositories.CategoryRepository;
+namespace RenStore.Catalog.Tests.UnitTets.Persistence.Repositories.CategoryRepository;
 
 public class RemoveRangeTests : IAsyncLifetime
 {
-    private static string _connectionString =
-        $"Server=localhost;Port=5432;DataBase={Guid.NewGuid()}; User Id=re;Password=postgres;Include Error Detail=True";
-
     private CatalogDbContext _context;
+    
+    public async Task InitializeAsync()
+    {
+        var options = new DbContextOptionsBuilder<CatalogDbContext>()
+            .UseNpgsql(connectionString: CatalogRepositoryTestsBase
+                .BuildConnectionString(Guid.NewGuid()))
+            .Options;
+
+        _context = new CatalogDbContext(options);
+        await _context.Database.EnsureDeletedAsync();
+        await _context.Database.EnsureCreatedAsync();
+    }
     
     [Fact]
     public async Task Should_Removed_Categories_From_Postgres()
@@ -41,18 +50,10 @@ public class RemoveRangeTests : IAsyncLifetime
                 description: description2,
                 now: now2)
         };
-        
-        var options = new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseNpgsql(connectionString: _connectionString)
-            .Options;
-
-        _context = new CatalogDbContext(options);
-        await _context.Database.EnsureDeletedAsync();
-        await _context.Database.EnsureCreatedAsync();
 
         var eventStoreMock = new Mock<IEventStore>();
         
-        var repository = new Persistence.Write.Repositories.Postgresql
+        var repository = new Catalog.Persistence.Write.Repositories.Postgresql
             .CategoryRepository(
                 _context, 
                 eventStoreMock.Object);
@@ -81,17 +82,9 @@ public class RemoveRangeTests : IAsyncLifetime
         // Arrange
         List<Category> categories = null;
         
-        var options = new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseNpgsql(connectionString: _connectionString)
-            .Options;
-
-        _context = new CatalogDbContext(options);
-        await _context.Database.EnsureDeletedAsync();
-        await _context.Database.EnsureCreatedAsync();
-
         var eventStoreMock = new Mock<IEventStore>();
         
-        var repository = new Persistence.Write.Repositories.Postgresql
+        var repository = new Catalog.Persistence.Write.Repositories.Postgresql
             .CategoryRepository(
                 _context, 
                 eventStoreMock.Object);
@@ -99,10 +92,6 @@ public class RemoveRangeTests : IAsyncLifetime
         // Act
         Assert.Throws<ArgumentNullException>(() => 
             repository.RemoveRange(categories));
-    }
-    
-    public async Task InitializeAsync()
-    {
     }
 
     public async Task DisposeAsync()

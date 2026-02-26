@@ -11,7 +11,7 @@ namespace RenStore.Catalog.Persistence.EventStore;
 
 public static class DomainEventMappings
 {
-    public static readonly Dictionary<string, Type> DomainEvents = new()
+    public static readonly Dictionary<string, Type> DomainEventsNameToType = new()
     {
         // Details
         { "variant-details-caring-of-things-updated",          typeof(VariantDetailsCaringOfThingsUpdated) },
@@ -67,5 +67,63 @@ public static class DomainEventMappings
         { "variant-name-updated",                              typeof(VariantNameUpdated) },
         { "variant-published",                                 typeof(VariantPublished) },
         { "variant-removed",                                   typeof(VariantRemoved) },
+    };
+    
+    public static readonly Dictionary<Type, string> DomainEventsTypeToName = new()
+    {
+        // Details
+        { typeof(VariantDetailsCaringOfThingsUpdated),         "variant-details-caring-of-things-updated" },
+        { typeof(VariantDetailsCompositionUpdated),            "variant-details-composition-updated" },
+        { typeof(VariantDetailsCountryOfManufactureIdUpdated), "variant-details-country-of-manufacture-id-updated" },
+        { typeof(VariantDetailsCreated),                       "variant-details-created" },
+        { typeof(VariantDetailsDecorativeElementsUpdated),     "variant-details-decorative-elements-updated" },
+        { typeof(VariantDetailsDescriptionUpdated),            "variant-details-description-updated" },
+        { typeof(VariantDetailsEquipmentUpdated),              "variant-details-equipment-updated" },
+        { typeof(VariantDetailsModelFeaturesUpdated),          "variant-details-model-features-updated" },
+        { typeof(VariantDetailsTypeOfPackingUpdated),          "variant-details-type-of-packing-updated" },
+        
+        // Attribute
+        { typeof(AttributeCreated),                            "attribute-created" },
+        { typeof(AttributeKeyUpdated),                         "attribute-key-updated" },
+        { typeof(AttributeRemoved),                            "attribute-removed" },
+        { typeof(AttributeRestored),                           "attribute-restored" },
+        { typeof(AttributeValueUpdated),                       "attribute-value-updated" },
+        
+        // Media
+        { typeof(ImageCreated),                                "image-created" },
+        { typeof(ImageDimensionUpdated),                       "image-dimension-updated" },
+        { typeof(ImageFileSizeBytesUpdated),                   "image-file-size-byte-updated" },
+        { typeof(ImageMainSet),                                "image-main-set" },
+        { typeof(ImageMainUnset),                              "image-main-unset" },
+        { typeof(ImageRemoved),                                "image-removed" },
+        { typeof(ImageRestored),                               "image-restored" },
+        { typeof(ImageSortOrderUpdated),                       "image-sort-order-updated" },
+        { typeof(ImageStoragePathUpdated),                     "image-storage-path-updated" },
+        
+        // Product
+        { typeof(ProductApproved),                             "product-approved" },
+        { typeof(ProductArchived),                             "product-archived" },
+        { typeof(ProductCreated),                              "product-created" },
+        { typeof(ProductHidden),                               "product-hidden" },
+        { typeof(ProductMovedToDraft),                         "product-moved-to-draft" },
+        { typeof(ProductPublished),                            "product-published" },
+        { typeof(ProductRejected),                             "product-rejected" },
+        { typeof(ProductRemoved),                              "product-removed" },
+        { typeof(ProductRestored),                             "product-restored" },
+        { typeof(ProductVariantReferenceCreated),              "product-variant-reference-created" },
+        { typeof(ProductVariantReferenceRemoved),              "product-variant-reference-removed" },
+        
+        // Variant
+        { typeof(MainImageIdSet),                              "variant-main-image-id-set" },
+        { typeof(PriceCreated),                                "variant-price-created" },
+        { typeof(VariantSizeCreated),                          "variant-size-created" },
+        { typeof(VariantSizeRemoved),                          "variant-size-removed" },
+        { typeof(VariantSizeRestored),                         "variant-size-restored" },
+        { typeof(VariantArchived),                             "variant-archived" },
+        { typeof(VariantCreated),                              "variant-created" },
+        { typeof(VariantDrafted),                              "variant-drafted" },
+        { typeof(VariantNameUpdated),                          "variant-name-updated" },
+        { typeof(VariantPublished),                            "variant-published" },
+        { typeof(VariantRemoved),                              "variant-removed" },
     };
 }

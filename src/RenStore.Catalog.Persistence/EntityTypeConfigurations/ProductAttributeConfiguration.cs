@@ -61,7 +61,7 @@ public class ProductAttributeConfiguration
 
         builder
             .Property(x => x.VariantId)
-            .HasColumnName("product_variant_id");
+            .HasColumnName("variant_id");
         
         builder
             .Property(x => x.Version)

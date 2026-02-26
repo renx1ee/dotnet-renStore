@@ -27,6 +27,7 @@ public record VariantCreated(
     string Name,
     SizeSystem SizeSystem,
     SizeType SizeType,
+    long Article,
     string Url)
     : IDomainEvent
 {

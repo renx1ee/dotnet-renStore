@@ -24,7 +24,7 @@ public class ProductRepository
     {
         if (id == Guid.Empty)
             throw new ArgumentOutOfRangeException(nameof(id));
-
+        
         var events = await _eventStore.LoadAsync(id, cancellationToken);
         
         if (!events.Any()) return null;
@@ -48,7 +48,7 @@ public class ProductRepository
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(products);
-
+        
         var productsList = products as IList<Product> ?? products.ToList();
 
         if (productsList.Count == 0) return;

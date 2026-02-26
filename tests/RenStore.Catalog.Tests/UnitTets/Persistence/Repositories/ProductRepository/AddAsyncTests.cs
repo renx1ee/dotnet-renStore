@@ -4,14 +4,23 @@ using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Persistence;
 
-namespace RenStore.Catalog.Tests.UnitTets.Domain.Repositories.ProductRepository;
+namespace RenStore.Catalog.Tests.UnitTets.Persistence.Repositories.ProductRepository;
 
 public class AddAsyncTests : IAsyncLifetime
 {
-    private static string _connectionString =
-        $"Server=localhost;Port=5432;DataBase={Guid.NewGuid()}; User Id=re;Password=postgres;Include Error Detail=True";
-    
     private CatalogDbContext _context;
+    
+    public async Task InitializeAsync()
+    {
+        var options = new DbContextOptionsBuilder<CatalogDbContext>()
+            .UseNpgsql(connectionString: CatalogRepositoryTestsBase
+                .BuildConnectionString(Guid.NewGuid()))
+            .Options;
+
+        _context = new CatalogDbContext(options);
+        await _context.Database.EnsureDeletedAsync();
+        await _context.Database.EnsureCreatedAsync();
+    }
 
     [Fact]
     public async Task Should_Saved_Product_To_Postgres()
@@ -21,18 +30,9 @@ public class AddAsyncTests : IAsyncLifetime
         var subCategoryId = Guid.NewGuid();
         var now = DateTimeOffset.UtcNow;
         
-        var options = new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseNpgsql(connectionString: _connectionString)
-            .Options;
-
-        _context = new CatalogDbContext(options);
-        await _context.Database.EnsureDeletedAsync();
-        await _context.Database.EnsureCreatedAsync();
-        /*await context.Database.MigrateAsync();*/
-
         var eventStoreMock = new Mock<IEventStore>();
         
-        var repository = new Persistence.Write.Repositories.Postgresql
+        var repository = new Catalog.Persistence.Write.Repositories.Postgresql
             .ProductRepository(
                 _context, 
                 eventStoreMock.Object);
@@ -68,18 +68,9 @@ public class AddAsyncTests : IAsyncLifetime
         var subCategoryId = Guid.NewGuid();
         var now = DateTimeOffset.UtcNow;
         
-        var options = new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseNpgsql(connectionString: _connectionString)
-            .Options;
-
-        _context = new CatalogDbContext(options);
-        await _context.Database.EnsureDeletedAsync();
-        await _context.Database.EnsureCreatedAsync();
-        /*await context.Database.MigrateAsync();*/
-
         var eventStoreMock = new Mock<IEventStore>();
         
-        var repository = new Persistence.Write.Repositories.Postgresql
+        var repository = new Catalog.Persistence.Write.Repositories.Postgresql
             .ProductRepository(_context, eventStoreMock.Object);
 
         Product product = null;
@@ -87,10 +78,6 @@ public class AddAsyncTests : IAsyncLifetime
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             await repository.AddAsync(product, CancellationToken.None));
-    }
-    
-    public async Task InitializeAsync()
-    {
     }
 
     public async Task DisposeAsync()

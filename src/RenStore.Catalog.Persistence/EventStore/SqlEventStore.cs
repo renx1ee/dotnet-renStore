@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using RenStore.SharedKernal.Domain.Common;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.EventStore;
 
@@ -26,44 +27,88 @@ public class SqlEventStore
         return entities.Select(ToDomainEvent).ToList();
     }
     
-    // TODO:
     public async Task AppendAsync(
         Guid aggregateId, 
         int expectedVersion, 
         IReadOnlyList<IDomainEvent> events, 
         CancellationToken cancellationToken = default) 
     {
+        if (aggregateId == Guid.Empty)
+            throw new InvalidOperationException(nameof(aggregateId));
         
+        if (expectedVersion < 0)
+            throw new InvalidOperationException(nameof(expectedVersion));
+        
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (events == null || events.Count == 0)
+            return;
+
+        var version = expectedVersion;
+
+        foreach (var domainEvent in events)
+        {
+            version++;
+            
+            var eventEntity = ToEntity(aggregateId, domainEvent, version);
+            
+            _context.Events.Add(eventEntity);
+        }
+
+        try
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException e) 
+            when(IsUniqueViolation(e)) 
+        { 
+            throw new ConcurrencyException(
+                $"Concurrency conflict for aggregate {aggregateId}.", e);
+        }
     }
 
     private EventEntity ToEntity(
+        Guid aggregateId, 
         IDomainEvent domainEvent, 
         int version)
     {
-        var key = DomainEventMappings.DomainEvents
-            .FirstOrDefault(x => 
-                x.Value == domainEvent.GetType()).Key; 
-        
-        if(key == null)
-            throw new InvalidOperationException($"Event type {domainEvent.GetType()} not registered at in {DomainEventMappings.DomainEvents}.");
+        if (!DomainEventMappings.DomainEventsTypeToName
+                .TryGetValue(domainEvent.GetType(), out var type))
+        {
+            throw new InvalidOperationException(
+                $"Event type {domainEvent.GetType()} not registered at in {DomainEventMappings.DomainEventsTypeToName}.");
+        }
             
         return new EventEntity()
         {
             Id = domainEvent.EventId,
+            AggregateId = aggregateId,
             Version = version,
-            EventType = key,
-            Data = JsonSerializer.Serialize(domainEvent),
+            EventType = type,
+            Data = JsonSerializer.Serialize(
+                domainEvent, 
+                EventSerializer.Options),
             OccurredAtUtc = domainEvent.OccurredAt
         };
     }
     
     private IDomainEvent ToDomainEvent(EventEntity eventEntity)
     {
-        if (!DomainEventMappings.DomainEvents.TryGetValue(eventEntity.EventType, out var type))
-            throw new InvalidOperationException($"Unknown event type {eventEntity.EventType}");
+        if (!DomainEventMappings.DomainEventsNameToType
+                .TryGetValue(eventEntity.EventType, out var type))
+        {
+            throw new InvalidOperationException(
+                $"Unknown event type {eventEntity.EventType}");
+        }
 
         return (IDomainEvent)JsonSerializer.Deserialize(
             eventEntity.Data,
-            type)!;
+            type!,
+            EventSerializer.Options)!;
+    }
+
+    private static bool IsUniqueViolation(DbUpdateException e)
+    {
+        return e.InnerException is Npgsql.PostgresException pgEx &&
+            pgEx.SqlState == Npgsql.PostgresErrorCodes.UniqueViolation;
     }
 }

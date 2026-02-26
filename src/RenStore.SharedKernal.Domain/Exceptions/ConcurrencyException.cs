@@ -1,3 +1,8 @@
 namespace RenStore.SharedKernal.Domain.Exceptions;
- 
-public class ConcurrencyException(string message, Exception innerException) : Exception(message, innerException);
+
+public class ConcurrencyException : Exception
+{
+    public ConcurrencyException(string message) : base(message) { }
+    
+    public ConcurrencyException(string message, Exception ex) : base(message, ex) { }
+}

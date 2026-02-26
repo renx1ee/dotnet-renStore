@@ -1,4 +1,3 @@
-using System.Data.Entity;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Domain.Interfaces.Repository;

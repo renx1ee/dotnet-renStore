@@ -78,11 +78,11 @@ internal sealed class AddressQuery
                 ");
 
             if (isDeleted.HasValue)
-                sql.Append($" WHERE \"is_deleted\" = @IsDeleted");
+                sql.Append(" WHERE \"is_deleted\" = @IsDeleted");
 
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                          LIMIT @Count
-                          OFFSET @Offset;");
+                           LIMIT @Count
+                           OFFSET @Offset;");
 
             var result = await connection
                 .QueryAsync<AddressReadModel>(
@@ -178,7 +178,7 @@ internal sealed class AddressQuery
                     new CommandDefinition(
                         commandText: sql.ToString(),
                         parameters: parameters,
-                        transaction: CurrentDbTransaction,
+                        transaction: CurrentDbTransaction, 
                         commandTimeout: CommandTimeoutSeconds, 
                         cancellationToken: cancellationToken));
 
@@ -260,7 +260,7 @@ internal sealed class AddressQuery
                 ");
             
             if (isDeleted.HasValue)
-                sql.Append($" and \"is_deleted\" = @IsDeleted");
+                sql.Append($" AND \"is_deleted\" = @IsDeleted");
 
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
                           LIMIT @Count

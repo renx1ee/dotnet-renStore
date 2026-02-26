@@ -58,7 +58,8 @@ public class DeliveryUnitOfWork
         catch (DbUpdateConcurrencyException e)
         {
             this._logger.LogError(e, "Concurrency conflict during commit.");
-            throw new ConcurrencyException("Data was notified by another user. Please retry the operation.", e);
+            /*throw new ConcurrencyException("Data was notified by another user. Please retry the operation.", e);*/
+            throw;
         }
         catch (DbUpdateException e)
         {

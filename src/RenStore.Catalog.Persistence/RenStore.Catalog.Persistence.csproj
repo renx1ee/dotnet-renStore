@@ -7,8 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Read\Base\" />
-      <Folder Include="Read\Quiries\Postgresql\" />
       <Folder Include="UnitOfWork\" />
     </ItemGroup>
 
@@ -19,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.1.66" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
     </ItemGroup>
 
