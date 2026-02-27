@@ -2,5 +2,10 @@ namespace RenStore.Catalog.Domain.Enums.Sorting;
 
 public enum ProductSortBy
 {
-    Id
+    Id,
+    Version,
+    CreatedAt,
+    UpdatedAt,
+    DeletedAt,
+    Status
 }

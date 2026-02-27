@@ -40,7 +40,7 @@ public interface IProductImageRepository
     /// Retrieves all images with sorting and pagination.
     /// </summary>
     /// <param name="cancellationToken">Cancellation Token.</param>
-    /// <param name="sortBy">Fields to sort by. Defaults to <see cref="ProductImageSortBy.Id"/>.</param>
+    /// <param name="sortBy">Fields to sort by. Defaults to <see cref="VariantImageSortBy.Id"/>.</param>
     /// <param name="pageCount">Number of items per page. Defaults to 25.</param>
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true.</param>
@@ -50,7 +50,7 @@ public interface IProductImageRepository
         uint pageCount = 25,
         uint page = 1,
         bool descending = false,
-        ProductImageSortBy sortBy = ProductImageSortBy.Id);
+        VariantImageSortBy sortBy = VariantImageSortBy.Id);
     /// <summary>
     /// Finds an image by ID.
     /// </summary>

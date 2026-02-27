@@ -19,6 +19,7 @@ public class VariantSizeConfiguration : IEntityTypeConfiguration<VariantSize>
             .Property(s => s.Id)
             .HasColumnName("id");
 
+        // TODO: HasConversion
         builder
             .OwnsOne(x => x.Size, size =>
             {
@@ -34,7 +35,7 @@ public class VariantSizeConfiguration : IEntityTypeConfiguration<VariantSize>
                     
                 size
                     .Property(s => s.System)
-                    .HasColumnName("size_system")
+                    .HasColumnName("size_system") 
                     .IsRequired();
                 
                 size

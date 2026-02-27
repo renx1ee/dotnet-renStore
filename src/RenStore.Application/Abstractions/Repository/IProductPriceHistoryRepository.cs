@@ -43,14 +43,14 @@ public interface IProductPriceHistoryRepository
     /// Retrieves all product price histories with sorting and pagination.
     /// </summary>
     /// <param name="cancellationToken">Cancellation Token.</param>
-    /// <param name="sortBy">Fields to sort by. Defaults to <see cref="ProductPriceHistorySortBy.Id"/>.</param>
+    /// <param name="sortBy">Fields to sort by. Defaults to <see cref="PriceHistorySortBy.Id"/>.</param>
     /// <param name="pageCount">Number of items per page. Defaults to 25.</param>
     /// <param name="page">Page number (1-based). Defaults to 1.</param>
     /// <param name="descending">Sort in descending order if true. Defaults to false.</param>
     /// <returns>A collection of matching the product price history entities.</returns>
     Task<IEnumerable<PriceHistory>> FindAllAsync(
         CancellationToken cancellationToken,
-        ProductPriceHistorySortBy sortBy = ProductPriceHistorySortBy.Id,
+        PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
         uint pageCount = 25,
         uint page = 1,
         bool descending = false);

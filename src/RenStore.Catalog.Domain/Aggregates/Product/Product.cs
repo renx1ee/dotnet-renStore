@@ -14,7 +14,7 @@ public class Product
 {
     private List<Guid> _productVariantIds = new();
     
-    /// <summary>
+    /// <summary>a
     /// Unique identifier of the product.
     /// </summary>
     public Guid Id { get; private set; }
@@ -37,12 +37,12 @@ public class Product
     /// <summary>
     /// Date when the product was updated.
     /// </summary>
-    public DateTimeOffset? UpdatedAt { get; protected set; }
+    public DateTimeOffset? UpdatedAt { get; private set; }
     
     /// <summary>
     /// Date when the product was deleted.
     /// </summary>
-    public DateTimeOffset? DeletedAt { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
     
     /// <summary>
     /// Unique identifier of the seller.
@@ -57,7 +57,7 @@ public class Product
     /// <summary>
     /// The collection of product variant identifiers associated with this product.
     /// </summary>
-    public IReadOnlyCollection<Guid> ProductVariantIds => _productVariantIds.AsReadOnly(); // TODO: можно убрать
+    public IReadOnlyCollection<Guid> ProductVariantIds => _productVariantIds.AsReadOnly(); 
     
     private const int MaxVariantsCount = 50;
     

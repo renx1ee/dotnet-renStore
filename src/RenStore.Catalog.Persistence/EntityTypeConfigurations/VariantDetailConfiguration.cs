@@ -6,7 +6,7 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductDetailConfiguration 
+public class VariantDetailConfiguration 
     : IEntityTypeConfiguration<VariantDetail>
 {
     public void Configure(EntityTypeBuilder<VariantDetail> builder)
@@ -58,7 +58,7 @@ public class ProductDetailConfiguration
             .IsRequired(false);
 
         builder
-            .Property(x => x.TypeOfPacking)
+            .Property(x => x.TypeOfPacking) // TODO: dictionary to database
             .HasColumnName("type_of_packing")
             .IsRequired(false);
         

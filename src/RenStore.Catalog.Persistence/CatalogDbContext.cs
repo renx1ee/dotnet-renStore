@@ -17,12 +17,12 @@ public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbCo
     {
         modelBuilder.ApplyConfiguration(new EventStoreConfiguration());
         
-        modelBuilder.ApplyConfiguration(new ProductAttributeConfiguration());
+        modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
         modelBuilder.ApplyConfiguration(new VariantSizeConfiguration());        
-        modelBuilder.ApplyConfiguration(new ProductPriceHistoryConfiguration());
+        modelBuilder.ApplyConfiguration(new VariantPriceHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductDetailConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+        modelBuilder.ApplyConfiguration(new VariantDetailConfiguration());
+        modelBuilder.ApplyConfiguration(new VariantImageConfiguration());
         modelBuilder.ApplyConfiguration(new ProductVariantConfiguration());
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());

@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.Aggregates.Attribute;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductAttributeConfiguration 
+public class VariantAttributeConfiguration 
     : IEntityTypeConfiguration<VariantAttribute>
 {
     public void Configure(EntityTypeBuilder<VariantAttribute> builder)
@@ -68,6 +68,14 @@ public class ProductAttributeConfiguration
             .HasColumnName("version")
             .IsRequired();
         
+        builder
+            .HasIndex(x => x.VariantId)
+            .HasDatabaseName("ux_variant_attributes_variant_id");
+
+        builder
+            .HasIndex(x => x.Key)
+            .HasDatabaseName("ux_variant_attributes_key");
+
         // TODO:
         /*builder
             .HasOne<ProductVariant>()

@@ -2,7 +2,7 @@ using RenStore.Catalog.Domain.ValueObjects;
 
 namespace RenStore.Catalog.Domain.ReadModels;
 
-public class VariantAttributeReadModel
+public sealed class VariantAttributeReadModel
 {
     /// <summary>
     /// Unique identifier of the product attribute.
@@ -44,4 +44,9 @@ public class VariantAttributeReadModel
     /// Identifier of the product variant this attribute describes.
     /// </summary>
     public Guid VariantId { get; init; }
+    
+    /// <summary>
+    /// The version of aggregate in the database.
+    /// </summary>
+    public int Version { get; init; }
 }

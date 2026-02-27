@@ -15,9 +15,9 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<ProductPriceHistorySortBy, string> _sortColumnMapping = new()
+    private readonly Dictionary<PriceHistorySortBy, string> _sortColumnMapping = new()
     {
-        { ProductPriceHistorySortBy.Id, "price_history_id" }
+        { PriceHistorySortBy.Id, "price_history_id" }
     };
 
     public ProductPriceHistoryRepository(
@@ -68,7 +68,7 @@ public class ProductPriceHistoryRepository : IProductPriceHistoryRepository
     
     public async Task<IEnumerable<PriceHistory>> FindAllAsync(
         CancellationToken cancellationToken,
-        ProductPriceHistorySortBy sortBy = ProductPriceHistorySortBy.Id,
+        PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
         uint pageCount = 25,
         uint page = 1,
         bool descending = false)

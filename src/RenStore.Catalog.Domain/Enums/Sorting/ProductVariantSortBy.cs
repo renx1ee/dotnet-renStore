@@ -4,7 +4,12 @@ public enum ProductVariantSortBy
 {
     Id,
     Name,
-    Rating, 
-    Article, 
-    
+    Article,
+    Status,
+    CreatedAt,
+    UpdatedAt,
+    DeletedAt,
+    Version,
+    SizeSystem,
+    SizeType
 }

@@ -16,10 +16,10 @@ public class ProductImageRepository : IProductImageRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
-    private readonly Dictionary<ProductImageSortBy, string> _sortColumnMapping = new() 
+    private readonly Dictionary<VariantImageSortBy, string> _sortColumnMapping = new() 
     {
-        { ProductImageSortBy.Id, "product_image_id"},
-        { ProductImageSortBy.UploadedAt, "uploaded_date"}
+        { VariantImageSortBy.Id, "product_image_id"},
+        { VariantImageSortBy.UploadedAt, "uploaded_date"}
     };
 
     public ProductImageRepository(
@@ -69,7 +69,7 @@ public class ProductImageRepository : IProductImageRepository
         uint pageCount = 25,
         uint page = 1,
         bool descending = false,
-        ProductImageSortBy sortBy = ProductImageSortBy.Id)
+        VariantImageSortBy sortBy = VariantImageSortBy.Id)
     {
         try
         {

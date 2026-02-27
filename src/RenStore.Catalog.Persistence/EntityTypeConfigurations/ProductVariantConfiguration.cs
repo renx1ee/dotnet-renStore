@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Variant;
+using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
@@ -39,6 +40,10 @@ public class ProductVariantConfiguration
         builder
             .Property(x => x.Status)
             .HasColumnName("status")
+            .HasConversion(
+                v => ProductVariantConversion.StatusToDatabase(v),
+                v => ProductVariantConversion.StatusFromDatabase(v))
+            .HasMaxLength(50)
             .IsRequired();
         
         builder
@@ -82,11 +87,19 @@ public class ProductVariantConfiguration
         builder
             .Property(x => x.SizeSystem)
             .HasColumnName("size_system")
+            .HasConversion(
+                v => ProductVariantConversion.SizeSystemToDatabase(v),
+                v => ProductVariantConversion.SizeSystemFromDatabase(v))
+            .HasMaxLength(2)
             .IsRequired();
         
         builder
             .Property(x => x.SizeType)
             .HasColumnName("size_type")
+            .HasConversion(
+                v => ProductVariantConversion.SizeTypeToDatabase(v),
+                v => ProductVariantConversion.SizeTypeFromDatabase(v))
+            .HasMaxLength(50)
             .IsRequired();
 
         builder

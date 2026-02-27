@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.Aggregates.Media;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductImageConfiguration 
+public class VariantImageConfiguration 
     : IEntityTypeConfiguration<VariantImage>
 {
     public void Configure(EntityTypeBuilder<VariantImage> builder)
@@ -89,17 +89,6 @@ public class ProductImageConfiguration
         
         builder
             .Property(x => x.VariantId)
-            .HasColumnName("product_variant_id");
-
-        /*
-         builder
-            .HasOne(x => x.ProductVariant)
-            .WithMany(x => x.Images)
-            .HasForeignKey(x => x.VariantId);
-
-        
-        */
-        
-        // TODO:
+            .HasColumnName("variant_id");
     }
 }

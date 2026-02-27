@@ -5,7 +5,7 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductPriceHistoryConfiguration 
+public class VariantPriceHistoryConfiguration 
     : IEntityTypeConfiguration<PriceHistory>
 {
     public void Configure(EntityTypeBuilder<PriceHistory> builder)

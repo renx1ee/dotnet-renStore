@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.Enums;
+using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
@@ -22,13 +24,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder
             .Property(p => p.Status)
             .HasColumnName("status")
+            .HasConversion(
+                v => ProductStatusConversion.ToDatabase(v),
+                v => ProductStatusConversion.FromDatabase(v))
+            .HasMaxLength(50)
             .IsRequired();
-        
-        /*builder
-            .Property(p => p.OverallRating)
-            .HasColumnName("overall_rating")
-            .IsRequired()
-            .HasDefaultValue(0);*/
         
         builder
             .Property(x => x.CreatedAt)
@@ -44,12 +44,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
             .IsRequired(false);
-        
-        /*builder
-            .HasOne(p => p.Seller)
-            .WithMany(s => s.Products)
-            .HasForeignKey(p => p.SellerId)
-            .HasConstraintName("seller_id");*/
 
         builder
             .Property(p => p.SellerId)

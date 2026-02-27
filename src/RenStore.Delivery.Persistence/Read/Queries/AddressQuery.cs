@@ -72,7 +72,7 @@ internal sealed class AddressQuery
 
             var pageRequest = BuildPageRequest(page, pageSize, descending);
             
-            StringBuilder sql = new StringBuilder(
+            var sql = new StringBuilder(
                 @$"
                     {BaseSqlQuery}
                 ");

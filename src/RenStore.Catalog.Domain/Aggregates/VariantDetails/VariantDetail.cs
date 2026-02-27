@@ -43,7 +43,7 @@ public class VariantDetail
         ProductDetailRules.ProductVariantIdValidate(variantId);
 
         var trimmedDescription              = ProductDetailRules.DescriptionNormalizedAndValidate(description);
-        var trimmedComposition        = ProductDetailRules.CompositionNormalizedAndValidate(composition);
+        var trimmedComposition         = ProductDetailRules.CompositionNormalizedAndValidate(composition);
         
         var trimmedModelFeatures      = ProductDetailRules.ModelFeaturesNormalizedAndValidate(modelFeatures);
         var trimmedDecorativeElements = ProductDetailRules.DecorativeElementsNormalizedAndValidate(decorativeElements);

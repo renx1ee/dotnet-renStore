@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.Domain.Enums;
 
-public enum TypeOfPacking
+public enum TypeOfPacking 
 {
     Package,
     Box
