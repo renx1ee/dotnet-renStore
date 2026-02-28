@@ -21,9 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Integration\" />
       <Folder Include="UnitTets\Application\" />
       <Folder Include="UnitTets\Domain\Entities\" />
-      <Folder Include="UnitTets\Persistence\" />
     </ItemGroup>
 
     <ItemGroup>
