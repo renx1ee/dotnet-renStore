@@ -15,12 +15,10 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Keys and values are normalized and validated before event creation.
 /// </remarks>
 public record AttributeCreated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid AttributeId,
     string Key,
     string Value) 
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

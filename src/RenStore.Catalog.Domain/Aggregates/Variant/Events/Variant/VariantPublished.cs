@@ -17,9 +17,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 /// This is a significant business event that may trigger notifications and indexing updates.
 /// </remarks>
 public record VariantPublished(
+    Guid EventId,
     Guid VariantId,
     DateTimeOffset OccurredAt)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -12,12 +12,10 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 /// <param name="Status">The product at the time of creation.</param>
 /// <param name="OccurredAt">Time of occurrence of the event.</param>
 public record ProductCreated(
+    Guid EventId,
     Guid ProductId,
     long SellerId,
     Guid SubCategoryId,
     ProductStatus Status,
     DateTimeOffset OccurredAt)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

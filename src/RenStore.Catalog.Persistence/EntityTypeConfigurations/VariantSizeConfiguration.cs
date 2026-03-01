@@ -74,5 +74,9 @@ public class VariantSizeConfiguration : IEntityTypeConfiguration<VariantSize>
             .HasMany(s => s.Prices)
             .WithOne()
             .HasForeignKey(s => s.SizeId);
+
+        builder
+            .HasIndex(x => x.VariantId)
+            .HasDatabaseName("ux_variant_sizes_variant_id");
     }
 }

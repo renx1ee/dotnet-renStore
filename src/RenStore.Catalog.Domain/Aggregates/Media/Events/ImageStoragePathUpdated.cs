@@ -3,10 +3,8 @@ using RenStore.SharedKernal.Domain.Common;
 namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 public record ImageStoragePathUpdated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId,
     string StoragePath)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

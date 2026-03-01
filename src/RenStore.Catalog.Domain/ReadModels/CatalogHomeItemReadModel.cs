@@ -4,15 +4,12 @@ namespace RenStore.Catalog.Domain.ReadModels;
 
 public sealed class CatalogHomeItemReadModel
 {
-    // Variant
-    public Guid Id { get; init; }
-    public string Name { get; init; }
-    public long Article { get; init; }
-    // Image
-    public string StoragePath { get; init; }
-    public int Weight { get; init; }
-    public int Height { get; init; }
-    // Price
-    public decimal Amount { get; init; }
-    public Currency Currency { get; init; }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string Article { get; set; }
+    public string StoragePath { get; set; }
+    public int? Weight { get; set; }
+    public int? Height { get; set; }
+    public decimal? Amount { get; set; }
+    public string Currency { get; set; }
 }

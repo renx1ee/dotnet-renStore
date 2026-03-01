@@ -86,6 +86,7 @@ public class Product
         var productId = Guid.NewGuid();
         
         product.Raise(new ProductCreated(
+            EventId: Guid.NewGuid(), 
             ProductId: productId,
             Status: ProductStatus.PendingModeration,
             SellerId: sellerId,
@@ -112,6 +113,7 @@ public class Product
         VariantIdsValidate(variantId);
         
         Raise(new ProductVariantReferenceCreated(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             VariantId: variantId,
             OccurredAt: now));
@@ -152,6 +154,7 @@ public class Product
                 "Product is already published.");
 
         Raise(new ProductPublished(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
     }
@@ -166,6 +169,7 @@ public class Product
         EndureNotDeleted();
         
         Raise(new ProductRejected(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
     }
@@ -180,6 +184,7 @@ public class Product
         EndureNotDeleted();
         
         Raise(new ProductApproved(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
     }
@@ -194,6 +199,7 @@ public class Product
         EndureNotDeleted();
         
         Raise(new ProductMovedToDraft(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
     }
@@ -208,6 +214,7 @@ public class Product
         EndureNotDeleted();
         
         Raise(new ProductArchived(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
     }
@@ -222,6 +229,7 @@ public class Product
         EndureNotDeleted();
         
         Raise(new ProductHidden(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
     }
@@ -236,6 +244,7 @@ public class Product
         EndureNotDeleted();
         
         Raise(new ProductRemoved(
+            EventId: Guid.NewGuid(), 
             ProductId: Id, 
             OccurredAt: now));
     }
@@ -255,6 +264,7 @@ public class Product
         ProductVariantReferenceExists(variantId);
        
         Raise(new ProductVariantReferenceRemoved(
+            EventId: Guid.NewGuid(), 
             ProductId: Id,
             VariantId: variantId,
             OccurredAt: now));
@@ -273,6 +283,7 @@ public class Product
                 "Cannot restore active entity.");
         
         Raise(new ProductRestored(
+            EventId: Guid.NewGuid(), 
             ProductId: Id, 
             OccurredAt: now));
     }

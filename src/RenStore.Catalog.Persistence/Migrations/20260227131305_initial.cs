@@ -59,11 +59,11 @@ namespace RenStore.Catalog.Persistence.Migrations
                     name = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     normalized_name = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     article = table.Column<long>(type: "bigint", nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false),
+                    status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     url = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     main_image_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    size_system = table.Column<int>(type: "integer", nullable: false),
-                    size_type = table.Column<int>(type: "integer", nullable: false),
+                    size_system = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
+                    size_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     deleted_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -81,7 +81,7 @@ namespace RenStore.Catalog.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false),
+                    status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     deleted_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -105,7 +105,7 @@ namespace RenStore.Catalog.Persistence.Migrations
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     deleted_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    variant_id = table.Column<Guid>(type: "uuid", nullable: false),
                     version = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -152,7 +152,7 @@ namespace RenStore.Catalog.Persistence.Migrations
                     uploaded_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     deleted_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    variant_id = table.Column<Guid>(type: "uuid", nullable: false),
                     version = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -297,7 +297,22 @@ namespace RenStore.Catalog.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_variant_sizes_variant_id",
+                name: "ux_variant_attributes_key",
+                table: "variant_attributes",
+                column: "key");
+
+            migrationBuilder.CreateIndex(
+                name: "ux_variant_attributes_variant_id",
+                table: "variant_attributes",
+                column: "variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ux_variant_images_variant_id_is_main",
+                table: "variant_images",
+                columns: new[] { "variant_id", "is_main" });
+
+            migrationBuilder.CreateIndex(
+                name: "ux_variant_sizes_variant_id",
                 table: "variant_sizes",
                 column: "variant_id");
         }

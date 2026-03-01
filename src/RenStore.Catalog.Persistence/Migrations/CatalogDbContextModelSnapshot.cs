@@ -49,13 +49,16 @@ namespace RenStore.Catalog.Persistence.Migrations
 
                     b.Property<Guid>("VariantId")
                         .HasColumnType("uuid")
-                        .HasColumnName("product_variant_id");
+                        .HasColumnName("variant_id");
 
                     b.Property<int>("Version")
                         .HasColumnType("integer")
                         .HasColumnName("version");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ux_variant_attributes_variant_id");
 
                     b.ToTable("variant_attributes", (string)null);
                 });
@@ -264,7 +267,7 @@ namespace RenStore.Catalog.Persistence.Migrations
 
                     b.Property<Guid>("VariantId")
                         .HasColumnType("uuid")
-                        .HasColumnName("product_variant_id");
+                        .HasColumnName("variant_id");
 
                     b.Property<int>("Version")
                         .HasColumnType("integer")
@@ -275,6 +278,9 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnName("weight");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("VariantId", "IsMain")
+                        .HasDatabaseName("ux_variant_images_variant_id_is_main");
 
                     b.ToTable("variant_images", (string)null);
                 });
@@ -298,8 +304,10 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("seller_id");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("status");
 
                     b.Property<Guid>("SubCategoryId")
@@ -396,16 +404,22 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("product_id");
 
-                    b.Property<int>("SizeSystem")
-                        .HasColumnType("integer")
+                    b.Property<string>("SizeSystem")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("size_system");
 
-                    b.Property<int>("SizeType")
-                        .HasColumnType("integer")
+                    b.Property<string>("SizeType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("size_type");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("status");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
@@ -464,7 +478,8 @@ namespace RenStore.Catalog.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("VariantId");
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ux_variant_sizes_variant_id");
 
                     b.ToTable("variant_sizes", (string)null);
                 });
@@ -600,6 +615,9 @@ namespace RenStore.Catalog.Persistence.Migrations
                                 .HasColumnName("key");
 
                             b1.HasKey("VariantAttributeId");
+
+                            b1.HasIndex("Key")
+                                .HasDatabaseName("ux_variant_attributes_key");
 
                             b1.ToTable("variant_attributes");
 

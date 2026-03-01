@@ -9,10 +9,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 /// <param name="VariantId">Unique product variant ID.</param>
 /// <param name="OccurredAt">Time of occurrence of the event.</param>
 public record ProductVariantReferenceRemoved(
+    Guid EventId,
     Guid ProductId,
     Guid VariantId,
     DateTimeOffset OccurredAt)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

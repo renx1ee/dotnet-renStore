@@ -14,9 +14,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Removal may trigger cleanup of associated storage resources.
 /// </remarks>
 public record ImageRemoved(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

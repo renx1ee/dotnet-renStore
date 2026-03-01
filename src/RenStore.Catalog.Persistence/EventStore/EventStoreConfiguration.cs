@@ -39,11 +39,11 @@ public class EventStoreConfiguration
             .HasColumnName("event_type")
             .IsRequired();
         
-        builder
-            .Property(x => x.Data)
+        /*builder
+            .Property(x => x.Metadata)
             .HasColumnName("metadata")
             .HasColumnType("jsonb")
-            .IsRequired();
+            .IsRequired();*/
         
         builder
             .Property(x => x.Payload)

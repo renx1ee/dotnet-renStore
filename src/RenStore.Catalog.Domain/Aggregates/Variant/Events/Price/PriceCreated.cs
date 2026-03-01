@@ -4,13 +4,11 @@ using RenStore.SharedKernal.Domain.Enums;
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 
 public record PriceCreated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     DateTimeOffset EffectiveFrom,
     Guid PriceId,
     Guid SizeId,
     Currency Currency,
     decimal PriceAmount)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -5,9 +5,8 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
-internal sealed class HomePageQuery
-    : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IHomePageQuery
+internal sealed class CatalogSearchQuery 
+    : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase
 {
     private const string BaseSqlQuery =
         """
@@ -51,14 +50,14 @@ internal sealed class HomePageQuery
             ) price ON true
         """;
     
-    public HomePageQuery(
-        ILogger<HomePageQuery> logger,
+    public CatalogSearchQuery(
+        ILogger<CatalogSearchQuery> logger,
         CatalogDbContext context)
         : base(context, logger)
     {
     }
 
-    public async Task<IReadOnlyList<CatalogHomeItemReadModel>> FindAllAsync(
+    public async Task<IReadOnlyList<CatalogHomeItemReadModel>> SearchAsync(
         CancellationToken cancellationToken,
         uint page = 1,
         uint pageCount = 25,
@@ -71,16 +70,16 @@ internal sealed class HomePageQuery
 
             var sql = 
                 $"""
-                    {BaseSqlQuery}
-                    ORDER BY pv.""name"" {pageRequest.Direction}
-                    LIMIT @Count
-                    OFFSET @Offset;
-                """;
+                     {BaseSqlQuery}
+                     ORDER BY pv.""name"" {pageRequest.Direction}
+                     LIMIT @Count
+                     OFFSET @Offset;
+                 """;
 
             var result = await connection
                 .QueryAsync<CatalogHomeItemReadModel>(
                     new CommandDefinition(
-                        commandText: sql,
+                        commandText: sql.ToString(),
                         parameters: new
                         {
                             Count = pageRequest.Limit,
@@ -97,4 +96,13 @@ internal sealed class HomePageQuery
             throw Wrap(e);
         }
     }
+}
+
+public sealed class CatalogSearchFilter
+{
+    public Guid CategoryId { get; set; }
+    public string Search { get; set; }
+    public decimal MaxPrice { get; set; }
+    public decimal MinPrice { get; set; }
+    public bool? PriceDescending { get; set; }
 }

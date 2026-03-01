@@ -26,6 +26,10 @@ public class VariantAttributeConfiguration
                     .Property(x => x.Key)
                     .HasColumnName("key")
                     .IsRequired();
+                
+                key
+                    .HasIndex(x => x.Key)
+                    .HasDatabaseName("ux_variant_attributes_key");
             });
             
         builder
@@ -71,10 +75,6 @@ public class VariantAttributeConfiguration
         builder
             .HasIndex(x => x.VariantId)
             .HasDatabaseName("ux_variant_attributes_variant_id");
-
-        builder
-            .HasIndex(x => x.Key)
-            .HasDatabaseName("ux_variant_attributes_key");
 
         // TODO:
         /*builder

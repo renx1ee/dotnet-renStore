@@ -20,6 +20,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 /// Created variants start in unpublished state and require additional setup before going live.
 /// </remarks>
 public record VariantCreated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid ProductId,
@@ -29,7 +30,4 @@ public record VariantCreated(
     SizeType SizeType,
     long Article,
     string Url)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

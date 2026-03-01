@@ -32,16 +32,16 @@ public class EventEntity
     /// </summary>
     public string EventType { get; init; }
 
-    /// <summary>
+    /*/// <summary>
     /// Data of the event in the JSON format.
     /// Contains basic information about occurred event.
     /// </summary>
-    public string Data { get; init; } // json
+    public string Metadata { get; init; } = "{}";*/ // json
     
     /// <summary>
     /// Optional: metadata about the event in the JSON format.
     /// </summary>
-    public string? Payload { get; init; } // json
+    public string Payload { get; init; } // json
     
     /// <summary>
     /// The date when the event occurred.

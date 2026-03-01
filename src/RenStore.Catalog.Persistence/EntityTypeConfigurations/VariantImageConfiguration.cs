@@ -90,5 +90,9 @@ public class VariantImageConfiguration
         builder
             .Property(x => x.VariantId)
             .HasColumnName("variant_id");
+
+        builder
+            .HasIndex(x => new { x.VariantId, x.IsMain })
+            .HasDatabaseName("ux_variant_images_variant_id_is_main");
     }
 }

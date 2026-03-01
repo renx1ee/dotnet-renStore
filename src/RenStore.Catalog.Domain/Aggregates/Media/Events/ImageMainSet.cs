@@ -14,9 +14,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Main images are used as thumbnails and featured visuals across the platform.
 /// </remarks>
 public record ImageMainSet(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

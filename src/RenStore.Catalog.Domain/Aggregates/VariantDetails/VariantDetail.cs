@@ -54,6 +54,7 @@ public class VariantDetail
         var details = new VariantDetail();
 
         details.Raise(new VariantDetailsCreated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             DetailId: detailId,
             VariantId: variantId,
@@ -79,6 +80,7 @@ public class VariantDetail
         if(Description == trimmedDescription) return;
         
         Raise(new VariantDetailsDescriptionUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             DetailId: Id,
             Description: trimmedDescription));
@@ -98,6 +100,7 @@ public class VariantDetail
         if(ModelFeatures == trimmedModelFeatures) return;
         
         Raise(new VariantDetailsModelFeaturesUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ModelFeatures: trimmedModelFeatures));
     }
@@ -116,6 +119,7 @@ public class VariantDetail
         if(DecorativeElements == trimmedDecorativeElements) return;
         
         Raise(new VariantDetailsDecorativeElementsUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             DecorativeElements: trimmedDecorativeElements));
     }
@@ -134,6 +138,7 @@ public class VariantDetail
         if(Equipment == trimmedEquipment) return;
         
         Raise(new VariantDetailsEquipmentUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             Equipment: trimmedEquipment));
     }
@@ -152,6 +157,7 @@ public class VariantDetail
         if(Composition == trimmedComposition) return;
         
         Raise(new VariantDetailsCompositionUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             Composition: trimmedComposition));
     }
@@ -170,6 +176,7 @@ public class VariantDetail
         if(CaringOfThings == trimmedCaringOfThings) return;
         
         Raise(new VariantDetailsCaringOfThingsUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             CaringOfThings: trimmedCaringOfThings));
     }
@@ -181,6 +188,7 @@ public class VariantDetail
         if (TypeOfPacking == typeOfPacking) return;
         
         Raise(new VariantDetailsTypeOfPackingUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             TypeOfPacking: typeOfPacking));
     }
@@ -197,6 +205,7 @@ public class VariantDetail
             return;
         
         Raise(new VariantDetailsCountryOfManufactureIdUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             CountryOfManufactureId: countryOfManufactureId));
     }

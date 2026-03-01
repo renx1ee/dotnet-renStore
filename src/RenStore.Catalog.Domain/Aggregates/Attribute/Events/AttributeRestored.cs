@@ -13,9 +13,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Used in scenarios like data correction, seasonal availability, or supplier changes.
 /// </remarks>
 public record AttributeRestored(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid AttributeId) 
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

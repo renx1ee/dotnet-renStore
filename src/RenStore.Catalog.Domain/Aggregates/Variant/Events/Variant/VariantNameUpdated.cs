@@ -18,10 +18,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 /// The normalized version (uppercase) is automatically regenerated for search indexing.
 /// </remarks>
 public record VariantNameUpdated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid VariantId,
     string Name)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

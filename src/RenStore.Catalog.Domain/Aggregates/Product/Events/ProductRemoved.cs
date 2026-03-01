@@ -8,9 +8,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 /// <param name="ProductId">Unique product ID.</param>
 /// <param name="OccurredAt">Time of occurrence of the event.</param>
 public record ProductRemoved(
+    Guid EventId,
     Guid ProductId, 
     DateTimeOffset OccurredAt)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

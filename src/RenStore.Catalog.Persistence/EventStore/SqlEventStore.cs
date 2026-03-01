@@ -19,11 +19,14 @@ public class SqlEventStore
         Guid aggregateId, 
         CancellationToken cancellationToken = default)
     {
+        if (aggregateId == Guid.Empty)
+            throw new InvalidOperationException(nameof(aggregateId));
+        
         var entities = await _context.Events
             .Where(x => x.AggregateId == aggregateId)
             .OrderBy(x => x.Version)
             .ToListAsync(cancellationToken);
-
+        
         return entities.Select(ToDomainEvent).ToList();
     }
     
@@ -84,8 +87,10 @@ public class SqlEventStore
             AggregateId = aggregateId,
             Version = version,
             EventType = type,
-            Data = JsonSerializer.Serialize(
+            AggregateType = "catalog", // TODO: временное решение
+            Payload = JsonSerializer.Serialize(
                 domainEvent, 
+                domainEvent.GetType(),
                 EventSerializer.Options),
             OccurredAtUtc = domainEvent.OccurredAt
         };
@@ -96,12 +101,12 @@ public class SqlEventStore
         if (!DomainEventMappings.DomainEventsNameToType
                 .TryGetValue(eventEntity.EventType, out var type))
         {
-            throw new InvalidOperationException(
+            throw new InvalidOperationException(  
                 $"Unknown event type {eventEntity.EventType}");
         }
-
+        
         return (IDomainEvent)JsonSerializer.Deserialize(
-            eventEntity.Data,
+            eventEntity.Payload,
             type!,
             EventSerializer.Options)!;
     }

@@ -18,10 +18,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// Customers can once again select this size in new orders.
 /// </remarks>
 public record VariantSizeRestored(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid SizeId)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -72,6 +72,7 @@ public class VariantAttribute
         var attribute = new VariantAttribute();
         
         attribute.Raise(new AttributeCreated(
+            EventId: Guid.NewGuid(),
             VariantId: variantId,
             AttributeId: attributeId,
             OccurredAt: now,
@@ -94,6 +95,7 @@ public class VariantAttribute
         if(Key == trimmedKey) return;
         
         Raise(new AttributeKeyUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: Id,
             Key: trimmedKey));
@@ -111,6 +113,7 @@ public class VariantAttribute
         if(Value == trimmedValue) return;
         
         Raise(new AttributeValueUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: Id,
             Value: trimmedValue));
@@ -124,6 +127,7 @@ public class VariantAttribute
                 "Attribute already was deleted");
         
         Raise(new AttributeRemoved(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now));
     }
     
@@ -135,6 +139,7 @@ public class VariantAttribute
                 "Attribute wasn't deleted.");
         
         Raise(new AttributeRestored(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: Id));
     }

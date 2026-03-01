@@ -4,9 +4,7 @@ using RenStore.SharedKernal.Domain.Common;
 namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 
 public record VariantDetailsTypeOfPackingUpdated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     TypeOfPacking TypeOfPacking)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

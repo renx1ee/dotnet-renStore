@@ -19,10 +19,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// Consider impact on existing customer preferences and search filters.
 /// </remarks>
 public record VariantSizeRemoved(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid SizeId)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

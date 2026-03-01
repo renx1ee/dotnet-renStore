@@ -173,6 +173,7 @@ public class ProductVariant
         
         variant.Raise(
             new VariantCreated(
+                EventId: Guid.NewGuid(), 
                 VariantId: variantId,
                 ProductId: productId,
                 ColorId: colorId,
@@ -218,6 +219,7 @@ public class ProductVariant
         if (trimmedName == Name) return;
 
         Raise(new VariantNameUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
             Name: trimmedName));
@@ -261,6 +263,7 @@ public class ProductVariant
             return;
         
         Raise(new VariantPublished(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
     }
@@ -273,6 +276,7 @@ public class ProductVariant
             return;
         
         Raise(new VariantArchived(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
     }
@@ -285,6 +289,7 @@ public class ProductVariant
             return;
         
         Raise(new VariantDrafted(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
     }
@@ -294,6 +299,7 @@ public class ProductVariant
         EnsureNotDeleted("Cannot delete already deleted variant.");
         
         Raise(new VariantRemoved(
+            EventId: Guid.NewGuid(), 
             VariantId: Id,
             OccurredAt: now));
     }
@@ -311,6 +317,7 @@ public class ProductVariant
             return;
         
         Raise(new MainImageIdSet(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
             ImageId: imageId));
@@ -355,6 +362,7 @@ public class ProductVariant
         var sizeId = Guid.NewGuid();
         
         Raise(new VariantSizeCreated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             SizeId: sizeId,
             VariantId: Id,
@@ -389,6 +397,7 @@ public class ProductVariant
         SizeEnsureNotDeleted(size);
         
         Raise(new VariantSizeRemoved(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
             SizeId: sizeId));
@@ -422,6 +431,7 @@ public class ProductVariant
             throw new DomainException("Size is not deleted.");
         
         Raise(new VariantSizeRestored(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
             SizeId: sizeId));
@@ -445,6 +455,7 @@ public class ProductVariant
         var priceId = Guid.NewGuid();
         
         Raise(new PriceCreated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             EffectiveFrom: validFrom,
             PriceId: priceId,

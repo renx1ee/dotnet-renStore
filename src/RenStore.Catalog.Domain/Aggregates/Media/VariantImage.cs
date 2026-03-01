@@ -51,6 +51,7 @@ public class VariantImage
         var image = new VariantImage();
         
         image.Raise(new ImageCreated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: imageId,
             VariantId: variantId,
@@ -75,6 +76,7 @@ public class VariantImage
             return;
         
         Raise(new ImageSortOrderUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
             SortOrder: sortOrder));
@@ -92,6 +94,7 @@ public class VariantImage
             return;
         
         Raise(new ImageStoragePathUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
             StoragePath: storagePath));
@@ -112,6 +115,7 @@ public class VariantImage
             return;
         
         Raise(new ImageDimensionUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
             Weight: weight,
@@ -129,6 +133,7 @@ public class VariantImage
         if (FileSizeBytes == fileSizeBytes) return;
             
         Raise(new ImageFileSizeBytesUpdated(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
             FileSizeBytes: fileSizeBytes));
@@ -140,6 +145,7 @@ public class VariantImage
         EnsureNotDeleted();
         
         Raise(new ImageRemoved(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
     }
@@ -151,6 +157,7 @@ public class VariantImage
             throw new DomainException("Image was not deleted.");
         
         Raise(new ImageRestored(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
     }
@@ -160,6 +167,7 @@ public class VariantImage
         if(IsMain) return;
 
         Raise(new ImageMainSet(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
     }
@@ -169,6 +177,7 @@ public class VariantImage
         if(!IsMain) return;
 
         Raise(new ImageMainUnset(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
     }

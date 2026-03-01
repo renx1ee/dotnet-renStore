@@ -24,6 +24,7 @@ namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 /// Optional fields allow for variant-specific information where applicable.
 /// </remarks>
 public record VariantDetailsCreated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid DetailId,
     Guid VariantId,
@@ -35,7 +36,4 @@ public record VariantDetailsCreated(
     string? Equipment,
     string? CaringOfThings,
     TypeOfPacking? TypeOfPackaging)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -19,13 +19,11 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
 /// Duplicate sizes within the same variant are not allowed.
 /// </remarks>
 public record VariantSizeCreated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid SizeId,
     Guid VariantId,
     LetterSize LetterSize,
     SizeSystem SizeSystem,
     SizeType SizeType)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -3,9 +3,7 @@ using RenStore.SharedKernal.Domain.Common;
 namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
 
 public record VariantDetailsCountryOfManufactureIdUpdated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     int CountryOfManufactureId)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

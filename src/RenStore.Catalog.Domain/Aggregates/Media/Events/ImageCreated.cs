@@ -22,6 +22,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Images are required before a variant can be published to the catalog.
 /// </remarks>
 public record ImageCreated(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId,
     Guid VariantId,
@@ -32,7 +33,4 @@ public record ImageCreated(
     short SortOrder,
     int Weight, 
     int Height)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

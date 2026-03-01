@@ -12,8 +12,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Historical attributes may still be referenced in past orders or analytics.
 /// </remarks>
 public record AttributeRemoved(
+    Guid EventId,
     DateTimeOffset OccurredAt) 
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -59,6 +59,10 @@ public class VariantPriceHistoryConfiguration
             .HasColumnName("size_id");
 
         /*builder
+            .HasIndex(x => new { x.SizeId, x.Price })
+            .HasDatabaseName("ux_price_history_size_id_price");*/
+
+        /*builder
             .HasOne(x => x.SizeId)
             .WithMany()
             .HasForeignKey(x => x.S)
