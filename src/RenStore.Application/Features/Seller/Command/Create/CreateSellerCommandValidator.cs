@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace RenStore.Application.Features.Seller.Command.Create;
 
-public class CreateSellerCommandValidator : AbstractValidator<CreateSellerCommand>
+public class CreateSellerCommandValidator 
+    : AbstractValidator<CreateSellerCommand>
 {
     public CreateSellerCommandValidator()
     {

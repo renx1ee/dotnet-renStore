@@ -1,54 +1,55 @@
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class HomePageQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IHomePageQuery
+      IHomePageQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT
-                pv.""id""            AS Id,
-                pv.""name""          AS Name,
-                pv.""article""       AS Article,
-                
-                img.""storage_path"" AS StoragePath,
-                img.""weight""       AS Weight,
-                img.""height""       AS Height,
-                
-                price.""price""      AS Amount,
-                price.""currency""   AS Currency
+            pv."id"            AS Id,
+            pv."name"          AS Name,
+            pv."article"       AS Article,
             
-            FROM ""product_variants"" pv
+            img."storage_path" AS StoragePath,
+            img."weight"       AS Weight,
+            img."height"       AS Height,
             
-            LEFT JOIN LATERAL (
-                SELECT 
-                    pi.""storage_path"",
-                    pi.""weight"",
-                    pi.""height""
-                FROM ""variant_images"" pi
-                WHERE pi.""variant_id"" = pv.""id""
-                ORDER BY pi.""is_main"" DESC
-                LIMIT 1
-            ) img ON true
-                
-            LEFT JOIN LATERAL (
-                SELECT 
-                    ph.""price"", 
-                    ph.""currency"" 
-                FROM ""variant_sizes"" vs
-                JOIN ""price_history"" ph
-                    ON ph.""size_id"" = vs.""id""
-                WHERE vs.""variant_id"" = pv.""id""
-                ORDER BY 
-                    ph.""is_active""    DESC, 
-                    ph.""created_date"" DESC
-                LIMIT 1
-            ) price ON true
+            price."price"      AS Amount,
+            price."currency"   AS Currency
+        
+        FROM "product_variants" pv
+        
+        LEFT JOIN LATERAL (
+            SELECT 
+                pi."storage_path",
+                pi."weight",
+                pi."height"
+            FROM "variant_images" pi
+            WHERE pi."variant_id" = pv."id"
+            ORDER BY pi."is_main" DESC
+            LIMIT 1
+        ) img ON true
+            
+        LEFT JOIN LATERAL (
+            SELECT 
+                ph."price", 
+                ph."currency" 
+            FROM "variant_sizes" vs
+            JOIN "price_history" ph
+                ON ph."size_id" = vs."id"
+            WHERE vs."variant_id" = pv."id"
+            ORDER BY 
+                ph."is_active"    DESC, 
+                ph."created_date" DESC
+            LIMIT 1
+        ) price ON true
         """;
     
     public HomePageQuery(
@@ -72,7 +73,7 @@ internal sealed class HomePageQuery
             var sql = 
                 $"""
                     {BaseSqlQuery}
-                    ORDER BY pv.""name"" {pageRequest.Direction}
+                    ORDER BY pv."name" {pageRequest.Direction}
                     LIMIT @Count
                     OFFSET @Offset;
                 """;

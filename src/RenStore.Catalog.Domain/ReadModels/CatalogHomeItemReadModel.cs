@@ -6,7 +6,7 @@ public sealed class CatalogHomeItemReadModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Article { get; set; }
+    public long Article { get; set; }
     public string StoragePath { get; set; }
     public int? Weight { get; set; }
     public int? Height { get; set; }

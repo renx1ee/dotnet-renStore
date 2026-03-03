@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -10,24 +11,24 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class VariantDetailQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IVariantDetailQuery
+      IVariantDetailQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT
-                ""id""                  AS Id,
-                ""description""         AS Description,
-                ""composition""         AS Composition,
-                ""model_features""      AS ModelFeatures,
-                ""decorative_elements"" AS DecorativeElements, 
-                ""equipment""           AS Equipment,
-                ""caring_of_things""    AS CaringOfThings,
-                ""type_of_packing""     AS TypeOfPacking,
-                ""created_date""        AS CreatedAt,
-                ""updated_date""        AS UpdatedAt,
-                ""version""             AS Version,
-                ""country_id""          AS CountryOfManufactureId,
-                ""variant_id""          AS VariantId
+                "id"                  AS Id,
+                "description"         AS Description,
+                "composition"         AS Composition,
+                "model_features"      AS ModelFeatures,
+                "decorative_elements" AS DecorativeElements, 
+                "equipment"           AS Equipment,
+                "caring_of_things"    AS CaringOfThings,
+                "type_of_packing"     AS TypeOfPacking,
+                "created_date"        AS CreatedAt,
+                "updated_date"        AS UpdatedAt,
+                "version"             AS Version,
+                "country_id"          AS CountryOfManufactureId,
+                "variant_id"          AS VariantId
             FROM
                 ""variant_details""
         """;

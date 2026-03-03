@@ -7,13 +7,29 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\" />
+      <Folder Include="Features\ProductVariant\Commands\Delete\" />
+      <Folder Include="Features\ProductVariant\Commands\Update\" />
+      <Folder Include="Features\ProductVariant\Queries\" />
+      <Folder Include="Features\Product\Commands\Delete\" />
+      <Folder Include="Features\Product\Commands\Update\" />
+      <Folder Include="Features\Product\Queries\" />
+      <Folder Include="Features\VariantMedia\Commands\Delete\" />
+      <Folder Include="Features\VariantMedia\Commands\Update\" />
+      <Folder Include="Features\VariantMedia\Queries\" />
       <Folder Include="UnitOfWork\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />
       <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="16.0.0" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+      <PackageReference Include="MediatR" Version="14.0.0" />
     </ItemGroup>
 
 </Project>

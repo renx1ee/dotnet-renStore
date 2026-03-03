@@ -39,7 +39,7 @@ internal abstract class DapperQueryBase(
     protected DataException Wrap(Exception e)
     {
         _logger.LogError(e, "Database error occured.");
-        return new DataException("Database error occurred.");
+        return new DataException("Database error occurred.", e);
     }
 
     /// <summary>

@@ -8,15 +8,7 @@ public interface IProductVariantRepository
         Guid id,
         CancellationToken cancellationToken);
     
-    Task<Guid> AddAsync(
-        ProductVariant variant,
+    Task SaveAsync(
+        ProductVariant productVariant,
         CancellationToken cancellationToken);
-
-    Task AddRangeAsync(
-        IReadOnlyCollection<ProductVariant> variants,
-        CancellationToken cancellationToken);
-
-    void Remove(ProductVariant variant);
-
-    void RemoveRange(IReadOnlyCollection<ProductVariant> variants);
 }

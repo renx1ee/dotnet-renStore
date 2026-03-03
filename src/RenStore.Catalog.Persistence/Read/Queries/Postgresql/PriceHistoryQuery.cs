@@ -2,8 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Catalog.Application.Interfaces;
-using RenStore.Catalog.Application.Interfaces.Queries;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -12,21 +11,21 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class PriceHistoryQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IPriceHistoryQuery
+      IPriceHistoryQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT 
-                ""id""               AS Id,
-                ""price""            AS Amount,
-                ""currency""         AS Currency,
-                ""valid_from""       AS ValidFrom,
-                ""is_active""        AS IsActive,
-                ""created_date""     AS CreatedAt,
-                ""deactivated_date"" AS DeactivatedAt,
-                ""size_id""          AS SizeId
+                "id"               AS Id,
+                "price"            AS Amount,
+                "currency"         AS Currency,
+                "valid_from"       AS ValidFrom,
+                "is_active"        AS IsActive,
+                "created_date"     AS CreatedAt,
+                "deactivated_date" AS DeactivatedAt,
+                "size_id"          AS SizeId
             FROM
-                ""price_history""
+                "price_history"
         """;
 
     private readonly Dictionary<PriceHistorySortBy, string> _sortColumnMapping = new()

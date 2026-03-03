@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -10,26 +11,26 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class ProductVariantQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IProductVariantQuery
+      IProductVariantQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT
-                ""id""              AS Id,
-                ""name""            AS Name,
-                ""normalized_name"" AS NormalizedName,
-                ""article""         AS Article,
-                ""status""          AS Status,
-                ""url""             AS Url,
-                ""created_date""    AS CreatedAt,
-                ""updated_date""    AS UpdatedAt,
-                ""deleted_date""    AS DeletedAt,
-                ""product_id""      AS ProductId,
-                ""color_id""        AS ColorId,
-                ""version""         AS Version,
-                ""main_image_id""   AS MainImageId,
-                ""size_system""     AS SizeSystem,
-                ""size_type""       AS SizeType
+                "id"              AS Id,
+                "name"            AS Name,
+                "normalized_name" AS NormalizedName,
+                "article"         AS Article,
+                "status"          AS Status,
+                "url"             AS Url,
+                "created_date"    AS CreatedAt,
+                "updated_date"    AS UpdatedAt,
+                "deleted_date"    AS DeletedAt,
+                "product_id"      AS ProductId,
+                "color_id"        AS ColorId,
+                "version"         AS Version,
+                "main_image_id"   AS MainImageId,
+                "size_system"     AS SizeSystem,
+                "size_type"       AS SizeType
             FROM
                 ""product_variants""
         """;

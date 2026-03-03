@@ -4,17 +4,14 @@ using RenStore.Catalog.Domain.Interfaces.Repository;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public class ProductRepository 
-    : IProductRepository
+public class ProductRepository
+    : RenStore.Catalog.Domain.Interfaces.Repository.IProductRepository
 {
-    private readonly CatalogDbContext _context;
     private readonly IEventStore _eventStore;
     
     public ProductRepository(
-        CatalogDbContext context,
         IEventStore eventStore)
     {
-        _context = context       ?? throw new ArgumentNullException(nameof(context));
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
     }
     
@@ -32,41 +29,18 @@ public class ProductRepository
         return Product.Rehydrate(events);
     }
 
-    public async Task<Guid> AddAsync(
+    public async Task SaveAsync(
         Product product,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(product);
 
-        await _context.Products.AddAsync(product, cancellationToken);
-
-        return product.Id;
-    }
-    
-    public async Task AddRangeAsync(
-        IReadOnlyCollection<Product> products,
-        CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(products);
+        await _eventStore.AppendAsync(
+            aggregateId: product.Id,
+            expectedVersion: product.Version,
+            events: product.GetUncommittedEvents().ToList(),
+            cancellationToken);
         
-        var productsList = products as IList<Product> ?? products.ToList();
-
-        if (productsList.Count == 0) return;
-
-        await _context.Products.AddRangeAsync(productsList, cancellationToken);
-    }
-
-    public void Remove(Product product)
-    {
-        ArgumentNullException.ThrowIfNull(product);
-
-        _context.Products.Remove(product);
-    }
-    
-    public void RemoveRange(IReadOnlyCollection<Product> products)
-    {
-        ArgumentNullException.ThrowIfNull(products);
-
-        _context.Products.RemoveRange(products);
+        product.UncommittedEventsClear();
     }
 }

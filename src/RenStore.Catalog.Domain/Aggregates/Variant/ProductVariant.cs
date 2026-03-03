@@ -324,25 +324,8 @@ public class ProductVariant
     }
 
     #region size
-
-    /// <summary>
-    /// Adds a new size option with inventory to this product variant.
-    /// Each variant can have multiple size options with independent stock levels.
-    /// </summary>
-    /// <param name="letterSize">Alphanumeric size designation (e.g., "M", "10", "42")</param>
-    /// <param name="now">Timestamp for creation audit</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant ID is invalid
-    /// - Stock quantity is negative
-    /// - Size already exists for this variant
-    /// - Size is incompatible with variant's SizeType/SizeSystem
-    /// </exception>
-    /// <remarks>
-    /// Size validation ensures compatibility with the variant's SizeType (Clothes/Shoes)
-    /// and SizeSystem (RU/US/EU). Each size maintains its own stock level.
-    /// </remarks>
-    public void AddSize(
+    
+    public Guid AddSize(
         LetterSize letterSize,
         DateTimeOffset now)
     {
@@ -369,6 +352,8 @@ public class ProductVariant
             LetterSize: letterSize,
             SizeSystem: SizeSystem,
             SizeType: SizeType));
+
+        return sizeId;
     }
     
     /// <summary>

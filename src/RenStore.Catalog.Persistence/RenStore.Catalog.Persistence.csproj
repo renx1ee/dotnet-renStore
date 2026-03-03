@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="UnitOfWork\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\RenStore.Application\RenStore.Application.csproj" />
       <ProjectReference Include="..\RenStore.Catalog.Application\RenStore.Catalog.Application.csproj" />
       <ProjectReference Include="..\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />

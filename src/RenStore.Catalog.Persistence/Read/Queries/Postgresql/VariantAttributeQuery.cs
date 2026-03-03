@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -10,7 +11,7 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class VariantAttributeQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IVariantAttributeQuery
+      IVariantAttributeQuery
 {
     private const string BaseSqlQuery =
         """

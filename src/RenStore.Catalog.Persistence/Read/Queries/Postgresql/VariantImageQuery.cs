@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -10,27 +11,27 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class VariantImageQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IVariantImageQuery
+      IVariantImageQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT
-                ""id""                 AS Id,
-                ""original_file_name"" AS OriginalFileName,
-                ""storage_path""       AS StoragePath,
-                ""file_size_bites""    AS FileSizeBytes,
-                ""is_main""            AS IsMain,
-                ""sort_order""         AS SortOrder,
-                ""uploaded_date""      AS UploadedAt,
-                ""updated_date""       AS UpdatedAt,
-                ""deleted_date""       AS DeletedAt,
-                ""weight""             AS Weight,
-                ""height""             AS Height,
-                ""is_deleted""         AS IsDeleted,
-                ""version""            AS Version,
-                ""variant_id""         AS VariantId
+                "id"                 AS Id,
+                "original_file_name" AS OriginalFileName,
+                "storage_path"       AS StoragePath,
+                "file_size_bites"    AS FileSizeBytes,
+                "is_main"            AS IsMain,
+                "sort_order"         AS SortOrder,
+                "uploaded_date"      AS UploadedAt,
+                "updated_date"       AS UpdatedAt,
+                "deleted_date"       AS DeletedAt,
+                "weight"             AS Weight,
+                "height"             AS Height,
+                "is_deleted"         AS IsDeleted,
+                "version"            AS Version,
+                "variant_id"         AS VariantId
             FROM 
-                ""variant_images""
+                "variant_images"
         """;
 
     private readonly Dictionary<VariantImageSortBy, string> _sortColumnMapping = new()

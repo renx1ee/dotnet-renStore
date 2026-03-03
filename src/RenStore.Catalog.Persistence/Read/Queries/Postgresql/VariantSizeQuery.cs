@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -10,23 +11,23 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class VariantSizeQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IVariantSizeQuery
+      IVariantSizeQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT
-                ""id""           AS Id,
-                ""letter_size""  AS LetterSize,
-                ""size_number""  AS Number,
-                ""size_system""  AS System,
-                ""type""         AS Type,
-                ""is_deleted""   AS IsDeleted,
-                ""created_date"" AS CreatedAt,
-                ""updated_date"" AS UpdatedAt,
-                ""deleted_date"" AS DeletedAt,
-                ""variant_id""   AS VariantId
+                "id"           AS Id,
+                "letter_size"  AS LetterSize,
+                "size_number"  AS Number,
+                "size_system"  AS System,
+                "type"         AS Type,
+                "is_deleted"   AS IsDeleted,
+                "created_date" AS CreatedAt,
+                "updated_date" AS UpdatedAt,
+                "deleted_date" AS DeletedAt,
+                "variant_id"   AS VariantId
             FROM
-                ""variant_sizes""
+                "variant_sizes"
         """;
     
     private readonly Dictionary<VariantSizeSortBy, string> _sortColumnMapping = new ()
@@ -111,10 +112,10 @@ internal sealed class VariantSizeQuery
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             var sql =
-                @$"
+                $"""
                     {BaseSqlQuery}
-                    WHERE ""id"" @Id;
-                ";
+                    WHERE "id" @Id;
+                """;
 
             return await connection
                 .QueryFirstOrDefaultAsync<VariantSizeReadModel>(
@@ -163,10 +164,10 @@ internal sealed class VariantSizeQuery
             var pageRequest = BuildPageRequest(page, pageSize, descending);
             
             var sql = new StringBuilder(
-                @$"
+                $"""
                     {BaseSqlQuery}
-                    WHERE ""variant_id"" = @VariantId
-                ");
+                    WHERE "variant_id" = @VariantId
+                """);
             
             if (isDeleted.HasValue)
                 sql.Append(" AND \"is_deleted\" = @IsDeleted");

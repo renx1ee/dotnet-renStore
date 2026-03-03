@@ -7,16 +7,8 @@ public interface ICategoryRepository
     Task<Category?> GetAsync(
         Guid id,
         CancellationToken cancellationToken);
-    
-    Task<Guid> AddAsync(
+
+    Task SaveAsync(
         Category category,
         CancellationToken cancellationToken);
-
-    Task AddRangeAsync(
-        IReadOnlyCollection<Category> categories,
-        CancellationToken cancellationToken);
-
-    void Remove(Category category);
-
-    void RemoveRange(IReadOnlyCollection<Category> categories);
 }

@@ -2,6 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -10,19 +11,19 @@ namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class ProductQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      RenStore.Catalog.Application.Interfaces.Queries.IProductQuery
+      IProductQuery
 {
     private const string BaseSqlQuery =
         """
             SELECT
-                ""id""              AS Id,
-                ""status""          AS Status,
-                ""created_date""    AS CreatedAt,
-                ""updated_date""    AS UpdatedAt,
-                ""deleted_date""    AS DeletedAt,
-                ""seller_id""       AS SellerId,
-                ""sub_category_id"" AS SubCategoryId,
-                ""version""         AS Version
+                "id"              AS Id,
+                "status"          AS Status,
+                "created_date"    AS CreatedAt,
+                "updated_date"    AS UpdatedAt,
+                "deleted_date"    AS DeletedAt,
+                "seller_id"       AS SellerId,
+                "sub_category_id" AS SubCategoryId,
+                "version"         AS Version
             FROM
                 ""products""
         """;
