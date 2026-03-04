@@ -1,21 +1,28 @@
 using Asp.Versioning;
-using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Application;
 using RenStore.Catalog.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCatalogPersistence(builder.Configuration);
+builder.Services.AddCatalogApplication();
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = false;
-    options.ReportApiVersions = true;
-});
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.AssumeDefaultVersionWhenUnspecified = false;
+        options.ReportApiVersions = true;
+        options.ApiVersionReader = new UrlSegmentApiVersionReader();
+    })
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
 
 var app = builder.Build();
 

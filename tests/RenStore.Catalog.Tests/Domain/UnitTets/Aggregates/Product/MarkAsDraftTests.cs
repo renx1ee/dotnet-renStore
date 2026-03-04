@@ -19,7 +19,7 @@ public class MarkAsDraftTests : ProductTestBase
         product.MarkAsDraft(now);
         
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductMovedToDraft>(@event);
+        var result = Assert.IsType<ProductMovedToDraftEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

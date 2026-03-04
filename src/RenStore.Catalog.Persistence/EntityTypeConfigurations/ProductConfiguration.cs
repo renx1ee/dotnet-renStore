@@ -5,7 +5,7 @@ using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductConfiguration
+public sealed class ProductConfiguration
     : IEntityTypeConfiguration<ProductReadModel>
 {
     public void Configure(EntityTypeBuilder<ProductReadModel> builder)

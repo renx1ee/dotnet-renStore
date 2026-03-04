@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Moq;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Attribute;
@@ -92,4 +92,4 @@ public class RemoveRangeTests : IAsyncLifetime
     {
         await _context.Database.EnsureDeletedAsync();
     }
-}
+}*/

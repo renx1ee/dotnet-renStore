@@ -7,7 +7,7 @@ namespace RenStore.Catalog.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("/api/v{version:apiVersion}/variants/{variantId:guid}/images")]
-public class VariantsMediaController : ControllerBase
+public sealed class VariantsMediaController : ControllerBase
 {
     [HttpGet]
     [MapToApiVersion(1)]

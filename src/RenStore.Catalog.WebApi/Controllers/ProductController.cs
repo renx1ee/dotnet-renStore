@@ -1,6 +1,14 @@
 using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RenStore.Catalog.Application.Features.Product.Commands.Approve;
+using RenStore.Catalog.Application.Features.Product.Commands.Archive;
+using RenStore.Catalog.Application.Features.Product.Commands.Create;
+using RenStore.Catalog.Application.Features.Product.Commands.Hide;
+using RenStore.Catalog.Application.Features.Product.Commands.Reject;
+using RenStore.Catalog.Application.Features.Product.Commands.SoftDelete;
+using RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
 using RenStore.Catalog.WebApi.Requests;
 
 namespace RenStore.Catalog.WebApi.Controllers;
@@ -8,14 +16,76 @@ namespace RenStore.Catalog.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("/api/v{version:apiVersion}/catalog/products")]
-public class ProductController : ControllerBase
+public sealed class ProductController(IMediator mediator) : ControllerBase
 {
+    private IMediator _mediator = mediator;
+    
     [HttpPost]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Create(
         [FromBody] CreateProductRequest request)
     {
-        return Created();
+        var command = new CreateProductCommand(
+            SellerId: request.SellerId,
+            SubCategoryId: request.SubCategoryId);
+        
+        var result = await _mediator.Send(command);
+
+        return result == Guid.Empty ? BadRequest() : Created();
+    }
+    
+    [HttpDelete("{id:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _mediator.Send(new SoftDeleteProductCommand(id));
+
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Approve(Guid id)
+    {
+        await _mediator.Send(new ApproveProductCommand(id));
+
+        return NoContent();
+    }
+    
+    [HttpPost("{id:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Archive(Guid id)
+    {
+        await _mediator.Send(new ArchiveProductCommand(id));
+
+        return NoContent();
+    }
+    
+    [HttpPost("{id:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Hide(Guid id)
+    {
+        await _mediator.Send(new HideProductCommand(id));
+
+        return NoContent();
+    }
+    
+    [HttpPost("{id:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Reject(Guid id)
+    {
+        await _mediator.Send(new RejectProductCommand(id));
+
+        return NoContent();
+    }
+    
+    [HttpPost("{id:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> ToDraft(Guid id)
+    {
+        await _mediator.Send(new DraftProductCommand(id));
+
+        return NoContent();
     }
     
     [HttpPatch("{id:guid}")]
@@ -23,13 +93,6 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> Update(
         Guid id,
         [FromBody] UpdateProductRequest request)
-    {
-        return NoContent();
-    }
-    
-    [HttpDelete("{id:guid}")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> Delete(Guid id)
     {
         return NoContent();
     }

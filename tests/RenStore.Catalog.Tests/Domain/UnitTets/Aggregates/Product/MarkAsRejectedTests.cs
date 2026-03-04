@@ -19,7 +19,7 @@ public class MarkAsRejectedTests : ProductTestBase
         product.MarkAsRejected(now);
         
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductRejected>(@event);
+        var result = Assert.IsType<ProductRejectedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

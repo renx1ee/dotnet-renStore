@@ -22,7 +22,7 @@ public class AddVariantReferenceTests : ProductTestBase
         
         // Assert: events
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductVariantReferenceCreated>(@event);
+        var result = Assert.IsType<ProductVariantReferenceCreatedEvent>(@event);
         
         Assert.Equal(now, result.OccurredAt);
         Assert.Equal(variantId, result.VariantId);

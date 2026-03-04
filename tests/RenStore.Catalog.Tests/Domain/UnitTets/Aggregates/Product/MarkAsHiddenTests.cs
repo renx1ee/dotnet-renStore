@@ -19,7 +19,7 @@ public class MarkAsHiddenTests : ProductTestBase
         product.MarkAsHidden(now);
         
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductHidden>(@event);
+        var result = Assert.IsType<ProductHiddenEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

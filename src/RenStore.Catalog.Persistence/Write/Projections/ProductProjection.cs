@@ -1,8 +1,9 @@
+using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
-public class ProductProjection
+internal sealed class ProductProjection
     : RenStore.Catalog.Application.Abstractions.Projections.IProductProjection
 {
     private readonly CatalogDbContext _context;
@@ -37,6 +38,90 @@ public class ProductProjection
         if (productsList.Count == 0) return;
 
         await _context.Products.AddRangeAsync(productsList, cancellationToken);
+    }
+
+    public async Task SoftDeleteAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductStatus.Deleted;
+    }
+    
+    public async Task ApproveAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductStatus.Approved;
+    }
+    
+    public async Task RejectAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductStatus.Rejected;
+    }
+    
+    public async Task ArchiveAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductStatus.Archived;
+    }
+    
+    public async Task HideAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductStatus.Hidden;
+    }
+    
+    public async Task DraftAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductStatus.Draft;
     }
 
     public void Remove(ProductReadModel product)

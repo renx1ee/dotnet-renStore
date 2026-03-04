@@ -17,30 +17,30 @@ public sealed class ProductReadModel
     /// <summary>
     /// Current lifecycle status of the product.
     /// </summary>
-    public ProductStatus Status { get; init; }
+    public ProductStatus Status { get; set; }
     
     /// <summary>
     /// Date when the product was created.
     /// </summary>
-    public DateTimeOffset CreatedAt { get; init; }
+    public DateTimeOffset CreatedAt { get; set; }
     
     /// <summary>
     /// Date when the product was updated.
     /// </summary>
-    public DateTimeOffset? UpdatedAt { get; init; }
+    public DateTimeOffset? UpdatedAt { get; set; }
     
     /// <summary>
     /// Date when the product was deleted.
     /// </summary>
-    public DateTimeOffset? DeletedAt { get; init; }
+    public DateTimeOffset? DeletedAt { get; set; }
     
     /// <summary>
     /// Unique identifier of the seller.
     /// </summary>
-    public long SellerId { get; init; }
+    public long SellerId { get; set; }
     
     /// <summary>
     /// Unique identifier of the sub category.
     /// </summary>
-    public Guid SubCategoryId { get; init; }
+    public Guid SubCategoryId { get; set; }
 }

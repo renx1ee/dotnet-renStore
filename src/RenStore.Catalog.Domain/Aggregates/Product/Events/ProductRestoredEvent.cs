@@ -3,12 +3,12 @@ using RenStore.SharedKernal.Domain.Common;
 namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 
 /// <summary>
-/// The event occurred when the product has been published.
+/// The event occurred when the product has been restored.
 /// </summary>
 /// <param name="ProductId">Unique product ID.</param>
 /// <param name="OccurredAt">Time of occurrence of the event.</param>
-public record ProductPublished(
+public record ProductRestoredEvent(
     Guid EventId,
-    Guid ProductId,
+    Guid ProductId, 
     DateTimeOffset OccurredAt)
     : IDomainEvent;

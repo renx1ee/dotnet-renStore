@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace RenStore.Catalog.Persistence.EventStore;
 
-public class EventStoreConfiguration
+public sealed class EventStoreConfiguration
     : IEntityTypeConfiguration<EventEntity>
 {
     public void Configure(EntityTypeBuilder<EventEntity> builder)
@@ -55,10 +55,6 @@ public class EventStoreConfiguration
             .Property(x => x.OccurredAtUtc)
             .HasColumnName("occurred_date")
             .IsRequired();
-
-        builder
-            .HasIndex(x => x.Version)
-            .IsUnique();
 
         builder
             .HasIndex(x => new { x.AggregateId, x.Version })

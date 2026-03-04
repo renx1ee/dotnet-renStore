@@ -6,7 +6,7 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Features.Product.Notifications.Create;
 
-public class ProductCreatedEventHandler
+internal sealed class ProductCreatedEventHandler
     : INotificationHandler<DomainEventNotification<ProductCreatedEvent>>
 {
     private readonly IProductProjection _productProjection;

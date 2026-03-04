@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.WebApi.Requests;
 
-public record UpdateProductVariantRequest
+public sealed record UpdateProductVariantRequest
 {
     
 }

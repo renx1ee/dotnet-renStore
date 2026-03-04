@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.Entities;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ColorConfiguration : IEntityTypeConfiguration<Color>
+public sealed class ColorConfiguration : IEntityTypeConfiguration<Color>
 {
     public void Configure(EntityTypeBuilder<Color> builder)
     {

@@ -2,7 +2,7 @@ using MediatR;
 
 namespace RenStore.Catalog.Application.Features.Product.Commands.Create;
 
-public record CreateProductCommand(
+public sealed record CreateProductCommand(
     long SellerId,
     Guid SubCategoryId)
     : IRequest<Guid>;

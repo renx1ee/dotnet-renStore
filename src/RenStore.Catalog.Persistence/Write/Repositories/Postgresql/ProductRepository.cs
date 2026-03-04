@@ -7,7 +7,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public class ProductRepository
+public sealed class ProductRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IProductRepository
 {
     private readonly IEventStore _eventStore;
@@ -51,7 +51,12 @@ public class ProductRepository
 
         foreach (var domainEvent in uncommittedEvents)
         {
-            var notification = new DomainEventNotification<IDomainEvent>(domainEvent);
+            var notificationType = typeof(DomainEventNotification<>)
+                .MakeGenericType(domainEvent.GetType());
+
+            var notification = (INotification)Activator
+                .CreateInstance(notificationType, domainEvent)!;
+            
             await _mediator.Publish(notification, cancellationToken);
         }
         

@@ -2,7 +2,7 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
-public class VariantDetailProjection
+internal sealed class VariantDetailProjection
     : RenStore.Catalog.Application.Abstractions.Projections.IVariantDetailProjection
 {
     private readonly CatalogDbContext _context;

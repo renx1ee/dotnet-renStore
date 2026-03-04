@@ -19,7 +19,7 @@ public class MarkAsArchivedTests : ProductTestBase
         product.MarkAsArchived(now);
         
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductArchived>(@event);
+        var result = Assert.IsType<ProductArchivedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

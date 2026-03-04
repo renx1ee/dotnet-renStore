@@ -21,7 +21,7 @@ public class CreateTests
             now: now);
 
         var @event = Assert.Single(result.GetUncommittedEvents());
-        var created = Assert.IsType<ProductCreated>(@event);
+        var created = Assert.IsType<ProductCreatedEvent>(@event);
 
         // Assert: result
         Assert.NotNull(result);

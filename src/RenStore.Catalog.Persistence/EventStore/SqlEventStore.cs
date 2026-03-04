@@ -5,7 +5,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.EventStore;
 
-public class SqlEventStore 
+public sealed class SqlEventStore 
     : RenStore.Catalog.Application.Abstractions.IEventStore
 {
     private readonly CatalogDbContext _context;

@@ -1,0 +1,49 @@
+using MediatR;
+using Microsoft.Extensions.Logging;
+using RenStore.Catalog.Domain.Interfaces.Repository;
+using RenStore.SharedKernal.Domain.Exceptions;
+
+namespace RenStore.Catalog.Application.Features.Product.Commands.SoftDelete;
+
+internal sealed class SoftDeleteProductCommandHandler
+    : IRequestHandler<SoftDeleteProductCommand>
+{
+    private readonly ILogger<SoftDeleteProductCommandHandler> _logger;
+    private readonly IProductRepository _productRepository;
+    
+    public SoftDeleteProductCommandHandler(
+        ILogger<SoftDeleteProductCommandHandler> logger,
+        IProductRepository productRepository)
+    {
+        _logger = logger;
+        _productRepository = productRepository;
+    }
+    
+    public async Task Handle(
+        SoftDeleteProductCommand request, 
+        CancellationToken cancellationToken)
+    {
+        _logger.LogInformation(
+            "Handling {CommandName} for ProductId: {ProductId}",
+            nameof(SoftDeleteProductCommand),
+            request.ProductId);
+
+        var product = await _productRepository.GetAsync(
+            request.ProductId, cancellationToken);
+
+        if (product is null)
+            throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product), 
+                request.ProductId);
+        
+        product.Delete(DateTimeOffset.UtcNow);
+
+        await _productRepository.SaveAsync(
+            product, cancellationToken);
+        
+        _logger.LogInformation(
+            "{CommandName} handled successfully. ProductId: {ProductId}",
+            nameof(SoftDeleteProductCommand),
+            request.ProductId);
+    }
+}

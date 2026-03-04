@@ -18,7 +18,7 @@ public class DeleteTests : ProductTestBase
         // Act
         product.Delete(now);
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductRemoved>(@event);
+        var result = Assert.IsType<ProductRemovedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);
@@ -26,7 +26,7 @@ public class DeleteTests : ProductTestBase
         
         // Assert: state
         Assert.Equal(product.Id, result.ProductId);
-        Assert.Equal(ProductStatus.IsDeleted, product.Status);
+        Assert.Equal(ProductStatus.Deleted, product.Status);
         Assert.Equal(now, product.DeletedAt);
         Assert.Equal(now, product.UpdatedAt);
     }

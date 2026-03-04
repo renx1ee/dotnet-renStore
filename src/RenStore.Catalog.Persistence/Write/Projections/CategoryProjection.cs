@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
-public class CategoryProjection 
+internal sealed class CategoryProjection 
     : RenStore.Catalog.Application.Abstractions.Projections.ICategoryProjection
 {
     private readonly CatalogDbContext _context;
@@ -52,5 +53,15 @@ public class CategoryProjection
         ArgumentNullException.ThrowIfNull(categories);
 
         _context.Categories.RemoveRange(categories);
+    }
+    
+    public async Task<bool> SubCategoryExists(
+        Guid subCategoryId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.SubCategories
+            .AnyAsync(x => 
+                x.Id == subCategoryId, 
+                cancellationToken);
     }
 }

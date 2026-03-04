@@ -67,10 +67,10 @@ internal sealed class ProductVariantQuery
         try
         {
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
-
+            
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
-
+            
             var pageRequest = BuildPageRequest(page, pageSize, descending);
 
             var sql = new StringBuilder(
@@ -84,7 +84,7 @@ internal sealed class ProductVariantQuery
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
                            LIMIT @Count
                            OFFSET @Offset;");
-
+            
             var result = await connection
                 .QueryAsync<ProductVariantReadModel>(
                     new CommandDefinition(

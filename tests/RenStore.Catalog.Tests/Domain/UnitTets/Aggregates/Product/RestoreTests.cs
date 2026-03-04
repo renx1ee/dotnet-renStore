@@ -19,7 +19,7 @@ public class RestoreTests : ProductTestBase
         // Act
         product.Restore(now);
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductRestored>(@event);
+        var result = Assert.IsType<ProductRestoredEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

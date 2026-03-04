@@ -25,7 +25,7 @@ public class MarkAsPublishedTests : ProductTestBase
         product.MarkAsPublished(publishedNow);
 
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductPublished>(@event);
+        var result = Assert.IsType<ProductPublishedEvent>(@event);
         
         // Assert: event
         Assert.Equal(publishedNow, result.OccurredAt);

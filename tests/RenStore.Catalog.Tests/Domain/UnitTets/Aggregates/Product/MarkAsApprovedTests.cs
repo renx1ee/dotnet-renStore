@@ -19,7 +19,7 @@ public class MarkAsApprovedTests : ProductTestBase
         product.MarkAsApproved(now);
         
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductApproved>(@event);
+        var result = Assert.IsType<ProductApprovedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

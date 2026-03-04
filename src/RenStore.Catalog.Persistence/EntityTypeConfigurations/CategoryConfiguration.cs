@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
 {
-    public class CategoryConfiguration 
+    public sealed class CategoryConfiguration 
         : IEntityTypeConfiguration<CategoryReadModel>
     {
         public void Configure(EntityTypeBuilder<CategoryReadModel> builder)

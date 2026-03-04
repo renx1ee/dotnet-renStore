@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.WebApi.Requests;
 
-public record CreateVariantImageRequest
+public sealed record CreateVariantImageRequest
 {
     
 }

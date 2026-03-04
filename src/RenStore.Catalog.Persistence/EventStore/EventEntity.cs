@@ -4,7 +4,7 @@ namespace RenStore.Catalog.Persistence.EventStore;
 /// The entity, represents an event in Event Store.
 /// Using to store information about events that occurred in the system.
 /// </summary>
-public class EventEntity
+public sealed class EventEntity
 {
     /// <summary>
     /// Unique event identifier in the system.

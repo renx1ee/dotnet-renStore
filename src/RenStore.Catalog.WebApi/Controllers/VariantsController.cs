@@ -7,7 +7,7 @@ namespace RenStore.Catalog.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("/api/v{version:apiVersion}/catalog")]
-public class VariantsController : ControllerBase
+public sealed class VariantsController : ControllerBase
 {
     [HttpPost("products/{productId:guid}/variants")]
     [MapToApiVersion(1)]

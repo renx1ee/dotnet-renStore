@@ -25,7 +25,7 @@ public class DeleteVariantReferenceTests : ProductTestBase
             now: now); 
         
         var @event = Assert.Single(product.GetUncommittedEvents());
-        var result = Assert.IsType<ProductVariantReferenceRemoved>(@event);
+        var result = Assert.IsType<ProductVariantReferenceRemovedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

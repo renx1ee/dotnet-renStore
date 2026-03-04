@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class VariantImageConfiguration 
+public sealed class VariantImageConfiguration 
     : IEntityTypeConfiguration<VariantImageReadModel>
 {
     public void Configure(EntityTypeBuilder<VariantImageReadModel> builder)

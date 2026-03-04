@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public class CategoryRepository 
+public sealed class CategoryRepository 
     : RenStore.Catalog.Domain.Interfaces.Repository.ICategoryRepository
 {
     private readonly IEventStore _eventStore;
@@ -19,7 +19,6 @@ public class CategoryRepository
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
         _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
-        
     
     public async Task<Category?> GetAsync(
         Guid id,

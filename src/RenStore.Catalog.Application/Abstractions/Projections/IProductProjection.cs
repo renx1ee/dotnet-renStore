@@ -14,6 +14,36 @@ public interface IProductProjection
         IReadOnlyCollection<ProductReadModel> products,
         CancellationToken cancellationToken);
 
+    Task SoftDeleteAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task ApproveAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+    
+    Task RejectAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+    
+    Task HideAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+    
+    Task ArchiveAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+    
+    Task DraftAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
     void Remove(ProductReadModel product);
 
     void RemoveRange(IReadOnlyCollection<ProductReadModel> products);

@@ -17,4 +17,8 @@ public interface ICategoryProjection
     void Remove(CategoryReadModel category);
 
     void RemoveRange(IReadOnlyCollection<CategoryReadModel> categories);
+
+    Task<bool> SubCategoryExists(
+        Guid subCategoryId,
+        CancellationToken cancellationToken);
 }

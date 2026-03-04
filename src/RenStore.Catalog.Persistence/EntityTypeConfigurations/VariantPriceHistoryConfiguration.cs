@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class VariantPriceHistoryConfiguration 
+public sealed class VariantPriceHistoryConfiguration 
     : IEntityTypeConfiguration<PriceHistoryReadModel>
 {
     public void Configure(EntityTypeBuilder<PriceHistoryReadModel> builder)

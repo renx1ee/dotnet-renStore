@@ -4,7 +4,7 @@ using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class VariantSizeConfiguration
+public sealed class VariantSizeConfiguration
     : IEntityTypeConfiguration<VariantSizeReadModel>
 {
     public void Configure(EntityTypeBuilder<VariantSizeReadModel> builder)

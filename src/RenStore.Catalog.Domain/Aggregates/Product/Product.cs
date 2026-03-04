@@ -112,7 +112,7 @@ public class Product
 
         VariantIdsValidate(variantId);
         
-        Raise(new ProductVariantReferenceCreated(
+        Raise(new ProductVariantReferenceCreatedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             VariantId: variantId,
@@ -153,7 +153,7 @@ public class Product
             throw new DomainException(
                 "Product is already published.");
 
-        Raise(new ProductPublished(
+        Raise(new ProductPublishedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
@@ -168,7 +168,7 @@ public class Product
     {
         EndureNotDeleted();
         
-        Raise(new ProductRejected(
+        Raise(new ProductRejectedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
@@ -198,7 +198,7 @@ public class Product
     {
         EndureNotDeleted();
         
-        Raise(new ProductMovedToDraft(
+        Raise(new ProductMovedToDraftEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
@@ -228,7 +228,7 @@ public class Product
     {
         EndureNotDeleted();
         
-        Raise(new ProductHidden(
+        Raise(new ProductHiddenEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
@@ -243,7 +243,7 @@ public class Product
     {
         EndureNotDeleted();
         
-        Raise(new ProductRemoved(
+        Raise(new ProductRemovedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id, 
             OccurredAt: now));
@@ -263,7 +263,7 @@ public class Product
         
         ProductVariantReferenceExists(variantId);
        
-        Raise(new ProductVariantReferenceRemoved(
+        Raise(new ProductVariantReferenceRemovedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             VariantId: variantId,
@@ -282,7 +282,7 @@ public class Product
             throw new DomainException(
                 "Cannot restore active entity.");
         
-        Raise(new ProductRestored(
+        Raise(new ProductRestoredEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id, 
             OccurredAt: now));
@@ -298,20 +298,14 @@ public class Product
                 SubCategoryId = e.SubCategoryId;
                 Status = e.Status;
                 CreatedAt = e.OccurredAt;
-                /*OverallRating = Rating.Empty();*/
                 break;
             
-            case ProductPublished e:
+            case ProductPublishedEvent e:
                 Status = ProductStatus.Published;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            /*case ProductAverageRatingUpdated e:
-                OverallRating = OverallRating.Add(e.Score);
-                UpdatedAt = e.OccurredAt;
-                break;*/
-            
-            case ProductRejected e:
+            case ProductRejectedEvent e:
                 Status = ProductStatus.Rejected;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -321,7 +315,7 @@ public class Product
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductMovedToDraft e:
+            case ProductMovedToDraftEvent e:
                 Status = ProductStatus.Draft;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -331,28 +325,28 @@ public class Product
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductHidden e:
+            case ProductHiddenEvent e:
                 Status = ProductStatus.Hidden;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductRemoved e:
+            case ProductRemovedEvent e:
                 Status = ProductStatus.Deleted;
                 UpdatedAt = e.OccurredAt;
                 DeletedAt = e.OccurredAt;
                 break;
             
-            case ProductRestored e:
+            case ProductRestoredEvent e:
                 Status = ProductStatus.Draft;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductVariantReferenceCreated e:
+            case ProductVariantReferenceCreatedEvent e:
                 _productVariantIds.Add(e.VariantId);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductVariantReferenceRemoved e:
+            case ProductVariantReferenceRemovedEvent e:
                 _productVariantIds.Remove(e.VariantId);
                 UpdatedAt = e.OccurredAt;
                 break;

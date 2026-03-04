@@ -1,6 +1,5 @@
 namespace RenStore.Catalog.WebApi.Requests;
 
-public record CreateProductRequest
-{
-    
-}
+public sealed record CreateProductRequest(
+    long SellerId,
+    Guid SubCategoryId);
