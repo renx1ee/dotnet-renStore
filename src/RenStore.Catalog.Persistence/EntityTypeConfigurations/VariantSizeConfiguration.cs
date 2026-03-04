@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class VariantSizeConfiguration : IEntityTypeConfiguration<VariantSize>
+public class VariantSizeConfiguration
+    : IEntityTypeConfiguration<VariantSizeReadModel>
 {
-    public void Configure(EntityTypeBuilder<VariantSize> builder)
+    public void Configure(EntityTypeBuilder<VariantSizeReadModel> builder)
     {
         builder
             .ToTable("variant_sizes");
@@ -19,30 +19,25 @@ public class VariantSizeConfiguration : IEntityTypeConfiguration<VariantSize>
             .Property(s => s.Id)
             .HasColumnName("id");
 
-        // TODO: HasConversion
+        builder.
+            Property(s => s.LetterSize)
+            .HasColumnName("letter_size")
+            .IsRequired();
+                
         builder
-            .OwnsOne(x => x.Size, size =>
-            {
-                size.
-                    Property(s => s.LetterSize)
-                    .HasColumnName("letter_size")
-                    .IsRequired();
-                
-                size
-                    .Property(s => s.Number)
-                    .HasColumnName("size_number")
-                    .IsRequired();
+            .Property(s => s.Number)
+            .HasColumnName("size_number")
+            .IsRequired();
                     
-                size
-                    .Property(s => s.System)
-                    .HasColumnName("size_system") 
-                    .IsRequired();
+        builder
+            .Property(s => s.System)
+            .HasColumnName("size_system") 
+            .IsRequired();
                 
-                size
-                    .Property(s => s.Type)
-                    .HasColumnName("type")
-                    .IsRequired();
-            });
+        builder
+            .Property(s => s.Type)
+            .HasColumnName("type")
+            .IsRequired();
         
         builder
             .Property(s => s.IsDeleted)
@@ -69,11 +64,6 @@ public class VariantSizeConfiguration : IEntityTypeConfiguration<VariantSize>
             .Property(x => x.VariantId)
             .HasColumnName("variant_id")
             .IsRequired();
-        
-        builder
-            .HasMany(s => s.Prices)
-            .WithOne()
-            .HasForeignKey(s => s.SizeId);
 
         builder
             .HasIndex(x => x.VariantId)

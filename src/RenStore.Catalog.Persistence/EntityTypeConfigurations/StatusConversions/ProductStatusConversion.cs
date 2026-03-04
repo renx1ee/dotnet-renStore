@@ -15,7 +15,7 @@ public static class ProductStatusConversion
             ProductStatus.Published => "published",
             ProductStatus.Hidden => "hidden",
             ProductStatus.Archived => "archived",
-            ProductStatus.IsDeleted => "is_deleted",
+            ProductStatus.Deleted => "is_deleted",
             _ => throw new ArgumentOutOfRangeException(nameof(status))
         };
     }
@@ -31,7 +31,7 @@ public static class ProductStatusConversion
              "published" => ProductStatus.Published,
              "hidden" => ProductStatus.Hidden,
              "archived" => ProductStatus.Archived,
-             "is_deleted" => ProductStatus.IsDeleted,
+             "is_deleted" => ProductStatus.Deleted,
             _ => throw new ArgumentOutOfRangeException(nameof(value))
         };
     }

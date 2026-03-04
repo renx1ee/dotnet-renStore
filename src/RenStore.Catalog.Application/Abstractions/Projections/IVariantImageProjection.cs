@@ -1,18 +1,20 @@
-using RenStore.Catalog.Domain.Aggregates.Media;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface IVariantImageProjection
 {
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    
     Task<Guid> AddAsync(
-        VariantImage image,
+        VariantImageReadModel image,
         CancellationToken cancellationToken);
     
     Task AddRangeAsync(
-        IReadOnlyCollection<VariantImage> images,
+        IReadOnlyCollection<VariantImageReadModel> images,
         CancellationToken cancellationToken);
     
-    void Remove(VariantImage image);
+    void Remove(VariantImageReadModel image);
     
-    void RemoveRange(IReadOnlyCollection<VariantImage> images);
+    void RemoveRange(IReadOnlyCollection<VariantImageReadModel> images);
 }

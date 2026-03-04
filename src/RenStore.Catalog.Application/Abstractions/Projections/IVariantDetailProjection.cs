@@ -1,18 +1,20 @@
-using RenStore.Catalog.Domain.Aggregates.VariantDetails;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface IVariantDetailProjection
 {
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    
     Task<Guid> AddAsync(
-        VariantDetail detail,
+        VariantDetailReadModel detail,
         CancellationToken cancellationToken);
 
     Task AddRangeAsync(
-        IReadOnlyCollection<VariantDetail> detail,
+        IReadOnlyCollection<VariantDetailReadModel> detail,
         CancellationToken cancellationToken);
 
-    void Remove(VariantDetail detail);
+    void Remove(VariantDetailReadModel detail);
 
-    void RemoveRange(IReadOnlyCollection<VariantDetail> details);
+    void RemoveRange(IReadOnlyCollection<VariantDetailReadModel> details);
 }

@@ -1,15 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Product;
-using RenStore.Catalog.Domain.Entities;
-using RenStore.Catalog.Domain.Enums;
+using RenStore.Catalog.Domain.ReadModels;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class ProductConfiguration : IEntityTypeConfiguration<Product>
+public class ProductConfiguration
+    : IEntityTypeConfiguration<ProductReadModel>
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public void Configure(EntityTypeBuilder<ProductReadModel> builder)
     {
         builder
             .ToTable("products");
@@ -54,26 +53,5 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .Property(p => p.SubCategoryId)
             .HasColumnName("sub_category_id")
             .IsRequired();
-        
-        builder
-            .Property(x => x.Version)
-            .HasColumnName("version")
-            .IsRequired();
-        
-        /*builder
-            .HasOne(p => p.Category)
-            .WithMany(c => c.Products)
-            .HasForeignKey(p => p.CategoryId)
-            .HasConstraintName("category_id");
-    
-        builder
-            .HasMany(p => p.ProductVariantIds)
-            .WithOne(v => v.Product)
-            .HasForeignKey(x => x.ProductId);
-
-        builder
-            .HasOne(p => p.ProductCloth)
-            .WithOne(c => c.Product)
-            .HasForeignKey<ProductCloth>(p => p.ProductId);*/
     }
 }

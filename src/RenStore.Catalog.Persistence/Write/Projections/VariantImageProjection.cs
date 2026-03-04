@@ -1,5 +1,4 @@
-using RenStore.Catalog.Application.Abstractions;
-using RenStore.Catalog.Domain.Aggregates.Media;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -11,8 +10,13 @@ public class VariantImageProjection
     public VariantImageProjection(CatalogDbContext context) =>
         _context = context ?? throw new ArgumentNullException(nameof(context));
     
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+    
     public async Task<Guid> AddAsync(
-        VariantImage image,
+        VariantImageReadModel image,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(image);
@@ -23,26 +27,26 @@ public class VariantImageProjection
     }
     
     public async Task AddRangeAsync(
-        IReadOnlyCollection<VariantImage> images,
+        IReadOnlyCollection<VariantImageReadModel> images,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(images);
 
-        var imagesList = images as IList<VariantImage> ?? images.ToList();
+        var imagesList = images as IList<VariantImageReadModel> ?? images.ToList();
         
         if(imagesList.Count == 0) return;
 
         await _context.Images.AddRangeAsync(imagesList, cancellationToken);
     }
 
-    public void Remove(VariantImage image)
+    public void Remove(VariantImageReadModel image)
     {
         ArgumentNullException.ThrowIfNull(image);
 
         _context.Images.Remove(image);
     }
     
-    public void RemoveRange(IReadOnlyCollection<VariantImage> images)
+    public void RemoveRange(IReadOnlyCollection<VariantImageReadModel> images)
     {
         ArgumentNullException.ThrowIfNull(images);
 

@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Variant;
+using RenStore.Catalog.Domain.ReadModels;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class ProductVariantConfiguration 
-    : IEntityTypeConfiguration<ProductVariant>
+    : IEntityTypeConfiguration<ProductVariantReadModel>
 {
-    public void Configure(EntityTypeBuilder<ProductVariant> builder)
+    public void Configure(EntityTypeBuilder<ProductVariantReadModel> builder)
     {
         builder
             .ToTable("product_variants");
@@ -74,11 +74,6 @@ public class ProductVariantConfiguration
         builder
             .Property(v => v.ColorId)
             .HasColumnName("color_id");
-        
-        builder
-            .Property(x => x.Version)
-            .HasColumnName("version")
-            .IsRequired();
 
         builder
             .Property(x => x.MainImageId)
@@ -101,11 +96,6 @@ public class ProductVariantConfiguration
                 v => ProductVariantConversion.SizeTypeFromDatabase(v))
             .HasMaxLength(50)
             .IsRequired();
-
-        builder
-            .HasMany(x => x.Sizes)
-            .WithOne()
-            .HasForeignKey(x => x.VariantId);
         
         builder
             .HasIndex(v => v.Article)

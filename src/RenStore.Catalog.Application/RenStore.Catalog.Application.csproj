@@ -10,7 +10,14 @@
       <Folder Include="Features\ProductVariant\Commands\Delete\" />
       <Folder Include="Features\ProductVariant\Commands\Update\" />
       <Folder Include="Features\ProductVariant\Queries\" />
+      <Folder Include="Features\Product\Commands\Approve\" />
+      <Folder Include="Features\Product\Commands\Archive\" />
       <Folder Include="Features\Product\Commands\Delete\" />
+      <Folder Include="Features\Product\Commands\Hide\" />
+      <Folder Include="Features\Product\Commands\Publish\" />
+      <Folder Include="Features\Product\Commands\Reject\" />
+      <Folder Include="Features\Product\Commands\Restore\" />
+      <Folder Include="Features\Product\Commands\ToDraft\" />
       <Folder Include="Features\Product\Commands\Update\" />
       <Folder Include="Features\Product\Queries\" />
       <Folder Include="Features\VariantMedia\Commands\Delete\" />

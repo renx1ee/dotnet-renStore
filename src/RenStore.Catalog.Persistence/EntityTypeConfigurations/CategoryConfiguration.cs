@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Category;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
 {
     public class CategoryConfiguration 
-        : IEntityTypeConfiguration<Category>
+        : IEntityTypeConfiguration<CategoryReadModel>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<CategoryReadModel> builder)
         {
             builder
                 .ToTable("categories");
@@ -81,16 +81,6 @@ namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
                 .Property(x => x.DeletedAt)
                 .HasColumnName("deleted_date")
                 .IsRequired(false);
-            
-            builder
-                .Property(x => x.Version)
-                .HasColumnName("version")
-                .IsRequired();
-        
-            builder
-                .HasMany(x => x.SubCategories)
-                .WithOne()
-                .HasForeignKey(x => x.CategoryId);
             
             builder
                 .HasIndex(x => x.NormalizedName)

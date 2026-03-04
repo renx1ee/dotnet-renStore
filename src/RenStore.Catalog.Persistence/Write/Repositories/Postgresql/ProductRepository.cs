@@ -1,6 +1,9 @@
+using MediatR;
 using RenStore.Catalog.Application.Abstractions;
+using RenStore.Catalog.Application.Common;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Interfaces.Repository;
+using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
@@ -8,11 +11,14 @@ public class ProductRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IProductRepository
 {
     private readonly IEventStore _eventStore;
+    private readonly IMediator _mediator;
     
     public ProductRepository(
-        IEventStore eventStore)
-    {
+        IEventStore eventStore,
+        IMediator mediator)
+    { 
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
+        _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
     
     public async Task<Product?> GetAsync(
@@ -35,11 +41,19 @@ public class ProductRepository
     {
         ArgumentNullException.ThrowIfNull(product);
 
+        var uncommittedEvents = product.GetUncommittedEvents();
+        
         await _eventStore.AppendAsync(
             aggregateId: product.Id,
             expectedVersion: product.Version,
-            events: product.GetUncommittedEvents().ToList(),
-            cancellationToken);
+            events: uncommittedEvents.ToList(),
+            cancellationToken: cancellationToken);
+
+        foreach (var domainEvent in uncommittedEvents)
+        {
+            var notification = new DomainEventNotification<IDomainEvent>(domainEvent);
+            await _mediator.Publish(notification, cancellationToken);
+        }
         
         product.UncommittedEventsClear();
     }

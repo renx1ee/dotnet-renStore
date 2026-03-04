@@ -1,5 +1,3 @@
-using RenStore.SharedKernal.Domain.Enums;
-
 namespace RenStore.Catalog.Domain.ReadModels;
 
 public sealed class CatalogHomeItemReadModel

@@ -1,12 +1,10 @@
 using RenStore.Catalog.Application.Abstractions;
-using RenStore.Catalog.Application.Abstractions.Projections;
-using RenStore.Catalog.Domain.Aggregates.Attribute;
-using RenStore.Catalog.Domain.Interfaces.Repository;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
 public class VariantAttributeProjection
-    : IVariantAttributeProjection
+    : RenStore.Catalog.Application.Abstractions.Projections.IVariantAttributeProjection
 {
     private readonly CatalogDbContext _context;
     private readonly IEventStore _eventStore;
@@ -19,22 +17,13 @@ public class VariantAttributeProjection
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
     }
     
-    public async Task<VariantAttribute?> GetAsync(
-        Guid id, 
-        CancellationToken cancellationToken)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        if (id == Guid.Empty)
-            throw new ArgumentOutOfRangeException(nameof(id));
-        
-        var events = await _eventStore.LoadAsync(id, cancellationToken);
-
-        if (!events.Any()) return null;
-        
-        return VariantAttribute.Rehydrate(events);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<Guid> AddAsync(
-        VariantAttribute attribute,
+        VariantAttributeReadModel attribute,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(attribute);
@@ -45,26 +34,26 @@ public class VariantAttributeProjection
     }
     
     public async Task AddRangeAsync(
-        IReadOnlyCollection<VariantAttribute> attributes,
+        IReadOnlyCollection<VariantAttributeReadModel> attributes,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(attributes);
 
-        var attributesList = attributes as IList<VariantAttribute> ?? attributes.ToList();
+        var attributesList = attributes as IList<VariantAttributeReadModel> ?? attributes.ToList();
         
         if(attributesList.Count == 0) return;
 
         await _context.Attributes.AddRangeAsync(attributesList, cancellationToken);
     }
     
-    public void Remove(VariantAttribute attribute)
+    public void Remove(VariantAttributeReadModel attribute)
     {
         ArgumentNullException.ThrowIfNull(attribute);
 
         _context.Attributes.Remove(attribute);
     }
     
-    public void RemoveRange(IReadOnlyCollection<VariantAttribute> attributes)
+    public void RemoveRange(IReadOnlyCollection<VariantAttributeReadModel> attributes)
     {
         ArgumentNullException.ThrowIfNull(attributes);
 

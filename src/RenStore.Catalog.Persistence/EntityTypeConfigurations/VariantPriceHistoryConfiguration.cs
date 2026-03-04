@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class VariantPriceHistoryConfiguration 
-    : IEntityTypeConfiguration<PriceHistory>
+    : IEntityTypeConfiguration<PriceHistoryReadModel>
 {
-    public void Configure(EntityTypeBuilder<PriceHistory> builder)
+    public void Configure(EntityTypeBuilder<PriceHistoryReadModel> builder)
     {
         builder
             .ToTable("price_history");
@@ -21,18 +20,14 @@ public class VariantPriceHistoryConfiguration
             .HasColumnName("id");
 
         builder
-            .OwnsOne(x => x.Price, price =>
-            {
-                price
-                    .Property(x => x.Amount)
-                    .HasColumnName("price")
-                    .IsRequired();
+            .Property(x => x.Amount)
+            .HasColumnName("price")
+            .IsRequired();
                 
-                price 
-                    .Property(x => x.Currency)
-                    .HasColumnName("currency")
-                    .IsRequired();
-            });
+        builder 
+            .Property(x => x.Currency)
+            .HasColumnName("currency")
+            .IsRequired();
         
         builder
             .Property(x => x.ValidFrom)
@@ -58,14 +53,8 @@ public class VariantPriceHistoryConfiguration
             .Property(x => x.SizeId)
             .HasColumnName("size_id");
 
-        /*builder
-            .HasIndex(x => new { x.SizeId, x.Price })
-            .HasDatabaseName("ux_price_history_size_id_price");*/
-
-        /*builder
-            .HasOne(x => x.SizeId)
-            .WithMany()
-            .HasForeignKey(x => x.S)
-            .HasConstraintName("size_id");*/
+        builder
+            .HasIndex(x => new { x.SizeId, x.Amount })
+            .HasDatabaseName("ux_price_history_size_id_price");
     }
 }

@@ -1,13 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Category;
-using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
-public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
+public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategoryReadModel>
 {
-    public void Configure(EntityTypeBuilder<SubCategory> builder)
+    public void Configure(EntityTypeBuilder<SubCategoryReadModel> builder)
     {
         builder
             .ToTable("sub_categories");
@@ -80,11 +79,6 @@ public class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
             .Property(x => x.CategoryId)
             .HasColumnName("category_id")
             .IsRequired();
-
-        builder
-            .HasOne<Category>()
-            .WithMany(x => x.SubCategories)
-            .HasForeignKey(x => x.CategoryId);
         
         builder
             .HasIndex(x => x.NormalizedName)

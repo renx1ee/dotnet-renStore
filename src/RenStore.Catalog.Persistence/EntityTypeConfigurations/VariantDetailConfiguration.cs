@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Aggregates.VariantDetails;
-using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class VariantDetailConfiguration 
-    : IEntityTypeConfiguration<VariantDetail>
+    : IEntityTypeConfiguration<VariantDetailReadModel>
 {
-    public void Configure(EntityTypeBuilder<VariantDetail> builder)
+    public void Configure(EntityTypeBuilder<VariantDetailReadModel> builder)
     {
         builder
             .ToTable("variant_details");
@@ -73,11 +71,6 @@ public class VariantDetailConfiguration
             .IsRequired(false);
         
         builder
-            .Property(x => x.Version)
-            .HasColumnName("version")
-            .IsRequired();
-        
-        builder
             .Property(x => x.CountryOfManufactureId)
             .HasColumnName("country_id")
             .IsRequired();
@@ -86,11 +79,5 @@ public class VariantDetailConfiguration
             .Property(x => x.VariantId)
             .HasColumnName("variant_id")
             .IsRequired();
-
-        /*builder
-            .HasOne(x => x.ProductVariant)
-            .WithOne(x => x.ProductDetails)
-            .HasForeignKey<ProductDetail>(x => x.ProductVariantId)
-            .HasConstraintName("product_variant_id");*/
     }
 }

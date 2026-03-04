@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Media;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class VariantImageConfiguration 
-    : IEntityTypeConfiguration<VariantImage>
+    : IEntityTypeConfiguration<VariantImageReadModel>
 {
-    public void Configure(EntityTypeBuilder<VariantImage> builder)
+    public void Configure(EntityTypeBuilder<VariantImageReadModel> builder)
     {
         builder
             .ToTable("variant_images");
@@ -80,11 +80,6 @@ public class VariantImageConfiguration
             .HasColumnName("is_deleted")
             .HasColumnType("boolean")
             .HasDefaultValue("false")
-            .IsRequired();
-        
-        builder
-            .Property(x => x.Version)
-            .HasColumnName("version")
             .IsRequired();
         
         builder

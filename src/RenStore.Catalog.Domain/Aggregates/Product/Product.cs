@@ -85,7 +85,7 @@ public class Product
         var product = new Product();
         var productId = Guid.NewGuid();
         
-        product.Raise(new ProductCreated(
+        product.Raise(new ProductCreatedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: productId,
             Status: ProductStatus.PendingModeration,
@@ -183,7 +183,7 @@ public class Product
     {
         EndureNotDeleted();
         
-        Raise(new ProductApproved(
+        Raise(new ProductApprovedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
@@ -213,7 +213,7 @@ public class Product
     {
         EndureNotDeleted();
         
-        Raise(new ProductArchived(
+        Raise(new ProductArchivedEvent(
             EventId: Guid.NewGuid(), 
             ProductId: Id,
             OccurredAt: now));
@@ -278,7 +278,7 @@ public class Product
     /// <exception cref="DomainException"></exception>
     public void Restore(DateTimeOffset now)
     {
-        if(Status != ProductStatus.IsDeleted)
+        if(Status != ProductStatus.Deleted)
             throw new DomainException(
                 "Cannot restore active entity.");
         
@@ -292,7 +292,7 @@ public class Product
     {
         switch (@event)
         {
-            case ProductCreated e:
+            case ProductCreatedEvent e:
                 Id = e.ProductId;
                 SellerId = e.SellerId;
                 SubCategoryId = e.SubCategoryId;
@@ -316,7 +316,7 @@ public class Product
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductApproved e:
+            case ProductApprovedEvent e:
                 Status = ProductStatus.Approved;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -326,7 +326,7 @@ public class Product
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ProductArchived e:
+            case ProductArchivedEvent e:
                 Status = ProductStatus.Archived;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -337,7 +337,7 @@ public class Product
                 break;
             
             case ProductRemoved e:
-                Status = ProductStatus.IsDeleted;
+                Status = ProductStatus.Deleted;
                 UpdatedAt = e.OccurredAt;
                 DeletedAt = e.OccurredAt;
                 break;
@@ -374,7 +374,7 @@ public class Product
 
     private void EndureNotDeleted()
     {
-        if(Status == ProductStatus.IsDeleted)
+        if(Status == ProductStatus.Deleted)
             throw new DomainException("Product already was deleted.");
     }
     

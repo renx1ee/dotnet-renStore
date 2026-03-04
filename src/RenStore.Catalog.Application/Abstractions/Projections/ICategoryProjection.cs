@@ -1,18 +1,20 @@
-using RenStore.Catalog.Domain.Aggregates.Category;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface ICategoryProjection
 {
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    
     Task<Guid> AddAsync(
-        Category category,
+        CategoryReadModel category,
         CancellationToken cancellationToken);
 
     Task AddRangeAsync(
-        IReadOnlyCollection<Category> categories,
+        IReadOnlyCollection<CategoryReadModel> categories,
         CancellationToken cancellationToken);
 
-    void Remove(Category category);
+    void Remove(CategoryReadModel category);
 
-    void RemoveRange(IReadOnlyCollection<Category> categories);
+    void RemoveRange(IReadOnlyCollection<CategoryReadModel> categories);
 }

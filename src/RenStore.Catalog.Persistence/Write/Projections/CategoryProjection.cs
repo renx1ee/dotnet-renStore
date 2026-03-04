@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Category;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -17,7 +17,7 @@ public class CategoryProjection
     }
     
     public async Task<Guid> AddAsync(
-        Category category,
+        CategoryReadModel category,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(category);
@@ -28,26 +28,26 @@ public class CategoryProjection
     }
     
     public async Task AddRangeAsync(
-        IReadOnlyCollection<Category> categories,
+        IReadOnlyCollection<CategoryReadModel> categories,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(categories);
 
-        var categoriesList = categories as IList<Category> ?? categories.ToList();
+        var categoriesList = categories as IList<CategoryReadModel> ?? categories.ToList();
 
         if (categoriesList.Count == 0) return;
 
         await _context.Categories.AddRangeAsync(categoriesList, cancellationToken);
     }
 
-    public void Remove(Category category)
+    public void Remove(CategoryReadModel category)
     {
         ArgumentNullException.ThrowIfNull(category);
 
         _context.Categories.Remove(category);
     }
     
-    public void RemoveRange(IReadOnlyCollection<Category> categories)
+    public void RemoveRange(IReadOnlyCollection<CategoryReadModel> categories)
     {
         ArgumentNullException.ThrowIfNull(categories);
 

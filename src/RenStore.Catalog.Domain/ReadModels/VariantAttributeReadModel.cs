@@ -8,7 +8,7 @@ public sealed class VariantAttributeReadModel
     /// Unique identifier of the product attribute.
     /// </summary>
     public Guid Id { get; init; }
-    // TODO:
+    
     /// <summary>
     /// Attribute name.
     /// Stored in uppercase for case-insensitive operations.

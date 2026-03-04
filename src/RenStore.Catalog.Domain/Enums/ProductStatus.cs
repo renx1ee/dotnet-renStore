@@ -44,5 +44,5 @@ public enum ProductStatus
     /// <summary>
     /// The product was deleted.
     /// </summary>
-    IsDeleted
+    Deleted
 }

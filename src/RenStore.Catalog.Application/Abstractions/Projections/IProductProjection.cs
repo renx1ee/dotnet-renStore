@@ -1,18 +1,20 @@
-using RenStore.Catalog.Domain.Aggregates.Product;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface IProductProjection
 {
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    
     Task<Guid> AddAsync(
-        Product product,
+        ProductReadModel product,
         CancellationToken cancellationToken);
 
     Task AddRangeAsync(
-        IReadOnlyCollection<Product> products,
+        IReadOnlyCollection<ProductReadModel> products,
         CancellationToken cancellationToken);
 
-    void Remove(Product product);
+    void Remove(ProductReadModel product);
 
-    void RemoveRange(IReadOnlyCollection<Product> products);
+    void RemoveRange(IReadOnlyCollection<ProductReadModel> products);
 }

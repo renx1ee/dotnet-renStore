@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.Aggregates.Attribute;
+using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
 public class VariantAttributeConfiguration 
-    : IEntityTypeConfiguration<VariantAttribute>
+    : IEntityTypeConfiguration<VariantAttributeReadModel>
 {
-    public void Configure(EntityTypeBuilder<VariantAttribute> builder)
+    public void Configure(EntityTypeBuilder<VariantAttributeReadModel> builder)
     {
         builder
             .ToTable("variant_attributes");
@@ -75,12 +75,5 @@ public class VariantAttributeConfiguration
         builder
             .HasIndex(x => x.VariantId)
             .HasDatabaseName("ux_variant_attributes_variant_id");
-
-        // TODO:
-        /*builder
-            .HasOne<ProductVariant>()
-            .WithMany(x => x.ProductAttributes)
-            .HasForeignKey(x => x.ProductVariantId)
-            .HasConstraintName("product_variant_id");*/
     }
 }

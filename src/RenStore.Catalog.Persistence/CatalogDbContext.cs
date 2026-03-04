@@ -5,7 +5,7 @@ using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Aggregates.VariantDetails;
-using RenStore.Catalog.Domain.Entities;
+using RenStore.Catalog.Domain.ReadModels;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations;
 using RenStore.Catalog.Persistence.EventStore;
 
@@ -33,13 +33,13 @@ public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbCo
     public DbSet<EventEntity> Events { get; set; }
 
     /*public DbSet<Color> Colors { get; set; }*/
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<CategoryReadModel> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<ProductVariant> Variants { get; set; }
-    public DbSet<VariantAttribute> Attributes { get; set; }
-    public DbSet<VariantDetail> Details { get; set; }
-    public DbSet<VariantSize> Sizes { get; set; }
-    public DbSet<PriceHistory> Prices { get; set; }
-    public DbSet<VariantImage> Images { get; set; }
+    public DbSet<ProductReadModel> Products { get; set; }
+    public DbSet<ProductVariantReadModel> Variants { get; set; }
+    public DbSet<VariantAttributeReadModel> Attributes { get; set; }
+    public DbSet<VariantDetailReadModel> Details { get; set; }
+    public DbSet<VariantSizeReadModel> Sizes { get; set; }
+    public DbSet<PriceHistoryReadModel> Prices { get; set; }
+    public DbSet<VariantImageReadModel> Images { get; set; }
 }

@@ -43,9 +43,9 @@ public static class DomainEventMappings
         { "image-storage-path-updated",                        typeof(ImageStoragePathUpdated) },
         
         // Product
-        { "product-approved",                                  typeof(ProductApproved) },
-        { "product-archived",                                  typeof(ProductArchived) },
-        { "product-created",                                   typeof(ProductCreated) },
+        { "product-approved",                                  typeof(ProductApprovedEvent) },
+        { "product-archived",                                  typeof(ProductArchivedEvent) },
+        { "product-created",                                   typeof(ProductCreatedEvent) },
         { "product-hidden",                                    typeof(ProductHidden) },
         { "product-moved-to-draft",                            typeof(ProductMovedToDraft) },
         { "product-published",                                 typeof(ProductPublished) },
@@ -101,9 +101,9 @@ public static class DomainEventMappings
         { typeof(ImageStoragePathUpdated),                     "image-storage-path-updated" },
         
         // Product
-        { typeof(ProductApproved),                             "product-approved" },
-        { typeof(ProductArchived),                             "product-archived" },
-        { typeof(ProductCreated),                              "product-created" },
+        { typeof(ProductApprovedEvent),                             "product-approved" },
+        { typeof(ProductArchivedEvent),                             "product-archived" },
+        { typeof(ProductCreatedEvent),                              "product-created" },
         { typeof(ProductHidden),                               "product-hidden" },
         { typeof(ProductMovedToDraft),                         "product-moved-to-draft" },
         { typeof(ProductPublished),                            "product-published" },
