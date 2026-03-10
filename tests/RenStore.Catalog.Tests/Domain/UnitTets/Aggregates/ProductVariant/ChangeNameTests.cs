@@ -24,7 +24,7 @@ public class ChangeNameTests : ProductVariantTestBase
             now: now); 
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantNameUpdated>(@event);
+        var result = Assert.IsType<VariantNameUpdatedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

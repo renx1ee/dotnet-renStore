@@ -7,75 +7,75 @@ public sealed class ProductVariantReadModel
     /// <summary>
     /// Unique identifier of the product variant.
     /// </summary>
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     
     /// <summary>
     /// Display the name of this specific variant.
     /// Length must be between 25 and 500 characters after trimming.
     /// </summary>
-    public string Name { get; init; }
+    public string Name { get; set; }
     
     /// <summary>
     /// Uppercase normalized version of the variant name for case-insensitive operations.
     /// Automatically derived from <see cref="Name"/>.
     /// </summary>
-    public string NormalizedName { get; init; } 
+    public string NormalizedName { get; set; } 
     
     /// <summary>
     /// Internal article number that uniquely identifies this product variant.
     /// </summary>
-    public long Article { get; init; }
+    public long Article { get; set; }
     
     /// <summary>
     /// Current lifecycle state on this product variant.
     /// </summary>
-    public ProductVariantStatus Status { get; init; }
+    public ProductVariantStatus Status { get; set; }
     
     /// <summary>
     /// SEO-friendly URL slug for this product variant.
     /// Used to generate permanent links in the catalog and for search engine optimization.
     /// </summary>
-    public string Url { get; init; }
+    public string Url { get; set; }
     
     /// <summary>
-    /// Image Unique Identifier //TODO:
+    /// Image Unique Identifier
     /// </summary>
-    public Guid MainImageId { get; init; }
+    public Guid MainImageId { get; set; }
     
     /// <summary>
     /// Measurement system used for sizing in this product variant.
     /// Determines which size chart applies and how sizes are displayed to customers.
     /// </summary>
-    public SizeSystem SizeSystem { get; init; }
+    public SizeSystem SizeSystem { get; set; }
     
     /// <summary>
     /// Category of sizing applicable to this product variant.
     /// Determines which size ranges and conversion tables are relevant.
     /// </summary>
-    public SizeType SizeType { get; init; }
+    public SizeType SizeType { get; set; }
     
     /// <summary>
     /// Date when the product was created.
     /// </summary>
-    public DateTimeOffset CreatedAt { get; init; }
+    public DateTimeOffset CreatedAt { get; set; }
     
     /// <summary>
     /// Date when the product was updated.
     /// </summary>
-    public DateTimeOffset? UpdatedAt { get; init; }
+    public DateTimeOffset? UpdatedAt { get; set; }
     
     /// <summary>
     /// Date when the product was deleted.
     /// </summary>
-    public DateTimeOffset? DeletedAt { get; init; }
+    public DateTimeOffset? DeletedAt { get; set; }
     
     /// <summary>
     /// Unique identifier of the product.
     /// </summary>
-    public Guid ProductId { get; init; }
+    public Guid ProductId { get; set; }
     
     /// <summary>
     /// Unique identifier of the color.
     /// </summary>
-    public int ColorId { get; init; }
+    public int ColorId { get; set; }
 }

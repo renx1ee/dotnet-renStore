@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RenStore.Catalog.WebApi.Requests;
+using RenStore.Catalog.WebApi.Requests.VariantImage;
 
 namespace RenStore.Catalog.WebApi.Controllers;
 

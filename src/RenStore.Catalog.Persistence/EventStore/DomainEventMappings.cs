@@ -56,17 +56,17 @@ public static class DomainEventMappings
         { "product-variant-reference-removed",                 typeof(ProductVariantReferenceRemovedEvent) },
         
         // Variant
-        { "variant-main-image-id-set",                         typeof(MainImageIdSet) },
-        { "variant-price-created",                             typeof(PriceCreated) },
-        { "variant-size-created",                              typeof(VariantSizeCreated) },
-        { "variant-size-removed",                              typeof(VariantSizeRemoved) },
-        { "variant-size-restored",                             typeof(VariantSizeRestored) },
-        { "variant-archived",                                  typeof(VariantArchived) },
-        { "variant-created",                                   typeof(VariantCreated) },
-        { "variant-drafted",                                   typeof(VariantDrafted) },
-        { "variant-name-updated",                              typeof(VariantNameUpdated) },
-        { "variant-published",                                 typeof(VariantPublished) },
-        { "variant-removed",                                   typeof(VariantRemoved) },
+        { "variant-main-image-id-set",                         typeof(MainImageIdSetEvent) },
+        { "variant-price-created",                             typeof(PriceCreatedEvent) },
+        { "variant-size-created",                              typeof(VariantSizeCreatedEvent) },
+        { "variant-size-removed",                              typeof(VariantSizeRemovedEvent) },
+        { "variant-size-restored",                             typeof(VariantSizeRestoredEvent) },
+        { "variant-archived",                                  typeof(VariantArchivedEvent) },
+        { "variant-created",                                   typeof(VariantCreatedEvent) },
+        { "variant-drafted",                                   typeof(VariantDraftedEvent) },
+        { "variant-name-updated",                              typeof(VariantNameUpdatedEvent) },
+        { "variant-published",                                 typeof(VariantPublishedEvent) },
+        { "variant-removed",                                   typeof(VariantRemovedEvent) },
     };
     
     public static readonly Dictionary<Type, string> DomainEventsTypeToName = new()
@@ -114,16 +114,16 @@ public static class DomainEventMappings
         { typeof(ProductVariantReferenceRemovedEvent),              "product-variant-reference-removed" },
         
         // Variant
-        { typeof(MainImageIdSet),                              "variant-main-image-id-set" },
-        { typeof(PriceCreated),                                "variant-price-created" },
-        { typeof(VariantSizeCreated),                          "variant-size-created" },
-        { typeof(VariantSizeRemoved),                          "variant-size-removed" },
-        { typeof(VariantSizeRestored),                         "variant-size-restored" },
-        { typeof(VariantArchived),                             "variant-archived" },
-        { typeof(VariantCreated),                              "variant-created" },
-        { typeof(VariantDrafted),                              "variant-drafted" },
-        { typeof(VariantNameUpdated),                          "variant-name-updated" },
-        { typeof(VariantPublished),                            "variant-published" },
-        { typeof(VariantRemoved),                              "variant-removed" },
+        { typeof(MainImageIdSetEvent),                              "variant-main-image-id-set" },
+        { typeof(PriceCreatedEvent),                                "variant-price-created" },
+        { typeof(VariantSizeCreatedEvent),                          "variant-size-created" },
+        { typeof(VariantSizeRemovedEvent),                          "variant-size-removed" },
+        { typeof(VariantSizeRestoredEvent),                         "variant-size-restored" },
+        { typeof(VariantArchivedEvent),                             "variant-archived" },
+        { typeof(VariantCreatedEvent),                              "variant-created" },
+        { typeof(VariantDraftedEvent),                              "variant-drafted" },
+        { typeof(VariantNameUpdatedEvent),                          "variant-name-updated" },
+        { typeof(VariantPublishedEvent),                            "variant-published" },
+        { typeof(VariantRemovedEvent),                              "variant-removed" },
     };
 }

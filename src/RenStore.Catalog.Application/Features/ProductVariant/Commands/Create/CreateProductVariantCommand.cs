@@ -1,6 +1,11 @@
+using MediatR;
+using RenStore.Catalog.Domain.Enums;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.Create;
 
-public class CreateProductVariantCommand
-{
-    
-}
+public sealed record CreateProductVariantCommand(
+    Guid ProductId,
+    int ColorId,
+    string Name,
+    SizeSystem SizeSystem,
+    SizeType SizeType) : IRequest;

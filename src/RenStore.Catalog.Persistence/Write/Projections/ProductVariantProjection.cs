@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
@@ -37,6 +38,65 @@ internal sealed class ProductVariantProjection
         if (variantsList.Count == 0) return;
         
         await _context.Variants.AddRangeAsync(variantsList, cancellationToken);
+    }
+
+    public async Task ArchiveAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Variants
+            .FindAsync(variantId, cancellationToken);
+
+        if (view is null) return;
+
+        view.UpdatedAt = now;
+        view.Status = ProductVariantStatus.Archived;
+    }
+    
+    public async Task DraftAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Variants
+            .FindAsync(variantId, cancellationToken);
+
+        if (view is null) return;
+
+        view.UpdatedAt = now;
+        view.Status = ProductVariantStatus.Draft;
+    }
+    
+    public async Task ChangeNameAsync(
+        Guid variantId,
+        string name,
+        string normalizedName,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Variants
+            .FindAsync(variantId, cancellationToken);
+
+        if (view is null) return;
+
+        view.UpdatedAt = now;
+        view.Name = name;
+        view.NormalizedName = normalizedName;
+    }
+    
+    public async Task SoftDeleteAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Variants
+            .FindAsync(variantId, cancellationToken);
+
+        if (view is null) return;
+
+        view.DeletedAt = now;
+        view.Status = ProductVariantStatus.Deleted;
     }
 
     public void Remove(ProductVariantReadModel variant)

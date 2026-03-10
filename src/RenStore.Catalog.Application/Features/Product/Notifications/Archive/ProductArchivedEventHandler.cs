@@ -20,7 +20,7 @@ internal sealed class ProductArchivedEventHandler
         DomainEventNotification<ProductArchivedEvent> notification, 
         CancellationToken cancellationToken)
     {
-        await _productProjection.RejectAsync(
+        await _productProjection.ArchiveAsync(
             productId: notification.DomainEvent.ProductId,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);

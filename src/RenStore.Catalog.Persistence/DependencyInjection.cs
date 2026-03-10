@@ -32,7 +32,9 @@ public static class DependencyInjection
         
         services.AddScoped<ICategoryProjection, CategoryProjection>();
         services.AddScoped<IProductProjection, ProductProjection>();
+        services.AddScoped<ISizePriceProjection, SizePriceProjection>();
         services.AddScoped<IProductVariantProjection, ProductVariantProjection>();
+        services.AddScoped<IProductVariantSizeProjection, ProductVariantSizeProjection>();
         services.AddScoped<IVariantAttributeProjection, VariantAttributeProjection>();
         services.AddScoped<IVariantDetailProjection, VariantDetailProjection>();
         services.AddScoped<IVariantImageProjection, VariantImageProjection>();

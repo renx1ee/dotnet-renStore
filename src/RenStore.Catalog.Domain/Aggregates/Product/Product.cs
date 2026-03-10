@@ -14,7 +14,7 @@ public class Product
 {
     private List<Guid> _productVariantIds = new();
     
-    /// <summary>a
+    /// <summary>
     /// Unique identifier of the product.
     /// </summary>
     public Guid Id { get; private set; }
@@ -144,21 +144,26 @@ public class Product
     public void MarkAsPublished(DateTimeOffset now)
     {
         EndureNotDeleted();
-        
+
         if (!_productVariantIds.Any())
+        {
             throw new DomainException(
                 "Product must have variants.");
-        
-        if(Status == ProductStatus.Published)
+        }
+
+        if (Status == ProductStatus.Published)
+        {
             throw new DomainException(
                 "Product is already published.");
+        }
 
         Raise(new ProductPublishedEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Published,
             ProductId: Id,
             OccurredAt: now));
     }
-
+    
     /// <summary>
     /// Mark the product as rejected.
     /// Updates the product aggregate state and records the changes in the domain event history.
@@ -170,6 +175,7 @@ public class Product
         
         Raise(new ProductRejectedEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Rejected,
             ProductId: Id,
             OccurredAt: now));
     }
@@ -185,6 +191,7 @@ public class Product
         
         Raise(new ProductApprovedEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Approved,
             ProductId: Id,
             OccurredAt: now));
     }
@@ -200,6 +207,7 @@ public class Product
         
         Raise(new ProductMovedToDraftEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Draft,
             ProductId: Id,
             OccurredAt: now));
     }
@@ -215,6 +223,7 @@ public class Product
         
         Raise(new ProductArchivedEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Archived,
             ProductId: Id,
             OccurredAt: now));
     }
@@ -230,6 +239,7 @@ public class Product
         
         Raise(new ProductHiddenEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Hidden,
             ProductId: Id,
             OccurredAt: now));
     }
@@ -245,6 +255,7 @@ public class Product
         
         Raise(new ProductRemovedEvent(
             EventId: Guid.NewGuid(), 
+            Status: ProductStatus.Deleted,
             ProductId: Id, 
             OccurredAt: now));
     }
@@ -283,8 +294,9 @@ public class Product
                 "Cannot restore active entity.");
         
         Raise(new ProductRestoredEvent(
-            EventId: Guid.NewGuid(), 
-            ProductId: Id, 
+            EventId: Guid.NewGuid(),
+            Status: ProductStatus.Draft,
+            ProductId: Id,
             OccurredAt: now));
     }
     
@@ -301,43 +313,43 @@ public class Product
                 break;
             
             case ProductPublishedEvent e:
-                Status = ProductStatus.Published;
+                Status = e.Status;
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductRejectedEvent e:
-                Status = ProductStatus.Rejected;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductApprovedEvent e:
-                Status = ProductStatus.Approved;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductMovedToDraftEvent e:
-                Status = ProductStatus.Draft;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductArchivedEvent e:
-                Status = ProductStatus.Archived;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductHiddenEvent e:
-                Status = ProductStatus.Hidden;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductRemovedEvent e:
-                Status = ProductStatus.Deleted;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 DeletedAt = e.OccurredAt;
                 break;
             
             case ProductRestoredEvent e:
-                Status = ProductStatus.Draft;
+                Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             

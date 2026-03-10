@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Asp.Versioning;
 using RenStore.Catalog.Application;
 using RenStore.Catalog.Persistence;
@@ -7,8 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCatalogPersistence(builder.Configuration);
 builder.Services.AddCatalogApplication();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions
+            .Converters
+            .Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddApiVersioning(options =>

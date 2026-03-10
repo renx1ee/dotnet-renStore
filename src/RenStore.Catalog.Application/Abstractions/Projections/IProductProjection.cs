@@ -43,6 +43,20 @@ public interface IProductProjection
         Guid productId,
         DateTimeOffset now,
         CancellationToken cancellationToken);
+    
+    Task RestoreAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task<bool> ExistsAsync(
+        Guid productId,
+        CancellationToken cancellationToken);
+
+    Task<bool> BelongAsync(
+        Guid productId,
+        long sellerId,
+        CancellationToken cancellationToken);
 
     void Remove(ProductReadModel product);
 

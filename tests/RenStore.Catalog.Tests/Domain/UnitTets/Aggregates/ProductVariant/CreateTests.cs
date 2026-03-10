@@ -36,7 +36,7 @@ public class CreateTests
                 url: url);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantCreated>(@event);
+        var result = Assert.IsType<VariantCreatedEvent>(@event);
         
         // Assert: event
         Assert.Equal(now, result.OccurredAt);

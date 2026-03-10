@@ -9,7 +9,7 @@ internal sealed class ProductHiddenEventHandler
     : INotificationHandler<DomainEventNotification<ProductHiddenEvent>>
 {
     private readonly IProductProjection _productProjection;
-
+    
     public ProductHiddenEventHandler(
         IProductProjection productProjection)
     {

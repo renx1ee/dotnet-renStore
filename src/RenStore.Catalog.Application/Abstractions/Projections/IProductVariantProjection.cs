@@ -14,6 +14,28 @@ public interface IProductVariantProjection
         IReadOnlyCollection<ProductVariantReadModel> variants,
         CancellationToken cancellationToken);
 
+    Task ArchiveAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task ChangeNameAsync(
+        Guid variantId,
+        string name,
+        string normalizedName,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task DraftAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task SoftDeleteAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
     void Remove(ProductVariantReadModel variant);
 
     void RemoveRange(IReadOnlyCollection<ProductVariantReadModel> variants);

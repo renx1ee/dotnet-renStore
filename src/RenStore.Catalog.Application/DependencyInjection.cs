@@ -7,8 +7,10 @@ using RenStore.Catalog.Application.Features.Product.Commands.Archive;
 using RenStore.Catalog.Application.Features.Product.Commands.Create;
 using RenStore.Catalog.Application.Features.Product.Commands.Hide;
 using RenStore.Catalog.Application.Features.Product.Commands.Reject;
+using RenStore.Catalog.Application.Features.Product.Commands.Restore;
 using RenStore.Catalog.Application.Features.Product.Commands.SoftDelete;
 using RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.Create;
 
 namespace RenStore.Catalog.Application;
 
@@ -17,6 +19,11 @@ public static class DependencyInjection
     public static IServiceCollection AddCatalogApplication(
         this IServiceCollection services)
     {
+        services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly));
+
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        
         services.AddTransient(
             typeof(IPipelineBehavior<,>),
             typeof(LoggingBehavior<,>));
@@ -26,8 +33,14 @@ public static class DependencyInjection
             typeof(ExceptionHandlingBehavior<,>));
 
         services.AddTransient(
-            typeof(ValidateBehavior<,>),
-            typeof(ExceptionHandlingBehavior<,>));
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidateBehavior<,>));
+        
+        return services;
+    }
+}
+
+/*#region Product
 
         services.AddMediatR(x =>
             x.RegisterServicesFromAssemblies(
@@ -43,6 +56,8 @@ public static class DependencyInjection
                 typeof(HideProductCommandHandler).Assembly,
                 typeof(DraftProductCommand).Assembly,
                 typeof(DraftProductCommandHandler).Assembly,
+                typeof(RestoreProductCommand).Assembly,
+                typeof(RestoreProductCommandHandler).Assembly,
                 typeof(RejectProductCommand).Assembly,
                 typeof(RejectProductCommandHandler).Assembly));
 
@@ -61,12 +76,26 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(
             typeof(ArchiveProductCommandValidator).Assembly);
         
+        
         services.AddValidatorsFromAssembly(
             typeof(HideProductCommandValidator).Assembly);
         
         services.AddValidatorsFromAssembly(
             typeof(DraftProductCommandValidator).Assembly);
         
-        return services;
-    }
-}
+        services.AddValidatorsFromAssembly(
+            typeof(RestoreProductCommandValidator).Assembly);
+        
+        #endregion
+
+        #region Variant
+
+        services.AddMediatR(x =>
+            x.RegisterServicesFromAssemblies(
+                typeof(CreateProductVariantCommand).Assembly,
+                typeof(CreateProductVariantCommandHandler).Assembly));
+
+        services.AddValidatorsFromAssembly(
+            typeof(CreateProductVariantCommandValidator).Assembly);
+
+        #endregion*/

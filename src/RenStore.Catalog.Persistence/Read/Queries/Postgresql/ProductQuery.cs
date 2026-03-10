@@ -61,7 +61,7 @@ internal sealed class ProductQuery
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
             var pageRequest = BuildPageRequest(page, pageCount, descending);
-
+            
             var sql = new StringBuilder(
                 @$"
                     {BaseSqlQuery}

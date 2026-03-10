@@ -9,7 +9,7 @@ internal static class ProductVariantConversion
         return status switch
         {
             ProductVariantStatus.Published => "published",
-            ProductVariantStatus.IsDeleted => "is_deleted",
+            ProductVariantStatus.Deleted => "is_deleted",
             ProductVariantStatus.Draft => "draft",
             ProductVariantStatus.Archived => "archived",
             _ => throw new ArgumentOutOfRangeException(nameof(status))
@@ -21,7 +21,7 @@ internal static class ProductVariantConversion
         return value switch
         {
             "published" => ProductVariantStatus.Published,
-            "is_deleted" => ProductVariantStatus.IsDeleted,
+            "is_deleted" => ProductVariantStatus.Deleted,
             "draft" => ProductVariantStatus.Draft,
             "archived" => ProductVariantStatus.Archived,
             _ => throw new ArgumentOutOfRangeException(nameof(value))

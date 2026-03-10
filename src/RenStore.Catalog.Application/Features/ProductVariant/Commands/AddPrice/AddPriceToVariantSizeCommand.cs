@@ -1,0 +1,12 @@
+using MediatR;
+using RenStore.SharedKernal.Domain.Enums;
+
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddPrice;
+
+public sealed record AddPriceToVariantSizeCommand(
+    Guid VariantId,
+    Guid SizeId,
+    Currency Currency,
+    DateTimeOffset ValidFrom,
+    decimal Price) 
+    : IRequest;

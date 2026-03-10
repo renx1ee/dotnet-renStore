@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ReadModels;
 
@@ -64,7 +65,7 @@ internal sealed class ProductProjection
 
         if (view is null) return;
 
-        view.DeletedAt = now;
+        view.UpdatedAt = now;
         view.Status = ProductStatus.Approved;
     }
     
@@ -78,7 +79,7 @@ internal sealed class ProductProjection
 
         if (view is null) return;
 
-        view.DeletedAt = now;
+        view.UpdatedAt = now;
         view.Status = ProductStatus.Rejected;
     }
     
@@ -92,7 +93,7 @@ internal sealed class ProductProjection
 
         if (view is null) return;
 
-        view.DeletedAt = now;
+        view.UpdatedAt = now;
         view.Status = ProductStatus.Archived;
     }
     
@@ -106,7 +107,7 @@ internal sealed class ProductProjection
 
         if (view is null) return;
 
-        view.DeletedAt = now;
+        view.UpdatedAt = now;
         view.Status = ProductStatus.Hidden;
     }
     
@@ -120,8 +121,45 @@ internal sealed class ProductProjection
 
         if (view is null) return;
 
-        view.DeletedAt = now;
+        view.UpdatedAt = now;
         view.Status = ProductStatus.Draft;
+    }
+    
+    public async Task RestoreAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.UpdatedAt = now;
+        view.DeletedAt = null;
+        view.Status = ProductStatus.Archived;
+    }
+
+    public async Task<bool> ExistsAsync(
+        Guid productId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Products
+            .AnyAsync(x => 
+                x.Id == productId, 
+                cancellationToken);
+    }
+    
+    public async Task<bool> BelongAsync(
+        Guid productId,
+        long sellerId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Products
+            .AnyAsync(p => 
+                p.Id == productId && 
+                p.SellerId == sellerId,
+                cancellationToken);
     }
 
     public void Remove(ProductReadModel product)

@@ -13,7 +13,7 @@ public static class EventSerializer
         
         PropertyNameCaseInsensitive = true,
         
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+        DefaultIgnoreCondition = JsonIgnoreCondition.Never,
         
         IncludeFields = false,
         

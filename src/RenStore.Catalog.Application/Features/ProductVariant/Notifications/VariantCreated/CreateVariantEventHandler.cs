@@ -1,0 +1,42 @@
+using MediatR;
+using RenStore.Catalog.Application.Abstractions.Projections;
+using RenStore.Catalog.Application.Common;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
+using RenStore.Catalog.Domain.ReadModels;
+
+namespace RenStore.Catalog.Application.Features.ProductVariant.Notifications.VariantCreated;
+
+internal sealed class CreateVariantEventHandler
+    : INotificationHandler<DomainEventNotification<VariantCreatedEvent>>
+{
+    private readonly IProductVariantProjection _variantProjection;
+    
+    public CreateVariantEventHandler(
+        IProductVariantProjection variantProjection)
+    {
+        _variantProjection = variantProjection;
+    }
+    
+    public async Task Handle(
+        DomainEventNotification<VariantCreatedEvent> notification, 
+        CancellationToken cancellationToken)
+    {
+        var variant = new ProductVariantReadModel()
+        {
+            Id = notification.DomainEvent.VariantId,
+            ProductId = notification.DomainEvent.ProductId,
+            ColorId = notification.DomainEvent.ColorId,
+            CreatedAt = notification.DomainEvent.OccurredAt,
+            Name = notification.DomainEvent.Name,
+            NormalizedName = notification.DomainEvent.NormalizedName,
+            SizeSystem = notification.DomainEvent.SizeSystem,
+            SizeType = notification.DomainEvent.SizeType,
+            Article = notification.DomainEvent.Article,
+            Status = notification.DomainEvent.Status,
+            Url = notification.DomainEvent.Url
+        };
+
+        await _variantProjection.AddAsync(variant, cancellationToken);
+        await _variantProjection.SaveChangesAsync(cancellationToken);
+    }
+}

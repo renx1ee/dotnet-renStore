@@ -1,4 +1,3 @@
-using RenStore.Catalog.Domain.Aggregates.Variant.Events;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
@@ -11,7 +10,6 @@ using RenStore.Catalog.Domain.ValueObjects;
 using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
-using RenStore.SharedKernal.Domain.ValueObjects;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
 // TODO: 339 line
@@ -128,29 +126,6 @@ public class ProductVariant
     
     private ProductVariant() { }
 
-    #region Variant
-
-    /// <summary>
-    /// Create a new product variant in the system, linked to a specific product.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for event history.</param>
-    /// <param name="productId">The unique product identifier.</param>
-    /// <param name="colorId">The unique color identifier.</param>
-    /// <param name="name">Display the name of this specific variant.
-    /// Length must be between 25 and 500 characters after trimming.</param>
-    /// <param name="sizeSystem">Measurement system used for sizing in this product variant.
-    /// Determines which size chart applies and how sizes are displayed to customers.</param>
-    /// <param name="sizeType">Category of sizing applicable to this product variant.</param>
-    /// <param name="article"></param>
-    /// <param name="url">SEO-friendly URL slug for this product variant.
-    /// Used to generate permanent links in the catalog and for search engine optimization.</param>
-    /// <returns>Created product variant entity with established business invariants.</returns>
-    /// <exception cref="DomainException">
-    /// - Invalid product or color ID
-    /// - Name outside length limits (25-500 chars)
-    /// - Negative stock quantity
-    /// - Empty URL
-    /// </exception>
     public static ProductVariant Create(
         DateTimeOffset now,
         Guid productId,
@@ -167,21 +142,25 @@ public class ProductVariant
 
         var trimmedName = ProductVariantRules.ValidateAndTrimName(name);
         string trimmedUrl = ProductVariantRules.ValidateAndTrimUrl(url);
+
+        var normalizedName = trimmedName.ToUpperInvariant();
         
         var variantId = Guid.NewGuid();
         var variant = new ProductVariant();
         
         variant.Raise(
-            new VariantCreated(
+            new VariantCreatedEvent(
                 EventId: Guid.NewGuid(), 
                 VariantId: variantId,
                 ProductId: productId,
                 ColorId: colorId,
                 Name: trimmedName,
+                NormalizedName: normalizedName,
                 Url: trimmedUrl,
                 SizeSystem: sizeSystem,
                 SizeType: sizeType,
                 Article: article,
+                Status: ProductVariantStatus.Draft,
                 OccurredAt: now));
         
         return variant;
@@ -193,21 +172,6 @@ public class ProductVariant
         EnsureNotDeleted();
     }
     
-    /// <summary>
-    /// Updates the display name of this product variant.
-    /// The normalized version (uppercase) is automatically regenerated for search consistency.
-    /// </summary>
-    /// <param name="now">Timestamp for the update audit</param>
-    /// <param name="name">New customer-facing variant name</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Name fails validation (length 25-500 characters)
-    /// </exception>
-    /// <remarks>
-    /// If the new name is identical to the current name (after trimming), no changes are made.
-    /// The change is idempotent and only triggers events when actual modification occurs.
-    /// </remarks>
     public void ChangeName(
         DateTimeOffset now,
         string name)
@@ -218,51 +182,49 @@ public class ProductVariant
         
         if (trimmedName == Name) return;
 
-        Raise(new VariantNameUpdated(
+        var normalizedName = trimmedName.ToUpperInvariant();
+
+        Raise(new VariantNameUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
-            Name: trimmedName));
+            Name: trimmedName,
+            NormalizedName: normalizedName));
     }
-    
-    /*/// <summary>
-    /// Updates the average customer rating for this product variant.
-    /// Calculated from customer reviews and feedback scores.
-    /// </summary>
-    /// <param name="score">New average rating score</param>
-    /// <param name="now">Timestamp for rating update</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Variant is deleted
-    /// - Score is outside valid rating range (handled by validation rules)
-    /// </exception>
-    /// <remarks>
-    /// Ratings typically range from 0.0 to 5.0 or similar scale.
-    /// This method accepts pre-calculated averages; individual review processing
-    /// should be handled separately in a review aggregation service.
-    /// </remarks>
-    public void UpdateRating(
-        decimal score,
-        DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-        
-        Rating.AddRatingValidate(score);
-        
-        Raise(new VariantAverageRatingUpdated(
-            VariantId: Id,
-            OccurredAt: now,
-            Score: score));
-    }*/
 
-    public void Activate(DateTimeOffset now)
+    public void Publish(DateTimeOffset now)
     {
         EnsureNotDeleted();
-        
+
         if (Status == ProductVariantStatus.Published)
-            return;
+            throw new DomainException("Variant has already been published.");
         
-        Raise(new VariantPublished(
+        if (!_imageIds.Any())
+            throw new DomainException("Product variant must have at least one image.");
+
+        if (MainImageId == Guid.Empty)
+            throw new DomainException("Product variant must have main image.");
+
+        var activeSizes = _sizes
+            .Where(s => !s.IsDeleted)
+            .ToList();
+
+        if (!activeSizes.Any())
+            throw new DomainException("Product variant must have at least one size.");
+
+        foreach (var size in activeSizes)
+        {
+            var activePrice = size.Prices
+                .FirstOrDefault(x => x.IsActive);
+            
+            if (activePrice is null)
+                throw new DomainException($"Size: {size.Id} has no active price.");
+
+            if (activePrice.Price.Amount <= 0)
+                throw new DomainException($"Size: {size.Id} has invalid price.");
+        }
+        
+        Raise(new VariantPublishedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
@@ -275,7 +237,7 @@ public class ProductVariant
         if (Status == ProductVariantStatus.Archived)
             return;
         
-        Raise(new VariantArchived(
+        Raise(new VariantArchivedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
@@ -288,7 +250,7 @@ public class ProductVariant
         if (Status == ProductVariantStatus.Draft)
             return;
         
-        Raise(new VariantDrafted(
+        Raise(new VariantDraftedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
@@ -298,13 +260,11 @@ public class ProductVariant
     {
         EnsureNotDeleted("Cannot delete already deleted variant.");
         
-        Raise(new VariantRemoved(
+        Raise(new VariantRemovedEvent(
             EventId: Guid.NewGuid(), 
             VariantId: Id,
             OccurredAt: now));
     }
-    
-    #endregion
 
     public void SetMainImageId(
         DateTimeOffset now,
@@ -313,17 +273,18 @@ public class ProductVariant
         if (imageId == Guid.Empty)
             throw new DomainException("Main image ID cannot be guid empty.");
         
+        if(!_imageIds.Contains(imageId))
+            throw new DomainException("Image ID does not belong to this variant.");
+        
         if(imageId == MainImageId) 
             return;
         
-        Raise(new MainImageIdSet(
+        Raise(new MainImageIdSetEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
             ImageId: imageId));
     }
-
-    #region size
     
     public Guid AddSize(
         LetterSize letterSize,
@@ -331,7 +292,11 @@ public class ProductVariant
     {
         EnsureNotDeleted();
 
-        if (_sizes.Any(x => x.Size.LetterSize == letterSize))
+        var activeSizes = _sizes
+            .Where(s => !s.IsDeleted)
+            .ToList();
+
+        if (activeSizes.Any(x => x.Size.LetterSize == letterSize))
             throw new DomainException("The size already exits in the system.");
         
         //TODO:  нужно убедиться, что SizeType согласован с категорией продукта,
@@ -344,7 +309,7 @@ public class ProductVariant
         
         var sizeId = Guid.NewGuid();
         
-        Raise(new VariantSizeCreated(
+        Raise(new VariantSizeCreatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             SizeId: sizeId,
@@ -356,23 +321,7 @@ public class ProductVariant
         return sizeId;
     }
     
-    /// <summary>
-    /// Removes a specific size option from this product variant's available selections.
-    /// Used when a size is discontinued, out of stock permanently, or no longer manufactured.
-    /// </summary>
-    /// <param name="now">Timestamp for deletion audit</param>
-    /// <param name="sizeId">Identifier of the size option to remove</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Size option with specified ID is not found
-    /// - Size option is already marked as deleted
-    /// </exception>
-    /// <remarks>
-    /// Size deletion affects customers who may have previously purchased this size.
-    /// Consider alternatives like marking as "out of stock" instead of deletion for better UX.
-    /// Removal is logical (soft delete) for historical order reference.
-    /// </remarks>
-    public void DeleteSize(
+    public void RemoveSize(
         DateTimeOffset now,
         Guid sizeId)
     {
@@ -381,29 +330,13 @@ public class ProductVariant
         var size = GetSize(sizeId);
         SizeEnsureNotDeleted(size);
         
-        Raise(new VariantSizeRemoved(
+        Raise(new VariantSizeRemovedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
             SizeId: sizeId));
     }
     
-    /// <summary>
-    /// Restores a previously deleted size option, making it available for purchase again.
-    /// Reverses the effect of <see cref="DeleteSize"/> while preserving the size's configuration.
-    /// </summary>
-    /// <param name="now">Timestamp for restoration audit</param>
-    /// <param name="sizeId">Identifier of the size option to restore</param>
-    /// <exception cref="DomainException">
-    /// Thrown when:
-    /// - Size option with specified ID is not found
-    /// - Size option is not currently marked as deleted
-    /// </exception>
-    /// <remarks>
-    /// Restored sizes regain their previous stock levels and availability status.
-    /// Customers can once again select this size when purchasing the variant.
-    /// Consider verifying manufacturer availability before restoring discontinued sizes.
-    /// </remarks>
     public void RestoreSize(
         DateTimeOffset now,
         Guid sizeId)
@@ -415,7 +348,7 @@ public class ProductVariant
         if(!size.IsDeleted)
             throw new DomainException("Size is not deleted.");
         
-        Raise(new VariantSizeRestored(
+        Raise(new VariantSizeRestoredEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
@@ -439,7 +372,7 @@ public class ProductVariant
 
         var priceId = Guid.NewGuid();
         
-        Raise(new PriceCreated(
+        Raise(new PriceCreatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             EffectiveFrom: validFrom,
@@ -448,29 +381,26 @@ public class ProductVariant
             Currency: currency,
             SizeId: sizeId));
     }
-
-    #endregion
     
     protected override void Apply(IDomainEvent @event)
     {
         switch (@event)
         {
-            case VariantCreated e:
+            case VariantCreatedEvent e:
                 CreatedAt = e.OccurredAt;
                 Id = e.VariantId;
                 ProductId = e.ProductId;
                 ColorId = e.ColorId;
                 Name = e.Name;
-                NormalizedName = e.Name.ToUpperInvariant();
+                NormalizedName = e.NormalizedName;
                 Url = e.Url;
                 SizeSystem = e.SizeSystem;
                 SizeType = e.SizeType;
-                Status = ProductVariantStatus.Draft;
+                Status = e.Status;
                 Article = e.Article;
-                // Rating = Rating.Empty();
                 break;
             
-            case VariantSizeCreated e:
+            case VariantSizeCreatedEvent e:
                 _sizes.Add(VariantSize.Create(
                     id: e.SizeId,
                     now: e.OccurredAt,
@@ -482,47 +412,47 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case PriceCreated e:
+            case PriceCreatedEvent e:
                 var createdSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
                                   ?? throw new DomainException("Variant size is not found.");
                 
                 createdSize.CloseCurrentPrice(e.OccurredAt);
                 
                 createdSize.AddPrice(
+                    now: e.OccurredAt,
+                    newPrice: new PriceHistory(
                         now: e.OccurredAt,
-                        newPrice: new PriceHistory(
-                            now: e.OccurredAt,
-                            startDate: e.EffectiveFrom,
-                            priceId: e.PriceId,
-                            sizeId: e.SizeId,
-                            price: e.PriceAmount,
-                            currency: e.Currency));
+                        startDate: e.EffectiveFrom,
+                        priceId: e.PriceId,
+                        sizeId: e.SizeId,
+                        price: e.PriceAmount,
+                        currency: e.Currency));
                 
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case MainImageIdSet e:
+            case MainImageIdSetEvent e:
                 MainImageId = e.ImageId;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantArchived e:
+            case VariantArchivedEvent e:
                 Status = ProductVariantStatus.Archived;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDrafted e:
+            case VariantDraftedEvent e:
                 Status = ProductVariantStatus.Draft;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantNameUpdated e:
+            case VariantNameUpdatedEvent e:
                 Name = e.Name;
-                NormalizedName = e.Name.ToUpperInvariant();
+                NormalizedName = e.NormalizedName;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantPublished e:
+            case VariantPublishedEvent e:
                 Status = ProductVariantStatus.Published;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -532,13 +462,13 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;*/
             
-            case VariantRemoved e:
-                Status = ProductVariantStatus.IsDeleted;
+            case VariantRemovedEvent e:
+                Status = ProductVariantStatus.Deleted;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantSizeRemoved e:
+            case VariantSizeRemovedEvent e:
                 var removedSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
                                   ?? throw new DomainException("Variant size is not found.");
                 
@@ -546,7 +476,7 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantSizeRestored e:
+            case VariantSizeRestoredEvent e:
                 var restoredSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
                                   ?? throw new DomainException("Variant size is not found.");
                 
@@ -556,7 +486,8 @@ public class ProductVariant
         }
     }
 
-    public static ProductVariant Rehydrate(IEnumerable<IDomainEvent> history)
+    public static ProductVariant Rehydrate(
+        IEnumerable<IDomainEvent> history)
     {
         var productVariant = new ProductVariant();
 
@@ -576,7 +507,7 @@ public class ProductVariant
     /// <exception cref="DomainException">Thrown when entity is deleted.</exception>
     private void EnsureNotDeleted(string? message = null)
     {
-        if (Status == ProductVariantStatus.IsDeleted)
+        if (Status == ProductVariantStatus.Deleted)
             throw new DomainException(message ?? "Entity is deleted.");
     }
     

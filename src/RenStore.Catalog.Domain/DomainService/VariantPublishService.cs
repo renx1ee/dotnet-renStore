@@ -41,7 +41,7 @@ public class VariantPublishService : IVariantPublishService
 
         foreach (var variant in variants)
         {
-            if(variant.Status == ProductVariantStatus.IsDeleted)
+            if(variant.Status == ProductVariantStatus.Deleted)
                 throw new DomainException(
                     "Product variant already deleted.");
             

@@ -27,7 +27,7 @@ public sealed class VariantSizeConfiguration
         builder
             .Property(s => s.Number)
             .HasColumnName("size_number")
-            .IsRequired();
+            .IsRequired(false);
                     
         builder
             .Property(s => s.System)

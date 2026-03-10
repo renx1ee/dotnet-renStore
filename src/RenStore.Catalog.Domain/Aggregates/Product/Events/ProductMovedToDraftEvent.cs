@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
@@ -10,5 +11,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 public record ProductMovedToDraftEvent(
     Guid EventId,
     Guid ProductId,
+    ProductStatus Status,
     DateTimeOffset OccurredAt)
     : IDomainEvent;

@@ -10,6 +10,7 @@ using RenStore.Catalog.Application.Features.Product.Commands.Reject;
 using RenStore.Catalog.Application.Features.Product.Commands.SoftDelete;
 using RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
 using RenStore.Catalog.WebApi.Requests;
+using RenStore.Catalog.WebApi.Requests.Product;
 
 namespace RenStore.Catalog.WebApi.Controllers;
 
@@ -18,7 +19,7 @@ namespace RenStore.Catalog.WebApi.Controllers;
 [Route("/api/v{version:apiVersion}/catalog/products")]
 public sealed class ProductController(IMediator mediator) : ControllerBase
 {
-    private IMediator _mediator = mediator;
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     
     [HttpPost]
     [MapToApiVersion(1)]
@@ -43,7 +44,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{id:guid}")]
+    [HttpPatch("{id:guid}/approve")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Approve(Guid id)
     {
@@ -52,7 +53,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpPost("{id:guid}")]
+    [HttpPatch("{id:guid}/archive")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Archive(Guid id)
     {
@@ -61,7 +62,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpPost("{id:guid}")]
+    [HttpPatch("{id:guid}/hide")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Hide(Guid id)
     {
@@ -70,7 +71,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpPost("{id:guid}")]
+    [HttpPatch("{id:guid}/reject")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Reject(Guid id)
     {
@@ -79,21 +80,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpPost("{id:guid}")]
+    [HttpPatch("{id:guid}/draft")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> ToDraft(Guid id)
     {
         await _mediator.Send(new DraftProductCommand(id));
 
-        return NoContent();
-    }
-    
-    [HttpPatch("{id:guid}")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> Update(
-        Guid id,
-        [FromBody] UpdateProductRequest request)
-    {
         return NoContent();
     }
     

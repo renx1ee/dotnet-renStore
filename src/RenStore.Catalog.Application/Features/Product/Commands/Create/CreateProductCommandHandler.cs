@@ -32,7 +32,7 @@ internal sealed class CreateProductCommandHandler
             request.SellerId,
             request.SubCategoryId);
 
-        var existingCategory = await _categoryProjection
+        /*var existingCategory = await _categoryProjection
             .SubCategoryExists(
                 request.SubCategoryId, 
                 cancellationToken);
@@ -42,10 +42,10 @@ internal sealed class CreateProductCommandHandler
         {
             /*throw new NotFoundException(
                 name: typeof(SubCategoryReadModel), 
-                request.SubCategoryId);*/
+                request.SubCategoryId);#1#
             
             return Guid.Empty;
-        }
+        }*/
 
         var product = Domain.Aggregates.Product.Product.Create(
             sellerId: request.SellerId,

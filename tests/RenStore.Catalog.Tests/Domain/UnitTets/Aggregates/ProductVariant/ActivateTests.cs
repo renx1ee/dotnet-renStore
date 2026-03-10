@@ -16,10 +16,10 @@ public class ActivateTests : ProductVariantTestBase
         variant.UncommittedEventsClear();
 
         // Act
-        variant.Activate(now);
+        variant.Publish(now);
         
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantPublished>(@event);
+        var result = Assert.IsType<VariantPublishedEvent>(@event);
 
         // Assert: event
         Assert.Equal(now, result.OccurredAt);
@@ -39,9 +39,9 @@ public class ActivateTests : ProductVariantTestBase
         var variant = CreateValidProductVariant();
 
         // Act
-        variant.Activate(now);
+        variant.Publish(now);
         variant.UncommittedEventsClear();
-        variant.Activate(now);
+        variant.Publish(now);
         
         // Assert
         Assert.Empty(variant.GetUncommittedEvents());
@@ -58,6 +58,6 @@ public class ActivateTests : ProductVariantTestBase
         
         // Act & Assert
         Assert.Throws<DomainException>(() =>
-            variant.Activate(now));
+            variant.Publish(now));
     }
 }
