@@ -24,7 +24,7 @@ public class ChangeStoragePathTests : ImageTestBase
             storagePath: newStoragePath);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var result = Assert.IsType<ImageStoragePathUpdated>(@event);
+        var result = Assert.IsType<ImageStoragePathUpdatedEvent>(@event);
 
         // Assert: event
         Assert.NotNull(result);

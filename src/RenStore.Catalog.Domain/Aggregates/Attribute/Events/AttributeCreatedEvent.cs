@@ -14,7 +14,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Attributes are used for filtering, comparison, and detailed product specifications.
 /// Keys and values are normalized and validated before event creation.
 /// </remarks>
-public record AttributeCreated(
+public sealed record AttributeCreatedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid VariantId,

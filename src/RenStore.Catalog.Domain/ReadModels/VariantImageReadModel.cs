@@ -7,7 +7,7 @@ public sealed class VariantImageReadModel
     public string StoragePath { get; init; }
     public long FileSizeBytes { get; init; }
     public bool IsMain { get; init; }
-    public short SortOrder { get; init; } 
+    public int SortOrder { get; init; } 
     public int Weight { get; init; }
     public int Height { get; init; }
     public bool IsDeleted { get; init; }

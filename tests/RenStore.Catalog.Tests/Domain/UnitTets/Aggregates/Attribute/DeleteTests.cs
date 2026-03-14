@@ -18,7 +18,7 @@ public class DeleteTests : AttributeTestBase
 
         var @event = Assert.Single(
             attribute.GetUncommittedEvents());
-        var result = Assert.IsType<AttributeRemoved>(@event);
+        var result = Assert.IsType<AttributeRemovedEvent>(@event);
         
         // Assert: result
         Assert.Equal(now, result.OccurredAt);

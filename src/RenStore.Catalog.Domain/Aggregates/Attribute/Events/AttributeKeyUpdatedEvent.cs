@@ -2,9 +2,9 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 
-public record AttributeValueUpdated(
+public sealed record AttributeKeyUpdatedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid AttributeId,
-    string Value) 
+    string Key) 
     : IDomainEvent;

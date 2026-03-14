@@ -1,15 +1,58 @@
 using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using RenStore.Catalog.WebApi.Requests;
-using RenStore.Catalog.WebApi.Requests.VariantImage;
+using RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;
 
 namespace RenStore.Catalog.WebApi.Controllers;
 
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("/api/v{version:apiVersion}/variants/{variantId:guid}/images")]
-public sealed class VariantsMediaController : ControllerBase
+public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    
+    [HttpPost]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Upload(
+        Guid variantId,
+        short sortOrder,
+        IFormFile file)
+    {
+        using var memoryStream = new MemoryStream();
+        await file.CopyToAsync(memoryStream);
+        memoryStream.Seek(0, SeekOrigin.Begin);
+        
+        var result = await _mediator.Send(
+            new UploadVariantImageCommand(
+                VariantId: variantId,
+                FileName: file.FileName,
+                ContentType: file.ContentType,
+                SortOrder: sortOrder,
+                Stream: memoryStream));
+        
+        return result == Guid.Empty ? BadRequest() : Created();
+    }
+    
+    [HttpPatch("reorder")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Reorder(
+        Guid variantId)
+    {
+        return NoContent();
+    }
+    
+    [HttpDelete("{imageId:guid}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Delete(
+        Guid variantId,
+        Guid imageId)
+    {
+        return NoContent();
+    }
+    
+    
+    /*
     [HttpGet]
     [MapToApiVersion(1)]
     public async Task<IActionResult> GetAll(Guid variantId)
@@ -26,15 +69,6 @@ public sealed class VariantsMediaController : ControllerBase
         return Ok();    
     }
     
-    [HttpPost]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> Create(
-        Guid variantId,
-        [FromBody] IReadOnlyCollection<CreateVariantImageRequest> requests)
-    {
-        return Created();
-    }
-    
     [HttpPatch("{imageId:guid}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Update(
@@ -43,22 +77,5 @@ public sealed class VariantsMediaController : ControllerBase
         [FromBody] UpdateVariantImageRequest request)
     {
         return NoContent();
-    }
-    
-    [HttpDelete("{imageId:guid}")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> Delete(
-        Guid variantId,
-        Guid imageId)
-    {
-        return NoContent();
-    }
-
-    [HttpPatch("reorder")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> Reorder(
-        Guid variantId)
-    {
-        return NoContent();
-    }
+    }*/
 }

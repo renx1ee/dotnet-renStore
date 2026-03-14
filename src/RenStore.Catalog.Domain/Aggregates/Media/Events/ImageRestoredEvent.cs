@@ -13,7 +13,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Restoration preserves the image's original metadata and relationships.
 /// The image does not automatically regain main status upon restoration.
 /// </remarks>
-public record ImageRestored(
+public sealed record ImageRestoredEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)

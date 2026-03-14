@@ -29,7 +29,7 @@ public class ChangeValueTests : AttributeTestBase
 
         var @event = Assert.Single(
             attribute.GetUncommittedEvents());
-        var result = Assert.IsType<AttributeValueUpdated>(@event);
+        var result = Assert.IsType<AttributeValueUpdatedEvent>(@event);
         
         // Assert: result
         Assert.Equal(trimmedValue, result.Value);

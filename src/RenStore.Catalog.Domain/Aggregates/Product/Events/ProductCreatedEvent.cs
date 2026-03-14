@@ -11,7 +11,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 /// <param name="SubCategoryId">Unique sub category ID.</param>
 /// <param name="Status">The product at the time of creation.</param>
 /// <param name="OccurredAt">Time of occurrence of the event.</param>
-public record ProductCreatedEvent(
+public sealed record ProductCreatedEvent(
     Guid EventId,
     Guid ProductId,
     long SellerId,

@@ -50,7 +50,12 @@ public sealed class VariantImageRepository
 
         foreach (var domainEvent in uncommittedEvents)
         {
-            var notification = new DomainEventNotification<IDomainEvent>(domainEvent);
+            var notificationType = typeof(DomainEventNotification<>)
+                .MakeGenericType(domainEvent.GetType());
+
+            var notification = (INotification)Activator
+                .CreateInstance(notificationType, domainEvent)!;
+            
             await _mediator.Publish(notification, cancellationToken);
         }
         

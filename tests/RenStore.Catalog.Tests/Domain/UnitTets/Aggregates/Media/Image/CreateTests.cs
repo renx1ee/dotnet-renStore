@@ -32,7 +32,7 @@ public class CreateTests
             height: 600);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var created = Assert.IsType<ImageCreated>(@event);
+        var created = Assert.IsType<ImageCreatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(image.Id, created.ImageId);

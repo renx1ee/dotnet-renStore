@@ -39,6 +39,20 @@ internal sealed class ProductVariantProjection
         
         await _context.Variants.AddRangeAsync(variantsList, cancellationToken);
     }
+    
+    public async Task PublishAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Variants
+            .FindAsync(variantId, cancellationToken);
+
+        if (view is null) return;
+
+        view.UpdatedAt = now;
+        view.Status = ProductVariantStatus.Published;
+    }
 
     public async Task ArchiveAsync(
         Guid variantId,

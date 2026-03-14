@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
@@ -8,12 +9,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 /// </summary>
 internal static class ProductVariantRules
 {
-    private const int MaxProductNameLength = 500;
-    private const int MinProductNameLength = 10;
-    
-    private const int MaxUrlLength = 500;
-    private const int MinUrlLength = 25;
-    
     /// <summary>
     /// Validates a product identifier for variant association.
     /// </summary>
@@ -59,8 +54,8 @@ internal static class ProductVariantRules
         
         var trimmedName = name.Trim();
         
-        if(trimmedName.Length is < MinProductNameLength or > MaxProductNameLength)
-            throw new DomainException($"Product name must be between {MinProductNameLength} and {MaxProductNameLength}.");
+        if(trimmedName.Length is < CatalogConstants.ProductVariant.MinProductNameLength or > CatalogConstants.ProductVariant.MaxProductNameLength)
+            throw new DomainException($"Product name must be between {CatalogConstants.ProductVariant.MinProductNameLength} and {CatalogConstants.ProductVariant.MaxProductNameLength}.");
 
         return trimmedName;
     }
@@ -82,8 +77,8 @@ internal static class ProductVariantRules
 
         var trimmedUrl = url.Trim();
         
-        if(trimmedUrl.Length is < MinUrlLength or > MaxUrlLength)
-            throw new DomainException($"Product url must be between {MinUrlLength} and {MaxUrlLength}.");
+        if(trimmedUrl.Length is < CatalogConstants.ProductVariant.MinUrlLength or > CatalogConstants.ProductVariant.MaxUrlLength)
+            throw new DomainException($"Product url must be between {CatalogConstants.ProductVariant.MinUrlLength} and {CatalogConstants.ProductVariant.MaxUrlLength}.");
 
         return trimmedUrl;
     }

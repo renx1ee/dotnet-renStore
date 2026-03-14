@@ -25,6 +25,8 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
         
+        services.AddScoped<IEventStore, SqlEventStore>();
+        
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
@@ -46,8 +48,6 @@ public static class DependencyInjection
         services.AddScoped<IProductVariantQuery, ProductVariantQuery>();
         services.AddScoped<IProductQuery, ProductQuery>();
         services.AddScoped<IPriceHistoryQuery, PriceHistoryQuery>();
-
-        services.AddScoped<IEventStore, SqlEventStore>();
 
         return services;
     }   

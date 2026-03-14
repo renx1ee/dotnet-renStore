@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
@@ -8,21 +9,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 /// </summary>
 internal static class ProductImageRules
 {
-    private const int MaxProductImagePathLength = 500;
-    private const int MinProductImagePathLength = 15;
-
-    private const long MaxFileSizeBytes         = 50 * 1024 * 1024; /* 50 mb */
-    private const long MinFileSizeBytes         = 1;
-
-    private const int MaxImageDimension         = 5000;
-    private const int MinImageDimension         = 50;
-    
-    private const short MaxImageSortOrder       = 50;
-    private const short MinImageSortOrder       = 1;
-    
-    private const short MaxFileNameLaxLength    = 250;
-    private const short MinFileNameLaxLength    = 1;
-    
     /// <summary>
     /// Comprehensive validation for all product image creation parameters.
     /// </summary>
@@ -45,7 +31,7 @@ internal static class ProductImageRules
         string originalFileName,
         string storagePath,
         long fileSizeBytes,
-        short sortOrder,
+        int sortOrder,
         int weight, 
         int height)
     {
@@ -104,8 +90,8 @@ internal static class ProductImageRules
         if (string.IsNullOrWhiteSpace(originalFileName))
             throw new DomainException("Product image file name cannot be string empty.");
         
-        if(originalFileName.Length is > MaxFileNameLaxLength or < MinFileNameLaxLength)
-            throw new DomainException($"Original file name must be between {MaxFileNameLaxLength} and {MinFileNameLaxLength}.");
+        if(originalFileName.Length is > CatalogConstants.Image.MaxFileNameLaxLength or < CatalogConstants.Image.MinFileNameLaxLength)
+            throw new DomainException($"Original file name must be between {CatalogConstants.Image.MaxFileNameLaxLength} and {CatalogConstants.Image.MinFileNameLaxLength}.");
     }
 
     /// <summary>
@@ -125,8 +111,8 @@ internal static class ProductImageRules
         if (string.IsNullOrWhiteSpace(storagePath))
             throw new DomainException("Product image storage path cannot be string empty.");
         
-        if(storagePath.Length is > MaxProductImagePathLength or < MinProductImagePathLength)
-            throw new DomainException($"Product image storage path must be between {MaxProductImagePathLength} and {MinProductImagePathLength}.");
+        if(storagePath.Length is > CatalogConstants.Image.MaxProductImagePathLength or < CatalogConstants.Image.MinProductImagePathLength)
+            throw new DomainException($"Product image storage path must be between {CatalogConstants.Image.MaxProductImagePathLength} and {CatalogConstants.Image.MinProductImagePathLength}.");
     }
     
     /// <summary>
@@ -141,8 +127,8 @@ internal static class ProductImageRules
     /// </remarks>
     internal static void FileSizeBytesValidate(long fileSizeBytes)
     {
-        if (fileSizeBytes is < MinFileSizeBytes or > MaxFileSizeBytes)
-            throw new DomainException($"Product image File Size Bytes must be between {MinFileSizeBytes} and {MaxFileSizeBytes}.");
+        if (fileSizeBytes is < CatalogConstants.Image.MinFileSizeBytes or > CatalogConstants.Image.MaxFileSizeBytes)
+            throw new DomainException($"Product image File Size Bytes must be between {CatalogConstants.Image.MinFileSizeBytes} and {CatalogConstants.Image.MaxFileSizeBytes}.");
     }
     
     /// <summary>
@@ -156,10 +142,10 @@ internal static class ProductImageRules
     /// Determines display sequence in product image galleries.
     /// Lower numbers appear first. Maximum of 50 images per variant.
     /// </remarks>
-    internal static void SortOrderValidate(short sortOrder)
+    internal static void SortOrderValidate(int sortOrder)
     {
-        if (sortOrder is > MaxImageSortOrder or < MinImageSortOrder)
-            throw new DomainException($"Product image sort order must be between {MaxImageSortOrder} and {MinImageSortOrder}.");
+        if (sortOrder is > CatalogConstants.Image.MaxImageSortOrder or < CatalogConstants.Image.MinImageSortOrder)
+            throw new DomainException($"Product image sort order must be between {CatalogConstants.Image.MaxImageSortOrder} and {CatalogConstants.Image.MinImageSortOrder}.");
     }
     
     /// <summary>
@@ -176,10 +162,10 @@ internal static class ProductImageRules
     /// </remarks>
     internal static void WeightAndHeightValidate(int weight, int height)
     {
-        if (weight is > MaxImageDimension or < MinImageDimension)
-            throw new DomainException($"Product image weight must be between {MaxImageDimension} and {MinImageDimension}.");
+        if (weight is > CatalogConstants.Image.MaxImageDimension or < CatalogConstants.Image.MinImageDimension)
+            throw new DomainException($"Product image weight must be between {CatalogConstants.Image.MaxImageDimension} and {CatalogConstants.Image.MinImageDimension}.");
         
-        if (height is > MaxImageDimension or < MinImageDimension)
-            throw new DomainException($"Product image height order must be between {MaxImageDimension} and {MinImageDimension}.");
+        if (height is > CatalogConstants.Image.MaxImageDimension or < CatalogConstants.Image.MinImageDimension)
+            throw new DomainException($"Product image height order must be between {CatalogConstants.Image.MaxImageDimension} and {CatalogConstants.Image.MinImageDimension}.");
     }
 }

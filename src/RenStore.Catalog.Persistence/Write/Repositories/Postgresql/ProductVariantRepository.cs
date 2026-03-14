@@ -33,6 +33,13 @@ public sealed class ProductVariantRepository
         
         return ProductVariant.Rehydrate(events);
     }
+    
+    // TODO:
+    Task<IReadOnlyCollection<ProductVariant>> GetManyAsync(
+        IReadOnlyCollection<Guid> ids, CancellationToken ct)
+    {
+        return null;
+    }
 
     public async Task SaveAsync(
         ProductVariant productVariant,

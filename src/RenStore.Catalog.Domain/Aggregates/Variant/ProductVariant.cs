@@ -166,10 +166,104 @@ public class ProductVariant
         return variant;
     }
     
-    // TODO:
-    public void ChangeColor()
+    public Guid AddSize(
+        LetterSize letterSize,
+        DateTimeOffset now)
     {
         EnsureNotDeleted();
+
+        var activeSizes = _sizes
+            .Where(s => !s.IsDeleted)
+            .ToList();
+
+        if (activeSizes.Any(x => x.Size.LetterSize == letterSize))
+            throw new DomainException("The size already exits in the system.");
+        
+        //TODO:  нужно убедиться, что SizeType согласован с категорией продукта,
+        // иначе можно добавить несовместимый размер.
+        
+        Size.Validate(
+            size: letterSize, 
+            type: SizeType, 
+            system: SizeSystem); 
+        
+        var sizeId = Guid.NewGuid();
+        
+        Raise(new VariantSizeCreatedEvent(
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            SizeId: sizeId,
+            VariantId: Id,
+            LetterSize: letterSize,
+            SizeSystem: SizeSystem,
+            SizeType: SizeType));
+
+        return sizeId;
+    }
+    
+    public void AddPriceToSize(
+        DateTimeOffset now,
+        DateTimeOffset validFrom,
+        decimal amount,
+        Currency currency,
+        Guid sizeId)
+    {
+        EnsureNotDeleted();
+        
+        var size = GetSize(sizeId);
+        SizeEnsureNotDeleted(size);
+        
+        PriceHistoryRules.ValidateSizeId(sizeId);
+        PriceHistoryRules.ValidatePrice(amount);
+
+        var priceId = Guid.NewGuid();
+        
+        Raise(new PriceCreatedEvent(
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            EffectiveFrom: validFrom,
+            PriceId: priceId,
+            PriceAmount: amount,
+            Currency: currency,
+            SizeId: sizeId));
+    }
+
+    public void AddImageReference(
+        DateTimeOffset now,
+        Guid imageId)
+    {
+        EnsureNotDeleted();
+
+        if (imageId == Guid.Empty)
+            throw new DomainException("Image ID cannot be empty guid.");
+
+        if (_imageIds.Contains(imageId))
+            throw new DomainException("Image ID already contains.");
+
+        Raise(new AddedImageReferenceEvent(
+            OccurredAt: now,
+            ImageId: imageId,
+            VariantId: Id,
+            EventId: Guid.NewGuid()));
+    }
+    
+    public void RemoveImageReference(
+        DateTimeOffset now,
+        Guid imageId)
+    {
+        EnsureNotDeleted();
+
+        if (imageId == Guid.Empty)
+            throw new DomainException("Image ID cannot be empty guid.");
+
+        if (!_imageIds.Contains(imageId))
+            throw new DomainException("Image does not exists.");
+
+        Raise(new RemoveImageReferenceEvent(
+            OccurredAt: now,
+            ImageId: imageId,
+            VariantId: Id,
+            EventId: Guid.NewGuid()));
     }
     
     public void ChangeName(
@@ -286,41 +380,6 @@ public class ProductVariant
             ImageId: imageId));
     }
     
-    public Guid AddSize(
-        LetterSize letterSize,
-        DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-
-        var activeSizes = _sizes
-            .Where(s => !s.IsDeleted)
-            .ToList();
-
-        if (activeSizes.Any(x => x.Size.LetterSize == letterSize))
-            throw new DomainException("The size already exits in the system.");
-        
-        //TODO:  нужно убедиться, что SizeType согласован с категорией продукта,
-        // иначе можно добавить несовместимый размер.
-        
-        Size.Validate(
-            size: letterSize, 
-            type: SizeType, 
-            system: SizeSystem); 
-        
-        var sizeId = Guid.NewGuid();
-        
-        Raise(new VariantSizeCreatedEvent(
-            EventId: Guid.NewGuid(), 
-            OccurredAt: now,
-            SizeId: sizeId,
-            VariantId: Id,
-            LetterSize: letterSize,
-            SizeSystem: SizeSystem,
-            SizeType: SizeType));
-
-        return sizeId;
-    }
-    
     public void RemoveSize(
         DateTimeOffset now,
         Guid sizeId)
@@ -352,33 +411,6 @@ public class ProductVariant
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
-            SizeId: sizeId));
-    }
-
-    public void AddPriceToSize(
-        DateTimeOffset now,
-        DateTimeOffset validFrom,
-        decimal amount,
-        Currency currency,
-        Guid sizeId)
-    {
-        EnsureNotDeleted();
-        
-        var size = GetSize(sizeId);
-        SizeEnsureNotDeleted(size);
-        
-        PriceHistoryRules.ValidateSizeId(sizeId);
-        PriceHistoryRules.ValidatePrice(amount);
-
-        var priceId = Guid.NewGuid();
-        
-        Raise(new PriceCreatedEvent(
-            EventId: Guid.NewGuid(), 
-            OccurredAt: now,
-            EffectiveFrom: validFrom,
-            PriceId: priceId,
-            PriceAmount: amount,
-            Currency: currency,
             SizeId: sizeId));
     }
     
@@ -433,6 +465,16 @@ public class ProductVariant
             
             case MainImageIdSetEvent e:
                 MainImageId = e.ImageId;
+                UpdatedAt = e.OccurredAt;
+                break;
+            
+            case AddedImageReferenceEvent e:
+                _imageIds.Add(e.ImageId);
+                UpdatedAt = e.OccurredAt;
+                break;
+            
+            case RemoveImageReferenceEvent e:
+                _imageIds.Remove(e.ImageId);
                 UpdatedAt = e.OccurredAt;
                 break;
             

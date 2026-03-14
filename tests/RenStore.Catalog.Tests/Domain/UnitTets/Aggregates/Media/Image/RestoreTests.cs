@@ -19,7 +19,7 @@ public class RestoreTests : ImageTestBase
         image.Restore(now);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var result = Assert.IsType<ImageRestored>(@event);
+        var result = Assert.IsType<ImageRestoredEvent>(@event);
 
         // Assert: event
         Assert.NotEqual(Guid.Empty, result.ImageId);

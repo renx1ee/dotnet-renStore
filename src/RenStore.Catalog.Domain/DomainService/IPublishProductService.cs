@@ -1,17 +1,14 @@
 using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
-using RenStore.Catalog.Domain.Aggregates.VariantDetails;
 
 namespace RenStore.Catalog.Domain.DomainService;
 
-public interface IVariantPublishService
+public interface IPublishProductService
 {
     void Publish(
         DateTimeOffset now,
-        Product product, 
+        Product product,
         IReadOnlyCollection<ProductVariant> variants,
-        IReadOnlyCollection<Attribute> attributes,
-        IReadOnlyCollection<VariantImage> images,
-        VariantDetail detail);
+        IReadOnlyDictionary<Guid, IReadOnlyCollection<VariantImage>> imagesByVariants);
 }

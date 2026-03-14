@@ -20,7 +20,7 @@ public class RestoreTests : AttributeTestBase
 
         var @event = Assert.Single(
             attribute.GetUncommittedEvents());
-        var result = Assert.IsType<AttributeRestored>(@event);
+        var result = Assert.IsType<AttributeRestoredEvent>(@event);
         
         // Assert: result
         Assert.Equal(restoreNow, result.OccurredAt);

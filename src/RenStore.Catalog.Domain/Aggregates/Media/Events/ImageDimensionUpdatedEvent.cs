@@ -2,9 +2,10 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
-public record ImageStoragePathUpdated(
+public sealed record ImageDimensionUpdatedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId,
-    string StoragePath)
+    int Weight,
+    int Height)
     : IDomainEvent;

@@ -12,7 +12,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
 /// Restoration preserves the attribute's original data and business context.
 /// Used in scenarios like data correction, seasonal availability, or supplier changes.
 /// </remarks>
-public record AttributeRestored(
+public sealed record AttributeRestoredEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid AttributeId) 

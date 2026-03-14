@@ -24,7 +24,7 @@ public class ChangeDimensionTests : ImageTestBase
             now: now);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var created = Assert.IsType<ImageDimensionUpdated>(@event);
+        var created = Assert.IsType<ImageDimensionUpdatedEvent>(@event);
         
         // Assert: event
         Assert.Equal(weight, created.Weight);

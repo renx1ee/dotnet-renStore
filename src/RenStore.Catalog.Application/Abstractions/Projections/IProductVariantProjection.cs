@@ -14,6 +14,11 @@ public interface IProductVariantProjection
         IReadOnlyCollection<ProductVariantReadModel> variants,
         CancellationToken cancellationToken);
 
+    Task PublishAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
     Task ArchiveAsync(
         Guid variantId,
         DateTimeOffset now,

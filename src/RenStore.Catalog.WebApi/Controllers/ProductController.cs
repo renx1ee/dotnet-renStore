@@ -6,6 +6,7 @@ using RenStore.Catalog.Application.Features.Product.Commands.Approve;
 using RenStore.Catalog.Application.Features.Product.Commands.Archive;
 using RenStore.Catalog.Application.Features.Product.Commands.Create;
 using RenStore.Catalog.Application.Features.Product.Commands.Hide;
+using RenStore.Catalog.Application.Features.Product.Commands.PublishProduct;
 using RenStore.Catalog.Application.Features.Product.Commands.Reject;
 using RenStore.Catalog.Application.Features.Product.Commands.SoftDelete;
 using RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
@@ -89,7 +90,17 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpGet]
+    [HttpPatch("{id:guid}/publish")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Publish(Guid id)
+    {
+        await _mediator.Send(new PublishProductCommand(id));
+
+        return NoContent();
+    }
+    
+    
+    /*[HttpGet]
     [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> GetAll(
@@ -104,7 +115,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        /*return product is null ? NotFound() : Ok();*/
+        /*return product is null ? NotFound() : Ok();#1#
         return Ok();
     }
     
@@ -114,5 +125,5 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetByArticle(int article)
     {
         return Ok();
-    }
+    }*/
 }

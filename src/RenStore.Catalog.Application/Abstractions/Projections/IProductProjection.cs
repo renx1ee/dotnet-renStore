@@ -14,6 +14,11 @@ public interface IProductProjection
         IReadOnlyCollection<ProductReadModel> products,
         CancellationToken cancellationToken);
 
+    Task PublishAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
     Task SoftDeleteAsync(
         Guid productId,
         DateTimeOffset now,

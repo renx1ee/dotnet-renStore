@@ -1,16 +1,14 @@
 using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.Aggregates.Variant;
+using RenStore.Catalog.Domain.Constants;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.DomainService;
 
-public sealed class PublishProductService
+public sealed class PublishProductService : IPublishProductService
 {
-    private const int MaxImagesCount = 50;
-    private const int MaxVariantsCount = 50;
-
     public void Publish(
         DateTimeOffset now, 
         Product product, 
@@ -31,10 +29,10 @@ public sealed class PublishProductService
                 "Product variant must have at least one variant.");
         }
 
-        if (variantsList.Count > MaxVariantsCount)
+        if (variantsList.Count > CatalogConstants.Product.MaxVariantsCount)
         {
             throw new DomainException(
-                $"Product must have max {MaxVariantsCount} variants.");
+                $"Product must have max {CatalogConstants.Product.MaxVariantsCount} variants.");
         }
 
         if (!imagesByVariants.Any())
@@ -60,8 +58,8 @@ public sealed class PublishProductService
             if (!images.Any())
                 errors.Add($"Variant {variant.Id} must have at least one image");
             
-            if(images.Count > MaxImagesCount)
-                errors.Add($"Images must have max {MaxImagesCount} images count.");
+            if(images.Count > CatalogConstants.Image.MaxImagesCount)
+                errors.Add($"Images must have max {CatalogConstants.Image.MaxImagesCount} images count.");
             
             try
             {

@@ -22,7 +22,7 @@ public class ChangeFileSizeBytesTests : ImageTestBase
             now: now);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var created = Assert.IsType<ImageFileSizeBytesUpdated>(@event);
+        var created = Assert.IsType<ImageFileSizeBytesUpdatedEvent>(@event);
         
         // Assert: event
         Assert.Equal(fileSizeBytes, created.FileSizeBytes);

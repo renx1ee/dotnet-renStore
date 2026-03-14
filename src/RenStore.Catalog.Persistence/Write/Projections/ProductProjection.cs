@@ -40,6 +40,20 @@ internal sealed class ProductProjection
 
         await _context.Products.AddRangeAsync(productsList, cancellationToken);
     }
+    
+    public async Task PublishAsync(
+        Guid productId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FindAsync(productId, cancellationToken);
+
+        if (view is null) return;
+
+        view.UpdatedAt = now;
+        view.Status = ProductStatus.Published;
+    }
 
     public async Task SoftDeleteAsync(
         Guid productId,

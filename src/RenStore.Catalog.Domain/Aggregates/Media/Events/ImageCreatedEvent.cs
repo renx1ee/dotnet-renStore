@@ -21,7 +21,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// SortOrder determines display sequence (lower numbers appear first).
 /// Images are required before a variant can be published to the catalog.
 /// </remarks>
-public record ImageCreated(
+public sealed record ImageCreatedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId,
@@ -30,7 +30,7 @@ public record ImageCreated(
     string StoragePath,
     long FileSizeBytes,
     bool IsMain,
-    short SortOrder,
+    int SortOrder,
     int Weight, 
     int Height)
     : IDomainEvent;

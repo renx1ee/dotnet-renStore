@@ -18,7 +18,7 @@ public class DeleteTests : ImageTestBase
         image.Delete(now);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var result = Assert.IsType<ImageRemoved>(@event);
+        var result = Assert.IsType<ImageRemovedEvent>(@event);
         
         // Assert: event
         Assert.NotEqual(Guid.Empty, result.ImageId);

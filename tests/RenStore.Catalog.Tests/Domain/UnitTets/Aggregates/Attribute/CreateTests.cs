@@ -31,7 +31,7 @@ public class CreateTests
             value: value);
 
         var @event = Assert.Single(result.GetUncommittedEvents());
-        var created = Assert.IsType<AttributeCreated>(@event);
+        var created = Assert.IsType<AttributeCreatedEvent>(@event);
 
         // Assert: Aggregate
         Assert.NotNull(result);

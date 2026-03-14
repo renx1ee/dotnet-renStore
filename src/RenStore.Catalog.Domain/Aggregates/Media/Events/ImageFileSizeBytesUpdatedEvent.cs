@@ -2,7 +2,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
-public record ImageFileSizeBytesUpdated(
+public sealed record ImageFileSizeBytesUpdatedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId,

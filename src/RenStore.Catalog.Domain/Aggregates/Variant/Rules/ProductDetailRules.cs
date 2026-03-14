@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
@@ -8,24 +9,6 @@ namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 /// </summary>
 internal static class ProductDetailRules
 {
-    private const int MaxDescriptionLength        = 500;
-    private const int MinDescriptionLength        = 25;
-    
-    private const int MaxModelFeaturesLength      = 500;
-    private const int MinModelFeaturesLength      = 5;
-    
-    private const int MaxDecorativeElementsLength = 500;
-    private const int MinDecorativeElementsLength = 5;
-    
-    private const int MaxEquipmentLength          = 500;
-    private const int MinEquipmentLength          = 5;
-    
-    private const int MaxCompositionLength        = 500;
-    private const int MinCompositionLength        = 5;
-    
-    private const int MaxCaringOfThingsLength     = 500;
-    private const int MinCaringOfThingsLength     = 5;
-    
     /// <summary>
     /// Validates the country of manufacture identifier.
     /// </summary>
@@ -77,8 +60,8 @@ internal static class ProductDetailRules
         
         var trimmedDescription = description.Trim();
         
-        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
-            throw new DomainException($"Product Detail Description length must between {MaxDescriptionLength} and {MinDescriptionLength}.");
+        if(trimmedDescription.Length is > CatalogConstants.ProductDetail.MaxDescriptionLength or < CatalogConstants.ProductDetail.MinDescriptionLength)
+            throw new DomainException($"Product Detail Description length must between {CatalogConstants.ProductDetail.MaxDescriptionLength} and {CatalogConstants.ProductDetail.MinDescriptionLength}.");
 
         return trimmedDescription;
     }
@@ -102,8 +85,8 @@ internal static class ProductDetailRules
         
         var trimmedModelFeatures = modelFeatures.Trim();
         
-        if(trimmedModelFeatures.Length is > MaxModelFeaturesLength or < MinModelFeaturesLength)
-            throw new DomainException($"Product Detail model features length must between {MaxModelFeaturesLength} and {MinModelFeaturesLength}.");
+        if(trimmedModelFeatures.Length is > CatalogConstants.ProductDetail.MaxModelFeaturesLength or < CatalogConstants.ProductDetail.MinModelFeaturesLength)
+            throw new DomainException($"Product Detail model features length must between {CatalogConstants.ProductDetail.MaxModelFeaturesLength} and {CatalogConstants.ProductDetail.MinModelFeaturesLength}.");
 
         return trimmedModelFeatures;
     }
@@ -127,8 +110,9 @@ internal static class ProductDetailRules
         
         var trimmedDecorativeElements = decorativeElements.Trim();
         
-        if(trimmedDecorativeElements.Length is > MaxDecorativeElementsLength or < MinDecorativeElementsLength)
-            throw new DomainException($"Product Detail decorative elements length must between {MaxDecorativeElementsLength} and {MinDecorativeElementsLength}.");
+        if(trimmedDecorativeElements.Length is > CatalogConstants.ProductDetail.MaxDecorativeElementsLength or < CatalogConstants.ProductDetail.MinDecorativeElementsLength)
+            throw new DomainException(
+                $"Product Detail decorative elements length must between {CatalogConstants.ProductDetail.MaxDecorativeElementsLength} and {CatalogConstants.ProductDetail.MinDecorativeElementsLength}.");
 
         return trimmedDecorativeElements;
     }
@@ -152,8 +136,8 @@ internal static class ProductDetailRules
         
         var trimmedEquipment = equipment.Trim();
         
-        if(trimmedEquipment.Length is > MaxEquipmentLength or < MinEquipmentLength)
-            throw new DomainException($"Product Detail equipment length must between {MaxEquipmentLength} and {MinEquipmentLength}.");
+        if(trimmedEquipment.Length is > CatalogConstants.ProductDetail.MaxEquipmentLength or < CatalogConstants.ProductDetail.MinEquipmentLength)
+            throw new DomainException($"Product Detail equipment length must between {CatalogConstants.ProductDetail.MaxEquipmentLength} and {CatalogConstants.ProductDetail.MinEquipmentLength}.");
 
         return trimmedEquipment;
     }
@@ -177,8 +161,8 @@ internal static class ProductDetailRules
         
         var trimmedComposition = composition.Trim();
         
-        if(trimmedComposition.Length is > MaxCompositionLength or < MinCompositionLength)
-            throw new DomainException($"Product Detail composition length must between {MaxCompositionLength} and {MinCompositionLength}.");
+        if(trimmedComposition.Length is > CatalogConstants.ProductDetail.MaxCompositionLength or < CatalogConstants.ProductDetail.MinCompositionLength)
+            throw new DomainException($"Product Detail composition length must between {CatalogConstants.ProductDetail.MaxCompositionLength} and {CatalogConstants.ProductDetail.MinCompositionLength}.");
 
         return trimmedComposition;
     }
@@ -202,8 +186,8 @@ internal static class ProductDetailRules
         
         var trimmedCaringOfThings = caringOfThings.Trim();
         
-        if(trimmedCaringOfThings.Length is > MaxCaringOfThingsLength or < MinCaringOfThingsLength)
-            throw new DomainException($"Product Detail caring of things length must between {MaxCaringOfThingsLength} and {MinCaringOfThingsLength}.");
+        if(trimmedCaringOfThings.Length is > CatalogConstants.ProductDetail.MaxCaringOfThingsLength or < CatalogConstants.ProductDetail.MinCaringOfThingsLength)
+            throw new DomainException($"Product Detail caring of things length must between {CatalogConstants.ProductDetail.MaxCaringOfThingsLength} and {CatalogConstants.ProductDetail.MinCaringOfThingsLength}.");
 
         return trimmedCaringOfThings;
     }

@@ -39,7 +39,7 @@ public class LoadAsyncTests : IAsyncLifetime
 
         var events = new List<IDomainEvent>()
         {
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now1,
                 VariantId: variantId,
@@ -47,7 +47,7 @@ public class LoadAsyncTests : IAsyncLifetime
                 Key: key1,
                 Value: value1),
             
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now2,
                 VariantId: variantId,
@@ -76,15 +76,15 @@ public class LoadAsyncTests : IAsyncLifetime
         
         // Assert: first
         Assert.Equal(now1, result[0].OccurredAt);
-        Assert.IsType<AttributeCreated>(result[0]);
-        Assert.Equal(key1, ((AttributeCreated)result[0]).Key);
-        Assert.Equal(value1, ((AttributeCreated)result[0]).Value);
+        Assert.IsType<AttributeCreatedEvent>(result[0]);
+        Assert.Equal(key1, ((AttributeCreatedEvent)result[0]).Key);
+        Assert.Equal(value1, ((AttributeCreatedEvent)result[0]).Value);
         
         // Assert: second
         Assert.Equal(now2, result[1].OccurredAt);
-        Assert.IsType<AttributeCreated>(result[1]);
-        Assert.Equal(key2, ((AttributeCreated)result[1]).Key);
-        Assert.Equal(value2, ((AttributeCreated)result[1]).Value);
+        Assert.IsType<AttributeCreatedEvent>(result[1]);
+        Assert.Equal(key2, ((AttributeCreatedEvent)result[1]).Key);
+        Assert.Equal(value2, ((AttributeCreatedEvent)result[1]).Value);
     }
     
     [Fact]
@@ -105,7 +105,7 @@ public class LoadAsyncTests : IAsyncLifetime
 
         var events = new List<IDomainEvent>()
         {
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now1,
                 VariantId: variantId,
@@ -113,7 +113,7 @@ public class LoadAsyncTests : IAsyncLifetime
                 Key: key1,
                 Value: value1),
             
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now2,
                 VariantId: variantId,

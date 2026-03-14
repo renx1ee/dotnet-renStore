@@ -31,4 +31,8 @@ public interface IVariantImageQuery
         bool descending = false,
         bool? isDeleted = null,
         bool? isMain = null);
+
+    Task<int> GetNextSortOrderAsync(
+        Guid variantId,
+        CancellationToken cancellationToken);
 }

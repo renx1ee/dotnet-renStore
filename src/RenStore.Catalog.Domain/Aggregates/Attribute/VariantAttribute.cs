@@ -71,7 +71,7 @@ public class VariantAttribute
         var attributeId = Guid.NewGuid();
         var attribute = new VariantAttribute();
         
-        attribute.Raise(new AttributeCreated(
+        attribute.Raise(new AttributeCreatedEvent(
             EventId: Guid.NewGuid(),
             VariantId: variantId,
             AttributeId: attributeId,
@@ -94,7 +94,7 @@ public class VariantAttribute
         
         if(Key == trimmedKey) return;
         
-        Raise(new AttributeKeyUpdated(
+        Raise(new AttributeKeyUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: Id,
@@ -112,7 +112,7 @@ public class VariantAttribute
         
         if(Value == trimmedValue) return;
         
-        Raise(new AttributeValueUpdated(
+        Raise(new AttributeValueUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: Id,
@@ -126,7 +126,7 @@ public class VariantAttribute
             throw new DomainException(
                 "Attribute already was deleted");
         
-        Raise(new AttributeRemoved(
+        Raise(new AttributeRemovedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now));
     }
@@ -138,7 +138,7 @@ public class VariantAttribute
             throw new DomainException(
                 "Attribute wasn't deleted.");
         
-        Raise(new AttributeRestored(
+        Raise(new AttributeRestoredEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: Id));
@@ -148,7 +148,7 @@ public class VariantAttribute
     {
         switch (@event)
         {
-            case AttributeCreated e:
+            case AttributeCreatedEvent e:
                 Id = e.AttributeId;
                 Key = AttributeKey.Create(e.Key);
                 Value = AttributeValue.Create(e.Value);
@@ -157,23 +157,23 @@ public class VariantAttribute
                 IsDeleted = false;
                 break;
             
-            case AttributeKeyUpdated e:
+            case AttributeKeyUpdatedEvent e:
                 Key = AttributeKey.Create(e.Key);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case AttributeValueUpdated e:
+            case AttributeValueUpdatedEvent e:
                 Value = AttributeValue.Create(e.Value);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case AttributeRemoved e:
+            case AttributeRemovedEvent e:
                 IsDeleted = true;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case AttributeRestored e:
+            case AttributeRestoredEvent e:
                 IsDeleted = false;
                 DeletedAt = null;
                 UpdatedAt = e.OccurredAt;

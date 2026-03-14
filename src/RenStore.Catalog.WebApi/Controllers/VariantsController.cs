@@ -1,6 +1,8 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using RenStore.Catalog.Application.Abstractions.Queries;
+using RenStore.Catalog.Application.Features.Product.Commands.PublishProduct;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddPrice;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddSize;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.Archive;
@@ -17,7 +19,8 @@ namespace RenStore.Catalog.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("/api/v{version:apiVersion}/catalog")]
-public sealed class VariantsController(IMediator mediator) : ControllerBase
+public sealed class VariantsController(
+    IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     
@@ -39,13 +42,22 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         return Created();
     }
 
+    [HttpPatch("variants/{variantId:guid}/publish")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Publish(
+        Guid variantId)
+    {
+        await _mediator.Send(new PublishProductCommand(variantId));
+        
+        return NoContent();
+    } 
+    
     [HttpPatch("variants/{variantId:guid}/archive")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Archive(
         Guid variantId)
     {
-        await _mediator.Send(
-            new ArchiveProductVariantCommand(variantId));
+        await _mediator.Send(new ArchiveProductVariantCommand(variantId));
         
         return NoContent();
     }
@@ -55,8 +67,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Draft(
         Guid variantId)
     {
-        await _mediator.Send(
-            new DraftProductVariantCommand(variantId));
+        await _mediator.Send(new DraftProductVariantCommand(variantId));
         
         return NoContent();
     }
@@ -146,7 +157,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpGet("products/{productId:guid}/variants")]
+    /*[HttpGet("products/{productId:guid}/variants")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> GetByProductId(Guid productId)
     {
@@ -167,5 +178,5 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         Guid sizeId)
     {
         return Ok();
-    }
+    }*/
 }

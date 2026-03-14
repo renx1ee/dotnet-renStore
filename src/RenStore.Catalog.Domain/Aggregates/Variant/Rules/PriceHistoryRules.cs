@@ -1,12 +1,10 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 
 internal static class PriceHistoryRules
 {
-    private const decimal MinPrice = 100;
-    private const decimal MaxPrice = 1000000;
-    
     internal static void ValidateSizeId(Guid sizeId)
     {
         if (sizeId == Guid.Empty)
@@ -16,8 +14,8 @@ internal static class PriceHistoryRules
 
     internal static void ValidatePrice(decimal price)
     {
-        if (price is < MinPrice or > MaxPrice)
+        if (price is < CatalogConstants.Price.MinPrice or > CatalogConstants.Price.MaxPrice)
             throw new DomainException(
-                $"The price must be between {MinPrice} and {MaxPrice}.");
+                $"The price must be between {CatalogConstants.Price.MinPrice} and {CatalogConstants.Price.MaxPrice}.");
     }
 }

@@ -80,6 +80,8 @@ internal sealed class CreateProductVariantCommandHandler
 
         await _productVariantRepository.SaveAsync(variant, cancellationToken);
         
+        await _productRepository.SaveAsync(product, cancellationToken);
+        
         _logger.LogInformation(
             "{Command} handled. ProductId: {ProductId}",
             nameof(CreateProductVariantCommand),

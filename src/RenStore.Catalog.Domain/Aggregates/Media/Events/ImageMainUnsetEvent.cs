@@ -16,7 +16,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// 
 /// The variant may remain without a main image until one is explicitly designated.
 /// </remarks>
-public record ImageMainUnset(
+public sealed record ImageMainUnsetEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)

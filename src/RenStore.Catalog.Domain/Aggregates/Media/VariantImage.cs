@@ -16,7 +16,7 @@ public class VariantImage
     public string StoragePath { get; private set; }
     public long FileSizeBytes { get; private set; }
     public bool IsMain { get; private set; }
-    public short SortOrder { get; private set; } 
+    public int SortOrder { get; private set; } 
     public int Weight { get; private set; }
     public int Height { get; private set; }
     public bool IsDeleted { get; private set; }
@@ -34,7 +34,7 @@ public class VariantImage
         string storagePath,
         long fileSizeBytes,
         bool isMain,
-        short sortOrder,
+        int sortOrder,
         int weight, 
         int height)
     {
@@ -50,7 +50,7 @@ public class VariantImage
         var imageId = Guid.NewGuid();
         var image = new VariantImage();
         
-        image.Raise(new ImageCreated(
+        image.Raise(new ImageCreatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: imageId,
@@ -68,14 +68,14 @@ public class VariantImage
     // TODO: вынести выше
     public void ChangeSortOrder(
         DateTimeOffset now,
-        short sortOrder)
+        int sortOrder)
     {
         EnsureNotDeleted();
         
         if(SortOrder == sortOrder) 
             return;
         
-        Raise(new ImageSortOrderUpdated(
+        Raise(new ImageSortOrderUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
@@ -93,7 +93,7 @@ public class VariantImage
         if(StoragePath == storagePath) 
             return;
         
-        Raise(new ImageStoragePathUpdated(
+        Raise(new ImageStoragePathUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
@@ -114,7 +114,7 @@ public class VariantImage
         if(Weight == weight && Height == height) 
             return;
         
-        Raise(new ImageDimensionUpdated(
+        Raise(new ImageDimensionUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
@@ -132,7 +132,7 @@ public class VariantImage
 
         if (FileSizeBytes == fileSizeBytes) return;
             
-        Raise(new ImageFileSizeBytesUpdated(
+        Raise(new ImageFileSizeBytesUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id,
@@ -144,7 +144,7 @@ public class VariantImage
     {
         EnsureNotDeleted();
         
-        Raise(new ImageRemoved(
+        Raise(new ImageRemovedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
@@ -156,7 +156,7 @@ public class VariantImage
         if(!IsDeleted)
             throw new DomainException("Image was not deleted.");
         
-        Raise(new ImageRestored(
+        Raise(new ImageRestoredEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
@@ -166,7 +166,7 @@ public class VariantImage
     {
         if(IsMain) return;
 
-        Raise(new ImageMainSet(
+        Raise(new ImageMainSetEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
@@ -176,7 +176,7 @@ public class VariantImage
     {
         if(!IsMain) return;
 
-        Raise(new ImageMainUnset(
+        Raise(new ImageMainUnsetEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
@@ -186,7 +186,7 @@ public class VariantImage
     {
         switch (@event)
         {
-            case ImageCreated e:
+            case ImageCreatedEvent e:
                 Id = e.ImageId;
                 VariantId = e.VariantId;
                 OriginalFileName = e.OriginalFileName;
@@ -200,44 +200,44 @@ public class VariantImage
                 IsDeleted = false;
                 break;
             
-            case ImageSortOrderUpdated e:
+            case ImageSortOrderUpdatedEvent e:
                 SortOrder = e.SortOrder;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageStoragePathUpdated e:
+            case ImageStoragePathUpdatedEvent e:
                 StoragePath = e.StoragePath;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageDimensionUpdated e:
+            case ImageDimensionUpdatedEvent e:
                 Weight = e.Weight;
                 Height = e.Height;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageFileSizeBytesUpdated e:
+            case ImageFileSizeBytesUpdatedEvent e:
                 FileSizeBytes = e.FileSizeBytes;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageMainUnset e:
+            case ImageMainUnsetEvent e:
                 IsMain = false;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageMainSet e:
+            case ImageMainSetEvent e:
                 IsMain = true;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageRemoved e:
+            case ImageRemovedEvent e:
                 IsDeleted = true;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageRestored e:
+            case ImageRestoredEvent e:
                 IsDeleted = false;
                 DeletedAt = null;
                 UpdatedAt = e.OccurredAt;

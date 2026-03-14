@@ -40,7 +40,7 @@ public class AppendAsyncTests : IAsyncLifetime
 
         var events = new List<IDomainEvent>()
         {
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                     EventId: Guid.NewGuid(),
                 OccurredAt: now1,
                 VariantId: variantId,
@@ -48,7 +48,7 @@ public class AppendAsyncTests : IAsyncLifetime
                 Key: key1,
                 Value: value1),
             
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now2,
                 VariantId: variantId,
@@ -94,7 +94,7 @@ public class AppendAsyncTests : IAsyncLifetime
 
         var events = new List<IDomainEvent>()
         {
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now1,
                 VariantId: variantId,
@@ -102,7 +102,7 @@ public class AppendAsyncTests : IAsyncLifetime
                 Key: key1,
                 Value: value1),
             
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now2,
                 VariantId: variantId,
@@ -143,7 +143,7 @@ public class AppendAsyncTests : IAsyncLifetime
 
         var events = new List<IDomainEvent>()
         {
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now1,
                 VariantId: variantId,
@@ -151,7 +151,7 @@ public class AppendAsyncTests : IAsyncLifetime
                 Key: key1,
                 Value: value1),
             
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now2,
                 VariantId: variantId,
@@ -222,7 +222,7 @@ public class AppendAsyncTests : IAsyncLifetime
 
         var events = new List<IDomainEvent>()
         {
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                     EventId: Guid.NewGuid(),
                 OccurredAt: now1,
                 VariantId: variantId,
@@ -230,7 +230,7 @@ public class AppendAsyncTests : IAsyncLifetime
                 Key: key1,
                 Value: value1),
             
-            new AttributeCreated(
+            new AttributeCreatedEvent(
                 EventId: Guid.NewGuid(),
                 OccurredAt: now2,
                 VariantId: variantId,

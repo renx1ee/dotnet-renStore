@@ -13,7 +13,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Setting a new main image automatically demotes any previously set main image.
 /// Main images are used as thumbnails and featured visuals across the platform.
 /// </remarks>
-public record ImageMainSet(
+public sealed record ImageMainSetEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)

@@ -1,4 +1,5 @@
 using RenStore.Catalog.Domain.Aggregates.Product.Events;
+using RenStore.Catalog.Domain.Constants;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -58,8 +59,6 @@ public class Product
     /// The collection of product variant identifiers associated with this product.
     /// </summary>
     public IReadOnlyCollection<Guid> ProductVariantIds => _productVariantIds.AsReadOnly(); 
-    
-    private const int MaxVariantsCount = 50;
     
     private Product() { }
     
@@ -392,8 +391,8 @@ public class Product
     
     private void VariantIdsValidate(Guid variantId)
     {
-        if (_productVariantIds.Count >= MaxVariantsCount)
-            throw new DomainException($"Product variants count must be less than {MaxVariantsCount}.");
+        if (_productVariantIds.Count >= CatalogConstants.Product.MaxVariantsCount)
+            throw new DomainException($"Product variants count must be less than {CatalogConstants.Product.MaxVariantsCount}.");
 
         if (variantId == Guid.Empty)
             throw new DomainException("Product variant Id cannot be empty guid.");

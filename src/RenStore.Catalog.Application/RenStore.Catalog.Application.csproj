@@ -11,12 +11,10 @@
       <Folder Include="Features\ProductVariant\Commands\PublishVariant\" />
       <Folder Include="Features\ProductVariant\Commands\SetMainImageId\" />
       <Folder Include="Features\ProductVariant\Queries\" />
-      <Folder Include="Features\Product\Commands\PublishProduct\" />
       <Folder Include="Features\Product\Queries\" />
       <Folder Include="Features\VariantMedia\Commands\Delete\" />
       <Folder Include="Features\VariantMedia\Commands\Update\" />
       <Folder Include="Features\VariantMedia\Queries\" />
-      <Folder Include="UnitOfWork\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +28,7 @@
       <PackageReference Include="FluentValidation" Version="12.1.1" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
       <PackageReference Include="MediatR" Version="14.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.4" />
     </ItemGroup>
 
 </Project>

@@ -210,4 +210,40 @@ internal sealed class VariantImageQuery
             throw Wrap(e);
         }
     }
+
+    public async Task<int> GetNextSortOrderAsync(
+        Guid variantId,
+        CancellationToken cancellationToken)
+    {
+        if (variantId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(variantId));
+        
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+            
+            const string sql = 
+                """
+                    SELECT COALESCE(MAX(sort_order), 0) + 1
+                    FROM variant_images
+                    WHERE variant_id = @VariantId 
+                    AND is_deleted = FALSE;
+                """;
+
+            var result = await connection
+                .ExecuteScalarAsync<int>(
+                    new CommandDefinition(
+                        commandText: sql,
+                        parameters: new { VariantId = variantId },
+                        transaction: CurrentDbTransaction,
+                        commandTimeout: CommandTimeoutSeconds,
+                        cancellationToken: cancellationToken));
+
+            return result;
+        }
+        catch (PostgresException e)
+        {
+            throw Wrap(e);
+        }
+    }
 }
