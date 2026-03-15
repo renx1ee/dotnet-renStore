@@ -13,7 +13,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// If the removed image was designated as main, the main status should be reassigned.
 /// Removal may trigger cleanup of associated storage resources.
 /// </remarks>
-public sealed record ImageRemovedEvent(
+public sealed record VariantImageRemovedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)

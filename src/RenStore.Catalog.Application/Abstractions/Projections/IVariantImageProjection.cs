@@ -13,6 +13,21 @@ public interface IVariantImageProjection
     Task AddRangeAsync(
         IReadOnlyCollection<VariantImageReadModel> images,
         CancellationToken cancellationToken);
+
+    Task MarkAsMain(
+        DateTimeOffset now,
+        Guid imageId,
+        CancellationToken cancellationToken);
+
+    Task UnmarkAsMain(
+        DateTimeOffset now,
+        Guid variantId,
+        CancellationToken cancellationToken);
+
+    Task SoftDelete(
+        DateTimeOffset now,
+        Guid imageId,
+        CancellationToken cancellationToken);
     
     void Remove(VariantImageReadModel image);
     

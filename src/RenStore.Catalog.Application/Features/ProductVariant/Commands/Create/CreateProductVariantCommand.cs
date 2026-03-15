@@ -8,4 +8,4 @@ public sealed record CreateProductVariantCommand(
     int ColorId,
     string Name,
     SizeSystem SizeSystem,
-    SizeType SizeType) : IRequest;
+    SizeType SizeType) : IRequest<Guid>;

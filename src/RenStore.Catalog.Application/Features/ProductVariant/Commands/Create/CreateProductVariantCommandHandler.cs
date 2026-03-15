@@ -7,7 +7,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.Create;
 
 internal sealed class CreateProductVariantCommandHandler
-    : IRequestHandler<CreateProductVariantCommand>
+    : IRequestHandler<CreateProductVariantCommand, Guid>
 {
     private readonly ILogger<CreateProductVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _productVariantRepository;
@@ -23,7 +23,7 @@ internal sealed class CreateProductVariantCommandHandler
         _productVariantRepository = productVariantRepository;
     }
 
-    public async Task Handle(
+    public async Task<Guid> Handle(
         CreateProductVariantCommand request, 
         CancellationToken cancellationToken)
     {
@@ -86,5 +86,7 @@ internal sealed class CreateProductVariantCommandHandler
             "{Command} handled. ProductId: {ProductId}",
             nameof(CreateProductVariantCommand),
             request.ProductId);
+
+        return variant.Id;
     }
 }

@@ -18,6 +18,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// </remarks>
 public sealed record ImageMainUnsetEvent(
     Guid EventId,
+    Guid VariantId,
     DateTimeOffset OccurredAt,
     Guid ImageId)
     : IDomainEvent;

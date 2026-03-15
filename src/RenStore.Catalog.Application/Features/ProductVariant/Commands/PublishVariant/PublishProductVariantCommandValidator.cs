@@ -1,0 +1,14 @@
+using FluentValidation;
+
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishVariant;
+
+internal sealed class PublishProductVariantCommandValidator
+    : AbstractValidator<PublishProductVariantCommand>
+{
+    public PublishProductVariantCommandValidator()
+    {
+        RuleFor(x => x.VariantId)
+            .Empty()
+            .WithMessage("Variant ID cannot be empty guid.");
+    }
+}

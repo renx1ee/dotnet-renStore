@@ -2,17 +2,17 @@ namespace RenStore.Catalog.Domain.ReadModels;
 
 public sealed class VariantImageReadModel
 {
-    public Guid Id { get; init; }
-    public string OriginalFileName { get; init; }
-    public string StoragePath { get; init; }
-    public long FileSizeBytes { get; init; }
-    public bool IsMain { get; init; }
-    public int SortOrder { get; init; } 
-    public int Weight { get; init; }
-    public int Height { get; init; }
-    public bool IsDeleted { get; init; }
-    public DateTimeOffset UploadedAt { get; init; } 
-    public DateTimeOffset? UpdatedAt { get; init; }
-    public DateTimeOffset? DeletedAt { get; init; }
-    public Guid VariantId { get; init; }
+    public Guid Id { get; set; }
+    public string OriginalFileName { get; set; }
+    public string StoragePath { get; set; }
+    public long FileSizeBytes { get; set; }
+    public bool IsMain { get; set; }
+    public int SortOrder { get; set; } 
+    public int Weight { get; set; }
+    public int Height { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTimeOffset UploadedAt { get; set; } 
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
+    public Guid VariantId { get; set; }
 }

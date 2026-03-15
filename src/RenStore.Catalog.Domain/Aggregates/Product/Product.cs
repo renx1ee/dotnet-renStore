@@ -45,6 +45,8 @@ public class Product
     /// </summary>
     public DateTimeOffset? DeletedAt { get; private set; }
     
+    public Guid DeletedBy { get; private set; } // TODO:
+    
     /// <summary>
     /// Unique identifier of the seller.
     /// </summary>
@@ -145,17 +147,14 @@ public class Product
         EndureNotDeleted();
 
         if (!_productVariantIds.Any())
-        {
             throw new DomainException(
                 "Product must have variants.");
-        }
 
         if (Status == ProductStatus.Published)
-        {
-            throw new DomainException(
-                "Product is already published.");
-        }
-
+            return;
+            /*throw new DomainException(
+                "Product is already published.");*/
+            
         Raise(new ProductPublishedEvent(
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Published,

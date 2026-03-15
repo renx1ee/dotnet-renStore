@@ -75,16 +75,22 @@ internal sealed class PublishProductCommandHandler
                 if (image is null)
                     throw new NotFoundException(
                         name: typeof(VariantImage), imageId);
+                
+                if (variant.MainImageId == Guid.Empty)
+                {
+                    // TODO:
+                    image.SetAsMain(now);
+                    
+                    if(image.IsMain)
+                        variant.SetMainImageId(
+                            imageId: image.Id, 
+                            now: now);
+                }
             
                 images.Add(image);
             }
             
             imagesToVariants.Add(variantId, images);
-            
-            if(variant.MainImageId == Guid.Empty && images.Any())
-                variant.SetMainImageId(
-                    imageId: images[0].Id, 
-                    now: now);
         }
         
         _productPublishService.Publish(

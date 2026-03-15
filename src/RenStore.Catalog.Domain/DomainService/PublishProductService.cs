@@ -34,7 +34,7 @@ public sealed class PublishProductService : IPublishProductService
             throw new DomainException(
                 $"Product must have max {CatalogConstants.Product.MaxVariantsCount} variants.");
         }
-
+        
         if (!imagesByVariants.Any())
         {
             throw new DomainException(

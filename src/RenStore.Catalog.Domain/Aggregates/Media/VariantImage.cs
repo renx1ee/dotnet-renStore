@@ -144,7 +144,7 @@ public class VariantImage
     {
         EnsureNotDeleted();
         
-        Raise(new ImageRemovedEvent(
+        Raise(new VariantImageRemovedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
@@ -179,6 +179,7 @@ public class VariantImage
         Raise(new ImageMainUnsetEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            VariantId: VariantId,
             ImageId: Id));
     }
     
@@ -231,7 +232,7 @@ public class VariantImage
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case ImageRemovedEvent e:
+            case VariantImageRemovedEvent e:
                 IsDeleted = true;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;

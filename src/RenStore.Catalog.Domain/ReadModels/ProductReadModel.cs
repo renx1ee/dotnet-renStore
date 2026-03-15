@@ -7,12 +7,7 @@ public sealed class ProductReadModel
     /// <summary>a
     /// Unique identifier of the product.
     /// </summary>
-    public Guid Id { get; init; }
-    
-    /*/// <summary>
-    /// Overall rating calculated of all product variants.
-    /// </summary>
-    public Rating OverallRating { get; private set; } */
+    public Guid Id { get; set; }
     
     /// <summary>
     /// Current lifecycle status of the product.

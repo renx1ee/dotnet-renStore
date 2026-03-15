@@ -291,7 +291,8 @@ public class ProductVariant
         EnsureNotDeleted();
 
         if (Status == ProductVariantStatus.Published)
-            throw new DomainException("Variant has already been published.");
+            return;
+            /*throw new DomainException("Variant has already been published.");*/
         
         if (!_imageIds.Any())
             throw new DomainException("Product variant must have at least one image.");

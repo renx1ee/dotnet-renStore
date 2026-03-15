@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using RenStore.Catalog.Application.Features.VariantMedia.Commands.Delete;
 using RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;
 
 namespace RenStore.Catalog.WebApi.Controllers;
@@ -34,11 +35,12 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
         return result == Guid.Empty ? BadRequest() : Created();
     }
     
-    [HttpPatch("reorder")]
+    [HttpPut("reorder")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Reorder(
         Guid variantId)
     {
+        // TODO:
         return NoContent();
     }
     
@@ -48,6 +50,10 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
         Guid variantId,
         Guid imageId)
     {
+        await _mediator.Send(new DeleteVariantImageCommand(
+            VariantId: variantId,
+            ImageId: imageId));
+        
         return NoContent();
     }
     

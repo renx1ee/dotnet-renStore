@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Application.Features.Product.Commands.PublishProduct;
@@ -8,8 +9,10 @@ using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddSize;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.Archive;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.ChangeName;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.Create;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishVariant;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveSize;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreSize;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.SetMainImageId;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDelete;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.ToDraft;
 using RenStore.Catalog.WebApi.Requests.Variant;
@@ -31,7 +34,7 @@ public sealed class VariantsController(
         Guid productId,
         [FromBody] CreateVariantRequest request)
     {
-        await _mediator.Send(new CreateProductVariantCommand(
+        var variantId = await _mediator.Send(new CreateProductVariantCommand(
                 ProductId: productId,
                 ColorId: request.ColorId,
                 Name: request.Name,
@@ -39,7 +42,10 @@ public sealed class VariantsController(
                 SizeType: request.SizeType
                 ));
         
-        return Created();
+        return CreatedAtAction(
+            actionName: nameof(GetById),
+            routeValues: new { variantId, version = "1" },
+            value: new { Id = variantId });
     }
 
     [HttpPatch("variants/{variantId:guid}/publish")]
@@ -47,7 +53,21 @@ public sealed class VariantsController(
     public async Task<IActionResult> Publish(
         Guid variantId)
     {
-        await _mediator.Send(new PublishProductCommand(variantId));
+        await _mediator.Send(new PublishProductVariantCommand(variantId));
+        
+        return NoContent();
+    }  
+    
+    [HttpPatch("variants/{variantId:guid}/{imageId:guid}/set-main-image-id")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> SetMainImage(
+        Guid variantId,
+        Guid imageId)
+    {
+        await _mediator.Send(
+            new SetVariantMainImageCommand(
+                VariantId: variantId,
+                ImageId: imageId));
         
         return NoContent();
     } 
@@ -157,16 +177,24 @@ public sealed class VariantsController(
         return NoContent();
     }
     
-    /*[HttpGet("products/{productId:guid}/variants")]
+    [HttpGet("/variants/{variantId:guid}")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> GetByProductId(Guid productId)
+    public async Task<IActionResult> GetById(Guid variantId)
     {
         return Ok();
     }
     
-    [HttpGet("/variants/{variantId:guid}")]
+    [HttpGet("{article:int}")]
+    [AllowAnonymous]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> GetById(Guid variantId)
+    public async Task<IActionResult> GetByArticle(int article)
+    {
+        return Ok();
+    }
+    
+    /*[HttpGet("products/{productId:guid}/variants")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> GetByProductId(Guid productId)
     {
         return Ok();
     }

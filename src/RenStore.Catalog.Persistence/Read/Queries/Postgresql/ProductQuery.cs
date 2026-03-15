@@ -2,16 +2,17 @@ using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Catalog.Application.Abstractions.Queries;
+using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
+using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class ProductQuery
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
-      IProductQuery
+      RenStore.Catalog.Application.Abstractions.Queries.IProductQuery
 {
     private const string BaseSqlQuery =
         """
@@ -22,16 +23,14 @@ internal sealed class ProductQuery
                 "updated_date"    AS UpdatedAt,
                 "deleted_date"    AS DeletedAt,
                 "seller_id"       AS SellerId,
-                "sub_category_id" AS SubCategoryId,
-                "version"         AS Version
+                "sub_category_id" AS SubCategoryId
             FROM
-                ""products""
+                "products"
         """;
     
     private readonly Dictionary<ProductSortBy, string> _sortColumnMapping = new ()
     {
         { ProductSortBy.Id,        "id" },
-        { ProductSortBy.Version,   "version" },
         { ProductSortBy.Status,    "status" },
         { ProductSortBy.CreatedAt, "created_date" },
         { ProductSortBy.UpdatedAt, "updated_date" },
@@ -108,13 +107,13 @@ internal sealed class ProductQuery
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
             var sql =
-                $@"
+                $"""
                     {BaseSqlQuery}
-                    WHERE ""id"" = @Id;
-                ";
+                    WHERE "id" = @Id;
+                """;
 
             return await connection
-                .QueryFirstOrDefaultAsync(
+                .QueryFirstOrDefaultAsync<ProductReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new { Id = id },
@@ -139,7 +138,7 @@ internal sealed class ProductQuery
     }
         
     public async Task<IReadOnlyList<ProductReadModel>> FindBySellerIdAsync(
-        Guid sellerId,
+        long sellerId,
         CancellationToken cancellationToken,
         ProductSortBy sortBy = ProductSortBy.Id,
         uint page = 1,
@@ -147,7 +146,7 @@ internal sealed class ProductQuery
         bool descending = false,
         bool? isDeleted = null)
     {
-        if (sellerId == Guid.Empty)
+        if (sellerId <= 0)
             throw new ArgumentOutOfRangeException(nameof(sortBy));
         
         try
@@ -166,7 +165,22 @@ internal sealed class ProductQuery
                 ");
 
             if (isDeleted.HasValue)
-                sql.Append(" AND \"status\" = \"is_deleted\"");
+            {
+                if (isDeleted == true)
+                {
+                    var deleteColumn = ProductStatusConversion.ToDatabase(
+                        ProductStatus.Deleted);
+                
+                    sql.Append($""" AND "status" = '{deleteColumn}' """);
+                }
+                else
+                {
+                    var deleteColumn = ProductStatusConversion.ToDatabase(
+                        ProductStatus.Deleted);
+                
+                    sql.Append($""" AND "status" != '{deleteColumn}' """);
+                }
+            }
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
                            LIMIT @Count
