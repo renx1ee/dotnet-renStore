@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.VariantMedia.Commands.Delete;
 
 internal sealed class DeleteVariantImageCommandValidator

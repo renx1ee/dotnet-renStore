@@ -9,7 +9,6 @@ public enum ProductVariantSortBy
     CreatedAt,
     UpdatedAt,
     DeletedAt,
-    Version,
     SizeSystem,
     SizeType
 }

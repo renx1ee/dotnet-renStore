@@ -22,7 +22,7 @@ public interface IProductQuery
         CancellationToken cancellationToken);
 
     Task<IReadOnlyList<ProductReadModel>> FindBySellerIdAsync(
-        long sellerId,
+        Guid sellerId,
         CancellationToken cancellationToken,
         ProductSortBy sortBy = ProductSortBy.Id,
         uint page = 1,

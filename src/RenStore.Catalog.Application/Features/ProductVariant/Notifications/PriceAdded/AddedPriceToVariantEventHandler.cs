@@ -1,9 +1,4 @@
-using MediatR;
-using RenStore.Catalog.Application.Abstractions.Projections;
-using RenStore.Catalog.Application.Common;
-using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
-using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Features.ProductVariant.Notifications.PriceAdded;
 

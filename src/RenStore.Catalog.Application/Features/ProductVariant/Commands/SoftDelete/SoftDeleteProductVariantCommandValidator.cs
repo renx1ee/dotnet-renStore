@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDelete;
 
 internal sealed class SoftDeleteProductVariantCommandValidator

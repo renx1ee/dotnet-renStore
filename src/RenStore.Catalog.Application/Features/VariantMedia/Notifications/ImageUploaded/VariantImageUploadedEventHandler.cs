@@ -1,8 +1,4 @@
-using MediatR;
-using RenStore.Catalog.Application.Abstractions.Projections;
-using RenStore.Catalog.Application.Common;
 using RenStore.Catalog.Domain.Aggregates.Media.Events;
-using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Application.Features.VariantMedia.Notifications.ImageUploaded;
 

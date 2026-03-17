@@ -32,7 +32,7 @@ public sealed class ProductReadModel
     /// <summary>
     /// Unique identifier of the seller.
     /// </summary>
-    public long SellerId { get; set; }
+    public Guid SellerId { get; set; }
     
     /// <summary>
     /// Unique identifier of the sub category.

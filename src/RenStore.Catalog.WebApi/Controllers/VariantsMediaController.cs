@@ -1,9 +1,3 @@
-using Asp.Versioning;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using RenStore.Catalog.Application.Features.VariantMedia.Commands.Delete;
-using RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;
-
 namespace RenStore.Catalog.WebApi.Controllers;
 
 [ApiController]
@@ -14,6 +8,7 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     
     [HttpPost]
+    [Authorize(Roles = "Seller")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Upload(
         Guid variantId,
@@ -35,16 +30,8 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
         return result == Guid.Empty ? BadRequest() : Created();
     }
     
-    [HttpPut("reorder")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> Reorder(
-        Guid variantId)
-    {
-        // TODO:
-        return NoContent();
-    }
-    
     [HttpDelete("{imageId:guid}")]
+    [Authorize(Roles = "Seller,Moderator,Admin")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Delete(
         Guid variantId,
@@ -57,8 +44,17 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    
     /*
+       [HttpPut("reorder")]
+       [Authorize(Roles = "Seller")]
+       [MapToApiVersion(1)]
+       public async Task<IActionResult> Reorder(
+           Guid variantId)
+       {
+           // TODO:
+           return NoContent();
+       }
+     
     [HttpGet]
     [MapToApiVersion(1)]
     public async Task<IActionResult> GetAll(Guid variantId)

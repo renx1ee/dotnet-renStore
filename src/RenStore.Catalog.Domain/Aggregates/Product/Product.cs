@@ -50,7 +50,7 @@ public class Product
     /// <summary>
     /// Unique identifier of the seller.
     /// </summary>
-    public long SellerId { get; private set; }
+    public Guid SellerId { get; private set; }
     
     /// <summary>
     /// Unique identifier of the sub category.
@@ -76,7 +76,7 @@ public class Product
     /// <param name="now">Timestamp when the operation occurs. Used for event history.</param>
     /// <returns>Created product entity with established business invariants.</returns>
     public static Product Create(
-        long sellerId,
+        Guid sellerId,
         Guid subCategoryId,
         DateTimeOffset now)
     {
@@ -400,10 +400,10 @@ public class Product
             throw new DomainException("Product variants reference already exists.");
     }
     
-    private static void SellerIdValidate(long sellerId)
+    private static void SellerIdValidate(Guid sellerId)
     {
-        if (sellerId <= 0)
-            throw new DomainException("Seller ID must be more than 0.");
+        if (sellerId == Guid.Empty)
+            throw new DomainException("Seller ID cannot be empty guid.");
     }
     
     private static void SubCategoryIdValidate(Guid subCategoryId)

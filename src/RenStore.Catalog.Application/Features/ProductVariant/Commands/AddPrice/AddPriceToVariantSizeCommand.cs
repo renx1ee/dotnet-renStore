@@ -1,6 +1,3 @@
-using MediatR;
-using RenStore.SharedKernal.Domain.Enums;
-
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddPrice;
 
 public sealed record AddPriceToVariantSizeCommand(

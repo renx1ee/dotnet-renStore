@@ -1,10 +1,4 @@
-using MediatR;
-using Microsoft.Extensions.Logging;
-using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Aggregates.Media;
-using RenStore.Catalog.Domain.Interfaces.Repository;
-using RenStore.Catalog.Domain.ReadModels;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.SetMainImageId;
 

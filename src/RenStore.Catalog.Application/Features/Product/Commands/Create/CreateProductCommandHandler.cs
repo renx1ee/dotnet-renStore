@@ -1,8 +1,3 @@
-using MediatR;
-using Microsoft.Extensions.Logging;
-using RenStore.Catalog.Application.Abstractions.Projections;
-using RenStore.Catalog.Domain.Interfaces.Repository;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.Create;
 
 internal sealed class CreateProductCommandHandler

@@ -1,6 +1,3 @@
-using MediatR;
-using RenStore.Catalog.Application.Abstractions.Projections;
-using RenStore.Catalog.Application.Common;
 using RenStore.Catalog.Domain.Aggregates.Media.Events;
 
 namespace RenStore.Catalog.Application.Features.VariantMedia.Notifications.UnmarkAsMain;

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.Restore;
 
 internal sealed class RestoreProductCommandValidator

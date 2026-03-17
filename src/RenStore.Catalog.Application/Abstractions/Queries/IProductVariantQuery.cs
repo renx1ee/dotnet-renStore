@@ -21,6 +21,10 @@ public interface IProductVariantQuery
         Guid id,
         CancellationToken cancellationToken);
 
+    Task<ProductVariantReadModel?> FindByArticleAsync(
+        long article,
+        CancellationToken cancellationToken);
+
     Task<IReadOnlyList<ProductVariantReadModel>> FindByProductIdAsync(
         Guid productId,
         CancellationToken cancellationToken,

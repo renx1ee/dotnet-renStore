@@ -27,12 +27,11 @@ internal sealed class ProductVariantQuery
                 "deleted_date"    AS DeletedAt,
                 "product_id"      AS ProductId,
                 "color_id"        AS ColorId,
-                "version"         AS Version,
                 "main_image_id"   AS MainImageId,
                 "size_system"     AS SizeSystem,
                 "size_type"       AS SizeType
             FROM
-                ""product_variants""
+                "product_variants"
         """;
 
     private readonly Dictionary<ProductVariantSortBy, string> _sortColumnMapping = new()
@@ -44,7 +43,6 @@ internal sealed class ProductVariantQuery
         { ProductVariantSortBy.CreatedAt, "created_date" },
         { ProductVariantSortBy.UpdatedAt, "updated_date" },
         { ProductVariantSortBy.DeletedAt, "deleted_date" },
-        { ProductVariantSortBy.Version, "version" },
         { ProductVariantSortBy.SizeSystem, "size_systemd" },
         { ProductVariantSortBy.SizeType, "size_type" },
     };
@@ -110,6 +108,9 @@ internal sealed class ProductVariantQuery
         Guid id,
         CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(id));
+        
         try
         {
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
@@ -143,6 +144,38 @@ internal sealed class ProductVariantQuery
             id: id,
             cancellationToken: cancellationToken)
             ?? throw new NotFoundException(typeof(ProductVariantReadModel), id);
+    }
+    
+    public async Task<ProductVariantReadModel?> FindByArticleAsync(
+        long article,
+        CancellationToken cancellationToken)
+    {
+        if (article <= 0)
+            throw new ArgumentOutOfRangeException(nameof(article));
+        
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+
+            var sql =
+                $@"
+                    {BaseSqlQuery}
+                    WHERE ""article"" = @Article
+                ";
+
+            return await connection
+                .QueryFirstOrDefaultAsync<ProductVariantReadModel>(
+                    new CommandDefinition(
+                        commandText: sql,
+                        parameters: new { Article = article },
+                        commandTimeout: CommandTimeoutSeconds,
+                        transaction: CurrentDbTransaction,
+                        cancellationToken: cancellationToken));
+        }
+        catch (PostgresException e)
+        {
+            throw Wrap(e);
+        }
     }
     
     public async Task<IReadOnlyList<ProductVariantReadModel>> FindByProductIdAsync(

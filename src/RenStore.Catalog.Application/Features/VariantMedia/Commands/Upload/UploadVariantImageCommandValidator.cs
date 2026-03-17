@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;
 
 internal sealed class UploadVariantImageCommandValidator

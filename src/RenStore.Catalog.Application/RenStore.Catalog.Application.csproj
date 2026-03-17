@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Features\ProductVariant\Commands\ChangeColor\" />
-      <Folder Include="Features\ProductVariant\Queries\" />
       <Folder Include="Features\VariantMedia\Queries\" />
     </ItemGroup>
 

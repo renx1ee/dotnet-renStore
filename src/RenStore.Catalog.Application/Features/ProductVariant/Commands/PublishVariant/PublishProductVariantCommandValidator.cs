@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishVariant;
 
 internal sealed class PublishProductVariantCommandValidator

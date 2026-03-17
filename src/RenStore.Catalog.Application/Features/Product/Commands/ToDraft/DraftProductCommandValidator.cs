@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
 
 internal sealed class DraftProductCommandValidator

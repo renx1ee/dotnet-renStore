@@ -138,7 +138,7 @@ internal sealed class ProductQuery
     }
         
     public async Task<IReadOnlyList<ProductReadModel>> FindBySellerIdAsync(
-        long sellerId,
+        Guid sellerId,
         CancellationToken cancellationToken,
         ProductSortBy sortBy = ProductSortBy.Id,
         uint page = 1,
@@ -146,8 +146,8 @@ internal sealed class ProductQuery
         bool descending = false,
         bool? isDeleted = null)
     {
-        if (sellerId <= 0)
-            throw new ArgumentOutOfRangeException(nameof(sortBy));
+        if (sellerId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(sellerId));
         
         try
         {

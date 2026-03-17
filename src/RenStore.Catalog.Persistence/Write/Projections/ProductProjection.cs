@@ -166,7 +166,7 @@ internal sealed class ProductProjection
     
     public async Task<bool> BelongAsync(
         Guid productId,
-        long sellerId,
+        Guid sellerId,
         CancellationToken cancellationToken)
     {
         return await _context.Products

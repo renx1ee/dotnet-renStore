@@ -1,4 +1,3 @@
-using MediatR;
 using RenStore.Catalog.Domain.Enums;
 
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddSize;

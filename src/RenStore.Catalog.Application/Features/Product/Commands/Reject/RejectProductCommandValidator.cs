@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.Reject;
 
 internal sealed class RejectProductCommandValidator

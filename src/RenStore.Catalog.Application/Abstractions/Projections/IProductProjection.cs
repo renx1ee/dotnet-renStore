@@ -60,7 +60,7 @@ public interface IProductProjection
 
     Task<bool> BelongAsync(
         Guid productId,
-        long sellerId,
+        Guid sellerId,
         CancellationToken cancellationToken);
 
     void Remove(ProductReadModel product);

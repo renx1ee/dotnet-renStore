@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.Create;
 
 internal sealed class CreateProductCommandValidator 
@@ -8,8 +6,8 @@ internal sealed class CreateProductCommandValidator
     public CreateProductCommandValidator()
     {
         RuleFor(p => p.SellerId)
-            .GreaterThan(0)
-            .WithMessage("Seller ID must be greater then 0.");
+            .NotEmpty()
+            .WithMessage("Seller ID cannot be empty Guid.");
         
         RuleFor(p => p.SubCategoryId)
             .NotEmpty()

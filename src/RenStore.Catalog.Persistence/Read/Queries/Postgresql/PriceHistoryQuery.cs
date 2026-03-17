@@ -140,7 +140,7 @@ internal sealed class PriceHistoryQuery
         CancellationToken cancellationToken,
         PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
         uint page = 1,
-        uint pageCount = 25,
+        uint pageSize = 25,
         bool descending = false,
         bool? isActive = null)
     {
@@ -154,7 +154,7 @@ internal sealed class PriceHistoryQuery
             if (!_sortColumnMapping.TryGetValue(sortBy, out var columnName))
                 throw new ArgumentOutOfRangeException(nameof(sortBy));
 
-            var pageRequest = BuildPageRequest(page, pageCount, descending);
+            var pageRequest = BuildPageRequest(page, pageSize, descending);
 
             var sql = new StringBuilder(
                 $@"

@@ -26,7 +26,7 @@ public interface IPriceHistoryQuery
         CancellationToken cancellationToken,
         PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
         uint page = 1,
-        uint pageCount = 25,
+        uint pageSize = 25,
         bool descending = false,
         bool? isActive = null);
 }

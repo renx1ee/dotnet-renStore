@@ -14,7 +14,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 public sealed record ProductCreatedEvent(
     Guid EventId,
     Guid ProductId,
-    long SellerId,
+    Guid SellerId,
     Guid SubCategoryId,
     ProductStatus Status,
     DateTimeOffset OccurredAt)

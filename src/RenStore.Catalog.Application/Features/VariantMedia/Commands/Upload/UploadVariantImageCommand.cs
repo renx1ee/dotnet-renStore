@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;
 
 public sealed record UploadVariantImageCommand(

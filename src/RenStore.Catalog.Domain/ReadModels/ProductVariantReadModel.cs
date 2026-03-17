@@ -70,7 +70,7 @@ public sealed class ProductVariantReadModel
     public DateTimeOffset? DeletedAt { get; set; }
     
     /// <summary>
-    /// Unique identifier of the product.
+    /// Unique identifier of the size.
     /// </summary>
     public Guid ProductId { get; set; }
     
