@@ -24,7 +24,7 @@ internal sealed class CreateProductCommandHandler
         _logger.LogInformation(
             "Handling {CommandName} for SellerId {SellerId} SubCategoryId: {SubCategoryId}", 
             nameof(CreateProductCommand),
-            request.SellerId,
+            request.UserId,
             request.SubCategoryId);
 
         /*var existingCategory = await _categoryProjection
@@ -43,7 +43,7 @@ internal sealed class CreateProductCommandHandler
         }*/
 
         var product = Domain.Aggregates.Product.Product.Create(
-            sellerId: request.SellerId,
+            sellerId: request.UserId,
             subCategoryId: request.SubCategoryId,
             now: DateTimeOffset.UtcNow);
 

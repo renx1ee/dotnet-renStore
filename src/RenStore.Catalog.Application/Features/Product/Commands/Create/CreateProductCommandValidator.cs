@@ -5,12 +5,12 @@ internal sealed class CreateProductCommandValidator
 {
     public CreateProductCommandValidator()
     {
-        RuleFor(p => p.SellerId)
-            .NotEmpty()
-            .WithMessage("Seller ID cannot be empty Guid.");
-        
         RuleFor(p => p.SubCategoryId)
             .NotEmpty()
             .WithMessage("Seller ID cannot be Guid empty.");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("User ID cannot be empty guid.");
     }
 }

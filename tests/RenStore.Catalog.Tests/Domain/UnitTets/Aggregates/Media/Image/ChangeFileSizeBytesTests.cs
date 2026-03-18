@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Media.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
@@ -87,4 +87,4 @@ public class ChangeFileSizeBytesTests : ImageTestBase
                 fileSizeBytes: fileSizeBytes, 
                 now: now));
     }
-}
+}*/

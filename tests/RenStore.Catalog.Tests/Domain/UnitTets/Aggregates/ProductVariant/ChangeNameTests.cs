@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
+/*using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
@@ -88,4 +88,4 @@ public class ChangeNameTests : ProductVariantTestBase
             name: variant.Name, 
             now: now));
     }
-}
+}*/

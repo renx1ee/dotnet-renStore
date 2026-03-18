@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Media.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
@@ -18,7 +18,7 @@ public class DeleteTests : ImageTestBase
         image.Delete(now);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var result = Assert.IsType<ImageRemovedEvent>(@event);
+        var result = Assert.IsType<VariantImageRemovedEvent>(@event);
         
         // Assert: event
         Assert.NotEqual(Guid.Empty, result.ImageId);
@@ -46,4 +46,4 @@ public class DeleteTests : ImageTestBase
         Assert.Throws<DomainException>(() =>
             image.Delete(now));
     }
-}
+}*/

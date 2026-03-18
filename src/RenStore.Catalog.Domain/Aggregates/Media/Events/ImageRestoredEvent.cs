@@ -14,6 +14,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// The image does not automatically regain main status upon restoration.
 /// </remarks>
 public sealed record ImageRestoredEvent(
+    Guid UpdatedById,
+    string UpdatedByRole,
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)

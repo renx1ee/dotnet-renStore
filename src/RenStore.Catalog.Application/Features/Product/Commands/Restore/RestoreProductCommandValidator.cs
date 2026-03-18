@@ -8,5 +8,9 @@ internal sealed class RestoreProductCommandValidator
         RuleFor(p => p.ProductId)
             .NotEmpty()
             .WithMessage("Product ID cannot be empty guid.");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("User ID cannot be empty guid.");
     }
 }

@@ -10,14 +10,14 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     #region Commands
     
     [HttpPost("manage/products")]
-    [Authorize("Seller")]
+    [Authorize(Roles = "Seller")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Create(
-        [FromBody] CreateProductRequest request)
+        [FromQuery] Guid subCategoryId)
     {
         var command = new CreateProductCommand(
-            SellerId: request.SellerId,
-            SubCategoryId: request.SubCategoryId);
+            UserId: User.GetUserId(),
+            SubCategoryId: subCategoryId);
         
         var productId = await _mediator.Send(command);
 
@@ -27,72 +27,93 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
             value: new { Id = productId });
     }
     
-    [HttpPatch("manage/products/{id:guid}/publish")]
+    [HttpPatch("manage/products/{productId:guid}/publish")]
     [Authorize("Seller")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Publish(Guid id)
+    public async Task<IActionResult> Publish(Guid productId)
     {
-        await _mediator.Send(new PublishProductCommand(id));
+        await _mediator.Send(new PublishProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
 
-    [HttpPatch("manage/products/{id:guid}/approve")]
-    [Authorize("Admin,Moderator")]
+    [HttpPatch("manage/products/{productId:guid}/approve")]
+    [Authorize(Roles = "Admin,Moderator")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Approve(Guid id)
+    public async Task<IActionResult> Approve(Guid productId)
     {
-        await _mediator.Send(new ApproveProductCommand(id));
+        await _mediator.Send(new ApproveProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
     
-    [HttpPatch("manage/products/{id:guid}/archive")]
-    [Authorize("Seller")]
+    [HttpPatch("manage/products/{productId:guid}/archive")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Archive(Guid id)
+    public async Task<IActionResult> Archive(Guid productId)
     {
-        await _mediator.Send(new ArchiveProductCommand(id));
+        await _mediator.Send(new ArchiveProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
     
-    [HttpPatch("manage/products/{id:guid}/hide")]
-    [Authorize("Seller,Admin,Moderator")]
+    [HttpPatch("manage/products/{productId:guid}/hide")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Hide(Guid id)
+    public async Task<IActionResult> Hide(Guid productId)
     {
-        await _mediator.Send(new HideProductCommand(id));
+        await _mediator.Send(new HideProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
     
-    [HttpPatch("manage/products/{id:guid}/reject")]
-    [Authorize("Admin,Moderator")]
+    [HttpPatch("manage/products/{productId:guid}/reject")]
+    [Authorize(Roles = "Admin,Moderator")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Reject(Guid id)
+    public async Task<IActionResult> Reject(Guid productId)
     {
-        await _mediator.Send(new RejectProductCommand(id));
+        await _mediator.Send(new RejectProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
     
-    [HttpPatch("manage/products/{id:guid}/draft")]
-    [Authorize("Seller,Admin,Moderator")]
+    [HttpPatch("manage/products/{productId:guid}/draft")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> ToDraft(Guid id)
+    public async Task<IActionResult> ToDraft(Guid productId)
     {
-        await _mediator.Send(new DraftProductCommand(id));
+        await _mediator.Send(new DraftProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
     
-    [HttpDelete("manage/products/{id:guid}")]
+    [HttpDelete("manage/products/{productId:guid}")]
     [Authorize(Roles = "Seller,Moderator,Admin")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid productId)
     {
-        await _mediator.Send(new SoftDeleteProductCommand(id));
+        await _mediator.Send(new SoftDeleteProductCommand(
+            ProductId: productId,
+            Role: User.GetRole(),
+            UserId: User.GetUserId()));
 
         return NoContent();
     }
@@ -140,7 +161,6 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     
     [HttpGet("manage/products/{productId:guid}")]
     [Authorize(Roles = "Seller,Moderator,Admin")]
-    [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByIdManage(Guid productId)
     {
@@ -153,9 +173,8 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         return product is null ? NotFound() : Ok(product);
     }
     
-    [HttpGet("manage/products/{sellerId:guid}")]
+    [HttpGet("manage/sellers/{sellerId:guid}/products")]
     [Authorize(Roles = "Seller,Moderator,Admin")]
-    [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindBySellerIdManage(
         Guid sellerId,

@@ -14,6 +14,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 /// Removal may trigger cleanup of associated storage resources.
 /// </remarks>
 public sealed record VariantImageRemovedEvent(
+    Guid UpdatedById,
+    string UpdatedByRole,
     Guid EventId,
     DateTimeOffset OccurredAt,
     Guid ImageId)

@@ -23,6 +23,8 @@ public class VariantImage
     public DateTimeOffset UploadedAt { get; private set; } 
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
+    public Guid UpdatedById { get; private set; } 
+    public string UpdatedByRole { get; private set; } 
     public Guid VariantId { get; private set; }
     
     private VariantImage() { }
@@ -140,23 +142,47 @@ public class VariantImage
     }
     
     public void Delete(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now)
     {
         EnsureNotDeleted();
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new VariantImageRemovedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
     }
 
     public void Restore(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now)
     {
         if(!IsDeleted)
             throw new DomainException("Image was not deleted.");
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ImageRestoredEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             ImageId: Id));
@@ -233,12 +259,16 @@ public class VariantImage
                 break;
             
             case VariantImageRemovedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 IsDeleted = true;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ImageRestoredEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 IsDeleted = false;
                 DeletedAt = null;
                 UpdatedAt = e.OccurredAt;

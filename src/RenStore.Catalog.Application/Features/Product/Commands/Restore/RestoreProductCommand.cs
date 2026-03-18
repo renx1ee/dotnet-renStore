@@ -1,3 +1,7 @@
 namespace RenStore.Catalog.Application.Features.Product.Commands.Restore;
 
-public record RestoreProductCommand(Guid ProductId) : IRequest;
+public sealed record RestoreProductCommand(
+    Guid ProductId,
+    UserRole Role,
+    Guid UserId) 
+    : IRequest;

@@ -19,5 +19,9 @@ internal sealed class CreateProductVariantCommandValidator
             .NotNull()
             .NotEmpty()
             .WithMessage("Product variant name cannot be null or empty.");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("User ID cannot be empty guid.");
     }
 }

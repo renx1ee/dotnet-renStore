@@ -5,13 +5,16 @@ internal sealed class AddSizeToVariantCommandHandler
 {
     private readonly ILogger<AddSizeToVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
+    private readonly IProductRepository _productRepository;
     
     public AddSizeToVariantCommandHandler(
         ILogger<AddSizeToVariantCommandHandler> logger,
-        IProductVariantRepository variantRepository)
+        IProductVariantRepository variantRepository,
+        IProductRepository productRepository)
     {
         _logger = logger;
         _variantRepository = variantRepository;
+        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -28,6 +31,17 @@ internal sealed class AddSizeToVariantCommandHandler
             ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
+        
+        var product = await _productRepository
+            .GetAsync(id: variant.ProductId, cancellationToken) 
+            ?? throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        
+        if (product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
 
         variant.AddSize(
             letterSize: request.LetterSize,

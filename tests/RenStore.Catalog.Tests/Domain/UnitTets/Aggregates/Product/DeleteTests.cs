@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Product.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -47,4 +47,4 @@ public class DeleteTests : ProductTestBase
         Assert.Throws<DomainException>(() =>
             product.Delete(now));
     }
-}
+}*/

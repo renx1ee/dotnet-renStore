@@ -5,13 +5,16 @@ internal sealed class ArchiveProductVariantCommandHandler
 {
     private readonly ILogger<ArchiveProductVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _productVariantRepository;
+    private readonly IProductRepository _productRepository;
 
     public ArchiveProductVariantCommandHandler(
         ILogger<ArchiveProductVariantCommandHandler> logger,
-        IProductVariantRepository productVariantRepository)
+        IProductVariantRepository productVariantRepository,
+        IProductRepository productRepository)
     {
         _logger = logger;
         _productVariantRepository = productVariantRepository;
+        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -24,16 +27,27 @@ internal sealed class ArchiveProductVariantCommandHandler
             request.VariantId);
 
         var variant = await _productVariantRepository
-            .GetAsync(request.VariantId, cancellationToken);
-
-        if (variant is null)
-        {
-            throw new NotFoundException(
+            .GetAsync(request.VariantId, cancellationToken)
+            ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.VariantId);
+        
+        var product = await _productRepository
+            .GetAsync(id: variant.ProductId, cancellationToken) 
+            ?? throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        
+        if (request.Role == UserRole.Seller &&
+            product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
         }
         
-        variant.Archive(DateTimeOffset.UtcNow);
+        variant.Archive(
+            updatedByRole: request.Role.ToString(),
+            updatedById: request.UserId,
+            now: DateTimeOffset.UtcNow);
 
         await _productVariantRepository.SaveAsync(variant, cancellationToken);
             

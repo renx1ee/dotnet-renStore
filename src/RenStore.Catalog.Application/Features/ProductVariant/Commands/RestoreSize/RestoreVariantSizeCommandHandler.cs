@@ -5,13 +5,16 @@ internal sealed class RestoreVariantSizeCommandHandler
 {
     private readonly ILogger<RestoreVariantSizeCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
+    private readonly IProductRepository _productRepository;
     
     public RestoreVariantSizeCommandHandler(
         ILogger<RestoreVariantSizeCommandHandler> logger,
-        IProductVariantRepository variantRepository)
+        IProductVariantRepository variantRepository,
+        IProductRepository productRepository)
     {
         _logger = logger;
         _variantRepository = variantRepository;
+        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -25,14 +28,26 @@ internal sealed class RestoreVariantSizeCommandHandler
             request.SizeId);
 
         var variant = await _variantRepository
-            .GetAsync(request.VariantId, cancellationToken);
-
-        if (variant is null)
-            throw new NotFoundException(
+            .GetAsync(request.VariantId, cancellationToken)
+            ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
         
+        var product = await _productRepository
+            .GetAsync(id: variant.ProductId, cancellationToken) 
+            ?? throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        
+        if (request.Role == UserRole.Seller &&
+            product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
+        
         variant.RestoreSize(
+            updatedByRole: request.Role.ToString(),
+            updatedById: request.UserId,
             now: DateTimeOffset.UtcNow, 
             sizeId: request.SizeId);
 

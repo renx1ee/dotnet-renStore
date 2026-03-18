@@ -1,3 +1,7 @@
 namespace RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
 
-public sealed record DraftProductCommand(Guid ProductId) : IRequest; 
+public sealed record DraftProductCommand(
+    Guid ProductId,
+    UserRole Role,
+    Guid UserId) 
+    : IRequest; 

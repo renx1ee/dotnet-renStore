@@ -45,7 +45,8 @@ public class Product
     /// </summary>
     public DateTimeOffset? DeletedAt { get; private set; }
     
-    public Guid DeletedBy { get; private set; } // TODO:
+    public Guid UpdatedById { get; private set; } 
+    public string UpdatedByRole { get; private set; } 
     
     /// <summary>
     /// Unique identifier of the seller.
@@ -120,29 +121,8 @@ public class Product
             OccurredAt: now));
     }
     
-    /*/// <summary>
-    /// Register a new rating for the product.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    /// <param name="score">Rating value assigned to the product.</param>
-    public void Rate(
-        DateTimeOffset now,
-        decimal score)
-    {
-        EndureNotDeleted();
-        
-        Raise(new ProductAverageRatingUpdated(
-            ProductId: Id,
-            OccurredAt: now,
-            Score: score));
-    }*/
-    
-    /// <summary>
-    /// Publish the product in the system.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    /// <exception cref="DomainException"></exception>
-    public void MarkAsPublished(DateTimeOffset now)
+    public void MarkAsPublished(
+        DateTimeOffset now)
     {
         EndureNotDeleted();
 
@@ -152,8 +132,6 @@ public class Product
 
         if (Status == ProductStatus.Published)
             return;
-            /*throw new DomainException(
-                "Product is already published.");*/
             
         Raise(new ProductPublishedEvent(
             EventId: Guid.NewGuid(), 
@@ -162,96 +140,144 @@ public class Product
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Mark the product as rejected.
-    /// Updates the product aggregate state and records the changes in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void MarkAsRejected(DateTimeOffset now)
+    public void MarkAsRejected(
+        DateTimeOffset now,
+        Guid updatedById,
+        string updatedByRole)
     {
         EndureNotDeleted();
+
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
         
         Raise(new ProductRejectedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Rejected,
             ProductId: Id,
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Mark the product as approved.
-    /// Update the product aggregate state and record the changes in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void MarkAsApproved(DateTimeOffset now)
+    public void MarkAsApproved(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EndureNotDeleted();
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ProductApprovedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Approved,
             ProductId: Id,
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Mark the product as draft.
-    /// Update the product aggregate state and record the changes in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void MarkAsDraft(DateTimeOffset now)
+    public void MarkAsDraft(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EndureNotDeleted();
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ProductMovedToDraftEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Draft,
             ProductId: Id,
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Mark the product as archived.
-    /// Update the product aggregate state and record the changes in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void MarkAsArchived(DateTimeOffset now)
+    public void MarkAsArchived(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EndureNotDeleted();
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ProductArchivedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Archived,
             ProductId: Id,
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Mark the product as hidden.
-    /// Update the product aggregate state and record the changes in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void MarkAsHidden(DateTimeOffset now)
+    public void MarkAsHidden(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EndureNotDeleted();
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ProductHiddenEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Hidden,
             ProductId: Id,
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Soft-deletes the product.
-    /// Mark the product as inactive while preserving its data and records the operation in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    public void Delete(DateTimeOffset now)
+    public void Delete(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EndureNotDeleted();
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ProductRemovedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             Status: ProductStatus.Deleted,
             ProductId: Id, 
@@ -279,19 +305,26 @@ public class Product
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Removes the association between the product and a variant.
-    /// Updates the aggregate state and records the change in the domain event history.
-    /// </summary>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
-    /// <exception cref="DomainException"></exception>
-    public void Restore(DateTimeOffset now)
+    public void Restore(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         if(Status != ProductStatus.Deleted)
             throw new DomainException(
                 "Cannot restore active entity.");
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new ProductRestoredEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(),
             Status: ProductStatus.Draft,
             ProductId: Id,
@@ -316,37 +349,51 @@ public class Product
                 break;
             
             case ProductRejectedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductApprovedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductMovedToDraftEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductArchivedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductHiddenEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case ProductRemovedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 DeletedAt = e.OccurredAt;
                 break;
             
             case ProductRestoredEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = e.Status; 
                 UpdatedAt = e.OccurredAt;
                 break;

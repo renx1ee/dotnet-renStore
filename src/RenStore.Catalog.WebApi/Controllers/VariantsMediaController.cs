@@ -21,6 +21,7 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
         
         var result = await _mediator.Send(
             new UploadVariantImageCommand(
+                UserId: User.GetUserId(),
                 VariantId: variantId,
                 FileName: file.FileName,
                 ContentType: file.ContentType,
@@ -37,9 +38,12 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
         Guid variantId,
         Guid imageId)
     {
-        await _mediator.Send(new DeleteVariantImageCommand(
-            VariantId: variantId,
-            ImageId: imageId));
+        await _mediator.Send(
+            new DeleteVariantImageCommand(
+                UserId: User.GetUserId(),
+                Role: User.GetRole(),
+                VariantId: variantId,
+                ImageId: imageId));
         
         return NoContent();
     }

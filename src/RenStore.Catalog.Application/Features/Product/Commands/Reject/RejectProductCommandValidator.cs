@@ -8,5 +8,9 @@ internal sealed class RejectProductCommandValidator
         RuleFor(x => x.ProductId)
             .NotEmpty()
             .WithMessage("Product ID cannot be empty guid.");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("User ID cannot be empty guid.");
     }
 }

@@ -5,13 +5,16 @@ public class AddPriceToVariantSizeCommandHandler
 {
     private readonly ILogger<AddPriceToVariantSizeCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
+    private readonly IProductRepository _productRepository;
     
     public AddPriceToVariantSizeCommandHandler(
         ILogger<AddPriceToVariantSizeCommandHandler> logger,
-        IProductVariantRepository variantRepository)
+        IProductVariantRepository variantRepository,
+        IProductRepository productRepository)
     {
         _logger = logger;
         _variantRepository = variantRepository;
+        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -25,12 +28,21 @@ public class AddPriceToVariantSizeCommandHandler
             request.SizeId);
 
         var variant = await _variantRepository
-            .GetAsync(request.VariantId, cancellationToken);
-        
-        if(variant is null)
-            throw new NotFoundException(
+            .GetAsync(request.VariantId, cancellationToken)
+            ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
+
+        var product = await _productRepository
+            .GetAsync(id: variant.ProductId, cancellationToken)
+            ?? throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        
+        if (product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
 
         variant.AddPriceToSize(
             amount: request.Price,

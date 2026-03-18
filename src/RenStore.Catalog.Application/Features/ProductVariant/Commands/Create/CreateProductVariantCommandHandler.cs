@@ -44,13 +44,14 @@ internal sealed class CreateProductVariantCommandHandler
         */
         
         var product = await _productRepository
-            .GetAsync(request.ProductId, cancellationToken);
-        
-        if (product is null)
-        {
-            throw new NotFoundException(
+            .GetAsync(request.ProductId, cancellationToken)
+            ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
+        
+        if (product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
         }
         
         Random rnd = new Random();

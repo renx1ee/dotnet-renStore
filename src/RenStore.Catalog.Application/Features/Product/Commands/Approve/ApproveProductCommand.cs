@@ -1,3 +1,7 @@
 namespace RenStore.Catalog.Application.Features.Product.Commands.Approve;
 
-public sealed record ApproveProductCommand(Guid ProductId) : IRequest;
+public sealed record ApproveProductCommand(
+    Guid ProductId,
+    UserRole Role,
+    Guid UserId) 
+    : IRequest;

@@ -41,6 +41,11 @@ internal sealed class PublishProductVariantCommandHandler
         var product = await _productQuery.GetByIdAsync(
             id: variant.ProductId,
             cancellationToken: cancellationToken);
+        
+        if (product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
 
         if (product!.Status != ProductStatus.Published)
             throw new DomainException(

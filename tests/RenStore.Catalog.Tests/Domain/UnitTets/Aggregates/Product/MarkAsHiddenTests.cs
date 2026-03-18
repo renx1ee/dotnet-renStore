@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Product.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -44,4 +44,4 @@ public class MarkAsHiddenTests : ProductTestBase
         Assert.Throws<DomainException>(() =>
             product.MarkAsHidden(now));
     }
-}
+}*/

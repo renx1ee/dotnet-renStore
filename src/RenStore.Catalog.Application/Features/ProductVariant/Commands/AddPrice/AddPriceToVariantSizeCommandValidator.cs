@@ -16,5 +16,9 @@ internal sealed class AddPriceToVariantSizeCommandValidator
         RuleFor(s => s.Price)
             .GreaterThan(0)
             .WithMessage("Price cannot be ");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("User ID cannot be empty guid.");
     }
 }

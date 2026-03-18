@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
+/*using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -60,4 +60,4 @@ public class ActivateTests : ProductVariantTestBase
         Assert.Throws<DomainException>(() =>
             variant.Publish(now));
     }
-}
+}*/

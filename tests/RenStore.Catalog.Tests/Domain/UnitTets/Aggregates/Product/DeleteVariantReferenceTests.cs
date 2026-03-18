@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Product.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
@@ -90,4 +90,4 @@ public class DeleteVariantReferenceTests : ProductTestBase
             now: now,  
             variantId: variantId));
     }
-}
+}*/

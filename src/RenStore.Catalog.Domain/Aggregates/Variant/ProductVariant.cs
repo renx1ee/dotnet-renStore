@@ -99,6 +99,9 @@ public class ProductVariant
     /// </summary>
     public DateTimeOffset? DeletedAt { get; private set; }
     
+    public Guid UpdatedById { get; private set; } 
+    public string UpdatedByRole { get; private set; } 
+    
     /// <summary>
     /// Unique identifier of the product.
     /// </summary>
@@ -325,37 +328,76 @@ public class ProductVariant
             VariantId: Id));
     }
     
-    public void Archive(DateTimeOffset now)
+    public void Archive(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EnsureNotDeleted();
+        
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
         
         if (Status == ProductVariantStatus.Archived)
             return;
         
         Raise(new VariantArchivedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
     }
     
-    public void ToDraft(DateTimeOffset now)
+    public void ToDraft(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EnsureNotDeleted();
+        
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
         
         if (Status == ProductVariantStatus.Draft)
             return;
         
         Raise(new VariantDraftedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id));
     }
     
-    public void Delete(DateTimeOffset now)
+    public void Delete(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
         EnsureNotDeleted("Cannot delete already deleted variant.");
         
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+        
         Raise(new VariantRemovedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             VariantId: Id,
             OccurredAt: now));
@@ -382,15 +424,27 @@ public class ProductVariant
     }
     
     public void RemoveSize(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now,
         Guid sizeId)
     {
         EnsureNotDeleted();
+        
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
 
         var size = GetSize(sizeId);
         SizeEnsureNotDeleted(size);
         
         Raise(new VariantSizeRemovedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
@@ -398,10 +452,20 @@ public class ProductVariant
     }
     
     public void RestoreSize(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now,
         Guid sizeId)
     {
         EnsureNotDeleted();
+        
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
         
         var size = GetSize(sizeId);
         
@@ -409,6 +473,8 @@ public class ProductVariant
             throw new DomainException("Size is not deleted.");
         
         Raise(new VariantSizeRestoredEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             VariantId: Id,
@@ -480,11 +546,15 @@ public class ProductVariant
                 break;
             
             case VariantArchivedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = ProductVariantStatus.Archived;
                 UpdatedAt = e.OccurredAt;
                 break;
             
             case VariantDraftedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = ProductVariantStatus.Draft;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -500,12 +570,9 @@ public class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            /*case VariantAverageRatingUpdated e:
-                Rating = Rating.Add(e.Score);
-                UpdatedAt = e.OccurredAt;
-                break;*/
-            
             case VariantRemovedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 Status = ProductVariantStatus.Deleted;
                 DeletedAt = e.OccurredAt;
                 UpdatedAt = e.OccurredAt;
@@ -515,6 +582,8 @@ public class ProductVariant
                 var removedSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
                                   ?? throw new DomainException("Variant size is not found.");
                 
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 removedSize.Delete(e.OccurredAt);
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -523,6 +592,8 @@ public class ProductVariant
                 var restoredSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
                                   ?? throw new DomainException("Variant size is not found.");
                 
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 restoredSize.Restore(e.OccurredAt);
                 UpdatedAt = e.OccurredAt;
                 break;

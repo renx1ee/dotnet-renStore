@@ -24,14 +24,21 @@ internal sealed class SoftDeleteProductCommandHandler
             request.ProductId);
 
         var product = await _productRepository.GetAsync(
-            request.ProductId, cancellationToken);
-
-        if (product is null)
-            throw new NotFoundException(
+            request.ProductId, cancellationToken)
+        ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product), 
                 request.ProductId);
         
-        product.Delete(DateTimeOffset.UtcNow);
+        if (request.Role == UserRole.Seller &&
+            product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
+        
+        product.Delete(
+            updatedByRole: request.Role.ToString(),
+            updatedById: request.UserId,
+            now: DateTimeOffset.UtcNow);
 
         await _productRepository.SaveAsync(
             product, cancellationToken);

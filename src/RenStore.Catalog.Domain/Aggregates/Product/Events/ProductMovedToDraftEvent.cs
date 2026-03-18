@@ -9,6 +9,8 @@ namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 /// <param name="ProductId">Unique product ID.</param>
 /// <param name="OccurredAt">Time of occurrence of the event.</param>
 public record ProductMovedToDraftEvent(
+    Guid UpdatedById,
+    string UpdatedByRole,
     Guid EventId,
     Guid ProductId,
     ProductStatus Status,

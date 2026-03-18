@@ -5,13 +5,16 @@ internal sealed class DraftProductVariantCommandHandler
 {
     private readonly ILogger<DraftProductVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
+    private readonly IProductRepository _productRepository;
     
     public DraftProductVariantCommandHandler(
         ILogger<DraftProductVariantCommandHandler> logger,
-        IProductVariantRepository variantRepository)
+        IProductVariantRepository variantRepository,
+        IProductRepository productRepository)
     {
         _logger = logger;
         _variantRepository = variantRepository;
+        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -28,8 +31,23 @@ internal sealed class DraftProductVariantCommandHandler
             ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
+        
+        var product = await _productRepository
+            .GetAsync(id: variant.ProductId, cancellationToken) 
+            ?? throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        
+        if (request.Role == UserRole.Seller &&
+            product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
 
-        variant.ToDraft(DateTimeOffset.UtcNow);
+        variant.ToDraft(
+            updatedByRole: request.Role.ToString(),
+            updatedById: request.UserId,
+            now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);
         

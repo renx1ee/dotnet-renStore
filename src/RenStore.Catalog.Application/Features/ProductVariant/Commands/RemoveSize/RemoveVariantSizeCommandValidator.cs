@@ -12,5 +12,9 @@ internal sealed class RemoveVariantSizeCommandValidator
         RuleFor(s => s.SizeId)
             .NotEmpty()
             .WithMessage("Size ID cannot be empty guid.");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("User ID cannot be empty guid.");
     }
 }

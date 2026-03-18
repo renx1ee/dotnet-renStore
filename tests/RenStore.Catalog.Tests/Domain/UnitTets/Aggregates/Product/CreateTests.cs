@@ -10,7 +10,7 @@ public class CreateTests
     public void Should_Raise_Created_Event()
     {
         // Arrange
-        var sellerId = 12345;
+        var sellerId = Guid.NewGuid();
         var subCategoryId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
         
@@ -40,12 +40,10 @@ public class CreateTests
         Assert.Equal(ProductStatus.PendingModeration, created.Status);
     }
     
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Should_Throw_WhenSellerIdIsInvalid(
-        long sellerId)
+    [Fact]
+    public void Should_Throw_WhenSellerIdIsInvalid()
     {
+        var sellerId = Guid.Empty;
         // Arrange
         var subCategoryId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
@@ -63,7 +61,7 @@ public class CreateTests
     {
         // Arrange
         var subCategoryId = Guid.Empty;
-        var sellerId = 12345;
+        var sellerId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
         
         // Act

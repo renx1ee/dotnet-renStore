@@ -19,6 +19,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var variantId = await _mediator.Send(
             new CreateProductVariantCommand(
+                UserId: User.GetUserId(),
                 ProductId: productId,
                 ColorId: request.ColorId,
                 Name: request.Name,
@@ -38,7 +39,10 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Publish(
         Guid variantId)
     {
-        await _mediator.Send(new PublishProductVariantCommand(variantId));
+        await _mediator.Send(
+            new PublishProductVariantCommand(
+                VariantId: variantId,
+                UserId: User.GetUserId()));
         
         return NoContent();
     }  
@@ -52,6 +56,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new SetVariantMainImageCommand(
+                UserId: User.GetUserId(),
                 VariantId: variantId,
                 ImageId: imageId));
         
@@ -59,23 +64,31 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     } 
     
     [HttpPatch("manage/variants/{variantId:guid}/archive")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Archive(
         Guid variantId)
     {
-        await _mediator.Send(new ArchiveProductVariantCommand(variantId));
+        await _mediator.Send(
+            new ArchiveProductVariantCommand(
+                UserId: User.GetUserId(),
+                Role: User.GetRole(),
+                VariantId: variantId));
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/draft")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Draft(
         Guid variantId)
     {
-        await _mediator.Send(new DraftProductVariantCommand(variantId));
+        await _mediator.Send(
+            new DraftProductVariantCommand(
+                UserId: User.GetUserId(),
+                Role: User.GetRole(),
+                VariantId: variantId));
         
         return NoContent();
     }
@@ -89,6 +102,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new ChangeProductVariantNameCommand(
+                UserId: User.GetUserId(),
                 VariantId: variantId,
                 Name: request.Name));
         
@@ -105,6 +119,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new AddSizeToVariantCommand(
                 VariantId: variantId,
+                UserId: User.GetUserId(),
                 LetterSize: request.LetterSize));
         
         return NoContent();
@@ -120,6 +135,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new AddPriceToVariantSizeCommand(
+                UserId: User.GetUserId(),
                 VariantId: variantId,
                 SizeId: sizeId,
                 Currency: request.Currency,
@@ -130,7 +146,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/size/{sizeId:guid}/remove")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> RemoveSize(
         Guid variantId,
@@ -139,13 +155,15 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new RemoveVariantSizeCommand(
                 VariantId: variantId,
+                UserId: User.GetUserId(),
+                Role: User.GetRole(),
                 SizeId: sizeId));
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/size/{sizeId:guid}/restore")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> RestoreSize(
         Guid variantId,
@@ -154,18 +172,22 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new RestoreVariantSizeCommand(
                 VariantId: variantId,
+                UserId: User.GetUserId(),
+                Role: User.GetRole(),
                 SizeId: sizeId));
         
         return NoContent();
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = "Seller,Admin,Moderator")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> SoftDelete(Guid variantId)
     {
         await _mediator.Send(
             new SoftDeleteProductVariantCommand(
+                UserId: User.GetUserId(),
+                Role: User.GetRole(),
                 VariantId: variantId));
         
         return NoContent();
@@ -214,8 +236,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 SortBy: sortBy,
                 Page: page,
                 PageCount: pageCount,
-                Descending: descending,
-                IsDeleted: false));
+                Descending: descending));
         
         return Ok(result);
     }

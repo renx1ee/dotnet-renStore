@@ -26,14 +26,15 @@ internal sealed class ApproveProductCommandHandler
             request.ProductId);
 
         var product = await _productRepository
-            .GetAsync(request.ProductId, cancellationToken);
-
-        if (product is null)
-            throw new NotFoundException(
+            .GetAsync(request.ProductId, cancellationToken)
+            ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
         
-        product.MarkAsApproved(DateTimeOffset.UtcNow);
+        product.MarkAsApproved(
+            updatedByRole: request.Role.ToString(),
+            updatedById: request.UserId,
+            now: DateTimeOffset.UtcNow);
 
         await _productRepository.SaveAsync(
             product, cancellationToken);

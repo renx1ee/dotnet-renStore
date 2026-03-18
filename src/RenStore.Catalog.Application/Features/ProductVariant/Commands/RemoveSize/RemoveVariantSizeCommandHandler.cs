@@ -5,13 +5,16 @@ internal sealed class RemoveVariantSizeCommandHandler
 {
     private readonly ILogger<RemoveVariantSizeCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
+    private readonly IProductRepository _productRepository;
     
     public RemoveVariantSizeCommandHandler(
         ILogger<RemoveVariantSizeCommandHandler> logger,
-        IProductVariantRepository variantRepository)
+        IProductVariantRepository variantRepository,
+        IProductRepository productRepository)
     {
         _logger = logger;
         _variantRepository = variantRepository;
+        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -29,9 +32,23 @@ internal sealed class RemoveVariantSizeCommandHandler
             ?? throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
+        
+        var product = await _productRepository
+            .GetAsync(id: variant.ProductId, cancellationToken) 
+            ?? throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        
+        if (request.Role == UserRole.Seller &&
+            product.SellerId != request.UserId)
+        {
+            throw new DomainException(nameof(request.UserId));
+        }
 
         variant.RemoveSize(
             sizeId: request.SizeId,
+            updatedByRole: request.Role.ToString(),
+            updatedById: request.UserId,
             now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);
