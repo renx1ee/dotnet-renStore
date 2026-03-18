@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RenStore.Catalog.Domain.Aggregates.Attribute.Events;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
 using RenStore.Catalog.Persistence;
 using RenStore.Catalog.Tests.Persistence.Integration.Repositories;
 using RenStore.SharedKernal.Domain.Common;

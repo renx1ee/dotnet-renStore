@@ -6,7 +6,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Category;
 /// <summary>
 /// Represents a sub category physical entity with lifecycle and invariants.
 /// </summary>
-public class SubCategory
+public sealed class SubCategory
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }

@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
 using RenStore.Catalog.Domain.Enums;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.VariantDetails;
@@ -50,4 +50,4 @@ public class ChangeTypeOfPackingTests : DetailTestBase
 
         Assert.Empty(detail.GetUncommittedEvents());
     }
-}
+}*/

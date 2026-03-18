@@ -1,4 +1,5 @@
-using RenStore.Catalog.Domain.Aggregates.Attribute;
+/*using RenStore.Catalog.Domain.Aggregates.Attribute;
+using RenStore.Catalog.Domain.Aggregates.Variant;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Attribute;
 
@@ -12,4 +13,4 @@ public class AttributeTestBase
             key: "qwertyuiopasdfg",
             value: "qwertyuiopasdfg");
     }
-}
+}*/

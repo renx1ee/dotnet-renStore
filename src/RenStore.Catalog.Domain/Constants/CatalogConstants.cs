@@ -61,5 +61,7 @@ public static class CatalogConstants
     
         public const int MaxUrlLength                = 500;
         public const int MinUrlLength                = 25;
+
+        public const int MaxAttributesCount          = 50;
     }
 }

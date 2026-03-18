@@ -12,8 +12,8 @@ public abstract class AggregateRoot
 
     protected void Raise(IDomainEvent @event)
     {
-        _uncommittedEvents.Add(@event);
         Apply(@event);
+        _uncommittedEvents.Add(@event);
     }
 
     protected abstract void Apply(IDomainEvent @event);

@@ -3,10 +3,7 @@ using RenStore.SharedKernal.Domain.ValueObjects;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
-/// <summary>
-/// Represents a size price history physical entity with lifecycle and invariants.
-/// </summary>
-public class PriceHistory
+public sealed class PriceHistory
 {
     public Guid Id { get; private set; }
     public SharedKernal.Domain.ValueObjects.Price Price { get; private set; }

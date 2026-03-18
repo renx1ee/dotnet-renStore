@@ -1,6 +1,6 @@
 using RenStore.SharedKernal.Domain.Common;
 
-namespace RenStore.Catalog.Domain.Aggregates.Attribute.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
 
 public sealed record AttributeKeyUpdatedEvent(
     Guid EventId,

@@ -10,7 +10,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Product;
 /// <summary>
 /// Represents a product physical entity with lifecycle and invariants.
 /// </summary>
-public class Product
+public sealed class Product
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     private List<Guid> _productVariantIds = new();
@@ -65,17 +65,6 @@ public class Product
     
     private Product() { }
     
-    /// <summary>
-    /// Create a new product in the system, linked to a specific seller.
-    /// The method checks business-rules:
-    /// - The seller must exist and have the right to sell goods;
-    /// - The sub category must be valid;
-    /// - The creation date is fixed to the current time to ensure correct history;
-    /// </summary>
-    /// <param name="sellerId">The unique seller identifier - owner of the product. The seller must be registered and active.</param>
-    /// <param name="subCategoryId">The unique sub category identifier to which the product belong. The sub category must be existed in the system.</param>
-    /// <param name="now">Timestamp when the operation occurs. Used for event history.</param>
-    /// <returns>Created product entity with established business invariants.</returns>
     public static Product Create(
         Guid sellerId,
         Guid subCategoryId,
@@ -98,14 +87,6 @@ public class Product
         return product;
     }
     
-    /// <summary>
-    /// Adds a variant to the product aggregate.
-    /// Ensure domain rules are enforced:
-    /// - The variant must exist in the system.
-    /// - A variant cannot be added more than once to the same product.
-    /// </summary>
-    /// <param name="variantId">Unique product variant id. The product variant ID must be existed in the system.</param>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void AddVariantReference(
         Guid variantId,
         DateTimeOffset now)
@@ -147,13 +128,9 @@ public class Product
     {
         EndureNotDeleted();
 
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductRejectedEvent(
             UpdatedById: updatedById,
@@ -171,13 +148,9 @@ public class Product
     {
         EndureNotDeleted();
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductApprovedEvent(
             UpdatedById: updatedById,
@@ -195,13 +168,9 @@ public class Product
     {
         EndureNotDeleted();
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductMovedToDraftEvent(
             UpdatedById: updatedById,
@@ -219,13 +188,9 @@ public class Product
     {
         EndureNotDeleted();
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductArchivedEvent(
             UpdatedById: updatedById,
@@ -243,13 +208,9 @@ public class Product
     {
         EndureNotDeleted();
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductHiddenEvent(
             UpdatedById: updatedById,
@@ -267,13 +228,9 @@ public class Product
     {
         EndureNotDeleted();
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductRemovedEvent(
             UpdatedById: updatedById,
@@ -284,12 +241,6 @@ public class Product
             OccurredAt: now));
     }
     
-    /// <summary>
-    /// Removes the association between the product and a variant.
-    /// Updates the aggregate state and records the change in the domain event history.
-    /// </summary>
-    /// <param name="variantId">Unique product variant id. The product variant ID must be existed in the system.</param>
-    /// <param name="now">Timestamp when the operation occurs. Used for the event history of the unit.</param>
     public void RemoveVariantReference(
         Guid variantId,
         DateTimeOffset now)
@@ -314,13 +265,9 @@ public class Product
             throw new DomainException(
                 "Cannot restore active entity.");
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ProductRestoredEvent(
             UpdatedById: updatedById,
@@ -446,6 +393,19 @@ public class Product
         if(_productVariantIds.Contains(variantId))
             throw new DomainException("Product variants reference already exists.");
     }
+
+    private static void UpdatedByParametersValidation(
+        Guid updatedById,
+        string updatedByRole)
+    {
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+    }
     
     private static void SellerIdValidate(Guid sellerId)
     {
@@ -459,41 +419,3 @@ public class Product
             throw new DomainException("Sub Category ID cannot be empty guid.");
     }
 }
-
-/*/// <summary>
-    /// Initializes or updates a product aggregate with the specified values.
-    /// Ensures that the aggregate invariants are respected and records necessary events.
-    /// </summary>
-    /// <param name="id">Unique identifier of the product aggregate.</param>
-    /// <param name="overallRating">Overall rating derived from all product variants.</param>
-    /// <param name="sellerId">Identifier of the seller who owns the product.</param>
-    /// <param name="subCategoryId">Identifier of the subcategory the product belongs to.</param>
-    /// <param name="status">Current lifecycle status of the product (e.g., Pending, Approved, Rejected).</param>
-    /// <param name="createdAt">Timestamp when the product was created.</param>
-    /// <param name="updatedAt">Timestamp of the last update to the product.</param>
-    /// <param name="deletedAt">Timestamp when the product was soft-deleted (null if active).</param>
-    /// <returns>The initialized or updated product aggregate.</returns>
-    public static Product Reconstitute(
-        Guid id,
-        Rating overallRating,
-        long sellerId,
-        int subCategoryId,
-        ProductStatus status,
-        DateTimeOffset createdAt,
-        DateTimeOffset? updatedAt,
-        DateTimeOffset? deletedAt)
-    {
-        var product = new Product()
-        {
-            Id = id,
-            OverallRating = overallRating,
-            SellerId = sellerId,
-            SubCategoryId = subCategoryId,
-            Status = status,
-            CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
-            DeletedAt = deletedAt
-        };
-
-        return product;
-    }*/

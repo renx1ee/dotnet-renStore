@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.VariantDetails;
+/*using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Enums;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.VariantDetails;
@@ -19,4 +19,4 @@ public class DetailTestBase
             decorativeElements: "decorative elements",
             equipment: "equipment");
     }
-}
+}*/

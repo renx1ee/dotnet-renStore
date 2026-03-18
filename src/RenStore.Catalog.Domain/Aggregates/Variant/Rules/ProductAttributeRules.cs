@@ -1,6 +1,6 @@
 using RenStore.SharedKernal.Domain.Exceptions;
 
-namespace RenStore.Catalog.Domain.Aggregates.Attribute.Rules;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 
 /// <summary>
 /// Business rules and validation logic for product attributes.

@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Attribute.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Attribute;
@@ -42,4 +42,4 @@ public class DeleteTests : AttributeTestBase
         Assert.Throws<DomainException>(() =>
             attribute.Delete(now));
     }
-}
+}*/

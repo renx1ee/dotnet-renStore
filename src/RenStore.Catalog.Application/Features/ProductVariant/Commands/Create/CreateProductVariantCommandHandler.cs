@@ -26,6 +26,9 @@ internal sealed class CreateProductVariantCommandHandler
             nameof(CreateProductVariantCommand),
             request.ProductId);
         
+        //TODO:  нужно убедиться, что SizeType согласован с категорией продукта,
+        // иначе можно добавить несовместимый размер.
+        
         // TODO: сделать проверки
         /*var belong = await _productProjection
             .BelongAsync(

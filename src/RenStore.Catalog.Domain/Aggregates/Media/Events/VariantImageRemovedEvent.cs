@@ -2,17 +2,6 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Media.Events;
 
-/// <summary>
-/// Records the removal of an image from a product variant.
-/// Images may be removed due to obsolescence, quality issues, or rights management.
-/// </summary>
-/// <param name="OccurredAt">Timestamp when the image was removed</param>
-/// <param name="ImageId">Identifier of the removed image</param>
-/// <remarks>
-/// Typically implements soft deletion for potential recovery and audit purposes.
-/// If the removed image was designated as main, the main status should be reassigned.
-/// Removal may trigger cleanup of associated storage resources.
-/// </remarks>
 public sealed record VariantImageRemovedEvent(
     Guid UpdatedById,
     string UpdatedByRole,

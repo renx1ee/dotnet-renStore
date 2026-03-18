@@ -7,7 +7,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Category;
 /// <summary>
 /// Represents a category physical entity with lifecycle and invariants.
 /// </summary>
-public class Category 
+public sealed class Category 
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     private readonly List<SubCategory> _subCategories = new();

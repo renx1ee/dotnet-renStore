@@ -8,7 +8,7 @@ namespace RenStore.Catalog.Domain.Aggregates.Media;
 /// <summary>
 /// Represents a product image physical entity with lifecycle and invariants.
 /// </summary>
-public class VariantImage
+public sealed class VariantImage
     : RenStore.SharedKernal.Domain.Common.AggregateRoot
 {
     public Guid Id { get; private set; }
@@ -67,7 +67,7 @@ public class VariantImage
 
         return image;
     }
-    // TODO: вынести выше
+    
     public void ChangeSortOrder(
         DateTimeOffset now,
         int sortOrder)
@@ -148,13 +148,9 @@ public class VariantImage
     {
         EnsureNotDeleted();
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new VariantImageRemovedEvent(
             UpdatedById: updatedById,
@@ -172,13 +168,9 @@ public class VariantImage
         if(!IsDeleted)
             throw new DomainException("Image was not deleted.");
         
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
+        UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         Raise(new ImageRestoredEvent(
             UpdatedById: updatedById,
@@ -299,35 +291,17 @@ public class VariantImage
         if (IsDeleted)
             throw new DomainException(message ?? "Entity is deleted.");
     }
-}
-    /*internal static ProductImage Reconstitute(
-        Guid productVariantId,
-        string originalFileName,
-        string storagePath,
-        long fileSizeBytes,
-        bool isMain,
-        short sortOrder,
-        int weight, 
-        int height,
-        bool isDeleted,
-        DateTimeOffset uploadAt,
-        DateTimeOffset? updatedAt,
-        DateTimeOffset? deletedAt)
+    
+    private static void UpdatedByParametersValidation(
+        Guid updatedById,
+        string updatedByRole)
     {
-        return new ProductImage()
-        {
-            Id = Guid.NewGuid(),
-            ProductVariantId = productVariantId,
-            OriginalFileName = originalFileName,
-            StoragePath = storagePath,
-            FileSizeBytes = fileSizeBytes,
-            IsMain = isMain,
-            SortOrder = sortOrder,
-            Weight = weight,
-            Height = height,
-            IsDeleted = isDeleted,
-            UploadedAt = uploadAt,
-            UpdatedAt = updatedAt,
-            DeletedAt = deletedAt
-        };
-    }*/
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
+    }
+}

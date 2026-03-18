@@ -44,7 +44,7 @@ internal sealed class DraftProductVariantCommandHandler
             throw new DomainException(nameof(request.UserId));
         }
 
-        variant.ToDraft(
+        variant.MarkAsDraft(
             updatedByRole: request.Role.ToString(),
             updatedById: request.UserId,
             now: DateTimeOffset.UtcNow);

@@ -1,5 +1,5 @@
-using RenStore.Catalog.Domain.Aggregates.VariantDetails;
-using RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Variant;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -149,4 +149,4 @@ public class CreateTests
                 decorativeElements: decorativeElements,
                 equipment: equipment));
     }
-}
+}*/

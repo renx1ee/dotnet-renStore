@@ -4,10 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
-/// <summary>
-/// Represents a variant size physical entity with lifecycle and invariants.
-/// </summary>
-public class VariantSize
+public sealed class VariantSize
 {
     private readonly List<PriceHistory> _prices = new();
     

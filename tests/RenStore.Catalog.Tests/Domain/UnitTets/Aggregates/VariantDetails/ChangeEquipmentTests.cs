@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
+/*using RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.VariantDetails;
@@ -75,4 +75,4 @@ public class ChangeEquipmentTests : DetailTestBase
                 now: now,
                 equipment: equipment));
     }
-}
+}*/

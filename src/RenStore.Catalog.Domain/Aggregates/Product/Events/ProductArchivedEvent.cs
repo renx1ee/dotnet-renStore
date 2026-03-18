@@ -3,12 +3,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Product.Events;
 
-/// <summary>
-/// The event occurred when the product has been archived.
-/// </summary>
-/// <param name="ProductId">Unique product ID.</param>
-/// <param name="OccurredAt">Time of occurrence of the event.</param>
-public record ProductArchivedEvent(
+public sealed record ProductArchivedEvent(
     Guid UpdatedById,
     string UpdatedByRole,
     Guid EventId,

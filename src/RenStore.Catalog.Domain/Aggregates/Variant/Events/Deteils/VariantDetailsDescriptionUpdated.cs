@@ -1,8 +1,8 @@
 using RenStore.SharedKernal.Domain.Common;
 
-namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
 
-public record VariantDetailsDescriptionUpdated(
+public sealed record VariantDetailsDescriptionUpdated(
     Guid EventId,
     DateTimeOffset OccurredAt,
     string Description,

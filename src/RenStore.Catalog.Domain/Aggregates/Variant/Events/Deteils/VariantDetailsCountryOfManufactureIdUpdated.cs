@@ -1,8 +1,8 @@
 using RenStore.SharedKernal.Domain.Common;
 
-namespace RenStore.Catalog.Domain.Aggregates.VariantDetails.Events;
+namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
 
-public record VariantDetailsCountryOfManufactureIdUpdated(
+public sealed record VariantDetailsCountryOfManufactureIdUpdated(
     Guid EventId,
     DateTimeOffset OccurredAt,
     int CountryOfManufactureId)
