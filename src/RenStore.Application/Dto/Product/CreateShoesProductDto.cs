@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Enums;
+/*using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.Enums.Shoes;
 using RenStore.Domain.Enums;
 
@@ -16,4 +16,4 @@ public class CreateShoesProductDto : CreateProductBaseDto
     public Gender? Gender { get; set; }
     public Season? Season { get; set; }
     public string? TakingCareOfThings { get; set; }
-}
+}*/

@@ -1,12 +1,11 @@
-global using RenStore.Catalog.Domain.Enums.Sorting;
+global using RenStore.Catalog.Contracts.Enums.Sorting;
 global using RenStore.Catalog.WebApi.Extensions;
 global using Asp.Versioning;
 global using MediatR;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 
-global using RenStore.Catalog.WebApi.Requests.Variant;
-global using RenStore.Catalog.WebApi.Requests.Product;
+global using RenStore.Catalog.WebApi.Requests.Variant; 
 
 global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindPriceHistoryBySizeId;
 global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindSizesByVariantId;

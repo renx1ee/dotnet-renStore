@@ -1,4 +1,4 @@
-using System.Text;
+/*using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -12,7 +12,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class CategoryRepository /*: ICategoryRepository*/
+public class CategoryRepository /*: ICategoryRepository#1#
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
@@ -230,4 +230,4 @@ public class CategoryRepository /*: ICategoryRepository*/
         
         return result;
     }
-}
+}*/

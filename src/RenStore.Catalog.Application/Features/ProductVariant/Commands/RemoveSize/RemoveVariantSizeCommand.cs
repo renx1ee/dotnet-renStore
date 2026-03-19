@@ -5,4 +5,5 @@ public sealed record RemoveVariantSizeCommand(
     Guid UserId,
     Guid VariantId,
     Guid SizeId)
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

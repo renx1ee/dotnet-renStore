@@ -4,4 +4,5 @@ public sealed record DraftProductVariantCommand(
     UserRole Role,
     Guid UserId,
     Guid VariantId) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

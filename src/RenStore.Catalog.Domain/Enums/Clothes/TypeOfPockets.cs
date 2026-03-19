@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.Enums.Clothes;
+namespace RenStore.Catalog.Contracts.Enums.Clothes;
 
 public enum TypeOfPockets
 {

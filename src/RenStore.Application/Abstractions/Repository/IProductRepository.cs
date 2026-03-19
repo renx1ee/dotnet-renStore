@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Product;
+/*using RenStore.Catalog.Domain.Aggregates.Product;
 using RenStore.Catalog.Domain.DTOs.Product.FullPage;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;
@@ -81,4 +81,4 @@ public interface IProductRepository
     /// <param name="cancellationToken">Cancellation Token.</param>
     /// <returns>The <see cref="ProductFullDto"/> if entity if found.</returns>
     Task<ProductFullDto?> FindFullAsync(Guid id, CancellationToken cancellationToken);
-}
+}*/

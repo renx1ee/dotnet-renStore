@@ -8,18 +8,15 @@ internal sealed class DeleteVariantImageCommandHandler
     private readonly ILogger<DeleteVariantImageCommandHandler> _logger;
     private readonly IVariantImageRepository _variantImageRepository;
     private readonly IProductVariantRepository _productVariantRepository;
-    private readonly IProductRepository _productRepository;
     
     public DeleteVariantImageCommandHandler(
         ILogger<DeleteVariantImageCommandHandler> logger,
         IVariantImageRepository variantImageRepository,
-        IProductVariantRepository productVariantRepository,
-        IProductRepository productRepository)
+        IProductVariantRepository productVariantRepository)
     {
         _variantImageRepository = variantImageRepository;
         _logger = logger;
         _productVariantRepository = productVariantRepository;
-        _productRepository = productRepository;
     }
     
     public async Task Handle(
@@ -39,21 +36,13 @@ internal sealed class DeleteVariantImageCommandHandler
                 request.ImageId);
         
         var variant = await _productVariantRepository
-            .GetAsync(request.VariantId, cancellationToken)
-            ?? throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Product.Product),
-                request.VariantId);
+            .GetAsync(request.VariantId, cancellationToken);
 
-        var product = await _productRepository
-            .GetAsync(id: variant.ProductId, cancellationToken) 
-            ?? throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Product.Product),
-                request.VariantId);
-        
-        if (request.Role == UserRole.Seller &&
-            product.SellerId != request.UserId)
+        if (variant is null)
         {
-            throw new DomainException(nameof(request.UserId));
+            throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Variant.ProductVariant),
+                request.VariantId);
         }
 
         if (image.IsMain)

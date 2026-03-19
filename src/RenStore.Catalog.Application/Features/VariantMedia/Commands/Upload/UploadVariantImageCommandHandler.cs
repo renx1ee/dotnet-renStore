@@ -39,9 +39,11 @@ internal sealed class UploadVariantImageCommandHandler
             .GetAsync(request.VariantId, cancellationToken);
 
         if (variant is null)
+        {
             throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
+        }
         
         var now = DateTimeOffset.UtcNow;
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.FileName)}";

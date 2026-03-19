@@ -3,4 +3,5 @@ namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishV
 public sealed record PublishProductVariantCommand(
     Guid UserId,
     Guid VariantId) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

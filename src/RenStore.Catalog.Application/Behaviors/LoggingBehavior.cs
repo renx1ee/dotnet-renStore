@@ -1,10 +1,8 @@
 using System.Diagnostics;
-using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace RenStore.Catalog.Application.Behaviors;
 
-public class LoggingBehavior<TRequest, TResponse>
+internal sealed class LoggingBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {

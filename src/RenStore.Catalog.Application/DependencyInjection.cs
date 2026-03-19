@@ -1,5 +1,3 @@
-using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Catalog.Application.Behaviors;
 using RenStore.Catalog.Application.Service;
@@ -27,7 +25,15 @@ public static class DependencyInjection
         services.AddTransient(
             typeof(IPipelineBehavior<,>),
             typeof(ExceptionHandlingBehavior<,>));
-
+        
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(SellerProductAuthorizationBehavior<,>));
+        
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(SellerVariantAuthorizationBehavior<,>));
+        
         services.AddTransient(
             typeof(IPipelineBehavior<,>),
             typeof(ValidateBehavior<,>));

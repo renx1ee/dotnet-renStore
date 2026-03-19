@@ -29,14 +29,15 @@ internal sealed class PublishProductVariantCommandHandler
             nameof(PublishProductVariantCommand),
             request.VariantId);
 
-        var variant = await _variantRepository.GetAsync(
-            id: request.VariantId,
-            cancellationToken: cancellationToken);
+        var variant = await _variantRepository
+            .GetAsync(request.VariantId, cancellationToken);
 
         if (variant is null)
+        {
             throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Variant.ProductVariant),
+                name: typeof(Domain.Aggregates.Product.Product),
                 request.VariantId);
+        }
         
         var product = await _productQuery.GetByIdAsync(
             id: variant.ProductId,

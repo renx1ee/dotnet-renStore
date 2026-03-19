@@ -7,4 +7,5 @@ public sealed record UploadVariantImageCommand(
     string ContentType,
     short SortOrder,
     Stream Stream)
-    : IRequest<Guid>;
+    : IRequest<Guid>,
+      ISellerVariantCommand;

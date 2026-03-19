@@ -28,20 +28,23 @@ public class AddPriceToVariantSizeCommandHandler
             request.SizeId);
 
         var variant = await _variantRepository
-            .GetAsync(request.VariantId, cancellationToken)
-            ?? throw new NotFoundException(
+            .GetAsync(request.VariantId, cancellationToken);
+
+        if (variant is null)
+        {
+            throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
+        }
 
         var product = await _productRepository
-            .GetAsync(id: variant.ProductId, cancellationToken)
-            ?? throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Product.Product),
-                request.VariantId);
-        
-        if (product.SellerId != request.UserId)
+            .GetAsync(variant.ProductId, cancellationToken);
+
+        if (product is null)
         {
-            throw new DomainException(nameof(request.UserId));
+            throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                variant.ProductId);
         }
 
         variant.AddPriceToSize(

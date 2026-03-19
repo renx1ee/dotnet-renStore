@@ -5,4 +5,5 @@ public sealed record RestoreVariantSizeCommand(
     Guid UserId,
     Guid VariantId, 
     Guid SizeId) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

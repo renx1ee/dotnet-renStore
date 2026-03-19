@@ -6,4 +6,6 @@ public sealed record CreateProductVariantCommand(
     int ColorId,
     string Name,
     SizeSystem SizeSystem,
-    SizeType SizeType) : IRequest<Guid>;
+    SizeType SizeType) 
+    : IRequest<Guid>,
+      ISellerProductCommand;

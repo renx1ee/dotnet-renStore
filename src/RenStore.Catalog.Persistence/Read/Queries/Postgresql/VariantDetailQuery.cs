@@ -3,7 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using RenStore.Catalog.Application.Abstractions.Queries;
-using RenStore.Catalog.Domain.Enums.Sorting;
+using RenStore.Catalog.Contracts.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 

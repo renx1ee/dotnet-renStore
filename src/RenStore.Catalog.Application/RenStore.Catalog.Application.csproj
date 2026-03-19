@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RenStore.Catalog.Contracts\RenStore.Catalog.Contracts.csproj" />
       <ProjectReference Include="..\RenStore.Catalog.Domain\RenStore.Catalog.Domain.csproj" />
       <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
     </ItemGroup>

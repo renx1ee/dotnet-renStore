@@ -1,5 +1,3 @@
-using RenStore.Catalog.Domain.Interfaces.Repository;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.Approve;
 
 internal sealed class ApproveProductCommandHandler
@@ -26,10 +24,14 @@ internal sealed class ApproveProductCommandHandler
             request.ProductId);
 
         var product = await _productRepository
-            .GetAsync(request.ProductId, cancellationToken)
-            ?? throw new NotFoundException(
+            .GetAsync(request.ProductId, cancellationToken);
+
+        if (product is null)
+        {
+            throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
+        }
         
         product.MarkAsApproved(
             updatedByRole: request.Role.ToString(),

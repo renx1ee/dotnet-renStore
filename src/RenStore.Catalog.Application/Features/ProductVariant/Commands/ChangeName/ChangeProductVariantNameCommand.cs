@@ -4,4 +4,5 @@ public sealed record ChangeProductVariantNameCommand(
     Guid UserId,
     Guid VariantId,
     string Name) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

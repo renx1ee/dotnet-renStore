@@ -23,11 +23,15 @@ internal sealed class RejectProductCommandHandler
             nameof(RejectProductCommand),
             request.ProductId);
 
-        var product = await _productRepository.GetAsync(
-            request.ProductId, cancellationToken)
-            ?? throw new NotFoundException(
+        var product = await _productRepository
+            .GetAsync(request.ProductId, cancellationToken);
+
+        if (product is null)
+        {
+            throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
+        }
         
         product.MarkAsRejected(
             updatedByRole: request.Role.ToString(),

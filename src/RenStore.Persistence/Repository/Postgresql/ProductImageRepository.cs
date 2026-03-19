@@ -1,4 +1,4 @@
-using Dapper;
+/*using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using RenStore.Catalog.Domain.Aggregates.Media;
@@ -159,4 +159,4 @@ public class ProductImageRepository : IProductImageRepository
                ?? throw new NotFoundException(typeof(VariantImage), id);
     }
 
-}
+}*/

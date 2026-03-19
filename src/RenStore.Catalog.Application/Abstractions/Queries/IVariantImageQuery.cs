@@ -1,6 +1,3 @@
-using RenStore.Catalog.Domain.Enums.Sorting;
-using RenStore.Catalog.Domain.ReadModels;
-
 namespace RenStore.Catalog.Application.Abstractions.Queries;
 
 public interface IVariantImageQuery

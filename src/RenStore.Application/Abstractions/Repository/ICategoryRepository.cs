@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Category;
+/*using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
@@ -104,4 +104,4 @@ public interface ICategoryRepository
         uint pageCount = 25,
         uint page = 1,
         bool descending = false);
-}
+}*/

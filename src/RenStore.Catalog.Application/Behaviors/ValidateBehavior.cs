@@ -1,8 +1,6 @@
-using MediatR;
-
 namespace RenStore.Catalog.Application.Behaviors;
 
-public class ValidateBehavior<TRequest, TResponse>
+internal sealed class ValidateBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     

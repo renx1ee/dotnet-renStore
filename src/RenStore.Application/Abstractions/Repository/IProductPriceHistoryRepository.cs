@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Variant;
+/*using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
@@ -69,4 +69,4 @@ public interface IProductPriceHistoryRepository
     /// <returns>The product price history entity if found.</returns>
     /// <exception cref="NotFoundException">Thrown when product price history is not found.</exception>
     Task<PriceHistory?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-}
+}*/

@@ -1,5 +1,3 @@
-using RenStore.Catalog.Domain.ReadModels;
-
 namespace RenStore.Catalog.Application.Abstractions.Queries;
 
 public interface IHomePageQuery

@@ -4,4 +4,5 @@ public sealed record RestoreProductCommand(
     Guid ProductId,
     UserRole Role,
     Guid UserId) 
-    : IRequest;
+    : IRequest,
+      ISellerProductCommand;

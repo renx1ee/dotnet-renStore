@@ -4,4 +4,5 @@ public sealed record AddSizeToVariantCommand(
     Guid UserId,
     Guid VariantId,
     LetterSize LetterSize) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

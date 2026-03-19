@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Variant;
+/*using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;
 using RenStore.Domain.Entities;
@@ -72,4 +72,4 @@ public interface IProductVariantRepository
     /// <returns>The product variant entity if found;</returns>
     /// <exception cref="NotFoundException">Thrown when product variant is not found.</exception>
     Task<ProductVariant?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-}
+}*/

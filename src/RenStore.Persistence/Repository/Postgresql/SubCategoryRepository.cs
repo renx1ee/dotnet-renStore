@@ -1,4 +1,4 @@
-using Dapper;
+/*using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using RenStore.Catalog.Domain.Aggregates.Category;
@@ -11,7 +11,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Persistence.Repository.Postgresql;
 
-public class SubCategoryRepository /*: ISubCategoryRepository*/
+public class SubCategoryRepository /*: ISubCategoryRepository#1#
 {
     private readonly ApplicationDbContext _context;
     private readonly string _connectionString;
@@ -306,4 +306,4 @@ public class SubCategoryRepository /*: ISubCategoryRepository*/
         
         return result;
     }
-}
+}*/

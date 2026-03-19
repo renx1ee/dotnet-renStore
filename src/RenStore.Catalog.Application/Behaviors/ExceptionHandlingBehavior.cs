@@ -1,11 +1,8 @@
 using System.Data;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Application.Behaviors;
 
-public class ExceptionHandlingBehavior<TRequest, TResponse>
+internal sealed class ExceptionHandlingBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {

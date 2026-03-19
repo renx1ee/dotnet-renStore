@@ -3,7 +3,6 @@ using RenStore.Catalog.Domain.DomainService;
 
 namespace RenStore.Catalog.Application.Features.Product.Commands.PublishProduct;
 
-// TODO: проверить и сделать нотификейшенс.
 internal sealed class PublishProductCommandHandler
     : IRequestHandler<PublishProductCommand>
 {
@@ -37,15 +36,13 @@ internal sealed class PublishProductCommandHandler
             request.ProductId);
 
         var product = await _productRepository
-            .GetAsync(request.ProductId, cancellationToken)
-            ?? throw new NotFoundException(
+            .GetAsync(request.ProductId, cancellationToken);
+
+        if (product is null)
+        {
+            throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
-        
-        if (request.Role == UserRole.Seller &&
-            product.SellerId != request.UserId)
-        {
-            throw new DomainException(nameof(request.UserId));
         }
 
         var variants = new List<Domain.Aggregates.Variant.ProductVariant>();
@@ -59,9 +56,11 @@ internal sealed class PublishProductCommandHandler
                 .GetAsync(variantId, cancellationToken);
 
             if (variant is null)
+            {
                 throw new NotFoundException(
                     name: typeof(Domain.Aggregates.Variant.ProductVariant),
                     variantId);
+            }
             
             variants.Add(variant);
 
@@ -70,21 +69,25 @@ internal sealed class PublishProductCommandHandler
             foreach (var imageId in variant.ImageIds)
             {
                 var image = await _variantImageRepository
-                    .GetAsync(imageId, cancellationToken);
-                
+                    .GetAsync(id: imageId, cancellationToken);
+
                 if (image is null)
+                {
                     throw new NotFoundException(
-                        name: typeof(VariantImage), imageId);
+                        name: typeof(VariantImage), 
+                        imageId);
+                }
                 
                 if (variant.MainImageId == Guid.Empty)
                 {
-                    // TODO:
                     image.SetAsMain(now);
-                    
-                    if(image.IsMain)
+
+                    if (image.IsMain)
+                    {
                         variant.SetMainImageId(
                             imageId: image.Id, 
                             now: now);
+                    }
                 }
             
                 images.Add(image);

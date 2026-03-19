@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RenStore.Catalog.Contracts\RenStore.Catalog.Contracts.csproj" />
       <ProjectReference Include="..\RenStore.Catalog.Persistence\RenStore.Catalog.Persistence.csproj" />
     </ItemGroup>
 

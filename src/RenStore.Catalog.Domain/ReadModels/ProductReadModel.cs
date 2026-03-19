@@ -4,7 +4,7 @@ namespace RenStore.Catalog.Domain.ReadModels;
 
 public sealed class ProductReadModel
 {
-    /// <summary>a
+    /// <summary>
     /// Unique identifier of the product.
     /// </summary>
     public Guid Id { get; set; }

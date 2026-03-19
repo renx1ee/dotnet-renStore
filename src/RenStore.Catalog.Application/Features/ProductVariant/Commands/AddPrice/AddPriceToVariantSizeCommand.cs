@@ -7,4 +7,5 @@ public sealed record AddPriceToVariantSizeCommand(
     Currency Currency,
     DateTimeOffset ValidFrom,
     decimal Price) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

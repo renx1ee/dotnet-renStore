@@ -4,4 +4,5 @@ public sealed record SetVariantMainImageCommand(
     Guid UserId,
     Guid VariantId,
     Guid ImageId)
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

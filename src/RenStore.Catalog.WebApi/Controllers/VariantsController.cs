@@ -1,3 +1,6 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.DetailsUpdate;
+using RenStore.SharedKernal.Domain.Constants;
+
 namespace RenStore.Catalog.WebApi.Controllers;
 
 [ApiController]
@@ -11,7 +14,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     
     // TODO: restore variant
     [HttpPost("manage/products/{productId:guid}/variants")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Create(
         Guid productId,
@@ -34,7 +37,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("manage/variants/{variantId:guid}/publish")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Publish(
         Guid variantId)
@@ -48,7 +51,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }  
     
     [HttpPatch("manage/variants/{variantId:guid}/{imageId:guid}/set-main-image-id")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> SetMainImage(
         Guid variantId,
@@ -64,7 +67,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     } 
     
     [HttpPatch("manage/variants/{variantId:guid}/archive")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Archive(
         Guid variantId)
@@ -79,7 +82,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/draft")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> Draft(
         Guid variantId)
@@ -94,7 +97,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/change-name")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> ChangeName(
         Guid variantId,
@@ -109,8 +112,30 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
+    [HttpPatch("manage/variants/{variantId:guid}/change-name")]
+    [Authorize(Roles = Roles.Seller)]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> UpdateDetails(
+        Guid variantId,
+        [FromBody] UpdateDetailsRequest request)
+    {
+        await _mediator.Send(
+            new UpdateVariantDetailsCommand(
+                UserId: User.GetUserId(),
+                VariantId: variantId,
+                Description: request.Description,
+                Composition: request.Composition,
+                ModelFeatures: request.ModelFeatures,
+                DecorativeElements: request.DecorativeElements,
+                Equipment: request.Equipment,
+                CaringOfThings: request.CaringOfThings,
+                TypeOfPacking: request.TypeOfPacking));
+        
+        return NoContent();
+    }
+    
     [HttpPost("manage/variants/{variantId:guid}/size")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddSize(
         Guid variantId,
@@ -126,7 +151,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPost("manage/variants/{variantId:guid}/size/{sizeId:guid}/price")]
-    [Authorize(Roles = "Seller")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddPrice(
         Guid variantId,
@@ -146,7 +171,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/size/{sizeId:guid}/remove")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> RemoveSize(
         Guid variantId,
@@ -163,7 +188,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/size/{sizeId:guid}/restore")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> RestoreSize(
         Guid variantId,
@@ -180,7 +205,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> SoftDelete(Guid variantId)
     {
@@ -194,7 +219,118 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     #endregion
-
+    
+    #region Queries Manage
+    
+    [HttpGet("manage/variants/{variantId:guid}")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindByIdManage(
+        Guid variantId)
+    {
+        var result = await _mediator.Send(
+            new FindVariantByIdQuery(
+                VariantId: variantId, 
+                Role: User.GetRole(),
+                UserId: User.GetUserId()));
+        
+        return result is null ? NotFound() : Ok(result);
+    }
+    
+    [HttpGet("manage/variants/{article:long}")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindByArticleManage(
+        long article)
+    {
+        var result = await _mediator.Send(
+            new FindVariantByArticleQuery(
+                Article: article,
+                Role: User.GetRole(),
+                UserId: User.GetUserId()));
+        
+        return result is null ? NotFound() : Ok(result);
+    }
+    
+    [HttpGet("manage/products/{productId:guid}/variants")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindByProductIdManage(
+        Guid productId,
+        [FromQuery] ProductVariantSortBy sortBy = ProductVariantSortBy.Id,
+        [FromQuery] uint page = 1,
+        [FromQuery] uint pageCount = 25,
+        [FromQuery] bool descending = false,
+        [FromQuery] bool? isDeleted = null)
+    {
+        var result = await _mediator.Send(
+            new FindVariantsByProductIdQuery(
+                Role: User.GetRole(),
+                UserId: User.GetUserId(),
+                SortBy: sortBy,
+                ProductId: productId,
+                Page: page,
+                PageCount: pageCount,
+                Descending: descending,
+                IsDeleted: isDeleted));
+        
+        return Ok(result);
+    }
+    
+    [HttpGet("manage/variants/{variantId:guid}/sizes/{sizeId:guid}/price-history")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindPriceHistoryManage(
+        Guid variantId, 
+        Guid sizeId,
+        [FromQuery] PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
+        [FromQuery] uint page = 1,
+        [FromQuery] uint pageCount = 25,
+        [FromQuery] bool descending = false,
+        [FromQuery] bool? isActive = null)
+    {
+        var result = await _mediator.Send(
+            new FindPriceHistoryBySizeIdQuery(
+                Role: User.GetRole(),
+                UserId: User.GetUserId(),
+                VariantId: variantId,
+                SortBy: sortBy,
+                SizeId: sizeId,
+                Page: page,
+                PageCount: pageCount,
+                Descending: descending,
+                IsActive: isActive));
+        
+        return Ok(result);
+    }
+    
+    [HttpGet("manage/variants/{variantId:guid}/sizes")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindSizesByVariantIdManage(
+        Guid variantId, 
+        [FromQuery] VariantSizeSortBy sortBy = VariantSizeSortBy.Id,
+        [FromQuery] uint page = 1,
+        [FromQuery] uint pageCount = 25,
+        [FromQuery] bool descending = false,
+        [FromQuery] bool? isDeleted = null)
+    {
+        var result = await _mediator.Send(
+            new FindSizesByVariantIdQuery(
+                Role: User.GetRole(),
+                UserId: User.GetUserId(),
+                VariantId: variantId,
+                SortBy: sortBy,
+                Page: page,
+                PageCount: pageCount,
+                Descending: descending,
+                IsDeleted: isDeleted));
+        
+        return Ok(result);
+    }
+    
+    #endregion
+    
     #region Queries Catalog
     
     [HttpGet("catalog/variants/{variantId:guid}")]
@@ -276,117 +412,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 PageCount: pageCount,
                 Descending: descending,
                 IsDeleted: false));
-        
-        return Ok(result);
-    }
-    
-    #endregion
-    
-    #region Queries Manage
-    
-    [HttpGet("manage/variants/{variantId:guid}")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> FindByIdManage(
-        Guid variantId)
-    {
-        var result = await _mediator.Send(
-            new FindVariantByIdQuery( 
-                VariantId: variantId, 
-                Role: User.GetRole(),
-                UserId: User.GetUserId()));
-        
-        return result is null ? NotFound() : Ok(result);
-    }
-    
-    [HttpGet("manage/variants/{article:long}")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> FindByArticleManage(
-        long article)
-    {
-        var result = await _mediator.Send(
-            new FindVariantByArticleQuery(
-                Article: article,
-                Role: User.GetRole(),
-                UserId: User.GetUserId()));
-        
-        return result is null ? NotFound() : Ok(result);
-    }
-    
-    [HttpGet("manage/products/{productId:guid}/variants")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> FindByProductIdManage(
-        Guid productId,
-        [FromQuery] ProductVariantSortBy sortBy = ProductVariantSortBy.Id,
-        [FromQuery] uint page = 1,
-        [FromQuery] uint pageCount = 25,
-        [FromQuery] bool descending = false,
-        [FromQuery] bool? isDeleted = null)
-    {
-        var result = await _mediator.Send(
-            new FindVariantsByProductIdQuery(
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
-                SortBy: sortBy,
-                ProductId: productId,
-                Page: page,
-                PageCount: pageCount,
-                Descending: descending,
-                IsDeleted: isDeleted));
-        
-        return Ok(result);
-    }
-    
-    [HttpGet("manage/variants/{variantId:guid}/sizes/{sizeId:guid}/price-history")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> FindPriceHistoryManage(
-        Guid variantId, 
-        Guid sizeId,
-        [FromQuery] PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
-        [FromQuery] uint page = 1,
-        [FromQuery] uint pageCount = 25,
-        [FromQuery] bool descending = false,
-        [FromQuery] bool? isActive = null)
-    {
-        var result = await _mediator.Send(
-            new FindPriceHistoryBySizeIdQuery(
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
-                VariantId: variantId,
-                SortBy: sortBy,
-                SizeId: sizeId,
-                Page: page,
-                PageCount: pageCount,
-                Descending: descending,
-                IsActive: isActive));
-        
-        return Ok(result);
-    }
-    
-    [HttpGet("manage/variants/{variantId:guid}/sizes")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
-    [MapToApiVersion(1)]
-    public async Task<IActionResult> FindSizesByVariantIdManage(
-        Guid variantId, 
-        [FromQuery] VariantSizeSortBy sortBy = VariantSizeSortBy.Id,
-        [FromQuery] uint page = 1,
-        [FromQuery] uint pageCount = 25,
-        [FromQuery] bool descending = false,
-        [FromQuery] bool? isDeleted = null)
-    {
-        var result = await _mediator.Send(
-            new FindSizesByVariantIdQuery(
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
-                VariantId: variantId,
-                SortBy: sortBy,
-                Page: page,
-                PageCount: pageCount,
-                Descending: descending,
-                IsDeleted: isDeleted));
         
         return Ok(result);
     }

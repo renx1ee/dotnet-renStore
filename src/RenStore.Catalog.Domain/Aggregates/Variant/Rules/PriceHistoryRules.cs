@@ -11,7 +11,7 @@ internal static class PriceHistoryRules
             throw new DomainException(
                 "Size ID cannot be Guid empty.");
     }
-
+    
     internal static void ValidatePrice(decimal price)
     {
         if (price is < CatalogConstants.Price.MinPrice or > CatalogConstants.Price.MaxPrice)

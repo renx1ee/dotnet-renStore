@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Enums;
+/*using RenStore.Catalog.Domain.Enums;
 using RenStore.Domain.Enums;
 
 namespace RenStore.Application.Dto.Product;
@@ -23,4 +23,4 @@ public class CreateProductBaseDto
     public string? Composition { get; set; }
     public ColorStatus? Color { get; set; }
     public TypeOfPacking? TypeOfPackaging { get; set; }
-}
+}*/

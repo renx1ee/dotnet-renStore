@@ -4,4 +4,5 @@ public sealed record RejectProductCommand(
     Guid ProductId,
     UserRole Role,
     Guid UserId) 
-    : IRequest;
+    : IRequest,
+      ISellerProductCommand;

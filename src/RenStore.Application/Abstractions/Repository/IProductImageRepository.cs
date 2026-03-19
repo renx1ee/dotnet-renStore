@@ -1,4 +1,4 @@
-using RenStore.Catalog.Domain.Aggregates.Media;
+/*using RenStore.Catalog.Domain.Aggregates.Media;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.Enums.Sorting;
@@ -66,4 +66,4 @@ public interface IProductImageRepository
     /// <returns>The image entity if found;</returns>
     /// <exception cref="NotFoundException">Thrown when image is not found.</exception>
     Task<VariantImage> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-}
+}*/

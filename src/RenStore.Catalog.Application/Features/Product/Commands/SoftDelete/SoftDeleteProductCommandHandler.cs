@@ -23,16 +23,14 @@ internal sealed class SoftDeleteProductCommandHandler
             nameof(SoftDeleteProductCommand),
             request.ProductId);
 
-        var product = await _productRepository.GetAsync(
-            request.ProductId, cancellationToken)
-        ?? throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Product.Product), 
-                request.ProductId);
-        
-        if (request.Role == UserRole.Seller &&
-            product.SellerId != request.UserId)
+        var product = await _productRepository
+            .GetAsync(request.ProductId, cancellationToken);
+
+        if (product is null)
         {
-            throw new DomainException(nameof(request.UserId));
+            throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.ProductId);
         }
         
         product.Delete(

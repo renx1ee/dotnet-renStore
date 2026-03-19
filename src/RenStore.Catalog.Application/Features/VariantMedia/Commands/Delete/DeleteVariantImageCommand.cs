@@ -5,4 +5,5 @@ public sealed record DeleteVariantImageCommand(
     Guid UserId,
     Guid VariantId,
     Guid ImageId) 
-    : IRequest;
+    : IRequest,
+      ISellerVariantCommand;

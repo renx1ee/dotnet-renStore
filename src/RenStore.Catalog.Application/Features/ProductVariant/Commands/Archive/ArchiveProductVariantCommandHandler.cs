@@ -27,21 +27,23 @@ internal sealed class ArchiveProductVariantCommandHandler
             request.VariantId);
 
         var variant = await _productVariantRepository
-            .GetAsync(request.VariantId, cancellationToken)
-            ?? throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Product.Product),
-                request.VariantId);
-        
-        var product = await _productRepository
-            .GetAsync(id: variant.ProductId, cancellationToken) 
-            ?? throw new NotFoundException(
-                name: typeof(Domain.Aggregates.Product.Product),
-                request.VariantId);
-        
-        if (request.Role == UserRole.Seller &&
-            product.SellerId != request.UserId)
+            .GetAsync(request.VariantId, cancellationToken);
+
+        if (variant is null)
         {
-            throw new DomainException(nameof(request.UserId));
+            throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                request.VariantId);
+        }
+
+        var product = await _productRepository
+            .GetAsync(variant.ProductId, cancellationToken);
+
+        if (product is null)
+        {
+            throw new NotFoundException(
+                name: typeof(Domain.Aggregates.Product.Product),
+                variant.ProductId);
         }
         
         variant.Archive(
