@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Media.Events;
+using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
@@ -78,11 +78,16 @@ public class ChangeStoragePathTests : ImageTestBase
     public void Should_Throw_Where_ImageIsDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var newStoragePath = "/new/storage/path/";
         var now = DateTimeOffset.UtcNow;
         
         var image = CreateValidImage();
-        image.Delete(now);
+        image.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
 
         // Act & Assert
         Assert.Throws<DomainException>(() =>
@@ -90,4 +95,4 @@ public class ChangeStoragePathTests : ImageTestBase
                 now: now,
                 storagePath: newStoragePath));
     }
-}*/
+}

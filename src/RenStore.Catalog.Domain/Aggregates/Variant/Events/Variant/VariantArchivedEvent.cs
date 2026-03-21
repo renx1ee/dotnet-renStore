@@ -2,7 +2,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
-public record VariantArchivedEvent(
+public sealed record VariantArchivedEvent(
     Guid UpdatedById,
     string UpdatedByRole,
     Guid EventId,

@@ -6,15 +6,18 @@ internal sealed class SoftDeleteProductVariantCommandHandler
     private readonly ILogger<SoftDeleteProductVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
     private readonly IProductRepository _productRepository;
+    private readonly ICurrentUserService _userService;
     
     public SoftDeleteProductVariantCommandHandler(
         ILogger<SoftDeleteProductVariantCommandHandler> logger,
         IProductVariantRepository variantRepository,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        ICurrentUserService userService)
     {
         _logger = logger;
         _variantRepository = variantRepository;
         _productRepository = productRepository;
+        _userService = userService;
     }
     
     public async Task Handle(
@@ -45,16 +48,10 @@ internal sealed class SoftDeleteProductVariantCommandHandler
                 name: typeof(Domain.Aggregates.Product.Product),
                 variant.ProductId);
         }
-        
-        if (request.Role == UserRole.Seller &&
-            product.SellerId != request.UserId)
-        {
-            throw new DomainException(nameof(request.UserId));
-        }
 
         variant.Delete(
-            updatedByRole: request.Role.ToString(),
-            updatedById: request.UserId,
+            updatedByRole: _userService.Role,
+            updatedById: _userService.UserId,
             now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);

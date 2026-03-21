@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
+using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -10,14 +10,22 @@ public class RestoreTests : ProductTestBase
     public void Should_Raise_Restored_Event()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.Now;
         var product = CreateProduct();
         
-        product.Delete(now);
+        product.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         product.UncommittedEventsClear();
         
         // Act
-        product.Restore(now);
+        product.Restore(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         var @event = Assert.Single(product.GetUncommittedEvents());
         var result = Assert.IsType<ProductRestoredEvent>(@event);
         
@@ -36,6 +44,8 @@ public class RestoreTests : ProductTestBase
     public void Should_Throw_Where_IsNotDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.Now;
         var product = CreateProduct();
         
@@ -43,6 +53,9 @@ public class RestoreTests : ProductTestBase
         
         // Act Assert
         Assert.Throws<DomainException>(() =>
-            product.Restore(now));
+            product.Restore(
+                now: now,
+                updatedById: updatedById,
+                updatedByRole: updatedByRole));
     }
-}*/
+}

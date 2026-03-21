@@ -8,9 +8,5 @@ internal sealed class AddSizeToVariantCommandValidator
         RuleFor(s => s.VariantId)
             .NotEmpty()
             .WithMessage("Variant ID cannot be empty guid.");
-        
-        RuleFor(x => x.UserId)
-            .NotEmpty()
-            .WithMessage("User ID cannot be empty guid.");
     }
 }

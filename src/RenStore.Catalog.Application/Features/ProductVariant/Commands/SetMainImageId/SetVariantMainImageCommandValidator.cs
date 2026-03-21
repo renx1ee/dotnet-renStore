@@ -12,9 +12,5 @@ internal sealed class SetVariantMainImageCommandValidator
         RuleFor(x => x.VariantId)
             .NotEmpty()
             .WithMessage("Variant ID cannot be empty Guid.");
-        
-        RuleFor(x => x.UserId)
-            .NotEmpty()
-            .WithMessage("User ID cannot be empty guid.");
     }
 }

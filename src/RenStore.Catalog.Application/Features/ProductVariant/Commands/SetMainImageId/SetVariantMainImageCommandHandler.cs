@@ -52,11 +52,6 @@ internal sealed class SetVariantMainImageCommandHandler
                 variant.ProductId);
         }
         
-        if (product.SellerId != request.UserId)
-        {
-            throw new DomainException(nameof(request.UserId));
-        }
-        
         var now = DateTimeOffset.UtcNow;
         
         var currentMainImage = await _variantImageRepository.GetAsync(

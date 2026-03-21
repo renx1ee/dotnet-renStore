@@ -24,6 +24,7 @@
     <ItemGroup>
       <Folder Include="Application\" />
       <Folder Include="Domain\UnitTets\Entities\" />
+      <Folder Include="Persistence\Integration\Projection\" />
     </ItemGroup>
 
     <ItemGroup>

@@ -9,6 +9,8 @@ global using RenStore.Catalog.Application.Common;
 global using RenStore.Catalog.Application.Abstractions.Queries;
 global using RenStore.Catalog.Domain.Enums;
 global using RenStore.Catalog.Application.Abstractions;
+global using RenStore.SharedKernal.Domain.Common;
+global using RenStore.Catalog.Application.IntegrationEvents;
 
 global using MediatR;
 global using Microsoft.Extensions.Logging;

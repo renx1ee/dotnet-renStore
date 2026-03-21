@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
+using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -42,8 +42,6 @@ public class MarkAsPublishedTests : ProductTestBase
     {
         // Arrange
         var product = CreateProduct();
-        var variantId = Guid.NewGuid();
-        var now = DateTimeOffset.Now;
         var publishedNow = DateTimeOffset.Now.AddHours(1);
         
         // Act & Assert
@@ -52,7 +50,7 @@ public class MarkAsPublishedTests : ProductTestBase
     }
     
     [Fact]
-    public void Should_Throw_Where_IsAlreadyPublished()
+    public void Should_NoRaise_Where_IsAlreadyPublished()
     {
         // Arrange
         var product = CreateProduct();
@@ -65,29 +63,37 @@ public class MarkAsPublishedTests : ProductTestBase
             now: now);
         
         product.MarkAsPublished(publishedNow);
+        
+        product.UncommittedEventsClear();
 
         // Act & Assert
-        Assert.Throws<DomainException>(() =>
-            product.MarkAsPublished(publishedNow));
+        product.MarkAsPublished(publishedNow);
+        
+        Assert.Empty(product.GetUncommittedEvents());
     }
     
     [Fact]
     public void Should_Throw_Where_IsAlreadyDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var product = CreateProduct();
         var variantId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
-        var deleteAt = DateTimeOffset.Now.AddHours(1);
         
         product.AddVariantReference(
             variantId: variantId,
             now: now);
         
-        product.Delete(deleteAt);
+        product.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
 
         // Act & Assert
         Assert.Throws<DomainException>(() =>
-            product.MarkAsPublished(deleteAt));
+            product.MarkAsPublished(
+                now: now));
     }
-}*/
+}

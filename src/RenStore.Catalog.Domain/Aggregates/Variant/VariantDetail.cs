@@ -34,6 +34,7 @@ public sealed class VariantDetail
     {
         return new VariantDetail()
         {
+            Id = detailId,
             CreatedAt = now,
             VariantId = variantId,
             CountryOfManufactureId = countryOfManufactureId,
@@ -65,7 +66,7 @@ public sealed class VariantDetail
 
     internal void ChangeDecorativeElements(
         DateTimeOffset now,
-        string? decorativeElements)
+        string decorativeElements)
     {
         DecorativeElements = decorativeElements;
         UpdatedAt = now;
@@ -73,7 +74,7 @@ public sealed class VariantDetail
 
     internal void ChangeEquipment(
         DateTimeOffset now,
-        string? equipment)
+        string equipment)
     {
         Equipment = equipment;
         UpdatedAt = now;
@@ -89,7 +90,7 @@ public sealed class VariantDetail
 
     internal void ChangeCaringOfThings(
         DateTimeOffset now,
-        string? caringOfThings)
+        string caringOfThings)
     {
         CaringOfThings = caringOfThings;
         UpdatedAt = now;

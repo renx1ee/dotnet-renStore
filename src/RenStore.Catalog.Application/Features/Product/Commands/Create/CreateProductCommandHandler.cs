@@ -6,15 +6,18 @@ internal sealed class CreateProductCommandHandler
     private readonly ILogger<CreateProductCommandHandler> _logger;
     private readonly IProductRepository _productRepository;
     private readonly ICategoryProjection _categoryProjection;
+    private readonly ICurrentUserService _userService;
     
     public CreateProductCommandHandler(
         ILogger<CreateProductCommandHandler> logger,
         IProductRepository productRepository,
-        ICategoryProjection categoryProjection)
+        ICategoryProjection categoryProjection,
+        ICurrentUserService userService)
     {
         _logger = logger;
         _productRepository = productRepository;
         _categoryProjection = categoryProjection;
+        _userService = userService;
     }
     
     public async Task<Guid> Handle(
@@ -24,7 +27,7 @@ internal sealed class CreateProductCommandHandler
         _logger.LogInformation(
             "Handling {CommandName} for SellerId {SellerId} SubCategoryId: {SubCategoryId}", 
             nameof(CreateProductCommand),
-            request.UserId,
+            _userService.UserId,
             request.SubCategoryId);
 
         /*var existingCategory = await _categoryProjection
@@ -43,7 +46,7 @@ internal sealed class CreateProductCommandHandler
         }*/
 
         var product = Domain.Aggregates.Product.Product.Create(
-            sellerId: request.UserId,
+            sellerId: _userService.UserId,
             subCategoryId: request.SubCategoryId,
             now: DateTimeOffset.UtcNow);
 

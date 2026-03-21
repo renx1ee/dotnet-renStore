@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Media.Events;
+using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
@@ -9,14 +9,22 @@ public class RestoreTests : ImageTestBase
     public void Should_Raise_Removed_Event()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.UtcNow;
 
         var image = CreateValidImage();
-        image.Delete(now);
+        image.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         image.UncommittedEventsClear();
 
         // Act
-        image.Restore(now);
+        image.Restore(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
         var result = Assert.IsType<ImageRestoredEvent>(@event);
@@ -36,6 +44,8 @@ public class RestoreTests : ImageTestBase
     public void Should_Throw_ImageIsAlreadyDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.UtcNow;
 
         var image = CreateValidImage();
@@ -43,6 +53,9 @@ public class RestoreTests : ImageTestBase
 
         // Act & Assert
         Assert.Throws<DomainException>(() =>
-            image.Restore(now));
+            image.Restore(
+                now: now,
+                updatedById: updatedById,
+                updatedByRole: updatedByRole));
     }
-}*/
+}

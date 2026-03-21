@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Enums;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 
-public record PriceCreatedEvent(
+public sealed record PriceCreatedEvent(
     Guid EventId,
     DateTimeOffset OccurredAt,
     DateTimeOffset EffectiveFrom,

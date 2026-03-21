@@ -149,8 +149,8 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_date");
 
-                    b.Property<long>("SellerId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid>("SellerId")
+                        .HasColumnType("uuid")
                         .HasColumnName("seller_id");
 
                     b.Property<string>("Status")
@@ -468,8 +468,8 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("varchar(250)")
                         .HasColumnName("original_file_name");
 
-                    b.Property<short>("SortOrder")
-                        .HasColumnType("smallint")
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("integer")
                         .HasColumnName("sort_order");
 
                     b.Property<string>("StoragePath")

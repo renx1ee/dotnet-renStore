@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Media.Events;
+using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
@@ -86,12 +86,17 @@ public class ChangeDimensionTests : ImageTestBase
     public void Should_Throw_Where_ImageIsAlreadyDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.Now;
         var weight = 500;
         var height = 600;
 
         var image = CreateValidImage();
-        image.Delete(now);
+        image.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         // Act & Assert
         Assert.Throws<DomainException>(() => 
@@ -100,4 +105,4 @@ public class ChangeDimensionTests : ImageTestBase
                 height: height, 
                 now: now));
     }
-}*/
+}

@@ -111,8 +111,7 @@ public sealed class Product
             throw new DomainException(
                 "Product must have variants.");
 
-        if (Status == ProductStatus.Published)
-            return;
+        if (Status == ProductStatus.Published) return;
             
         Raise(new ProductPublishedEvent(
             EventId: Guid.NewGuid(), 

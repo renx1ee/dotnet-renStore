@@ -1,7 +1,7 @@
 using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
-using RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Details;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;

@@ -6,15 +6,18 @@ internal sealed class ArchiveProductVariantCommandHandler
     private readonly ILogger<ArchiveProductVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _productVariantRepository;
     private readonly IProductRepository _productRepository;
+    private readonly ICurrentUserService _userService;
 
     public ArchiveProductVariantCommandHandler(
         ILogger<ArchiveProductVariantCommandHandler> logger,
         IProductVariantRepository productVariantRepository,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        ICurrentUserService userService)
     {
         _logger = logger;
         _productVariantRepository = productVariantRepository;
         _productRepository = productRepository;
+        _userService = userService;
     }
     
     public async Task Handle(
@@ -47,8 +50,8 @@ internal sealed class ArchiveProductVariantCommandHandler
         }
         
         variant.Archive(
-            updatedByRole: request.Role.ToString(),
-            updatedById: request.UserId,
+            updatedByRole: _userService.Role,
+            updatedById: _userService.UserId,
             now: DateTimeOffset.UtcNow);
 
         await _productVariantRepository.SaveAsync(variant, cancellationToken);

@@ -5,13 +5,16 @@ internal sealed class RejectProductCommandHandler
 {
     private readonly ILogger<RejectProductCommandHandler> _logger;
     private readonly IProductRepository _productRepository;
+    private readonly ICurrentUserService _userService;
     
     public RejectProductCommandHandler(
         ILogger<RejectProductCommandHandler> logger,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        ICurrentUserService userService)
     {
         _logger = logger;
         _productRepository = productRepository;
+        _userService = userService;
     }
     
     public async Task Handle(
@@ -34,8 +37,8 @@ internal sealed class RejectProductCommandHandler
         }
         
         product.MarkAsRejected(
-            updatedByRole: request.Role.ToString(),
-            updatedById: request.UserId,
+            updatedByRole: _userService.Role,
+            updatedById: _userService.UserId,
             now: DateTimeOffset.UtcNow);
 
         await _productRepository.SaveAsync(

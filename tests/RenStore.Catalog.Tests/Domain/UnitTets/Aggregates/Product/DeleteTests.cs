@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
+using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -12,11 +12,16 @@ public class DeleteTests : ProductTestBase
         // Arrange
         var now = DateTimeOffset.Now;
         var product = CreateProduct();
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         
         product.UncommittedEventsClear();
         
         // Act
-        product.Delete(now);
+        product.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         var @event = Assert.Single(product.GetUncommittedEvents());
         var result = Assert.IsType<ProductRemovedEvent>(@event);
         
@@ -37,14 +42,22 @@ public class DeleteTests : ProductTestBase
         // Arrange
         var now = DateTimeOffset.Now;
         var product = CreateProduct();
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         
         product.UncommittedEventsClear();
         
         // Act
-        product.Delete(now);
+        product.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         // Assert
         Assert.Throws<DomainException>(() =>
-            product.Delete(now));
+            product.Delete(
+                now: now,
+                updatedById: updatedById,
+                updatedByRole: updatedByRole));
     }
-}*/
+}

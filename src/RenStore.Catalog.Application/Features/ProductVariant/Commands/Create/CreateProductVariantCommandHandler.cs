@@ -52,11 +52,6 @@ internal sealed class CreateProductVariantCommandHandler
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
         
-        if (product.SellerId != request.UserId)
-        {
-            throw new DomainException(nameof(request.UserId));
-        }
-        
         Random rnd = new Random();
         var article = rnd.Next(1, 100000000); // TODO: сделать сервис для генерации артикула
         var url = Guid.NewGuid().ToString();      // TODO: сделать сервис для url

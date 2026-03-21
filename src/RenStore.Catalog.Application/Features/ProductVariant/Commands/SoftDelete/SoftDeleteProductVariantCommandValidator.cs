@@ -8,9 +8,5 @@ internal sealed class SoftDeleteProductVariantCommandValidator
         RuleFor(v => v.VariantId)
             .NotEmpty()
             .WithMessage("Variant ID cannot be empty guid");
-        
-        RuleFor(x => x.UserId)
-            .NotEmpty()
-            .WithMessage("User ID cannot be empty guid.");
     }
 }

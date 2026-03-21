@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,25 @@ public static class DependencyInjection
         services.AddDbContext<CatalogDbContext>(options =>
         {
             options.UseNpgsql(connectionString);
+        });
+
+        services.AddMassTransit(x =>
+        {
+            /*x.AddConsumer<>();*/
+            
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(
+                    host: configuration["RabbitMQ:Host"], 
+                    virtualHost: configuration["RabbitMQ:VHost"], 
+                    configure: h =>
+                {
+                    h.Username(configuration["RabbitMQ:Username"]);
+                    h.Password(configuration["RabbitMQ:Password"]);
+                });
+                
+                cfg.ConfigureEndpoints(context);
+            });
         });
         
         services.AddScoped<IEventStore, SqlEventStore>();

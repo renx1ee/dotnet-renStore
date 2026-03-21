@@ -5,13 +5,19 @@ internal sealed class SoftDeleteProductCommandHandler
 {
     private readonly ILogger<SoftDeleteProductCommandHandler> _logger;
     private readonly IProductRepository _productRepository;
+    private readonly IMediator _mediator;
+    private readonly ICurrentUserService _userService;
     
     public SoftDeleteProductCommandHandler(
         ILogger<SoftDeleteProductCommandHandler> logger,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        IMediator mediator,
+        ICurrentUserService userService)
     {
         _logger = logger;
         _productRepository = productRepository;
+        _mediator = mediator;
+        _userService = userService;
     }
     
     public async Task Handle(
@@ -32,14 +38,24 @@ internal sealed class SoftDeleteProductCommandHandler
                 name: typeof(Domain.Aggregates.Product.Product),
                 request.ProductId);
         }
+
+        var now = DateTimeOffset.UtcNow;
         
         product.Delete(
-            updatedByRole: request.Role.ToString(),
-            updatedById: request.UserId,
-            now: DateTimeOffset.UtcNow);
+            updatedByRole: _userService.Role.ToString(),
+            updatedById: _userService.UserId,
+            now: now);
 
         await _productRepository.SaveAsync(
             product, cancellationToken);
+
+        await _mediator.Publish(
+            new ProductDeletedIntegrationEvent(
+                OccurredAt: now,
+                ProductId: request.ProductId,
+                UpdatedById: _userService.UserId,
+                UpdatedByRole: _userService.Role), 
+                cancellationToken: cancellationToken);
         
         _logger.LogInformation(
             "{CommandName} handled successfully. ProductId: {ProductId}",

@@ -34,11 +34,29 @@ public sealed class ProductVariantRepository
         return ProductVariant.Rehydrate(events);
     }
     
-    // TODO:
-    Task<IReadOnlyCollection<ProductVariant>> GetManyAsync(
-        IReadOnlyCollection<Guid> ids, CancellationToken ct)
+    
+    public async Task<IReadOnlyCollection<ProductVariant>> GetManyAsync(
+        IReadOnlyCollection<Guid> ids, 
+        CancellationToken cancellationToken)
     {
-        return null;
+        ArgumentNullException.ThrowIfNull(ids);
+
+        if (ids.Count == 0) return [];
+
+        var variants = new List<ProductVariant>();
+
+        foreach (var id in ids)
+        {
+            var events = await _eventStore.LoadAsync(
+                aggregateId: id,
+                cancellationToken: cancellationToken);
+
+            var variant = ProductVariant.Rehydrate(events);
+            
+            variants.Add(variant);
+        }
+
+        return variants;
     }
 
     public async Task SaveAsync(
@@ -67,5 +85,45 @@ public sealed class ProductVariantRepository
         }
         
         productVariant.UncommittedEventsClear();
+    }
+
+    public async Task SaveManyAsync(
+        IReadOnlyCollection<ProductVariant> variants,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(variants);
+
+        if (variants.Count == 0) return;
+
+        var allUncommittedEvents = new List<(ProductVariant variant, IReadOnlyCollection<IDomainEvent> events)>();
+        
+        foreach (var variant in variants)
+        {
+            var uncommittedEvents = variant.GetUncommittedEvents();
+            
+            await _eventStore.AppendAsync(
+                aggregateId: variant.Id,
+                expectedVersion: variant.Version,
+                events: uncommittedEvents.ToList(),
+                cancellationToken: cancellationToken);
+        
+            allUncommittedEvents.Add((variant, uncommittedEvents));
+        }
+
+        foreach (var (variant, events) in allUncommittedEvents)
+        {
+            foreach (var domainEvent in events)
+            {
+                var notificationType = typeof(DomainEventNotification<>)
+                    .MakeGenericType(domainEvent.GetType());
+
+                var notification = (INotification)Activator
+                    .CreateInstance(notificationType, domainEvent)!;
+            
+                await _mediator.Publish(notification, cancellationToken);
+            }
+        
+            variant.UncommittedEventsClear();
+        }
     }
 }

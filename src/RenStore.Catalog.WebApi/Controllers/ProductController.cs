@@ -16,7 +16,6 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         [FromQuery] Guid subCategoryId)
     {
         var command = new CreateProductCommand(
-            UserId: User.GetUserId(),
             SubCategoryId: subCategoryId);
         
         var productId = await _mediator.Send(command);
@@ -33,9 +32,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Publish(Guid productId)
     {
         await _mediator.Send(new PublishProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }
@@ -46,9 +43,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Approve(Guid productId)
     {
         await _mediator.Send(new ApproveProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }
@@ -59,9 +54,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Archive(Guid productId)
     {
         await _mediator.Send(new ArchiveProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }
@@ -72,9 +65,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Hide(Guid productId)
     {
         await _mediator.Send(new HideProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }
@@ -85,9 +76,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Reject(Guid productId)
     {
         await _mediator.Send(new RejectProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }
@@ -98,9 +87,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> ToDraft(Guid productId)
     {
         await _mediator.Send(new DraftProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }
@@ -111,9 +98,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Delete(Guid productId)
     {
         await _mediator.Send(new SoftDeleteProductCommand(
-            ProductId: productId,
-            Role: User.GetRole(),
-            UserId: User.GetUserId()));
+            ProductId: productId));
 
         return NoContent();
     }

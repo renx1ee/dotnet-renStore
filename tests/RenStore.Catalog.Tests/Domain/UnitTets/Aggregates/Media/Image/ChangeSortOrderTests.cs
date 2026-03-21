@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Media.Events;
+using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
@@ -21,7 +21,7 @@ public class ChangeSortOrderTests : ImageTestBase
             sortOrder: newSortOrder);
 
         var @event = Assert.Single(image.GetUncommittedEvents());
-        var result = Assert.IsType<ImageSortOrderUpdated>(@event);
+        var result = Assert.IsType<ImageSortOrderUpdatedEvent>(@event);
 
         // Assert: event
         Assert.NotNull(result);
@@ -56,10 +56,15 @@ public class ChangeSortOrderTests : ImageTestBase
     {
         // Arrange
         short newSortOrder = 232;
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.UtcNow;
         
         var image = CreateValidImage();
-        image.Delete(now);
+        image.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
 
         // Act & Assert
         Assert.Throws<DomainException>(() =>
@@ -67,4 +72,4 @@ public class ChangeSortOrderTests : ImageTestBase
                 now: now,
                 sortOrder: newSortOrder));
     }
-}*/
+}

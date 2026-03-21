@@ -26,26 +26,31 @@ public class AddPriceToVariantSizeCommandHandler
             nameof(AddPriceToVariantSizeCommand),
             request.VariantId,
             request.SizeId);
-
+        
         var variant = await _variantRepository
             .GetAsync(request.VariantId, cancellationToken);
-
+        
         if (variant is null)
         {
             throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
         }
-
+        
+        // TODO: вынести в pipeline
         var product = await _productRepository
             .GetAsync(variant.ProductId, cancellationToken);
-
+        
         if (product is null)
         {
             throw new NotFoundException(
                 name: typeof(Domain.Aggregates.Product.Product),
                 variant.ProductId);
         }
+        
+        if (product.Status == ProductStatus.Deleted)
+            throw new DomainException(
+                "Cannot add price to already deleted product.");
 
         variant.AddPriceToSize(
             amount: request.Price,

@@ -1,5 +1,3 @@
-using RenStore.Catalog.Application.Abstractions;
-
 namespace RenStore.Catalog.Application.Behaviors;
 
 internal sealed class SellerVariantAuthorizationBehavior<TRequest, TResponse>

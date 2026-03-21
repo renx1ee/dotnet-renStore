@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
+using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
@@ -73,12 +73,17 @@ public class AddVariantReferenceTests : ProductTestBase
     public void Should_Throw_When_ProductIsDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var product = CreateProduct();
         var now = DateTimeOffset.Now;
         var variantId = Guid.NewGuid();
         
         // Act
-        product.Delete(now);
+        product.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
 
         // Act & Assert
         Assert.Throws<DomainException>(() =>
@@ -88,4 +93,4 @@ public class AddVariantReferenceTests : ProductTestBase
     }
     
     // тест на удаленном продукте
-}*/
+}

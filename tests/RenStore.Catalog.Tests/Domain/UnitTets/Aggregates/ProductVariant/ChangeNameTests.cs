@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
@@ -78,14 +78,19 @@ public class ChangeNameTests : ProductVariantTestBase
     public void Should_Throw_When_VariantIsAlreadyDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.UtcNow;
 
         var variant = CreateValidProductVariant();
-        variant.Delete(now);
+        variant.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
 
         Assert.Throws<DomainException>(() =>
             variant.ChangeName( 
             name: variant.Name, 
             now: now));
     }
-}*/
+}

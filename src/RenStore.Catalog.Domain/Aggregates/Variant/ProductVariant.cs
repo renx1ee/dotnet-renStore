@@ -1,5 +1,5 @@
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
-using RenStore.Catalog.Domain.Aggregates.Variant.Events.Deteils;
+using RenStore.Catalog.Domain.Aggregates.Variant.Events.Details;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Price;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Size;
@@ -177,7 +177,8 @@ public sealed class ProductVariant
         string? equipment = null)
     {
         if (_details != null)
-            throw new DomainException("Variant Details already exists.");
+            throw new DomainException(
+                "Variant Details already exists.");
         
         ProductDetailRules.CountryOfManufactureValidate(countryOfManufactureId);
 
@@ -206,7 +207,7 @@ public sealed class ProductVariant
             TypeOfPackaging: typeOfPackaging));
     }
 
-    public void AddAttribute(
+    public Guid AddAttribute(
         DateTimeOffset now,
         string key,
         string value)
@@ -234,6 +235,8 @@ public sealed class ProductVariant
             OccurredAt: now,
             Key: normalizedKey,
             Value: normalizedValue));
+
+        return attributeId;
     }
     
     public Guid AddSize(
@@ -241,13 +244,14 @@ public sealed class ProductVariant
         DateTimeOffset now)
     {
         EnsureNotDeleted();
-
+        
         var activeSizes = _sizes
             .Where(s => !s.IsDeleted)
             .ToList();
-
+        
         if (activeSizes.Any(x => x.Size.LetterSize == letterSize))
-            throw new DomainException("The size already exits in the system.");
+            throw new DomainException(
+                "The size already exits in the system.");
         
         Size.Validate(
             size: letterSize, 
@@ -264,7 +268,7 @@ public sealed class ProductVariant
             LetterSize: letterSize,
             SizeSystem: SizeSystem,
             SizeType: SizeType));
-
+        
         return sizeId;
     }
     
@@ -302,10 +306,12 @@ public sealed class ProductVariant
         EnsureNotDeleted();
 
         if (imageId == Guid.Empty)
-            throw new DomainException("Image ID cannot be empty guid.");
+            throw new DomainException(
+                "Image ID cannot be empty guid.");
 
         if (_imageIds.Contains(imageId))
-            throw new DomainException("Image ID already contains.");
+            throw new DomainException(
+                "Image ID already contains.");
 
         Raise(new AddedImageReferenceEvent(
             OccurredAt: now,
@@ -324,17 +330,20 @@ public sealed class ProductVariant
             return;
         
         if (MainImageId == Guid.Empty)
-            throw new DomainException("Product variant must have main image.");
+            throw new DomainException(
+                "Product variant must have main image.");
         
         if (!_imageIds.Any())
-            throw new DomainException("Product variant must have at least one image.");
+            throw new DomainException(
+                "Product variant must have at least one image.");
 
         var activeSizes = _sizes
             .Where(s => !s.IsDeleted)
             .ToList();
 
         if (!activeSizes.Any())
-            throw new DomainException("Product variant must have at least one size.");
+            throw new DomainException(
+                "Product variant must have at least one size.");
 
         foreach (var size in activeSizes)
         {
@@ -342,10 +351,12 @@ public sealed class ProductVariant
                 .FirstOrDefault(x => x.IsActive);
             
             if (activePrice is null)
-                throw new DomainException($"Size: {size.Id} has no active price.");
+                throw new DomainException(
+                    $"Size: {size.Id} has no active price.");
 
             if (activePrice.Price.Amount <= 0)
-                throw new DomainException($"Size: {size.Id} has invalid price.");
+                throw new DomainException(
+                    $"Size: {size.Id} has invalid price.");
         }
         
         Raise(new VariantPublishedEvent(
@@ -359,10 +370,12 @@ public sealed class ProductVariant
         Guid imageId)
     {
         if (imageId == Guid.Empty)
-            throw new DomainException("Main image ID cannot be guid empty.");
+            throw new DomainException(
+                "Main image ID cannot be guid empty.");
         
         if(!_imageIds.Contains(imageId))
-            throw new DomainException("Image ID does not belong to this variant.");
+            throw new DomainException(
+                "Image ID does not belong to this variant.");
         
         if(imageId == MainImageId) 
             return;
@@ -385,8 +398,7 @@ public sealed class ProductVariant
             updatedById: updatedById,
             updatedByRole: updatedByRole);
         
-        if (Status == ProductVariantStatus.Archived)
-            return;
+        if (Status == ProductVariantStatus.Archived) return;
         
         Raise(new VariantArchivedEvent(
             UpdatedById: updatedById,
@@ -407,8 +419,7 @@ public sealed class ProductVariant
             updatedById: updatedById,
             updatedByRole: updatedByRole);
         
-        if (Status == ProductVariantStatus.Draft)
-            return;
+        if (Status == ProductVariantStatus.Draft) return;
         
         Raise(new VariantDraftedEvent(
             UpdatedById: updatedById,
@@ -602,7 +613,7 @@ public sealed class ProductVariant
             CountryOfManufactureId: countryOfManufactureId));
     }
     
-    public void ChangeKey(
+    public void ChangeAttributeKey(
         DateTimeOffset now,
         Guid attributeId,
         string key)
@@ -624,7 +635,7 @@ public sealed class ProductVariant
             Key: trimmedKey));
     }
     
-    public void ChangeValue(
+    public void ChangeAttributeValue(
         DateTimeOffset now,
         Guid attributeId,
         string value)
@@ -651,7 +662,8 @@ public sealed class ProductVariant
         string updatedByRole,
         DateTimeOffset now)
     {
-        EnsureNotDeleted("Cannot delete already deleted variant.");
+        EnsureNotDeleted(
+            "Cannot delete already deleted variant.");
         
         ProductVariantRules.UpdatedByParametersValidation(
             updatedById: updatedById,
@@ -690,10 +702,16 @@ public sealed class ProductVariant
     }
     
     public void RemoveAttribute(
+        Guid updatedById,
+        string updatedByRole,
         Guid attributeId,
         DateTimeOffset now)
     {
         EnsureNotDeleted();
+        
+        ProductVariantRules.UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         var existingAttribute = GetAttribute(attributeId);
 
@@ -702,6 +720,8 @@ public sealed class ProductVariant
                 "Cannot delete already deleted attribute.");
         
         Raise(new AttributeRemovedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             AttributeId: attributeId,
             OccurredAt: now));
@@ -714,19 +734,43 @@ public sealed class ProductVariant
         EnsureNotDeleted();
 
         if (imageId == Guid.Empty)
-            throw new DomainException("Image ID cannot be empty guid.");
+            throw new DomainException(
+                "Image ID cannot be empty guid.");
         
         if (imageId == MainImageId)
-            throw new DomainException("Cannot delete main image.");
+            throw new DomainException(
+                "Cannot delete main image.");
 
         if (!_imageIds.Contains(imageId))
-            throw new DomainException("Image does not exists.");
+            throw new DomainException(
+                "Image does not exists.");
 
         Raise(new RemoveImageReferenceEvent(
             OccurredAt: now,
             ImageId: imageId,
             VariantId: Id,
             EventId: Guid.NewGuid()));
+    }
+    
+    public void Restore(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
+    {
+        if(Status != ProductVariantStatus.Deleted)
+            throw new DomainException(
+                "Variant is not deleted.");
+        
+        ProductVariantRules.UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
+        
+        Raise(new VariantRestoredEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            VariantId: Id));
     }
     
     public void RestoreSize(
@@ -744,7 +788,8 @@ public sealed class ProductVariant
         var size = GetSize(sizeId);
         
         if(!size.IsDeleted)
-            throw new DomainException("Size is not deleted.");
+            throw new DomainException(
+                "Size is not deleted.");
         
         Raise(new VariantSizeRestoredEvent(
             UpdatedById: updatedById,
@@ -756,10 +801,16 @@ public sealed class ProductVariant
     }
     
     public void RestoreAttribute(
+        Guid updatedById,
+        string updatedByRole,
         Guid attributeId,
         DateTimeOffset now)
     {
         EnsureNotDeleted();
+        
+        ProductVariantRules.UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         if(_attributes.Count(x => !x.IsDeleted) >= 
            CatalogConstants.ProductVariant.MaxAttributesCount)
@@ -771,6 +822,8 @@ public sealed class ProductVariant
         if (!existingAttribute.IsDeleted) return;
         
         Raise(new AttributeRestoredEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             AttributeId: attributeId));
@@ -807,8 +860,10 @@ public sealed class ProductVariant
                 break;
             
             case PriceCreatedEvent e:
-                var createdSize = _sizes.SingleOrDefault(x => x.Id == e.SizeId)
-                                  ?? throw new DomainException("Variant size is not found.");
+                var createdSize = _sizes.SingleOrDefault(x => 
+                    x.Id == e.SizeId)
+                    ?? throw new DomainException(
+                        "Variant size is not found.");
                 
                 createdSize.CloseCurrentPrice(e.OccurredAt);
                 
@@ -912,7 +967,8 @@ public sealed class ProductVariant
             case AttributeKeyUpdatedEvent e:
                 var attributeForKey = _attributes.SingleOrDefault(x => 
                     x.Id == e.AttributeId)
-                    ?? throw new DomainException("Variant attribute is not found.");
+                    ?? throw new DomainException(
+                        "Variant attribute is not found.");
                 
                 attributeForKey.ChangeKey(
                         now: e.OccurredAt,
@@ -943,6 +999,8 @@ public sealed class ProductVariant
                 attributeForDelete.Delete(
                     now: e.OccurredAt);
                 
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -955,6 +1013,8 @@ public sealed class ProductVariant
                 attributeForRestore.Restore(
                     now: e.OccurredAt);
                 
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 UpdatedAt = e.OccurredAt;
                 break;
             
@@ -1027,6 +1087,14 @@ public sealed class ProductVariant
                 restoredSize.Restore(e.OccurredAt);
                 UpdatedAt = e.OccurredAt;
                 break;
+            
+            case VariantRestoredEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
+                Status = ProductVariantStatus.Draft;
+                UpdatedAt = e.OccurredAt;
+                DeletedAt = null;
+                break;
         }
     }
 
@@ -1044,46 +1112,57 @@ public sealed class ProductVariant
         return productVariant;
     }
     
-    private void EnsureNotDeleted(string? message = null)
+    private void EnsureNotDeleted(
+        string? message = null)
     {
         if (Status == ProductVariantStatus.Deleted)
-            throw new DomainException(message ?? "Entity is deleted.");
+            throw new DomainException(
+                message ?? "Entity is deleted.");
     }
     
-    private void SizeEnsureNotDeleted(VariantSize size)
+    private void SizeEnsureNotDeleted(
+        VariantSize size)
     {
         if(size.IsDeleted)
-            throw new DomainException("Size already was deleted.");
+            throw new DomainException(
+                "Size already was deleted.");
     }
     
     private void EnsureDetailsExists()
     {
         if (_details is null)
-            throw new DomainException("Details cannot be null.");
+            throw new DomainException(
+                "Details cannot be null.");
     }
     
-    private void EnsureAttributeNotDeleted(VariantAttribute attribute)
+    private void EnsureAttributeNotDeleted(
+        VariantAttribute attribute)
     {
         if (attribute.IsDeleted)
-            throw new DomainException("Attribute already was deleted.");
+            throw new DomainException(
+                "Attribute already was deleted.");
     }
     
     private VariantSize GetSize(Guid sizeId)
     {
-        var size = _sizes.FirstOrDefault(x => x.Id == sizeId);
+        var size = _sizes.FirstOrDefault(x => 
+            x.Id == sizeId);
 
         if (size == null)
-            throw new DomainException("Size does not exist.");
+            throw new DomainException(
+                "Size does not exist.");
 
         return size;
     }
     
     private VariantAttribute GetAttribute(Guid attributeId)
     {
-        var attribute = _attributes.FirstOrDefault(x => x.Id == attributeId);
+        var attribute = _attributes.FirstOrDefault(x => 
+            x.Id == attributeId);
 
         if (attribute == null)
-            throw new DomainException("Attribute does not exist.");
+            throw new DomainException(
+                "Attribute does not exist.");
 
         return attribute;
     }

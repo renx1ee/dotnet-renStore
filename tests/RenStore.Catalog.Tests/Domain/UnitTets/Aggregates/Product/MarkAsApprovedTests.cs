@@ -1,4 +1,4 @@
-/*using RenStore.Catalog.Domain.Aggregates.Product.Events;
+using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.SharedKernal.Domain.Exceptions;
 
@@ -10,13 +10,18 @@ public class MarkAsApprovedTests : ProductTestBase
     public void Should_Raise_Approved_Event()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.Now;
         var product = CreateProduct();
         
         product.UncommittedEventsClear();
         
         // Act
-        product.MarkAsApproved(now);
+        product.MarkAsApproved(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         var @event = Assert.Single(product.GetUncommittedEvents());
         var result = Assert.IsType<ProductApprovedEvent>(@event);
@@ -35,13 +40,21 @@ public class MarkAsApprovedTests : ProductTestBase
     public void Should_Throw_Where_IsAlreadyDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.Now;
         var product = CreateProduct();
         
-        product.Delete(now);
+        product.Delete( 
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
          
         // Act & Assert
         Assert.Throws<DomainException>(() =>
-            product.MarkAsApproved(now));
+            product.MarkAsApproved(
+                now: now,
+                updatedById: updatedById,
+                updatedByRole: updatedByRole));
     }
-}*/
+}

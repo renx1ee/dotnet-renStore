@@ -6,15 +6,18 @@ internal sealed class RemoveVariantSizeCommandHandler
     private readonly ILogger<RemoveVariantSizeCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
     private readonly IProductRepository _productRepository;
+    private readonly ICurrentUserService _userService;
     
     public RemoveVariantSizeCommandHandler(
         ILogger<RemoveVariantSizeCommandHandler> logger,
         IProductVariantRepository variantRepository,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        ICurrentUserService userService)
     {
         _logger = logger;
         _variantRepository = variantRepository;
         _productRepository = productRepository;
+        _userService = userService;
     }
     
     public async Task Handle(
@@ -49,8 +52,8 @@ internal sealed class RemoveVariantSizeCommandHandler
 
         variant.RemoveSize(
             sizeId: request.SizeId,
-            updatedByRole: request.Role.ToString(),
-            updatedById: request.UserId,
+            updatedByRole: _userService.Role,
+            updatedById: _userService.UserId,
             now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);

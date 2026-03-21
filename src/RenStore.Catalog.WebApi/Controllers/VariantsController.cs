@@ -1,4 +1,9 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.DetailsUpdate;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveAttribute;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.Restore;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreAttribute;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
 using RenStore.SharedKernal.Domain.Constants;
 
 namespace RenStore.Catalog.WebApi.Controllers;
@@ -22,7 +27,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var variantId = await _mediator.Send(
             new CreateProductVariantCommand(
-                UserId: User.GetUserId(),
                 ProductId: productId,
                 ColorId: request.ColorId,
                 Name: request.Name,
@@ -35,6 +39,30 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
             routeValues: new { variantId, version = "1" },
             value: new { Id = variantId });
     }
+    
+    [HttpDelete("manage/variants/{variantId:guid}/")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> SoftDelete(Guid variantId)
+    {
+        await _mediator.Send(
+            new SoftDeleteProductVariantCommand(
+                VariantId: variantId));
+        
+        return NoContent();
+    }
+    
+    [HttpPatch("manage/variants/{variantId:guid}")]
+    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Restore(Guid variantId)
+    {
+        await _mediator.Send(
+            new RestoreVariantCommand(
+                VariantId: variantId));
+        
+        return NoContent();
+    }
 
     [HttpPatch("manage/variants/{variantId:guid}/publish")]
     [Authorize(Roles = Roles.Seller)]
@@ -44,8 +72,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new PublishProductVariantCommand(
-                VariantId: variantId,
-                UserId: User.GetUserId()));
+                VariantId: variantId));
         
         return NoContent();
     }  
@@ -59,7 +86,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new SetVariantMainImageCommand(
-                UserId: User.GetUserId(),
                 VariantId: variantId,
                 ImageId: imageId));
         
@@ -74,8 +100,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new ArchiveProductVariantCommand(
-                UserId: User.GetUserId(),
-                Role: User.GetRole(),
                 VariantId: variantId));
         
         return NoContent();
@@ -89,8 +113,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new DraftProductVariantCommand(
-                UserId: User.GetUserId(),
-                Role: User.GetRole(),
                 VariantId: variantId));
         
         return NoContent();
@@ -105,14 +127,13 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new ChangeProductVariantNameCommand(
-                UserId: User.GetUserId(),
                 VariantId: variantId,
                 Name: request.Name));
         
         return NoContent();
     }
     
-    [HttpPatch("manage/variants/{variantId:guid}/change-name")]
+    [HttpPatch("manage/variants/{variantId:guid}/update-details")]
     [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
     public async Task<IActionResult> UpdateDetails(
@@ -121,7 +142,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new UpdateVariantDetailsCommand(
-                UserId: User.GetUserId(),
                 VariantId: variantId,
                 Description: request.Description,
                 Composition: request.Composition,
@@ -144,7 +164,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new AddSizeToVariantCommand(
                 VariantId: variantId,
-                UserId: User.GetUserId(),
                 LetterSize: request.LetterSize));
         
         return NoContent();
@@ -160,7 +179,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         await _mediator.Send(
             new AddPriceToVariantSizeCommand(
-                UserId: User.GetUserId(),
                 VariantId: variantId,
                 SizeId: sizeId,
                 Currency: request.Currency,
@@ -180,8 +198,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new RemoveVariantSizeCommand(
                 VariantId: variantId,
-                UserId: User.GetUserId(),
-                Role: User.GetRole(),
                 SizeId: sizeId));
         
         return NoContent();
@@ -197,23 +213,71 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new RestoreVariantSizeCommand(
                 VariantId: variantId,
-                UserId: User.GetUserId(),
-                Role: User.GetRole(),
                 SizeId: sizeId));
         
         return NoContent();
     }
     
-    [HttpDelete("manage/variants/{variantId:guid}/")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    [HttpPost("manage/variants/{variantId:guid}/attribute")]
+    [Authorize(Roles = Roles.Seller)]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> SoftDelete(Guid variantId)
+    public async Task<IActionResult> AddAttribute(
+        Guid variantId,
+        [FromBody] AddAttributeToVariantRequest request)
     {
         await _mediator.Send(
-            new SoftDeleteProductVariantCommand(
-                UserId: User.GetUserId(),
-                Role: User.GetRole(),
-                VariantId: variantId));
+            new AddAttributeToVariantCommand(
+                VariantId: variantId,
+                Key: request.Key,
+                Value: request.Value));
+        
+        return NoContent();
+    }
+    
+    [HttpPatch("manage/variants/{variantId:guid}/attribute")]
+    [Authorize(Roles = Roles.Seller)]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> UpdateAttribute(
+        Guid variantId,
+        Guid attributeId,
+        [FromBody] UpdateAttributeRequest request)
+    {
+        await _mediator.Send(
+            new UpdateVariantAttributeCommand(
+                VariantId: variantId,
+                AttributeId: attributeId,
+                Key: request.Key,
+                Value: request.Value));
+        
+        return NoContent();
+    }
+    
+    [HttpDelete("manage/variants/{variantId:guid}/attribute/remove")]
+    [Authorize(Roles = Roles.Seller)]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> RemoveAttribute(
+        Guid variantId,
+        Guid attributeId)
+    {
+        await _mediator.Send(
+            new RemoveAttributeFromVariantCommand(
+                VariantId: variantId,
+                AttributeId: attributeId));
+        
+        return NoContent();
+    }
+    
+    [HttpPatch("manage/variants/{variantId:guid}/attribute/restore")]
+    [Authorize(Roles = Roles.Seller)]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> RestoreAttribute(
+        Guid variantId,
+        Guid attributeId)
+    {
+        await _mediator.Send(
+            new RestoreAttributeFromVariantCommand(
+                VariantId: variantId,
+                AttributeId: attributeId));
         
         return NoContent();
     }

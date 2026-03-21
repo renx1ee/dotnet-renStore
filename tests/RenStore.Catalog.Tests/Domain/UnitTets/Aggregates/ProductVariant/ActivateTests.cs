@@ -51,10 +51,15 @@ public class ActivateTests : ProductVariantTestBase
     public void Should_Throw_When_VariantIsAlreadyDeleted()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
         var now = DateTimeOffset.Now;
         
         var variant = CreateValidProductVariant();
-        variant.Delete(now);
+        variant.Delete(
+            now: now,
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
         
         // Act & Assert
         Assert.Throws<DomainException>(() =>
