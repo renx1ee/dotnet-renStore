@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
@@ -20,6 +21,14 @@ internal sealed class SizePriceProjection
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(price);
+
+        var prices = await _context.Prices
+            .FirstOrDefaultAsync(x => 
+                x.SizeId == price.SizeId && x.IsActive, 
+                cancellationToken);
+        
+        if(prices is not null)
+            prices.IsActive = false;
 
         await _context.Prices.AddAsync(price, cancellationToken);
 

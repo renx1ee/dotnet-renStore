@@ -40,7 +40,7 @@ public class ChangeDetailsCompositionTests : ProductVariantTestBase
             composition: newComposition);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsCompositionUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsCompositionUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(expectedResult, result.Composition);

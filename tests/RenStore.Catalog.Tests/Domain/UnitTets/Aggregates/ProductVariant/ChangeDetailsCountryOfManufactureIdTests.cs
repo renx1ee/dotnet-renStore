@@ -36,7 +36,7 @@ public class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTestBase
             countryOfManufactureId: countryId);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsCountryOfManufactureIdUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsCountryOfManufactureIdUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(countryId, result.CountryOfManufactureId);

@@ -40,7 +40,7 @@ public class ChangeDetailsEquipmentTests : ProductVariantTestBase
             equipment: newEquipment);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsEquipmentUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsEquipmentUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(expectedResult, result.Equipment);

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ReadModels;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -46,10 +47,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductStatus.Published;
@@ -60,10 +59,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.DeletedAt = now;
         view.Status = ProductStatus.Deleted;
@@ -74,10 +71,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductStatus.Approved;
@@ -88,10 +83,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductStatus.Rejected;
@@ -102,10 +95,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductStatus.Archived;
@@ -116,10 +107,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductStatus.Hidden;
@@ -130,10 +119,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductStatus.Draft;
@@ -144,10 +131,8 @@ internal sealed class ProductProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Products
-            .FindAsync(productId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductId(productId);
+        var view = await GetProductAsync(productId, cancellationToken);
 
         view.UpdatedAt = now;
         view.DeletedAt = null;
@@ -188,5 +173,30 @@ internal sealed class ProductProjection
         ArgumentNullException.ThrowIfNull(products);
 
         _context.Products.RemoveRange(products);
+    }
+
+    private async Task<ProductReadModel> GetProductAsync(
+        Guid productId,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Products
+            .FirstOrDefaultAsync(x => 
+                x.Id == productId, 
+                cancellationToken);
+
+        if (view is null)
+        {
+            throw new NotFoundException(
+                name: typeof(ProductReadModel),
+                productId);
+        }
+
+        return view;
+    }
+
+    private static void ValidateProductId(Guid productId)
+    {
+        if (productId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(productId));
     }
 }

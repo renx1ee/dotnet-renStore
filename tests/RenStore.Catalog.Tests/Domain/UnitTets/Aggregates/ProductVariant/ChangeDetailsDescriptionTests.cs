@@ -40,7 +40,7 @@ public class ChangeDetailsDescriptionTests : ProductVariantTestBase
             description: newDescription);
         
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsDescriptionUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsDescriptionUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(expectedResult, result.Description);

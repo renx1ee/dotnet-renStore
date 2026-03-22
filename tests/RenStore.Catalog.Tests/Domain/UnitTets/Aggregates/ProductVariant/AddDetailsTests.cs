@@ -41,7 +41,7 @@ public class AddDetailsTests : ProductVariantTestBase
             equipment: equipment);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var created = Assert.IsType<VariantDetailsCreated>(@event);
+        var created = Assert.IsType<VariantDetailsCreatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(trimmedDescription, created.Description);

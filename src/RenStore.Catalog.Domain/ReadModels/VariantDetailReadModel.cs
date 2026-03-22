@@ -4,16 +4,16 @@ namespace RenStore.Catalog.Domain.ReadModels;
 
 public class VariantDetailReadModel
 {
-    public Guid Id { get; init; }
-    public string Description { get; init; } 
-    public string Composition { get; init; }
-    public string? ModelFeatures { get; init; }
-    public string? DecorativeElements { get; init; } 
-    public string? Equipment { get; init; }
-    public string? CaringOfThings { get; init; } 
-    public TypeOfPacking? TypeOfPacking { get; init; }
-    public DateTimeOffset CreatedAt { get; init; }
-    public DateTimeOffset? UpdatedAt { get; init; }
-    public int CountryOfManufactureId { get; init; }
-    public Guid VariantId { get; init; }
+    public Guid Id { get; set; }
+    public string Description { get; set; } 
+    public string Composition { get; set; }
+    public string? ModelFeatures { get; set; }
+    public string? DecorativeElements { get; set; } 
+    public string? Equipment { get; set; }
+    public string? CaringOfThings { get; set; } 
+    public TypeOfPacking? TypeOfPacking { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public int CountryOfManufactureId { get; set; }
+    public Guid VariantId { get; set; }
 }

@@ -68,11 +68,6 @@ public sealed class VariantAttributeConfiguration
             .HasColumnName("variant_id");
         
         builder
-            .Property(x => x.Version)
-            .HasColumnName("version")
-            .IsRequired();
-        
-        builder
             .HasIndex(x => x.VariantId)
             .HasDatabaseName("ux_variant_attributes_variant_id");
     }

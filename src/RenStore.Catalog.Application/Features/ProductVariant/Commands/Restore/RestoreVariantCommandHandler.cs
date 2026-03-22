@@ -19,7 +19,6 @@ internal sealed class RestoreVariantCommandHandler
         _productRepository = productRepository;
         _userService = userService;
     }
-
     
     public async Task Handle(
         RestoreVariantCommand request, 

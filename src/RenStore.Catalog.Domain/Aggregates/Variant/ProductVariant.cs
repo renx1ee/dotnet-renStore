@@ -192,7 +192,7 @@ public sealed class ProductVariant
 
         var detailId = Guid.NewGuid();
 
-        Raise(new VariantDetailsCreated(
+        Raise(new VariantDetailsCreatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             DetailId: detailId,
@@ -461,7 +461,7 @@ public sealed class ProductVariant
         
         if(_details.Description == trimmedDescription) return;
         
-        Raise(new VariantDetailsDescriptionUpdated(
+        Raise(new VariantDetailsDescriptionUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             DetailId: _details.Id,
@@ -484,9 +484,10 @@ public sealed class ProductVariant
         
         if(_details.ModelFeatures == trimmedModelFeatures) return;
         
-        Raise(new VariantDetailsModelFeaturesUpdated(
+        Raise(new VariantDetailsModelFeaturesUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            DetailId: _details.Id,
             ModelFeatures: trimmedModelFeatures));
     }
     
@@ -506,9 +507,10 @@ public sealed class ProductVariant
         
         if(_details.DecorativeElements == trimmedDecorativeElements) return;
         
-        Raise(new VariantDetailsDecorativeElementsUpdated(
+        Raise(new VariantDetailsDecorativeElementsUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            DetailId: _details.Id,
             DecorativeElements: trimmedDecorativeElements));
     }
     
@@ -528,9 +530,10 @@ public sealed class ProductVariant
         
         if(_details.Equipment == trimmedEquipment) return;
         
-        Raise(new VariantDetailsEquipmentUpdated(
+        Raise(new VariantDetailsEquipmentUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            DetailId: _details.Id,
             Equipment: trimmedEquipment));
     }
     
@@ -550,9 +553,10 @@ public sealed class ProductVariant
         
         if(_details.Composition == trimmedComposition) return;
         
-        Raise(new VariantDetailsCompositionUpdated(
+        Raise(new VariantDetailsCompositionUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            DetailId: _details.Id,
             Composition: trimmedComposition));
     }
     
@@ -572,10 +576,11 @@ public sealed class ProductVariant
         
         if(_details.CaringOfThings == trimmedCaringOfThings) return;
         
-        Raise(new VariantDetailsCaringOfThingsUpdated(
+        Raise(new VariantDetailsCaringOfThingsUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
-            CaringOfThings: trimmedCaringOfThings));
+            CaringOfThings: trimmedCaringOfThings,
+            DetailId: _details.Id));
     }
     
     public void ChangeDetailsTypeOfPacking(
@@ -588,9 +593,10 @@ public sealed class ProductVariant
         if (_details.TypeOfPacking == typeOfPacking) return;
 
         
-        Raise(new VariantDetailsTypeOfPackingUpdated(
+        Raise(new VariantDetailsTypeOfPackingUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            DetailId: _details.Id,
             TypeOfPacking: typeOfPacking));
     }
 
@@ -607,9 +613,10 @@ public sealed class ProductVariant
         
         if(_details.CountryOfManufactureId == countryOfManufactureId) return;
         
-        Raise(new VariantDetailsCountryOfManufactureIdUpdated(
+        Raise(new VariantDetailsCountryOfManufactureIdUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
+            DetailId: _details.Id,
             CountryOfManufactureId: countryOfManufactureId));
     }
     
@@ -880,7 +887,7 @@ public sealed class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsCreated e:
+            case VariantDetailsCreatedEvent e:
                 _details = VariantDetail.Create(
                     detailId: e.DetailId,
                     now: e.OccurredAt,
@@ -898,56 +905,56 @@ public sealed class ProductVariant
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsDescriptionUpdated e:
+            case VariantDetailsDescriptionUpdatedEvent e:
                 _details.ChangeDescription(
                     now: e.OccurredAt,
                     description: e.Description);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsModelFeaturesUpdated e:
+            case VariantDetailsModelFeaturesUpdatedEvent e:
                 _details.ChangeModelFeatures(
                     now: e.OccurredAt,
                     modelFeatures: e.ModelFeatures);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsDecorativeElementsUpdated e:
+            case VariantDetailsDecorativeElementsUpdatedEvent e:
                 _details.ChangeDecorativeElements(
                     now: e.OccurredAt,
                     decorativeElements: e.DecorativeElements);
                 UpdatedAt = e.OccurredAt;
                 break; 
             
-            case VariantDetailsEquipmentUpdated e:
+            case VariantDetailsEquipmentUpdatedEvent e:
                 _details.ChangeEquipment(
                     now: e.OccurredAt,
                     equipment: e.Equipment);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsCompositionUpdated e:
+            case VariantDetailsCompositionUpdatedEvent e:
                 _details.ChangeComposition(
                     now: e.OccurredAt,
                     composition: e.Composition);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsCaringOfThingsUpdated e:
+            case VariantDetailsCaringOfThingsUpdatedEvent e:
                 _details.ChangeCaringOfThings(
                     now: e.OccurredAt,
                     caringOfThings: e.CaringOfThings);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsCountryOfManufactureIdUpdated e:
+            case VariantDetailsCountryOfManufactureIdUpdatedEvent e:
                 _details.ChangeCountryOfManufactureId(
                     now: e.OccurredAt,
                     countryOfManufactureId: e.CountryOfManufactureId);
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case VariantDetailsTypeOfPackingUpdated e:
+            case VariantDetailsTypeOfPackingUpdatedEvent e:
                 _details.ChangeTypeOfPacking(
                     now: e.OccurredAt,
                     typeOfPacking: e.TypeOfPacking);

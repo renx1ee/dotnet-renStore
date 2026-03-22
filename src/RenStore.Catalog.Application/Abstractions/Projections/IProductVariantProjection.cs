@@ -36,7 +36,18 @@ public interface IProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken);
 
+    Task SetMainImageIdAsyncAsync(
+        Guid variantId,
+        Guid imageId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
     Task SoftDeleteAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task RestoreAsync(
         Guid variantId,
         DateTimeOffset now,
         CancellationToken cancellationToken);

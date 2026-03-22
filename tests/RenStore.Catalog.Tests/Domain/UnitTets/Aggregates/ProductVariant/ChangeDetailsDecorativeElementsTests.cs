@@ -40,7 +40,7 @@ public class ChangeDetailsDecorativeElementsTests : ProductVariantTestBase
             decorativeElements: newDecorativeElements);
         
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsDecorativeElementsUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsDecorativeElementsUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(expectedResult, result.DecorativeElements);

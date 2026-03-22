@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.ReadModels;
+using RenStore.Catalog.Domain.ValueObjects;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -7,14 +10,11 @@ internal sealed class VariantAttributeProjection
     : RenStore.Catalog.Application.Abstractions.Projections.IVariantAttributeProjection
 {
     private readonly CatalogDbContext _context;
-    private readonly IEventStore _eventStore;
     
     public VariantAttributeProjection(
-        CatalogDbContext context,
-        IEventStore eventStore)
+        CatalogDbContext context)
     {
-        _context = context       ?? throw new ArgumentNullException(nameof(context));
-        _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
@@ -46,6 +46,70 @@ internal sealed class VariantAttributeProjection
         await _context.Attributes.AddRangeAsync(attributesList, cancellationToken);
     }
     
+    public async Task UpdateKeyAsync(
+        Guid attributeId,
+        string key,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateAttributeId(attributeId);
+
+        var attribute = await GetAttributeAsync(
+            attributeId: attributeId,
+            cancellationToken: cancellationToken);
+
+        attribute.Key = AttributeKey.Create(key);
+        attribute.UpdatedAt = now;
+    }
+    
+    public async Task UpdateValueAsync(
+        Guid attributeId,
+        string value,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateAttributeId(attributeId);
+
+        var attribute = await GetAttributeAsync(
+            attributeId: attributeId,
+            cancellationToken: cancellationToken);
+
+        attribute.Value = AttributeValue.Create(value);
+        attribute.UpdatedAt = now;
+    }
+    
+    public async Task SoftDeleteAsync(
+        Guid attributeId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateAttributeId(attributeId);
+
+        var attribute = await GetAttributeAsync(
+            attributeId: attributeId,
+            cancellationToken: cancellationToken);
+
+        attribute.UpdatedAt = now;
+        attribute.DeletedAt = now;
+        attribute.IsDeleted = true;
+    }
+    
+    public async Task RestoreAsync(
+        Guid attributeId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateAttributeId(attributeId);
+
+        var attribute = await GetAttributeAsync(
+            attributeId: attributeId,
+            cancellationToken: cancellationToken);
+
+        attribute.UpdatedAt = now;
+        attribute.DeletedAt = null;
+        attribute.IsDeleted = false;
+    }
+    
     public void Remove(VariantAttributeReadModel attribute)
     {
         ArgumentNullException.ThrowIfNull(attribute);
@@ -58,5 +122,30 @@ internal sealed class VariantAttributeProjection
         ArgumentNullException.ThrowIfNull(attributes);
 
         _context.Attributes.RemoveRange(attributes);
+    }
+    
+    private async Task<VariantAttributeReadModel> GetAttributeAsync(
+        Guid attributeId,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Attributes
+            .FirstOrDefaultAsync(x =>
+                    x.Id == attributeId,
+                cancellationToken: cancellationToken);
+        
+        if (view is null)
+        {
+            throw new NotFoundException(
+                name: typeof(VariantAttributeReadModel),
+                attributeId);
+        }
+
+        return view;
+    }
+    
+    private static void ValidateAttributeId(Guid attributeId)
+    {
+        if (attributeId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(attributeId));
     }
 }

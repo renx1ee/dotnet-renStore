@@ -35,7 +35,7 @@ public class ChangeTypeOfPackingTests : ProductVariantTestBase
             typeOfPacking: newTypeOfPacking);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsTypeOfPackingUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsTypeOfPackingUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(newTypeOfPacking, result.TypeOfPacking);

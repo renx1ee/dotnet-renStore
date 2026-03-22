@@ -46,11 +46,11 @@ internal sealed class VariantImageProjection
         Guid imageId,
         CancellationToken cancellationToken)
     {
-        var image = await FindById(imageId, cancellationToken);
-        
-        if (image is null)
-            throw new NotFoundException(
-                typeof(VariantImageReadModel), imageId);
+        ValidateImageId(imageId);
+
+        var image = await GetImageAsync(
+            imageId: imageId,
+            cancellationToken: cancellationToken);
 
         image.IsMain = true;
         image.UpdatedAt = now;
@@ -77,11 +77,11 @@ internal sealed class VariantImageProjection
         Guid imageId,
         CancellationToken cancellationToken)
     {
-        var image = await FindById(imageId, cancellationToken);
-        
-        if (image is null)
-            throw new NotFoundException(
-                typeof(VariantImageReadModel), imageId);
+        ValidateImageId(imageId);
+
+        var image = await GetImageAsync(
+            imageId: imageId,
+            cancellationToken: cancellationToken);
 
         image.IsDeleted = true;
         image.IsMain = false;
@@ -102,12 +102,29 @@ internal sealed class VariantImageProjection
 
         _context.Images.RemoveRange(images);
     }
-
-    private async Task<VariantImageReadModel?> FindById(
+    
+    private async Task<VariantImageReadModel> GetImageAsync(
         Guid imageId,
         CancellationToken cancellationToken)
     {
-        return await _context.Images
-            .FindAsync(imageId, cancellationToken);
+        var view = await _context.Images
+            .FirstOrDefaultAsync(x =>
+                x.Id == imageId,
+                cancellationToken: cancellationToken);
+        
+        if (view is null)
+        {
+            throw new NotFoundException(
+                name: typeof(VariantImageReadModel),
+                imageId);
+        }
+
+        return view;
+    }
+    
+    private static void ValidateImageId(Guid imageId)
+    {
+        if (imageId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(imageId));
     }
 }

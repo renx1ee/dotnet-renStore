@@ -40,7 +40,7 @@ public class ChangeDetailsCaringOfThingsTests : ProductVariantTestBase
             caringOfThings: newCaringOfThings);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsCaringOfThingsUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsCaringOfThingsUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(expectedResult, result.CaringOfThings);

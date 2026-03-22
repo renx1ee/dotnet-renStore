@@ -1,5 +1,6 @@
 using System.Data.Entity;
 using RenStore.Catalog.Domain.ReadModels;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -46,13 +47,13 @@ internal sealed class ProductVariantSizeProjection
         DateTimeOffset removedAt,
         CancellationToken cancellationToken)
     {
-        var size = await _context.Sizes
-            .FirstOrDefaultAsync(x =>
-                    x.VariantId == variantId &&
-                    x.Id == sizeId, 
-                cancellationToken);
-
-        if (size is null) return;
+        ValidateProductVariantId(variantId);
+        ValidateSizeId(sizeId);
+        
+        var size = await GetSizeAsync(
+            sizeId: sizeId,
+            variantId: variantId,
+            cancellationToken: cancellationToken);
 
         size.IsDeleted = true;
         size.DeletedAt = removedAt;
@@ -65,13 +66,13 @@ internal sealed class ProductVariantSizeProjection
         DateTimeOffset restoredAt,
         CancellationToken cancellationToken)
     {
-        var size = await _context.Sizes
-            .FirstOrDefaultAsync(x =>
-                    x.VariantId == variantId &&
-                    x.Id == sizeId, 
-                cancellationToken);
+        ValidateProductVariantId(variantId);
+        ValidateSizeId(sizeId);
         
-        if (size is null) return;
+        var size = await GetSizeAsync(
+            sizeId: sizeId,
+            variantId: variantId,
+            cancellationToken: cancellationToken);
         
         size.IsDeleted = false;
         size.DeletedAt = null;
@@ -90,5 +91,38 @@ internal sealed class ProductVariantSizeProjection
         ArgumentNullException.ThrowIfNull(variants);
 
         _context.Sizes.RemoveRange(variants);
+    }
+    
+    private async Task<VariantSizeReadModel> GetSizeAsync(
+        Guid sizeId,
+        Guid variantId,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Sizes
+            .FirstOrDefaultAsync(x =>
+                    x.VariantId == variantId &&
+                    x.Id == sizeId, 
+                cancellationToken);
+        
+        if (view is null)
+        {
+            throw new NotFoundException(
+                name: typeof(VariantSizeReadModel),
+                sizeId);
+        }
+
+        return view;
+    }
+
+    private static void ValidateProductVariantId(Guid variantId)
+    {
+        if (variantId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(variantId));
+    }
+    
+    private static void ValidateSizeId(Guid sizeId)
+    {
+        if (sizeId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(sizeId));
     }
 }

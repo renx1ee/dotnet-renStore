@@ -14,15 +14,15 @@ public static class DomainEventMappings
     public static readonly Dictionary<string, Type> DomainEventsNameToType = new()
     {
         // Details
-        { "variant-details-caring-of-things-updated",          typeof(VariantDetailsCaringOfThingsUpdated) },
-        { "variant-details-composition-updated",               typeof(VariantDetailsCompositionUpdated) },
-        { "variant-details-country-of-manufacture-id-updated", typeof(VariantDetailsCountryOfManufactureIdUpdated) },
-        { "variant-details-created",                           typeof(VariantDetailsCreated) },
-        { "variant-details-decorative-elements-updated",       typeof(VariantDetailsDecorativeElementsUpdated) },
-        { "variant-details-description-updated",               typeof(VariantDetailsDescriptionUpdated) },
-        { "variant-details-equipment-updated",                 typeof(VariantDetailsEquipmentUpdated) },
-        { "variant-details-model-features-updated",            typeof(VariantDetailsModelFeaturesUpdated) },
-        { "variant-details-type-of-packing-updated",           typeof(VariantDetailsTypeOfPackingUpdated) },
+        { "variant-details-caring-of-things-updated",          typeof(VariantDetailsCaringOfThingsUpdatedEvent) },
+        { "variant-details-composition-updated",               typeof(VariantDetailsCompositionUpdatedEvent) },
+        { "variant-details-country-of-manufacture-id-updated", typeof(VariantDetailsCountryOfManufactureIdUpdatedEvent) },
+        { "variant-details-created",                           typeof(VariantDetailsCreatedEvent) },
+        { "variant-details-decorative-elements-updated",       typeof(VariantDetailsDecorativeElementsUpdatedEvent) },
+        { "variant-details-description-updated",               typeof(VariantDetailsDescriptionUpdatedEvent) },
+        { "variant-details-equipment-updated",                 typeof(VariantDetailsEquipmentUpdatedEvent) },
+        { "variant-details-model-features-updated",            typeof(VariantDetailsModelFeaturesUpdatedEvent) },
+        { "variant-details-type-of-packing-updated",           typeof(VariantDetailsTypeOfPackingUpdatedEvent) },
         
         // Attribute
         { "attribute-created",                                 typeof(AttributeCreatedEvent) },
@@ -74,15 +74,15 @@ public static class DomainEventMappings
     public static readonly Dictionary<Type, string> DomainEventsTypeToName = new()
     {
         // Details
-        { typeof(VariantDetailsCaringOfThingsUpdated),         "variant-details-caring-of-things-updated" },
-        { typeof(VariantDetailsCompositionUpdated),            "variant-details-composition-updated" },
-        { typeof(VariantDetailsCountryOfManufactureIdUpdated), "variant-details-country-of-manufacture-id-updated" },
-        { typeof(VariantDetailsCreated),                       "variant-details-created" },
-        { typeof(VariantDetailsDecorativeElementsUpdated),     "variant-details-decorative-elements-updated" },
-        { typeof(VariantDetailsDescriptionUpdated),            "variant-details-description-updated" },
-        { typeof(VariantDetailsEquipmentUpdated),              "variant-details-equipment-updated" },
-        { typeof(VariantDetailsModelFeaturesUpdated),          "variant-details-model-features-updated" },
-        { typeof(VariantDetailsTypeOfPackingUpdated),          "variant-details-type-of-packing-updated" },
+        { typeof(VariantDetailsCaringOfThingsUpdatedEvent),         "variant-details-caring-of-things-updated" },
+        { typeof(VariantDetailsCompositionUpdatedEvent),            "variant-details-composition-updated" },
+        { typeof(VariantDetailsCountryOfManufactureIdUpdatedEvent), "variant-details-country-of-manufacture-id-updated" },
+        { typeof(VariantDetailsCreatedEvent),                       "variant-details-created" },
+        { typeof(VariantDetailsDecorativeElementsUpdatedEvent),     "variant-details-decorative-elements-updated" },
+        { typeof(VariantDetailsDescriptionUpdatedEvent),            "variant-details-description-updated" },
+        { typeof(VariantDetailsEquipmentUpdatedEvent),              "variant-details-equipment-updated" },
+        { typeof(VariantDetailsModelFeaturesUpdatedEvent),          "variant-details-model-features-updated" },
+        { typeof(VariantDetailsTypeOfPackingUpdatedEvent),          "variant-details-type-of-packing-updated" },
         
         // Attribute
         { typeof(AttributeCreatedEvent),                       "attribute-created" },

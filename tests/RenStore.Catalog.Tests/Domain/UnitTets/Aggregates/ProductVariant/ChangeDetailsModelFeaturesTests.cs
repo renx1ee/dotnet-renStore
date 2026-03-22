@@ -40,7 +40,7 @@ public class ChangeDetailsModelFeaturesTests : ProductVariantTestBase
             modelFeatures: newModelFeatures);
         
         var @event = Assert.Single(variant.GetUncommittedEvents());
-        var result = Assert.IsType<VariantDetailsModelFeaturesUpdated>(@event);
+        var result = Assert.IsType<VariantDetailsModelFeaturesUpdatedEvent>(@event);
 
         // Assert: event
         Assert.Equal(expectedResult, result.ModelFeatures);

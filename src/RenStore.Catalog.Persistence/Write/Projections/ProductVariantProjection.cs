@@ -1,5 +1,7 @@
+using System.Data.Entity;
 using RenStore.Catalog.Domain.Enums;
 using RenStore.Catalog.Domain.ReadModels;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -45,10 +47,9 @@ internal sealed class ProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Variants
-            .FindAsync(variantId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductVariantStatus.Published;
@@ -59,10 +60,9 @@ internal sealed class ProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Variants
-            .FindAsync(variantId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductVariantStatus.Archived;
@@ -73,10 +73,9 @@ internal sealed class ProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Variants
-            .FindAsync(variantId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Status = ProductVariantStatus.Draft;
@@ -89,14 +88,28 @@ internal sealed class ProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Variants
-            .FindAsync(variantId, cancellationToken);
-
-        if (view is null) return;
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
 
         view.UpdatedAt = now;
         view.Name = name;
         view.NormalizedName = normalizedName;
+    }
+    
+    public async Task SetMainImageIdAsyncAsync(
+        Guid variantId,
+        Guid imageId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateImageId(imageId);
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.MainImageId = imageId;
+        view.UpdatedAt = now;
     }
     
     public async Task SoftDeleteAsync(
@@ -104,13 +117,27 @@ internal sealed class ProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var view = await _context.Variants
-            .FindAsync(variantId, cancellationToken);
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
 
-        if (view is null) return;
-
+        view.UpdatedAt = now;
         view.DeletedAt = now;
         view.Status = ProductVariantStatus.Deleted;
+    }
+    
+    public async Task RestoreAsync(
+        Guid variantId,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.DeletedAt = null;
+        view.UpdatedAt = now;
+        view.Status = ProductVariantStatus.Draft;
     }
 
     public void Remove(ProductVariantReadModel variant)
@@ -125,5 +152,36 @@ internal sealed class ProductVariantProjection
         ArgumentNullException.ThrowIfNull(variants);
 
         _context.Variants.RemoveRange(variants);
+    }
+    
+    private async Task<ProductVariantReadModel> GetVariantAsync(
+        Guid variantId,
+        CancellationToken cancellationToken)
+    {
+        var view = await _context.Variants
+            .FirstOrDefaultAsync(x => 
+                x.Id == variantId, 
+                cancellationToken);
+
+        if (view is null)
+        {
+            throw new NotFoundException(
+                name: typeof(ProductVariantReadModel),
+                variantId);
+        }
+
+        return view;
+    }
+
+    private static void ValidateProductVariantId(Guid variantId)
+    {
+        if (variantId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(variantId));
+    }
+    
+    private static void ValidateImageId(Guid imageId)
+    {
+        if (imageId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(imageId));
     }
 }
