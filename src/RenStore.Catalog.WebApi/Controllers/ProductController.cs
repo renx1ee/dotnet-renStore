@@ -151,9 +151,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     {
         var product = await _mediator.Send(
             new FindProductByIdQuery(
-                ProductId: productId,
-                Role: User.GetRole(),
-                UserId: User.GetUserId()));
+                ProductId: productId));
         
         return product is null ? NotFound() : Ok(product);
     }
@@ -172,8 +170,6 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         var products = await _mediator.Send(
             new FindProductsBySellerIdQuery(
                 SellerId: sellerId,
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
                 SortBy: sortBy,
                 Page: page,
                 PageCount: pageCount,

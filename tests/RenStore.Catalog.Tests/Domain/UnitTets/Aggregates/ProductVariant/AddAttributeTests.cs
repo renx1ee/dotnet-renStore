@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class AddAttributeTests : ProductVariantTestBase
+public sealed class AddAttributeTests : ProductVariantTestBase
 {
     private const string MaxKeyLength = 
         "qwertyuiopasdfghjklzxcvbnqwertyuiopasdfghjklzxcvbnqwertnqwertyuiopasdfghjklzxcvbnqwertyuiopasdfghjklzxcvbnqwertyuiopasdfghjklzxcvbn";

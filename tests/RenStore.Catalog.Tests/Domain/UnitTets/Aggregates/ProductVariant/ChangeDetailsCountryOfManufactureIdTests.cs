@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTestBase
+public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTestBase
 {
     [Theory]
     [InlineData(12)]

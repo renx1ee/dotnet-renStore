@@ -1,7 +1,7 @@
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddSize;
 
 internal sealed class AddSizeToVariantCommandHandler
-    : IRequestHandler<AddSizeToVariantCommand>
+    : IRequestHandler<AddSizeToVariantCommand, Guid>
 {
     private readonly ILogger<AddSizeToVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
@@ -17,7 +17,7 @@ internal sealed class AddSizeToVariantCommandHandler
         _productRepository = productRepository;
     }
     
-    public async Task Handle(
+    public async Task<Guid> Handle(
         AddSizeToVariantCommand request, 
         CancellationToken cancellationToken)
     {
@@ -46,7 +46,7 @@ internal sealed class AddSizeToVariantCommandHandler
                 variant.ProductId);
         }
 
-        variant.AddSize(
+        var sizeId = variant.AddSize(
             letterSize: request.LetterSize,
             now: DateTimeOffset.UtcNow);
 
@@ -56,5 +56,7 @@ internal sealed class AddSizeToVariantCommandHandler
             "{Command} handled. VariantId: {VariantId}",
             nameof(AddSizeToVariantCommand),
             request.VariantId);
+        
+        return sizeId;
     }
 }

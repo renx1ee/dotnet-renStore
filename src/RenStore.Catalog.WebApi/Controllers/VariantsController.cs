@@ -3,6 +3,7 @@ using RenStore.Catalog.Application.Features.ProductVariant.Commands.DetailsUpdat
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.Restore;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreAttribute;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
 using RenStore.SharedKernal.Domain.Constants;
 
@@ -14,7 +15,7 @@ namespace RenStore.Catalog.WebApi.Controllers;
 public sealed class VariantsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
+    
     #region Commands
     
     // TODO: restore variant
@@ -161,12 +162,19 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         Guid variantId,
         [FromBody] AddSizeToVariantRequest request)
     {
-        await _mediator.Send(
+        var sizeId = await _mediator.Send(
             new AddSizeToVariantCommand(
                 VariantId: variantId,
                 LetterSize: request.LetterSize));
         
-        return NoContent();
+        return CreatedAtAction(
+            actionName: nameof(FindById),
+            routeValues: new { sizeId, version = "1" },
+            value: new
+            {
+                Id = sizeId,
+                VariantId = variantId
+            });
     }
     
     [HttpPost("manage/variants/{variantId:guid}/size/{sizeId:guid}/price")]
@@ -177,15 +185,23 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         Guid sizeId,
         [FromBody] AddPriceToSize request)
     {
-        await _mediator.Send(
+        var priceId = await _mediator.Send(
             new AddPriceToVariantSizeCommand(
                 VariantId: variantId,
                 SizeId: sizeId,
                 Currency: request.Currency,
                 ValidFrom: request.ValidFrom,
                 Price: request.Price));
-        
-        return NoContent();
+
+        return CreatedAtAction(
+            actionName: nameof(FindById),
+            routeValues: new { priceId, version = "1" },
+            value: new
+            {
+                Id = priceId, 
+                SizeId = sizeId, 
+                VariantId = variantId
+            });
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/size/{sizeId:guid}/remove")]
@@ -196,7 +212,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         Guid sizeId)
     {
         await _mediator.Send(
-            new RemoveVariantSizeCommand(
+            new SoftDeleteVariantSizeCommand(
                 VariantId: variantId,
                 SizeId: sizeId));
         
@@ -225,13 +241,20 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         Guid variantId,
         [FromBody] AddAttributeToVariantRequest request)
     {
-        await _mediator.Send(
+        var attributeId = await _mediator.Send(
             new AddAttributeToVariantCommand(
                 VariantId: variantId,
                 Key: request.Key,
                 Value: request.Value));
         
-        return NoContent();
+        return CreatedAtAction(
+            actionName: nameof(FindById),
+            routeValues: new { Id = attributeId, version = "1" },
+            value: new
+            {
+                Id = attributeId, 
+                VariantId = variantId
+            });
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/attribute")]
@@ -260,7 +283,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         Guid attributeId)
     {
         await _mediator.Send(
-            new RemoveAttributeFromVariantCommand(
+            new SoftDeleteAttributeFromVariantCommand(
                 VariantId: variantId,
                 AttributeId: attributeId));
         
@@ -294,9 +317,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(
             new FindVariantByIdQuery(
-                VariantId: variantId, 
-                Role: User.GetRole(),
-                UserId: User.GetUserId()));
+                VariantId: variantId));
         
         return result is null ? NotFound() : Ok(result);
     }
@@ -309,9 +330,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(
             new FindVariantByArticleQuery(
-                Article: article,
-                Role: User.GetRole(),
-                UserId: User.GetUserId()));
+                Article: article));
         
         return result is null ? NotFound() : Ok(result);
     }
@@ -329,8 +348,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(
             new FindVariantsByProductIdQuery(
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
                 SortBy: sortBy,
                 ProductId: productId,
                 Page: page,
@@ -355,8 +372,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(
             new FindPriceHistoryBySizeIdQuery(
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
                 VariantId: variantId,
                 SortBy: sortBy,
                 SizeId: sizeId,
@@ -381,8 +396,6 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(
             new FindSizesByVariantIdQuery(
-                Role: User.GetRole(),
-                UserId: User.GetUserId(),
                 VariantId: variantId,
                 SortBy: sortBy,
                 Page: page,

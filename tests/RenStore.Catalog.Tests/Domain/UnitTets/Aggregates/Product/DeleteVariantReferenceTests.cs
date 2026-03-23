@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
 
-public class DeleteVariantReferenceTests : ProductTestBase
+public sealed class DeleteVariantReferenceTests : ProductTestBase
 {
     [Fact]
     public void Should_Raise_ReferenceRemoved_Event()

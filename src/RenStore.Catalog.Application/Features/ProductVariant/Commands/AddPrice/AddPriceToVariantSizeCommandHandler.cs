@@ -1,7 +1,7 @@
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddPrice;
 
 public class AddPriceToVariantSizeCommandHandler
-    : IRequestHandler<AddPriceToVariantSizeCommand>
+    : IRequestHandler<AddPriceToVariantSizeCommand, Guid>
 {
     private readonly ILogger<AddPriceToVariantSizeCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
@@ -17,7 +17,7 @@ public class AddPriceToVariantSizeCommandHandler
         _productRepository = productRepository;
     }
     
-    public async Task Handle(
+    public async Task<Guid> Handle(
         AddPriceToVariantSizeCommand request, 
         CancellationToken cancellationToken)
     {
@@ -52,7 +52,7 @@ public class AddPriceToVariantSizeCommandHandler
             throw new DomainException(
                 "Cannot add price to already deleted product.");
 
-        variant.AddPriceToSize(
+        var priceId = variant.AddPriceToSize(
             amount: request.Price,
             currency: request.Currency,
             validFrom: request.ValidFrom,
@@ -66,5 +66,7 @@ public class AddPriceToVariantSizeCommandHandler
             nameof(AddPriceToVariantSizeCommand),
             request.VariantId,
             request.SizeId);
+
+        return priceId;
     }
 }

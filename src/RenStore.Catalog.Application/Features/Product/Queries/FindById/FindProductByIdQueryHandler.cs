@@ -1,5 +1,4 @@
-using RenStore.Catalog.Application.Abstractions.Queries;
-using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Constants;
 
 namespace RenStore.Catalog.Application.Features.Product.Queries.FindById;
 
@@ -8,13 +7,16 @@ internal sealed class FindProductByIdQueryHandler
 {
     private readonly ILogger<FindProductByIdQueryHandler> _logger;
     private readonly IProductQuery _productQuery;
+    private readonly ICurrentUserService _currentUserService;
     
     public FindProductByIdQueryHandler(
         ILogger<FindProductByIdQueryHandler> logger,
-        IProductQuery productQuery)
+        IProductQuery productQuery,
+        ICurrentUserService currentUserService)
     {
         _logger = logger;
         _productQuery = productQuery;
+        _currentUserService = currentUserService;
     }
     
     public async Task<ProductReadModel?> Handle(
@@ -36,13 +38,13 @@ internal sealed class FindProductByIdQueryHandler
         if (product.Status == ProductStatus.Published)
             return product;
 
-        var result = request.Role switch
+        var result = _currentUserService.Role switch
         {
-            UserRole.Admin or UserRole.Moderator or UserRole.Support =>
+            Roles.Admin or Roles.Moderator or Roles.Support =>
                 product,
 
-            UserRole.Seller =>
-                product.SellerId == request.UserId ? product : null,
+            Roles.Seller =>
+                product.SellerId == _currentUserService.UserId ? product : null,
             
             _ => null
         };

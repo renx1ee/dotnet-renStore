@@ -1,6 +1,3 @@
-using MediatR;
-using RenStore.SharedKernal.Domain.Common;
-
 namespace RenStore.Catalog.Application.Common;
 
 public record DomainEventNotification<TDomainEvent>

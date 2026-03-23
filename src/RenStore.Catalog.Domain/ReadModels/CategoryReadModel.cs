@@ -8,9 +8,11 @@ public sealed class CategoryReadModel
     public string NameRu { get; set; } 
     public string NormalizedNameRu { get; set; } 
     public string? Description { get; set; }
+    public Guid UpdatedById { get; set; } 
+    public string UpdatedByRole { get; set; } 
     public bool IsActive { get; set; } 
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } 
     public DateTimeOffset CreatedAt { get; set; } 
-    public DateTimeOffset? UpdatedAt { get; set; }
-    public DateTimeOffset? DeletedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; } 
+    public DateTimeOffset? DeletedAt { get; set; } 
 }

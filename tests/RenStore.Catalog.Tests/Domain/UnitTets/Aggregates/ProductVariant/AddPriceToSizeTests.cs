@@ -5,7 +5,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class AddPriceToSizeTests : ProductVariantTestBase
+public sealed class AddPriceToSizeTests : ProductVariantTestBase
 {
     [Fact]
     public void Should_Rise_Variant_Size_Added()

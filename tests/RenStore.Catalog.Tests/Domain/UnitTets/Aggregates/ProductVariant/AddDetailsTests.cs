@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class AddDetailsTests : ProductVariantTestBase
+public sealed class AddDetailsTests : ProductVariantTestBase
 {
     [Theory]
     [InlineData(" Test description text text text", " CompositionCompositionCompositionComposition", "caring of things things v things things", TypeOfPacking.Box, "model features features features features", "decorative elements elements elements elements", "equipment equipment equipment equipment equipment equipment")]

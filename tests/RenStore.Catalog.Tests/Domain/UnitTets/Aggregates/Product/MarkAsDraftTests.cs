@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
 
-public class MarkAsDraftTests : ProductTestBase
+public sealed class MarkAsDraftTests : ProductTestBase
 {
     [Fact]
     public void Should_Raise_Draft_Event()

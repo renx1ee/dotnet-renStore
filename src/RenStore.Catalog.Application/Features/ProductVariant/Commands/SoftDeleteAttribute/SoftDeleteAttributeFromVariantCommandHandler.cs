@@ -1,14 +1,16 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAttribute;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveAttribute;
 
-internal sealed class RemoveAttributeFromVariantCommandHandler
-    : IRequestHandler<RemoveAttributeFromVariantCommand>
+internal sealed class SoftDeleteAttributeFromVariantCommandHandler
+    : IRequestHandler<SoftDeleteAttributeFromVariantCommand>
 {
-    private readonly ILogger<RemoveAttributeFromVariantCommandHandler> _logger;
+    private readonly ILogger<SoftDeleteAttributeFromVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
     private readonly ICurrentUserService _userService;
     
-    public RemoveAttributeFromVariantCommandHandler(
-        ILogger<RemoveAttributeFromVariantCommandHandler> logger,
+    public SoftDeleteAttributeFromVariantCommandHandler(
+        ILogger<SoftDeleteAttributeFromVariantCommandHandler> logger,
         IProductVariantRepository variantRepository,
         ICurrentUserService userService)
     {
@@ -18,12 +20,12 @@ internal sealed class RemoveAttributeFromVariantCommandHandler
     }
     
     public async Task Handle(
-        RemoveAttributeFromVariantCommand request, 
+        SoftDeleteAttributeFromVariantCommand request, 
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
             "Handling {Command} with VariantId: {VariantId}, AttributeId: {AttributeId}",
-            nameof(RemoveAttributeFromVariantCommand),
+            nameof(SoftDeleteAttributeFromVariantCommand),
             request.VariantId,
             request.AttributeId);
         
@@ -47,7 +49,7 @@ internal sealed class RemoveAttributeFromVariantCommandHandler
         
         _logger.LogInformation(
             "{Command} handled. VariantId: {VariantId}, AttributeId: {AttributeId}",
-            nameof(RemoveAttributeFromVariantCommand),
+            nameof(SoftDeleteAttributeFromVariantCommand),
             request.VariantId,
             request.AttributeId);
     }

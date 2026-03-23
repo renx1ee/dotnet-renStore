@@ -1,9 +1,11 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAttribute;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveAttribute;
 
-internal sealed class RemoveAttributeFromVariantCommandValidator
-    : AbstractValidator<RemoveAttributeFromVariantCommand>
+internal sealed class SoftDeleteAttributeFromVariantCommandValidator
+    : AbstractValidator<SoftDeleteAttributeFromVariantCommand>
 {
-    public RemoveAttributeFromVariantCommandValidator()
+    public SoftDeleteAttributeFromVariantCommandValidator()
     {
         RuleFor(s => s.VariantId)
             .NotEmpty()

@@ -1,5 +1,3 @@
-using RenStore.SharedKernal.Domain.Common;
-
 namespace RenStore.Catalog.Application.Abstractions;
 
 public interface IEventStore

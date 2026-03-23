@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
 
-public class RestoreTests : ProductTestBase
+public sealed class RestoreTests : ProductTestBase
 {
     [Fact]
     public void Should_Raise_Restored_Event()

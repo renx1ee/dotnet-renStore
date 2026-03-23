@@ -1,15 +1,15 @@
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveSize;
 
-internal sealed class RemoveVariantSizeCommandHandler
-    : IRequestHandler<RemoveVariantSizeCommand>
+internal sealed class SoftDeleteVariantSizeCommandHandler
+    : IRequestHandler<SoftDeleteVariantSizeCommand>
 {
-    private readonly ILogger<RemoveVariantSizeCommandHandler> _logger;
+    private readonly ILogger<SoftDeleteVariantSizeCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
     private readonly IProductRepository _productRepository;
     private readonly ICurrentUserService _userService;
     
-    public RemoveVariantSizeCommandHandler(
-        ILogger<RemoveVariantSizeCommandHandler> logger,
+    public SoftDeleteVariantSizeCommandHandler(
+        ILogger<SoftDeleteVariantSizeCommandHandler> logger,
         IProductVariantRepository variantRepository,
         IProductRepository productRepository,
         ICurrentUserService userService)
@@ -21,7 +21,7 @@ internal sealed class RemoveVariantSizeCommandHandler
     }
     
     public async Task Handle(
-        RemoveVariantSizeCommand request, 
+        SoftDeleteVariantSizeCommand request, 
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(

@@ -33,16 +33,18 @@ internal sealed class UpdateVariantAttributeCommandHandler
                 name: typeof(Domain.Aggregates.Variant.ProductVariant),
                 request.VariantId);
         }
+
+        var now = DateTimeOffset.UtcNow;
         
         if(request.Key is not null)
             variant.ChangeAttributeKey(
-                now: DateTimeOffset.UtcNow,
+                now: now,
                 attributeId: request.AttributeId,
                 key: request.Key);
         
         if(request.Value is not null)
             variant.ChangeAttributeValue(
-                now: DateTimeOffset.UtcNow,
+                now: now,
                 attributeId: request.AttributeId,
                 value: request.Value);
 

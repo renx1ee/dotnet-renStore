@@ -7,7 +7,5 @@ public sealed record FindPriceHistoryBySizeIdQuery(
     uint Page = 1,
     uint PageCount = 25,
     bool Descending = false,
-    bool? IsActive = null,
-    UserRole? Role = null,
-    Guid? UserId = null)
+    bool? IsActive = null)
     : IRequest<IReadOnlyList<PriceHistoryReadModel>>;

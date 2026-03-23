@@ -48,4 +48,15 @@ public static class CategoryRules
 
         return trimmedDescription;
     }
+    
+    internal static void UpdatedByValidation(
+        Guid updatedById,
+        string updatedByRole)
+    {
+        if (updatedById == Guid.Empty)
+            throw new DomainException("Updated by ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException("Updated by role cannot be empty string");
+    }
 }

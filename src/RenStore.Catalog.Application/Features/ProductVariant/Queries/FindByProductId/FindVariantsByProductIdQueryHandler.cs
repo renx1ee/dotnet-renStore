@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Constants;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Queries.FindByProductId;
 
 internal sealed class FindVariantsByProductIdQueryHandler
@@ -6,15 +8,18 @@ internal sealed class FindVariantsByProductIdQueryHandler
     private readonly ILogger<FindVariantsByProductIdQueryHandler> _logger;
     private readonly IProductVariantQuery _variantQuery;
     private readonly IProductQuery _productQuery;
+    private readonly ICurrentUserService _currentUserService;
     
     public FindVariantsByProductIdQueryHandler(
         ILogger<FindVariantsByProductIdQueryHandler> logger,
         IProductVariantQuery variantQuery,
-        IProductQuery productQuery)
+        IProductQuery productQuery,
+        ICurrentUserService currentUserService)
     {
         _logger = logger;
         _variantQuery = variantQuery;
         _productQuery = productQuery;
+        _currentUserService = currentUserService;
     }
     
     public async Task<IReadOnlyList<ProductVariantReadModel>> Handle(
@@ -43,13 +48,13 @@ internal sealed class FindVariantsByProductIdQueryHandler
 
         if (!variants.Any()) return [];
 
-        var result = request.Role switch
+        var result = _currentUserService.Role switch
         {
-            UserRole.Admin or UserRole.Moderator or UserRole.Support =>
+            Roles.Admin or Roles.Moderator or Roles.Support =>
                 variants,
             
-            UserRole.Seller => variants
-                .Where(_ => product!.SellerId == request.UserId)
+            Roles.Seller => variants
+                .Where(_ => product!.SellerId == _currentUserService.UserId)
                 .ToList(),
             
             _ => variants

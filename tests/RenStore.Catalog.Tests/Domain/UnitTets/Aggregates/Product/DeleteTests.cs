@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
 
-public class DeleteTests : ProductTestBase
+public sealed class DeleteTests : ProductTestBase
 {
     [Fact]
     public void Should_Raise_Deleted_Event()

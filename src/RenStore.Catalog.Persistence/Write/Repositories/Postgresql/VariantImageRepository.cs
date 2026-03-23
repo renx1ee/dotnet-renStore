@@ -2,7 +2,6 @@ using MediatR;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Common;
 using RenStore.Catalog.Domain.Aggregates.Media;
-using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 

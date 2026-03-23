@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
 
-public class ChangeFileSizeBytesTests : ImageTestBase
+public sealed class ChangeFileSizeBytesTests : ImageTestBase
 {
     [Theory]
     [InlineData(479)]

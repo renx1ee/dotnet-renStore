@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
 
-public class ChangeSortOrderTests : ImageTestBase
+public sealed class ChangeSortOrderTests : ImageTestBase
 {
     [Fact]
     public void Should_Raise_SortOrderUpdated_Event()

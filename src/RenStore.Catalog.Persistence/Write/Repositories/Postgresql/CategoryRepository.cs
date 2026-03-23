@@ -2,7 +2,6 @@ using MediatR;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Common;
 using RenStore.Catalog.Domain.Aggregates.Category;
-using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
@@ -50,7 +49,12 @@ public sealed class CategoryRepository
         
         foreach (var domainEvent in uncommittedEvents)
         {
-            var notification = new DomainEventNotification<IDomainEvent>(domainEvent);
+            var notificationType = typeof(DomainEventNotification<>)
+                .MakeGenericType(domainEvent.GetType());
+
+            var notification = (INotification)Activator
+                .CreateInstance(notificationType, domainEvent)!;
+            
             await _mediator.Publish(notification, cancellationToken);
         }
         

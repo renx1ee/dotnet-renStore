@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
 
-public class AddVariantReferenceTests : ProductTestBase
+public sealed class AddVariantReferenceTests : ProductTestBase
 {
     [Fact]
     public void Should_Raise_ReferenceCreated_Event()

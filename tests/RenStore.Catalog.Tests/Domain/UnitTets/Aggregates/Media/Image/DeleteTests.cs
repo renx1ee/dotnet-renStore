@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
 
-public class DeleteTests : ImageTestBase
+public sealed class DeleteTests : ImageTestBase
 {
     [Fact]
     public void Should_Raise_Deleted_Event()

@@ -1,7 +1,7 @@
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddAttribute;
 
 internal sealed class AddAttributeToVariantCommandHandler
-    : IRequestHandler<AddAttributeToVariantCommand>
+    : IRequestHandler<AddAttributeToVariantCommand, Guid>
 {
     private readonly ILogger<AddAttributeToVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
@@ -14,7 +14,7 @@ internal sealed class AddAttributeToVariantCommandHandler
         _variantRepository = variantRepository;
     }
     
-    public async Task Handle(
+    public async Task<Guid> Handle(
         AddAttributeToVariantCommand request, 
         CancellationToken cancellationToken)
     {
@@ -33,7 +33,7 @@ internal sealed class AddAttributeToVariantCommandHandler
                 request.VariantId);
         }
         
-        variant.AddAttribute(
+        var attributeId = variant.AddAttribute(
             now: DateTimeOffset.UtcNow, 
             key: request.Key,
             value: request.Value);
@@ -44,5 +44,7 @@ internal sealed class AddAttributeToVariantCommandHandler
             "{Command} handled. VariantId: {VariantId}",
             nameof(AddAttributeToVariantCommand),
             request.VariantId);
+        
+        return attributeId;
     }
 }

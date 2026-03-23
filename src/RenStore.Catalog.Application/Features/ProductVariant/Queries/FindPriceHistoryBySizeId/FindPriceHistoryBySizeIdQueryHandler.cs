@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Constants;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Queries.FindPriceHistoryBySizeId;
 
 internal sealed class FindPriceHistoryBySizeIdQueryHandler
@@ -7,17 +9,20 @@ internal sealed class FindPriceHistoryBySizeIdQueryHandler
     private readonly IProductVariantQuery _variantQuery;
     private readonly IProductQuery _productQuery;
     private readonly IPriceHistoryQuery _priceHistoryQuery;
+    private readonly ICurrentUserService _currentUserService;
     
     public FindPriceHistoryBySizeIdQueryHandler(
         ILogger<FindPriceHistoryBySizeIdQueryHandler> logger,
         IProductQuery productQuery,
         IProductVariantQuery variantQuery,
-        IPriceHistoryQuery priceHistoryQuery)
+        IPriceHistoryQuery priceHistoryQuery,
+        ICurrentUserService currentUserService)
     {
         _logger = logger;
         _productQuery = productQuery;
         _variantQuery = variantQuery;
         _priceHistoryQuery = priceHistoryQuery;
+        _currentUserService = currentUserService;
     }
     
     public async Task<IReadOnlyList<PriceHistoryReadModel>> Handle(
@@ -44,7 +49,7 @@ internal sealed class FindPriceHistoryBySizeIdQueryHandler
 
         List<PriceHistoryReadModel> result;
 
-        if (request.Role == UserRole.Seller)
+        if (_currentUserService.Role == Roles.Seller)
         {
             var variant = await _variantQuery.GetByIdAsync(
                 id: request.VariantId,
@@ -55,14 +60,14 @@ internal sealed class FindPriceHistoryBySizeIdQueryHandler
                 cancellationToken: cancellationToken);
             
             result = priceHistory
-                .Where(_ => product!.SellerId == request.UserId)
+                .Where(_ => product!.SellerId == _currentUserService.UserId)
                 .ToList();
         }
         else
         {
-            result = request.Role switch
+            result = _currentUserService.Role switch
             {
-                UserRole.Admin or UserRole.Moderator or UserRole.Support =>
+                Roles.Admin or Roles.Moderator or Roles.Support =>
                     priceHistory.ToList(),
             
                 _ => priceHistory

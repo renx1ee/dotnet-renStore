@@ -53,6 +53,7 @@ public static class DependencyInjection
         services.AddScoped<IVariantImageRepository, VariantImageRepository>();
         
         services.AddScoped<ICategoryProjection, CategoryProjection>();
+        services.AddScoped<ISubCategoryProjection, SubCategoryProjection>();
         services.AddScoped<IProductProjection, ProductProjection>();
         services.AddScoped<ISizePriceProjection, SizePriceProjection>();
         services.AddScoped<IProductVariantProjection, ProductVariantProjection>();

@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
 
-public class ChangeStoragePathTests : ImageTestBase
+public sealed class ChangeStoragePathTests : ImageTestBase
 {
     private const string MaxPath = 
         "/storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1//storage/path/1/";

@@ -1,5 +1,4 @@
-using RenStore.Catalog.Application.Abstractions.Queries;
-using RenStore.Catalog.Domain.Enums;
+using RenStore.SharedKernal.Domain.Constants;
 
 namespace RenStore.Catalog.Application.Features.Product.Queries.FindBySellerId;
 
@@ -8,13 +7,16 @@ internal sealed class FindProductsBySellerIdQueryHandler
 {
     private readonly ILogger<FindProductsBySellerIdQueryHandler> _logger;
     private readonly IProductQuery _productQuery;
+    private readonly ICurrentUserService _currentUserService;
     
     public FindProductsBySellerIdQueryHandler(
         ILogger<FindProductsBySellerIdQueryHandler> logger,
-        IProductQuery productQuery)
+        IProductQuery productQuery,
+        ICurrentUserService currentUserService)
     {
         _logger = logger;
         _productQuery = productQuery;
+        _currentUserService = currentUserService;
     }
 
     public async Task<IReadOnlyList<ProductReadModel>> Handle(
@@ -36,13 +38,13 @@ internal sealed class FindProductsBySellerIdQueryHandler
                 isDeleted: request.IsDeleted,
                 cancellationToken: cancellationToken);
         
-        var result = request.Role switch
+        var result = _currentUserService.Role switch
         {
-            UserRole.Admin or UserRole.Moderator or UserRole.Support =>
+            Roles.Admin or Roles.Moderator or Roles.Support =>
                 products,
             
-            UserRole.Seller => products
-                .Where(x => x.SellerId == request.UserId)
+            Roles.Seller => products
+                .Where(x => x.SellerId == _currentUserService.UserId)
                 .ToList(),
                 
             _ => products

@@ -3,7 +3,7 @@ using RenStore.Catalog.Domain.Enums;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class ChangeTypeOfPackingTests : ProductVariantTestBase
+public sealed class ChangeTypeOfPackingTests : ProductVariantTestBase
 {
     [Theory]
     [InlineData(TypeOfPacking.Package)]

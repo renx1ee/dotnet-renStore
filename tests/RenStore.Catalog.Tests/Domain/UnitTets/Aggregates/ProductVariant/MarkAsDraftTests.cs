@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class MarkAsDraftTests : ProductVariantTestBase
+public sealed class MarkAsDraftTests : ProductVariantTestBase
 {
     [Fact]
     public void Should_Rise_Variant_Archived()

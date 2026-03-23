@@ -3,7 +3,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Media.Image;
 
-public class ChangeDimensionTests : ImageTestBase
+public sealed class ChangeDimensionTests : ImageTestBase
 {
     [Theory]
     [InlineData(479, 1000)]

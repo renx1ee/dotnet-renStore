@@ -1,6 +1,3 @@
-using RenStore.Catalog.Domain.Aggregates.Category.Rules;
-using RenStore.SharedKernal.Domain.Exceptions;
-
 namespace RenStore.Catalog.Domain.Aggregates.Category;
 
 /// <summary>
@@ -14,7 +11,9 @@ public sealed class SubCategory
     public string NameRu { get; private set; }
     public string NormalizedNameRu { get; private set; }
     public string? Description { get; private set; }
-    public bool IsActive { get; private set; } // TODO:
+    public Guid UpdatedById { get; private set; } 
+    public string UpdatedByRole { get; private set; } 
+    public bool IsActive { get; private set; } 
     public bool IsDeleted { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; } 
     public DateTimeOffset? UpdatedAt { get; private set; }
@@ -23,125 +22,121 @@ public sealed class SubCategory
     
     private SubCategory() { }
 
-    public static SubCategory Create(
+    internal static SubCategory Create(
+        Guid updatedById,
+        string updatedByRole,
         Guid categoryId,
+        Guid subCategoryId,
         DateTimeOffset now,
-        string name,
-        string nameRu,
-        string? description = null)
-    {
-        CategoryIdValidation(categoryId);
-        
-        string trimmedName   = CategoryRules.NormalizeAndValidateName(name);
-        string trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
-        
-        var category = new SubCategory()
-        {
-            CategoryId = categoryId,
-            Name = trimmedName,
-            NormalizedName = trimmedName.ToUpperInvariant(),
-            NameRu = trimmedNameRu,
-            NormalizedNameRu = trimmedNameRu.ToUpperInvariant(),
-            IsDeleted = false,
-            CreatedAt = now
-        };
-
-        if (!string.IsNullOrWhiteSpace(description))
-        {
-            string? trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
-            
-            category.Description = trimmedDescription;
-        }
-        
-        return category;
-    }
-    
-    public static SubCategory Reconstitute(
-        Guid id,
-        Guid categoryId,
         string name,
         string normalizedName,
         string nameRu,
         string normalizedNameRu,
-        string description,
-        bool isDeleted,
-        DateTimeOffset createdAt,
-        DateTimeOffset? updatedAt,
-        DateTimeOffset? deletedAt)
+        bool isActive,
+        string? description = null)
     {
-        var category = new SubCategory()
+        return new SubCategory()
         {
-            Id = id,
+            Id = subCategoryId,
+            UpdatedById = updatedById,
+            UpdatedByRole = updatedByRole,
             CategoryId = categoryId,
             Name = name,
             NormalizedName = normalizedName,
             NameRu = nameRu,
             NormalizedNameRu = normalizedNameRu,
-            Description = description,
-            IsDeleted = isDeleted,
-            CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
-            DeletedAt = deletedAt
+            IsDeleted = false,
+            IsActive = isActive,
+            CreatedAt = now
         };
-        
-        return category;
     }
-
-    public void ChangeName(
+    
+    internal void ChangeName(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now,
-        string name)
+        string name,
+        string normalizedName)
     {
-        EnsureNotDeleted("Cannot change deleted sub category.");
-        
-        string trimmedName = CategoryRules.NormalizeAndValidateName(name);
-        
-        if (trimmedName == Name) return;
-
-        Name = trimmedName;
-        NormalizedName = trimmedName.ToUpperInvariant();
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        Name = name;
+        NormalizedName = normalizedName;
         
         UpdatedAt = now;
     }
     
-    public void ChangeNameRu(
+    internal void ChangeNameRu(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now,
-        string nameRu)
+        string nameRu,
+        string normalizedNameRu)
     {
-        EnsureNotDeleted("Cannot change deleted sub category.");
-        
-        string trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
-        
-        if (trimmedNameRu == NameRu) return;
-
-        NameRu = trimmedNameRu;
-        NormalizedNameRu = trimmedNameRu.ToUpperInvariant();
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        NameRu = nameRu;
+        NormalizedNameRu = normalizedNameRu;
         
         UpdatedAt = now;
     }
     
-    public void ChangeDescription(
+    internal void ChangeDescription(
+        Guid updatedById,
+        string updatedByRole,
         DateTimeOffset now,
         string description)
     {
-        EnsureNotDeleted("Cannot change deleted sub category.");
-        
-        string? trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
-        
-        if (trimmedDescription == Description) return;
-
-        Description = trimmedDescription;
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        Description = description;
         UpdatedAt = now;
     }
     
-    private void EnsureNotDeleted(string? message = null)
+    internal void Activate(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
-        if (IsDeleted)
-            throw new DomainException(message ?? "Entity is deleted.");
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        UpdatedAt = now;
+        IsActive = true;
     }
     
-    private static void CategoryIdValidation(Guid categoryId)
+    internal void Deactivate(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
     {
-        if(categoryId == Guid.Empty)
-            throw new DomainException("Category Id cannot be guid emtpy.");
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        UpdatedAt = now;
+        IsActive = false;
+    }
+    
+    internal void Delete(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
+    {
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        UpdatedAt = now;
+        DeletedAt = now;
+        IsActive = false;
+        IsDeleted = true;
+    }
+    
+    internal void Restore(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
+    {
+        UpdatedById = updatedById;
+        UpdatedByRole = updatedByRole;
+        UpdatedAt = now;
+        DeletedAt = null;
+        IsDeleted = false;
     }
 }

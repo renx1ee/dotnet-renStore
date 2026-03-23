@@ -4,7 +4,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.Product;
 
-public class MarkAsHiddenTests : ProductTestBase
+public sealed class MarkAsHiddenTests : ProductTestBase
 {
     [Fact]
     public void Should_Raise_Approved_Event()

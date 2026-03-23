@@ -4,5 +4,5 @@ public sealed record AddAttributeToVariantCommand(
     Guid VariantId,
     string Key,
     string Value)
-    : IRequest,
+    : IRequest<Guid>,
       ISellerVariantCommand;

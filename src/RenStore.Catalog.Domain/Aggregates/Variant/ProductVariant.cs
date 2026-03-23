@@ -272,7 +272,7 @@ public sealed class ProductVariant
         return sizeId;
     }
     
-    public void AddPriceToSize(
+    public Guid AddPriceToSize(
         DateTimeOffset now,
         DateTimeOffset validFrom,
         decimal amount,
@@ -297,6 +297,8 @@ public sealed class ProductVariant
             PriceAmount: amount,
             Currency: currency,
             SizeId: sizeId));
+
+        return priceId;
     }
 
     public void AddImageReference(

@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Constants;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Queries.FindSizesByVariantId;
 
 internal sealed class FindSizesByVariantIdQueryHandler
@@ -7,17 +9,20 @@ internal sealed class FindSizesByVariantIdQueryHandler
     private readonly IProductVariantQuery _variantQuery;
     private readonly IProductQuery _productQuery;
     private readonly IVariantSizeQuery _variantSizeQuery;
+    private readonly ICurrentUserService _currentUserService;
     
     public FindSizesByVariantIdQueryHandler(
         ILogger<FindSizesByVariantIdQueryHandler> logger,
         IProductQuery productQuery,
         IProductVariantQuery variantQuery,
-        IVariantSizeQuery variantSizeQuery)
+        IVariantSizeQuery variantSizeQuery,
+        ICurrentUserService currentUserService)
     {
         _logger = logger;
         _productQuery = productQuery;
         _variantQuery = variantQuery;
         _variantSizeQuery = variantSizeQuery;
+        _currentUserService = currentUserService;
     }
     
     public async Task<IReadOnlyList<VariantSizeReadModel>> Handle(
@@ -38,7 +43,7 @@ internal sealed class FindSizesByVariantIdQueryHandler
 
         List<VariantSizeReadModel> result;
 
-        if (request.Role == UserRole.Seller)
+        if (_currentUserService.Role == Roles.Seller)
         {
             var variant = await _variantQuery.GetByIdAsync(
                 id: request.VariantId,
@@ -49,14 +54,14 @@ internal sealed class FindSizesByVariantIdQueryHandler
                 cancellationToken: cancellationToken);
             
             result = sizes
-                .Where(_ => product!.SellerId == request.UserId)
+                .Where(_ => product!.SellerId == _currentUserService.UserId)
                 .ToList();
         }
         else
         {
-            result = request.Role switch
+            result = _currentUserService.Role switch
             {
-                UserRole.Admin or UserRole.Moderator or UserRole.Support =>
+                Roles.Admin or Roles.Moderator or Roles.Support =>
                     sizes.ToList(),
             
                 _ => sizes

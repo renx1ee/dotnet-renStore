@@ -1,9 +1,9 @@
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveSize;
 
-internal sealed class RemoveVariantSizeCommandValidator
-    : AbstractValidator<RemoveVariantSizeCommand>
+internal sealed class SoftDeleteVariantSizeCommandValidator
+    : AbstractValidator<SoftDeleteVariantSizeCommand>
 {
-    public RemoveVariantSizeCommandValidator()
+    public SoftDeleteVariantSizeCommandValidator()
     {
         RuleFor(s => s.VariantId)
             .NotEmpty()

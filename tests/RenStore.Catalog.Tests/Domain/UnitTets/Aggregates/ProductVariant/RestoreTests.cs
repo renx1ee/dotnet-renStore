@@ -2,7 +2,7 @@ using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
 
 namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 
-public class RestoreTests : ProductVariantTestBase
+public sealed class RestoreTests : ProductVariantTestBase
 {
     [Fact]
     public void Should_Raise_Restored_Event()

@@ -6,7 +6,5 @@ public sealed record FindVariantsByProductIdQuery(
     uint Page = 1,
     uint PageCount = 25,
     bool Descending = false,
-    bool? IsDeleted = null,
-    UserRole? Role = null,
-    Guid? UserId = null)
+    bool? IsDeleted = null)
     : IRequest<IReadOnlyList<ProductVariantReadModel>>;
