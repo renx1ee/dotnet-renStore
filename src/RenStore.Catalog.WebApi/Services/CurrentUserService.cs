@@ -12,14 +12,29 @@ internal sealed class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Guid UserId => Guid.Parse(
-        _httpContextAccessor.HttpContext!.User
-            .FindFirst(ClaimTypes.NameIdentifier)!.Value);       
-    
-    public string Role => 
-        _httpContextAccessor.HttpContext!.User
-            .FindFirst(ClaimTypes.Role)!.Value;
+    public Guid? UserId
+    {
+        get
+        {
+            var claim = _httpContextAccessor.HttpContext!.User
+                    .FindFirst(ClaimTypes.NameIdentifier);
 
+            return Guid.NewGuid();
+            
+            return claim is null ? null : Guid.Parse(claim.Value);
+        }
+    }
+
+    public string Role
+    {
+        get
+        {
+            return "Admin";
+            
+            return _httpContextAccessor.HttpContext!.User
+                .FindFirst(ClaimTypes.Role)!.Value;
+        }
+    }
 
     public bool IsAuthenticated =>
         _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;

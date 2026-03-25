@@ -32,6 +32,7 @@ public sealed class CountryTests
     }
     
     [Theory]
+    #pragma warning disable xUnit1012
     [InlineData(null, "Россия", "ru", "+7")]
     [InlineData("", "Россия", "ru", "+7")]
     [InlineData(" ", "Россия", "ru", "+7")]
@@ -42,6 +43,7 @@ public sealed class CountryTests
     [InlineData("Russia", "Россия", "", "+7")]
     [InlineData("Russia", "Россия", " ", "+7")]
     [InlineData("Russia", "Россия", "ru", null)]
+    #pragma warning restore xUnit1012
     [InlineData("Russia", "Россия", "ru", "")]
     [InlineData("Russia", "Россия", "ru", " ")]
     public async Task CreateCountry_Fail_Test(
@@ -121,6 +123,7 @@ public sealed class CountryTests
     }
     
     [Theory]
+    #pragma warning disable xUnit1012
     [InlineData(null, "Россия", "ru", "+7")]
     [InlineData("", "Россия", "ru", "+7")]
     [InlineData(" ", "Россия", "ru", "+7")]
@@ -132,6 +135,7 @@ public sealed class CountryTests
     [InlineData("Russia", "Россия", " ", "+7")]
     [InlineData("Russia", "Россия", "ru", null)]
     [InlineData("Russia", "Россия", "rus", null)]
+    #pragma warning restore xUnit1012
     [InlineData("Russia", "Россия", "ru", "")]
     [InlineData("Russia", "Россия", "ru", " ")]
     public async Task UpdateCountry_Fail_Test(

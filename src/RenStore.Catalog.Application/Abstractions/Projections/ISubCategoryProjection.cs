@@ -64,6 +64,16 @@ public interface ISubCategoryProjection
         string name,
         string nameRu,
         CancellationToken cancellationToken);
+    
+    Task<bool> IsExistsAsync(
+        string name,
+        string nameRu,
+        CancellationToken cancellationToken);
+
+    Task<bool> IsExistsAsync(
+        Guid categoryId,
+        Guid subCategoryId,
+        CancellationToken cancellationToken);
 
     void Remove(SubCategoryReadModel subCategory);
 

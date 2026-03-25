@@ -12,11 +12,13 @@ public sealed class CreateTests
         // Arrange
         var sellerId = Guid.NewGuid();
         var subCategoryId = Guid.NewGuid();
+        var categoryId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
         
         // Act
         var result = Catalog.Domain.Aggregates.Product.Product.Create(
             sellerId: sellerId,
+            categoryId: categoryId,
             subCategoryId: subCategoryId,
             now: now);
 
@@ -46,12 +48,14 @@ public sealed class CreateTests
         var sellerId = Guid.Empty;
         // Arrange
         var subCategoryId = Guid.NewGuid();
+        var categoryId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
         
         // Act
         Assert.Throws<DomainException>(() => 
             Catalog.Domain.Aggregates.Product.Product.Create(
                 sellerId: sellerId,
+                categoryId: categoryId,
                 subCategoryId: subCategoryId,
                 now: now));
     }
@@ -61,6 +65,7 @@ public sealed class CreateTests
     {
         // Arrange
         var subCategoryId = Guid.Empty;
+        var categoryId = Guid.NewGuid();
         var sellerId = Guid.NewGuid();
         var now = DateTimeOffset.Now;
         
@@ -69,6 +74,25 @@ public sealed class CreateTests
             Catalog.Domain.Aggregates.Product.Product.Create(
                 sellerId: sellerId,
                 subCategoryId: subCategoryId,
+                categoryId: categoryId,
+                now: now));
+    }
+    
+    [Fact]
+    public void Should_Throw_WhenCategoryIdIsInvalid()
+    {
+        // Arrange
+        var subCategoryId = Guid.NewGuid();
+        var categoryId = Guid.Empty;
+        var sellerId = Guid.NewGuid();
+        var now = DateTimeOffset.Now;
+        
+        // Act
+        Assert.Throws<DomainException>(() => 
+            Catalog.Domain.Aggregates.Product.Product.Create(
+                sellerId: sellerId,
+                subCategoryId: subCategoryId,
+                categoryId: categoryId,
                 now: now));
     }
 }

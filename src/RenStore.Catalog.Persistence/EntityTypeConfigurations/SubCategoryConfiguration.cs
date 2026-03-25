@@ -62,6 +62,24 @@ public sealed class SubCategoryConfiguration
             .IsRequired();
         
         builder
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .HasColumnType("boolean")
+            .HasDefaultValue("false")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedById)
+            .HasColumnName("updated_by_id")
+            .IsRequired();
+            
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_role")
+            .HasMaxLength(20)
+            .IsRequired();
+        
+        builder
             .Property(x => x.CreatedAt)
             .HasColumnName("created_date")
             .IsRequired();

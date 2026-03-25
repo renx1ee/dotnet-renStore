@@ -43,7 +43,8 @@ internal sealed class ArchiveProductCommandHandler
             
         product.MarkAsArchived(
             updatedByRole: _userService.Role,
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             now: now);
 
         await _productRepository.SaveAsync(
@@ -53,7 +54,8 @@ internal sealed class ArchiveProductCommandHandler
             new ProductArchivedIntegrationEvent(
                 OccurredAt: now,
                 ProductId: request.ProductId,
-                UpdatedById: _userService.UserId,
+                UpdatedById: _userService.UserId
+                             ?? throw new UnauthorizedException(),
                 UpdatedByRole: _userService.Role), 
             cancellationToken: cancellationToken);
         

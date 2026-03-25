@@ -37,8 +37,9 @@ internal sealed class DraftProductCommandHandler
         }
         
         product.MarkAsDraft(
-            updatedByRole: _userService.Role.ToString(),
-            updatedById: _userService.UserId,
+            updatedByRole: _userService.Role,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             now: DateTimeOffset.UtcNow);
 
         await _productRepository.SaveAsync(

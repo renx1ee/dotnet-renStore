@@ -51,7 +51,8 @@ internal sealed class ArchiveProductVariantCommandHandler
         
         variant.Archive(
             updatedByRole: _userService.Role,
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             now: DateTimeOffset.UtcNow);
 
         await _productVariantRepository.SaveAsync(variant, cancellationToken);

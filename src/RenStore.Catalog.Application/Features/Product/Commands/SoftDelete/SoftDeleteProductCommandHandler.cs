@@ -40,10 +40,11 @@ internal sealed class SoftDeleteProductCommandHandler
         }
 
         var now = DateTimeOffset.UtcNow;
+        var userId = _userService.UserId ?? throw new UnauthorizedException();
         
         product.Delete(
-            updatedByRole: _userService.Role.ToString(),
-            updatedById: _userService.UserId,
+            updatedByRole: _userService.Role,
+            updatedById: userId,
             now: now);
 
         await _productRepository.SaveAsync(
@@ -53,7 +54,7 @@ internal sealed class SoftDeleteProductCommandHandler
             new ProductDeletedIntegrationEvent(
                 OccurredAt: now,
                 ProductId: request.ProductId,
-                UpdatedById: _userService.UserId,
+                UpdatedById: userId,
                 UpdatedByRole: _userService.Role), 
                 cancellationToken: cancellationToken);
         

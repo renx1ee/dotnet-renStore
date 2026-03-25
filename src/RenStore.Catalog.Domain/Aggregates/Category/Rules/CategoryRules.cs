@@ -36,10 +36,9 @@ public static class CategoryRules
         return trimmedNameRu;
     }
     
-    internal static string NormalizeAndValidateDescription(string? description)
+    internal static string? NormalizeAndValidateDescription(string? description)
     {
-        if(description == null)
-            throw new DomainException("Category description cannot be null.");
+        if (description == null) return null;
         
         var trimmedDescription = description.Trim();
         

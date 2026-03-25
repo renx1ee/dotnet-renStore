@@ -64,6 +64,17 @@ public sealed class VariantImageConfiguration
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
             .IsRequired(false);
+        
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_id")
+            .IsRequired();
+            
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_role")
+            .HasMaxLength(20)
+            .IsRequired();
 
         builder
             .Property(x => x.Weight)

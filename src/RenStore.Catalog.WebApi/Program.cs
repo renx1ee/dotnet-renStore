@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Asp.Versioning;
 using RenStore.Catalog.Application;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Persistence;

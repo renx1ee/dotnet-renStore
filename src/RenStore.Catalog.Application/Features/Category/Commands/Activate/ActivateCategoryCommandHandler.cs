@@ -37,7 +37,8 @@ internal sealed class ActivateCategoryCommandHandler
         }
         
         category.Activate(
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId 
+                         ?? throw new UnauthorizedException(),
             updatedByRole: _userService.Role,
             now: DateTimeOffset.UtcNow);
         

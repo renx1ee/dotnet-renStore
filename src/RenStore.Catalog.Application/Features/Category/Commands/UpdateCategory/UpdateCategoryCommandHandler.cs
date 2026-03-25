@@ -38,10 +38,12 @@ internal sealed class UpdateCategoryCommandHandler
         
         var now = DateTimeOffset.UtcNow;
 
+        var userId = _userService.UserId ?? throw new UnauthorizedException();
+
         if (request.Name is not null)
         {
             category.ChangeName(
-                updatedById: _userService.UserId,
+                updatedById: userId,
                 updatedByRole: _userService.Role,
                 name: request.Name,
                 now: now);
@@ -50,7 +52,7 @@ internal sealed class UpdateCategoryCommandHandler
         if (request.NameRu is not null)
         {
             category.ChangeNameRu(
-                updatedById: _userService.UserId,
+                updatedById: userId,
                 updatedByRole: _userService.Role,
                 nameRu: request.NameRu,
                 now: now);
@@ -59,7 +61,7 @@ internal sealed class UpdateCategoryCommandHandler
         if (request.Description is not null)
         {
             category.ChangeDescription(
-                updatedById: _userService.UserId,
+                updatedById: userId,
                 updatedByRole: _userService.Role,
                 description: request.Description,
                 now: now);

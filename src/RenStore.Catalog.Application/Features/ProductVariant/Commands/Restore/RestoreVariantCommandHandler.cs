@@ -51,7 +51,8 @@ internal sealed class RestoreVariantCommandHandler
         
         variant.Restore(
             updatedByRole: _userService.Role,
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);

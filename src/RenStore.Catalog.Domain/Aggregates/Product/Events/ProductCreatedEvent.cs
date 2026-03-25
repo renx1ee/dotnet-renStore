@@ -7,6 +7,7 @@ public sealed record ProductCreatedEvent(
     Guid EventId,
     Guid ProductId,
     Guid SellerId,
+    Guid CategoryId,
     Guid SubCategoryId,
     ProductStatus Status,
     DateTimeOffset OccurredAt)

@@ -5,18 +5,18 @@ internal sealed class CreateProductCommandHandler
 {
     private readonly ILogger<CreateProductCommandHandler> _logger;
     private readonly IProductRepository _productRepository;
-    private readonly ICategoryProjection _categoryProjection;
+    private readonly ISubCategoryProjection _subCategoryProjection;
     private readonly ICurrentUserService _userService;
     
     public CreateProductCommandHandler(
         ILogger<CreateProductCommandHandler> logger,
         IProductRepository productRepository,
-        ICategoryProjection categoryProjection,
+        ISubCategoryProjection subCategoryProjection,
         ICurrentUserService userService)
     {
         _logger = logger;
         _productRepository = productRepository;
-        _categoryProjection = categoryProjection;
+        _subCategoryProjection = subCategoryProjection;
         _userService = userService;
     }
     
@@ -25,38 +25,39 @@ internal sealed class CreateProductCommandHandler
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "Handling {CommandName} for SellerId {SellerId} SubCategoryId: {SubCategoryId}", 
+            "Handling {CommandName} for SellerId {SellerId}, SubCategoryId: {SubCategoryId}", 
             nameof(CreateProductCommand),
             _userService.UserId,
             request.SubCategoryId);
 
-        /*var existingCategory = await _categoryProjection
-            .SubCategoryExists(
-                request.SubCategoryId, 
+        var existingSubCategory = await _subCategoryProjection
+            .IsExistsAsync(
+                categoryId: request.CategoryId, 
+                subCategoryId: request.SubCategoryId, 
                 cancellationToken);
-
-        // TODO:
-        if (existingCategory)
+        
+        if (existingSubCategory == false)
         {
-            /*throw new NotFoundException(
+            throw new NotFoundException(
                 name: typeof(SubCategoryReadModel), 
-                request.SubCategoryId);#1#
-            
-            return Guid.Empty;
-        }*/
+                request.SubCategoryId);
+        }
 
         var product = Domain.Aggregates.Product.Product.Create(
-            sellerId: _userService.UserId,
+            sellerId: _userService.UserId
+                      ?? throw new UnauthorizedException(),
             subCategoryId: request.SubCategoryId,
+            categoryId: request.CategoryId,
             now: DateTimeOffset.UtcNow);
 
         await _productRepository.SaveAsync(
             product, cancellationToken);
 
         _logger.LogInformation(
-            "{CommandName} handled successfully. ProductId: {ProductId}",
+            "{CommandName} handled successfully. ProductId: {ProductId}, SubCategoryId: {SubCategoryId}",
             nameof(CreateProductCommand),
-            product.Id);
+            product.Id,
+            request.SubCategoryId);
         
         return product.Id;
     }

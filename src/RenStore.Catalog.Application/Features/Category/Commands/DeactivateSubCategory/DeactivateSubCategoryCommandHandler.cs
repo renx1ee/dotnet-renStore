@@ -39,7 +39,8 @@ internal sealed class DeactivateSubCategoryCommandHandler
         
         category.DeactivateSubCategory(
             subCategoryId: request.SubCategoryId,
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             updatedByRole: _userService.Role,
             now: DateTimeOffset.UtcNow);
         

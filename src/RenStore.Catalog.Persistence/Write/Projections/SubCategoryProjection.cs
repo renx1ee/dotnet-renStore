@@ -152,6 +152,30 @@ internal sealed class SubCategoryProjection
                     (x.Name == name || x.NameRu == nameRu), 
                 cancellationToken);
     }
+    
+    public async Task<bool> IsExistsAsync(
+        string name,
+        string nameRu,
+        CancellationToken cancellationToken)
+    {
+        return await _context.SubCategories
+            .AnyAsync(x => 
+                    x.Name == name || 
+                    x.NameRu == nameRu, 
+                cancellationToken);
+    }
+    
+    public async Task<bool> IsExistsAsync(
+        Guid categoryId,
+        Guid subCategoryId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.SubCategories
+            .AnyAsync(x => 
+                    x.Id == subCategoryId &&
+                    x.CategoryId == categoryId, 
+                cancellationToken);
+    }
 
     public void Remove(SubCategoryReadModel subCategory)
     {

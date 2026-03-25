@@ -52,7 +52,8 @@ internal sealed class RestoreVariantSizeCommandHandler
         
         variant.RestoreSize(
             updatedByRole: _userService.Role,
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             now: DateTimeOffset.UtcNow, 
             sizeId: request.SizeId);
 

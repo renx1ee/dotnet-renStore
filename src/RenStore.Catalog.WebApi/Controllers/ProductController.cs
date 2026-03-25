@@ -9,27 +9,30 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
 
     #region Commands
     
-    [HttpPost("manage/products")]
-    [Authorize(Roles = "Seller")]
+    [HttpPost("manage/categories/{categoryId}/sub-categories/{subCategoryId}/products")]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Create(
-        [FromQuery] Guid subCategoryId)
+        [FromRoute] Guid categoryId,
+        [FromRoute] Guid subCategoryId)
     {
         var command = new CreateProductCommand(
+            CategoryId: categoryId,
             SubCategoryId: subCategoryId);
         
         var productId = await _mediator.Send(command);
 
         return productId == Guid.Empty ? BadRequest() : CreatedAtAction(
             actionName: nameof(FindById),
-            routeValues: new { result = productId, version = "1" },
+            routeValues: new { productId = productId },
             value: new { Id = productId });
     }
     
     [HttpPatch("manage/products/{productId:guid}/publish")]
-    [Authorize("Seller")]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Publish(Guid productId)
+    public async Task<IActionResult> Publish(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new PublishProductCommand(
             ProductId: productId));
@@ -38,9 +41,10 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("manage/products/{productId:guid}/approve")]
-    [Authorize(Roles = "Admin,Moderator")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Approve(Guid productId)
+    public async Task<IActionResult> Approve(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new ApproveProductCommand(
             ProductId: productId));
@@ -49,9 +53,10 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/products/{productId:guid}/archive")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Archive(Guid productId)
+    public async Task<IActionResult> Archive(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new ArchiveProductCommand(
             ProductId: productId));
@@ -60,9 +65,10 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/products/{productId:guid}/hide")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Hide(Guid productId)
+    public async Task<IActionResult> Hide(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new HideProductCommand(
             ProductId: productId));
@@ -71,9 +77,10 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/products/{productId:guid}/reject")]
-    [Authorize(Roles = "Admin,Moderator")]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Reject(Guid productId)
+    public async Task<IActionResult> Reject(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new RejectProductCommand(
             ProductId: productId));
@@ -82,9 +89,10 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/products/{productId:guid}/draft")]
-    [Authorize(Roles = "Seller,Admin,Moderator")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> ToDraft(Guid productId)
+    public async Task<IActionResult> ToDraft(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new DraftProductCommand(
             ProductId: productId));
@@ -93,9 +101,10 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("manage/products/{productId:guid}")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
-    public async Task<IActionResult> Delete(Guid productId)
+    public async Task<IActionResult> Delete(
+        [FromRoute] Guid productId)
     {
         await _mediator.Send(new SoftDeleteProductCommand(
             ProductId: productId));
@@ -110,7 +119,8 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [HttpGet("catalog/products/{productId:guid}")]
     [AllowAnonymous]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> FindById(Guid productId)
+    public async Task<IActionResult> FindById(
+        [FromRoute] Guid productId)
     {
         var product = await _mediator.Send(
             new FindProductByIdQuery(productId));
@@ -122,7 +132,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindBySellerId(
-        Guid sellerId,
+        [FromRoute] Guid sellerId,
         [FromQuery] ProductSortBy sortBy = ProductSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -147,7 +157,8 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [HttpGet("manage/products/{productId:guid}")]
     [Authorize(Roles = "Seller,Moderator,Admin")]
     [MapToApiVersion(1)]
-    public async Task<IActionResult> FindByIdManage(Guid productId)
+    public async Task<IActionResult> FindByIdManage(
+        [FromRoute] Guid productId)
     {
         var product = await _mediator.Send(
             new FindProductByIdQuery(
@@ -160,7 +171,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [Authorize(Roles = "Seller,Moderator,Admin")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindBySellerIdManage(
-        Guid sellerId,
+        [FromRoute] Guid sellerId,
         [FromQuery] ProductSortBy sortBy = ProductSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,

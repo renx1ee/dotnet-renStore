@@ -23,6 +23,7 @@ global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindBy
 global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindById;
 global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindByProductId;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddSize;
+global using RenStore.SharedKernal.Domain.Constants;
 
 global using RenStore.Catalog.Application.Features.Product.Commands.Approve;
 global using RenStore.Catalog.Application.Features.Product.Commands.Archive;
@@ -34,6 +35,20 @@ global using RenStore.Catalog.Application.Features.Product.Commands.SoftDelete;
 global using RenStore.Catalog.Application.Features.Product.Commands.ToDraft;
 global using RenStore.Catalog.Application.Features.Product.Queries.FindById;
 global using RenStore.Catalog.Application.Features.Product.Queries.FindBySellerId;
+
+global using RenStore.Catalog.Application.Features.Category.Commands.Activate;
+global using RenStore.Catalog.Application.Features.Category.Commands.ActivateSubCategory;
+global using RenStore.Catalog.Application.Features.Category.Commands.Create;
+global using RenStore.Catalog.Application.Features.Category.Commands.CreateSubCategory;
+global using RenStore.Catalog.Application.Features.Category.Commands.Deactivate;
+global using RenStore.Catalog.Application.Features.Category.Commands.DeactivateSubCategory;
+global using RenStore.Catalog.Application.Features.Category.Commands.Restore;
+global using RenStore.Catalog.Application.Features.Category.Commands.RestoreSubCategory;
+global using RenStore.Catalog.Application.Features.Category.Commands.SoftDelete;
+global using RenStore.Catalog.Application.Features.Category.Commands.SoftDeleteSubCategory;
+global using RenStore.Catalog.Application.Features.Category.Commands.UpdateCategory;
+global using RenStore.Catalog.Application.Features.Category.Commands.UpdateSubCategory;
+global using RenStore.Catalog.WebApi.Requests.Category;
 
 global using RenStore.Catalog.Application.Features.VariantMedia.Commands.Delete;
 global using RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;

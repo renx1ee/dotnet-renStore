@@ -41,7 +41,8 @@ internal sealed class CreateCategoryCommandHandler
         }
 
         var category = Domain.Aggregates.Category.Category.Create(
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             updatedByRole: _userService.Role,
             now: DateTimeOffset.UtcNow, 
             name: request.Name,

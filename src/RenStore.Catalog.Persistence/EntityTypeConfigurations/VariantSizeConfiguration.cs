@@ -33,10 +33,21 @@ public sealed class VariantSizeConfiguration
             .Property(s => s.System)
             .HasColumnName("size_system") 
             .IsRequired();
-                
+
         builder
             .Property(s => s.Type)
             .HasColumnName("type")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_id")
+            .IsRequired();
+            
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_role")
+            .HasMaxLength(20)
             .IsRequired();
         
         builder

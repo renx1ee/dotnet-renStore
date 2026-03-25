@@ -1,4 +1,3 @@
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +25,9 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
 
-        services.AddMassTransit(x =>
+        /*services.AddMassTransit(x =>
         {
-            /*x.AddConsumer<>();*/
+            /*x.AddConsumer<>();#1#
             
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -43,7 +42,7 @@ public static class DependencyInjection
                 
                 cfg.ConfigureEndpoints(context);
             });
-        });
+        });*/
         
         services.AddScoped<IEventStore, SqlEventStore>();
         
@@ -61,7 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IVariantAttributeProjection, VariantAttributeProjection>();
         services.AddScoped<IVariantDetailProjection, VariantDetailProjection>();
         services.AddScoped<IVariantImageProjection, VariantImageProjection>();
-
+        
         services.AddScoped<IVariantSizeQuery, VariantSizeQuery>();
         services.AddScoped<IVariantAttributeQuery, VariantAttributeQuery>();
         services.AddScoped<IVariantImageQuery, VariantImageQuery>();
@@ -69,7 +68,7 @@ public static class DependencyInjection
         services.AddScoped<IProductVariantQuery, ProductVariantQuery>();
         services.AddScoped<IProductQuery, ProductQuery>();
         services.AddScoped<IPriceHistoryQuery, PriceHistoryQuery>();
-
+        
         return services;
     }   
 }

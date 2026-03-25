@@ -23,7 +23,7 @@ internal sealed class ProductCreatedEventHandler
             SellerId = notification.DomainEvent.SellerId,
             SubCategoryId = notification.DomainEvent.SubCategoryId,
             Status = notification.DomainEvent.Status,
-            CreatedAt = notification.DomainEvent.OccurredAt
+            CreatedAt = notification.DomainEvent.OccurredAt,
         };
         
         await _productProjection.AddAsync(product, cancellationToken);

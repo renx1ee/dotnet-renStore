@@ -66,6 +66,17 @@ namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
                 .HasColumnName("is_active")
                 .HasColumnType("boolean")
                 .IsRequired();
+
+            builder
+                .Property(x => x.UpdatedById)
+                .HasColumnName("updated_by_id")
+                .IsRequired();
+            
+            builder
+                .Property(x => x.UpdatedByRole)
+                .HasColumnName("updated_by_role")
+                .HasMaxLength(20)
+                .IsRequired();
         
             builder
                 .Property(x => x.CreatedAt)

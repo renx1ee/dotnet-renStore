@@ -30,6 +30,17 @@ public sealed class ProductConfiguration
             .IsRequired();
         
         builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_id")
+            .IsRequired(false);
+            
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_role")
+            .HasMaxLength(20)
+            .IsRequired(false);
+        
+        builder
             .Property(x => x.CreatedAt)
             .HasColumnName("created_date")
             .IsRequired();

@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Aggregates.Category.Events;
 using RenStore.Catalog.Domain.Aggregates.Media.Events;
 using RenStore.Catalog.Domain.Aggregates.Product.Events;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
@@ -69,6 +70,24 @@ public static class DomainEventMappings
         { "variant-removed",                                   typeof(VariantRemovedEvent) },
         { "variant-image-reference-added",                     typeof(AddedImageReferenceEvent) },
         { "variant-image-reference-removed",                   typeof(RemoveImageReferenceEvent) },
+        
+        // Category
+        { "category-activated",                                typeof(CategoryActivatedEvent) },
+        { "category-created",                                  typeof(CategoryCreatedEvent) },
+        { "category-deactivated",                              typeof(CategoryDeactivatedEvent) },
+        { "category-deleted",                                  typeof(CategoryDeletedEvent) },
+        { "category-description-changed",                      typeof(CategoryDescriptionChangedEvent) },
+        { "category-name-changed",                             typeof(CategoryNameChangedEvent) },
+        { "category-name-ru-changed",                          typeof(CategoryNameRuChangedEvent) },
+        { "category-restored",                                 typeof(CategoryRestoredEvent) },
+        { "sub-category-activated",                            typeof(SubCategoryActivatedEvent) },
+        { "sub-category-created",                              typeof(SubCategoryCreatedEvent) },
+        { "sub-category-deactivated",                          typeof(SubCategoryDeactivatedEvent) },
+        { "sub-category-deleted",                              typeof(SubCategoryDeletedEvent) },
+        { "sub-category-description-changed",                  typeof(SubCategoryDescriptionChangedEvent) },
+        { "sub-category-name-changed",                         typeof(SubCategoryNameChangedEvent) },
+        { "sub-category-name-ru-changed",                      typeof(SubCategoryNameRuChangedEvent) },
+        { "sub-category-restored",                             typeof(SubCategoryRestoredEvent) },
     };
     
     public static readonly Dictionary<Type, string> DomainEventsTypeToName = new()
@@ -129,5 +148,23 @@ public static class DomainEventMappings
         { typeof(VariantRemovedEvent),                         "variant-removed" },
         { typeof(AddedImageReferenceEvent),                    "variant-image-reference-added" },
         { typeof(RemoveImageReferenceEvent),                   "variant-image-reference-removed" },
+        
+        // Category
+        { typeof(CategoryActivatedEvent),                      "category-activated" },
+        { typeof(CategoryCreatedEvent),                        "category-created" },
+        { typeof(CategoryDeactivatedEvent),                    "category-deactivated" },
+        { typeof(CategoryDeletedEvent),                        "category-deleted" },
+        { typeof(CategoryDescriptionChangedEvent),             "category-description-changed" },
+        { typeof(CategoryNameChangedEvent),                    "category-name-changed" },
+        { typeof(CategoryNameRuChangedEvent),                  "category-name-ru-changed" },
+        { typeof(CategoryRestoredEvent),                       "category-restored" },
+        { typeof(SubCategoryActivatedEvent),                   "sub-category-activated" },
+        { typeof(SubCategoryCreatedEvent),                     "sub-category-created" },
+        { typeof(SubCategoryDeactivatedEvent),                 "sub-category-deactivated" },
+        { typeof(SubCategoryDeletedEvent),                     "sub-category-deleted" },
+        { typeof(SubCategoryDescriptionChangedEvent),          "sub-category-description-changed" },
+        { typeof(SubCategoryNameChangedEvent),                 "sub-category-name-changed" },
+        { typeof(SubCategoryNameRuChangedEvent),               "sub-category-name-ru-changed" },
+        { typeof(SubCategoryRestoredEvent),                    "sub-category-restored" },
     };
 }

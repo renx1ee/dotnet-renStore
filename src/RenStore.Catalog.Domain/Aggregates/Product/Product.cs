@@ -53,6 +53,8 @@ public sealed class Product
     /// </summary>
     public Guid SellerId { get; private set; }
     
+    public Guid CategoryId { get; private set; }
+    
     /// <summary>
     /// Unique identifier of the sub category.
     /// </summary>
@@ -67,11 +69,13 @@ public sealed class Product
     
     public static Product Create(
         Guid sellerId,
+        Guid categoryId,
         Guid subCategoryId,
         DateTimeOffset now)
     {
         SellerIdValidate(sellerId);
         SubCategoryIdValidate(subCategoryId);
+        SubCategoryIdValidate(categoryId);
 
         var product = new Product();
         var productId = Guid.NewGuid();
@@ -81,6 +85,7 @@ public sealed class Product
             ProductId: productId,
             Status: ProductStatus.PendingModeration,
             SellerId: sellerId,
+            CategoryId: categoryId,
             SubCategoryId: subCategoryId,
             OccurredAt: now));
 
@@ -284,6 +289,7 @@ public sealed class Product
             case ProductCreatedEvent e:
                 Id = e.ProductId;
                 SellerId = e.SellerId;
+                CategoryId = e.CategoryId;
                 SubCategoryId = e.SubCategoryId;
                 Status = e.Status;
                 CreatedAt = e.OccurredAt;

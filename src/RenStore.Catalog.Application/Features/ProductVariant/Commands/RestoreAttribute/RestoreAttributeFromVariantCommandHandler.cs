@@ -39,7 +39,8 @@ internal sealed class RestoreAttributeFromVariantCommandHandler
         
         variant.RestoreAttribute(
             updatedByRole: _userService.Role,
-            updatedById: _userService.UserId,
+            updatedById: _userService.UserId
+                         ?? throw new UnauthorizedException(),
             now: DateTimeOffset.UtcNow,
             attributeId: request.AttributeId);
         

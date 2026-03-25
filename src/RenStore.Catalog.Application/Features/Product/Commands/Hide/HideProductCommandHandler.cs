@@ -1,5 +1,3 @@
-using RenStore.Catalog.Application.IntegrationEvents;
-
 namespace RenStore.Catalog.Application.Features.Product.Commands.Hide;
 
 internal sealed class HideProductCommandHandler
@@ -42,10 +40,12 @@ internal sealed class HideProductCommandHandler
         }
         
         var now = DateTimeOffset.UtcNow;
+        
+        var userId = _userService.UserId ?? throw new UnauthorizedException();
             
         product.MarkAsHidden(
             updatedByRole: _userService.Role,
-            updatedById: _userService.UserId,
+            updatedById: userId,
             now: now);
 
         await _productRepository.SaveAsync(
@@ -55,7 +55,7 @@ internal sealed class HideProductCommandHandler
             new ProductHiddenIntegrationEvent(
                 OccurredAt: now,
                 ProductId: request.ProductId,
-                UpdatedById: _userService.UserId,
+                UpdatedById:userId,
                 UpdatedByRole: _userService.Role), 
             cancellationToken: cancellationToken);
         

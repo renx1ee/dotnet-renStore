@@ -7,6 +7,10 @@ internal sealed class CreateProductCommandValidator
     {
         RuleFor(p => p.SubCategoryId)
             .NotEmpty()
-            .WithMessage("Seller ID cannot be Guid empty.");
+            .WithMessage("Sub Category ID cannot be Guid empty.");
+        
+        RuleFor(p => p.CategoryId)
+            .NotEmpty()
+            .WithMessage("Category ID cannot be Guid empty.");
     }
 }
