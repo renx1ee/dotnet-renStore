@@ -5,11 +5,13 @@ using RenStore.Catalog.Persistence.EventStore;
 
 namespace RenStore.Catalog.Persistence;
 
-public sealed class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbContext(options)
+public sealed class CatalogDbContext(
+    DbContextOptions<CatalogDbContext> options) 
+    : DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new EventStoreConfiguration());
+        modelBuilder.ApplyConfiguration(new EventEntityConfiguration());
         
         modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
         modelBuilder.ApplyConfiguration(new VariantSizeConfiguration());        

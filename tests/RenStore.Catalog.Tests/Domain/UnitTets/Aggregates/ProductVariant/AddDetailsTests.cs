@@ -35,7 +35,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
             description: description,
             composition: composition,
             caringOfThings: caringOfThings,
-            typeOfPackaging: typeOfPackaging,
+            typeOfPacking: typeOfPackaging,
             modelFeatures: modelFeatures,
             decorativeElements: decorativeElements,
             equipment: equipment);
@@ -87,7 +87,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
                 description: "Tests descriptiondescriptiondescrip",
                 composition: "Composition fwwfwfwf",
                 caringOfThings: null,
-                typeOfPackaging: TypeOfPacking.Box,
+                typeOfPacking: TypeOfPacking.Box,
                 modelFeatures: null,
                 decorativeElements: null,
                 equipment: null));
@@ -125,7 +125,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
                 description: description,
                 composition: composition,
                 caringOfThings: caringOfThings,
-                typeOfPackaging: TypeOfPacking.Box,
+                typeOfPacking: TypeOfPacking.Box,
                 modelFeatures: modelFeatures,
                 decorativeElements: decorativeElements,
                 equipment: equipment));

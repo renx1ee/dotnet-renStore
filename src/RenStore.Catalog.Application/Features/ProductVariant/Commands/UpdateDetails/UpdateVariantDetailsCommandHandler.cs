@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.DetailsUpdate;
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateDetails;
 
 public class UpdateVariantDetailsCommandHandler
     : IRequestHandler<UpdateVariantDetailsCommand>

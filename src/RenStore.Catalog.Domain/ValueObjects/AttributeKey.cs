@@ -1,12 +1,10 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.ValueObjects;
 
 public record AttributeKey
 {
-    private const int MaxKeyLength = 100;
-    private const int MinKeyLength = 1;
-    
     public string Key { get; }
 
     private AttributeKey(string key)
@@ -25,9 +23,14 @@ public record AttributeKey
         
         string trimmedKey = key.Trim();
         
-        if (trimmedKey.Length is > MaxKeyLength or < MinKeyLength)
+        if (trimmedKey.Length is > CatalogConstants.Attribute.MaxKeyLength 
+                              or < CatalogConstants.Attribute.MinKeyLength)
+        {
             throw new DomainException(
-                $"Attribute key must be between {MaxKeyLength} and {MinKeyLength} characters.");
+                $"Attribute key must be between " +
+                $"{CatalogConstants.Attribute.MaxKeyLength} and " +
+                $"{CatalogConstants.Attribute.MinKeyLength} characters.");
+        }
 
         return trimmedKey;
     }

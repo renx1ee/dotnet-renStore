@@ -171,7 +171,7 @@ public sealed class ProductVariant
         string description,
         string composition,
         string? caringOfThings = null,
-        TypeOfPacking? typeOfPackaging = null,
+        TypeOfPacking? typeOfPacking = null,
         string? modelFeatures = null,
         string? decorativeElements = null,
         string? equipment = null)
@@ -204,7 +204,7 @@ public sealed class ProductVariant
             Description: trimmedDescription,
             Composition: trimmedComposition,
             CaringOfThings: trimmedCaringOfThings,
-            TypeOfPackaging: typeOfPackaging));
+            TypeOfPackaging: typeOfPacking));
     }
 
     public Guid AddAttribute(

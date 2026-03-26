@@ -5,5 +5,12 @@ internal sealed class ActivateSubCategoryCommandValidator
 {
     public ActivateSubCategoryCommandValidator()
     {
+        RuleFor(x => x.CategoryId)
+            .NotEmpty()
+            .WithMessage("Category ID cannot be empty guid.");
+        
+        RuleFor(x => x.SubCategoryId)
+            .NotEmpty()
+            .WithMessage("Sub Category ID cannot be empty guid.");
     }
 }

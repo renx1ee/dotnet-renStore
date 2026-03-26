@@ -23,7 +23,7 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
-            typeOfPackaging: TypeOfPacking.Box,
+            typeOfPacking: TypeOfPacking.Box,
             modelFeatures: "model features features features features",
             decorativeElements: "decorative elements elements elements elements",
             equipment: "equipment equipment equipment equipment equipment equipment");
@@ -61,7 +61,7 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
-            typeOfPackaging: TypeOfPacking.Box,
+            typeOfPacking: TypeOfPacking.Box,
             modelFeatures: "model features features features features",
             decorativeElements: "decorative elements elements elements elements",
             equipment: "equipment equipment equipment equipment equipment equipment");
@@ -94,7 +94,7 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
-            typeOfPackaging: TypeOfPacking.Box,
+            typeOfPacking: TypeOfPacking.Box,
             modelFeatures: "model features features features features",
             decorativeElements: "decorative elements elements elements elements",
             equipment: "equipment equipment equipment equipment equipment equipment");

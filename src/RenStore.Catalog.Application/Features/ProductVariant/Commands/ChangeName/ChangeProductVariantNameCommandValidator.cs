@@ -1,3 +1,5 @@
+using RenStore.Catalog.Domain.Constants;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.ChangeName;
 
 internal sealed class ChangeProductVariantNameCommandValidator
@@ -10,8 +12,8 @@ internal sealed class ChangeProductVariantNameCommandValidator
             .WithMessage("Variant ID cannot be empty guid.");
         
         RuleFor(p => p.Name)
-            .MinimumLength(10)
-            .MaximumLength(500)
+            .MinimumLength(CatalogConstants.ProductVariant.MinProductNameLength)
+            .MaximumLength(CatalogConstants.ProductVariant.MaxProductNameLength)
             .NotNull()
             .NotEmpty()
             .WithMessage("Product variant name cannot be null or empty.");

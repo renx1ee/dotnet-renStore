@@ -5,5 +5,8 @@ internal sealed class ActivateCategoryCommandValidator
 {
     public ActivateCategoryCommandValidator()
     {
+        RuleFor(x => x.CategoryId)
+            .NotEmpty()
+            .WithMessage("Category ID cannot be empty guid.");
     }
 }

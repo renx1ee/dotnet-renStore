@@ -1,5 +1,3 @@
-using RenStore.Catalog.Application.Features.Category.Commands.ActivateSubCategory;
-
 namespace RenStore.Catalog.Application.Features.Category.Commands.RestoreSubCategory;
 
 internal sealed class RestoreSubCategoryCommandValidator
@@ -7,5 +5,12 @@ internal sealed class RestoreSubCategoryCommandValidator
 {
     public RestoreSubCategoryCommandValidator()
     {
+        RuleFor(x => x.CategoryId)
+            .NotEmpty()
+            .WithMessage("Category ID cannot be empty guid.");
+        
+        RuleFor(x => x.CategoryId)
+            .NotEmpty()
+            .WithMessage("Sub Category ID cannot be empty guid.");
     }
 }

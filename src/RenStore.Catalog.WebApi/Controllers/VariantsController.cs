@@ -1,9 +1,10 @@
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddAttribute;
-using RenStore.Catalog.Application.Features.ProductVariant.Commands.DetailsUpdate;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddDetails;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.Restore;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateDetails;
 
 namespace RenStore.Catalog.WebApi.Controllers;
 
@@ -130,6 +131,28 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
             new ChangeProductVariantNameCommand(
                 VariantId: variantId,
                 Name: request.Name));
+        
+        return NoContent();
+    }
+    
+    [HttpPut("manage/variants/{variantId:guid}/details")]
+    [Authorize(Roles = Roles.Seller)]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> AddDetails(
+        [FromRoute] Guid variantId,
+        [FromBody] AddVariantDetailsRequest request)
+    {
+        await _mediator.Send(
+            new AddVariantDetailsCommand(
+                VariantId: variantId,
+                CountryOfManufactureId: request.CountryOfManufactureId,
+                Description: request.Description,
+                Composition: request.Composition,
+                ModelFeatures: request.ModelFeatures,
+                DecorativeElements: request.DecorativeElements,
+                Equipment: request.Equipment,
+                CaringOfThings: request.CaringOfThings,
+                TypeOfPacking: request.TypeOfPacking));
         
         return NoContent();
     }

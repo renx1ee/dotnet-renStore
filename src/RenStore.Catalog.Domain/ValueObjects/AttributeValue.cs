@@ -1,12 +1,10 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.ValueObjects;
 
 public record AttributeValue
 {
-    private const int MaxValueLength = 500;
-    private const int MinValueLength = 1;
-    
     public string Value { get; }
 
     private AttributeValue(string value)
@@ -25,9 +23,14 @@ public record AttributeValue
         
         var trimmedValue = value.Trim();
         
-        if (trimmedValue.Length is > MaxValueLength or < MinValueLength)
+        if (trimmedValue.Length is > CatalogConstants.Attribute.MaxValueLength 
+                                or < CatalogConstants.Attribute.MinValueLength)
+        {
             throw new DomainException(
-                $"Attribute value must be between {MaxValueLength} and {MinValueLength} characters.");
+                $"Attribute value must be between " +
+                $"{CatalogConstants.Attribute.MaxValueLength} and " +
+                $"{CatalogConstants.Attribute.MinValueLength} characters.");
+        }
 
         return trimmedValue;
     }

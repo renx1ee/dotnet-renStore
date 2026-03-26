@@ -2,12 +2,10 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
-public record StockSet(
+public sealed record StockSetEvent(
+    Guid EventId,
     DateTimeOffset OccurredAt,
     Guid SizeId,
     Guid VariantSizeId,
     int NewStock)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

@@ -1,12 +1,12 @@
+using RenStore.Inventory.Domain.Enums;
 using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
-public record StockSaleReturned(
+public sealed record StockWrittenOffEvent(
+    Guid EventId,
     DateTimeOffset OccurredAt,
+    WriteOffReason Reason,
     Guid StockId,
     int Count)
-    : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-}
+    : IDomainEvent;

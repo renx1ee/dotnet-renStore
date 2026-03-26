@@ -15,6 +15,6 @@ internal sealed class AddPriceToVariantSizeCommandValidator
 
         RuleFor(s => s.Price)
             .GreaterThan(0)
-            .WithMessage("Price cannot be ");
+            .WithMessage("Price cannot be greater than 0.");
     }
 }

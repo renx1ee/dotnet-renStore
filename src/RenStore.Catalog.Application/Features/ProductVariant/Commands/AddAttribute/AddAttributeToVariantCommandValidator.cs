@@ -1,3 +1,5 @@
+using RenStore.Catalog.Domain.Constants;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddAttribute;
 
 internal sealed class AddAttributeToVariantCommandValidator
@@ -10,17 +12,23 @@ internal sealed class AddAttributeToVariantCommandValidator
             .WithMessage("Variant ID cannot be empty guid.");
         
         RuleFor(p => p.Key)
-            .MinimumLength(10)
-            .MaximumLength(500)
+            .MinimumLength(CatalogConstants.Attribute.MinKeyLength)
+            .MaximumLength(CatalogConstants.Attribute.MaxKeyLength)
             .NotNull()
             .NotEmpty()
-            .WithMessage("Attribute key lenght must be between 10 and 500.");
+            .WithMessage(
+                $"Attribute key lenght must be between " +
+                $"{CatalogConstants.Attribute.MinKeyLength} and " +
+                $"{CatalogConstants.Attribute.MaxKeyLength}.");
         
         RuleFor(p => p.Value)
-            .MinimumLength(10)
-            .MaximumLength(500)
+            .MinimumLength(CatalogConstants.Attribute.MinValueLength)
+            .MaximumLength(CatalogConstants.Attribute.MaxValueLength)
             .NotNull()
             .NotEmpty()
-            .WithMessage("Attribute value lenght must be between 10 and 500.");
+            .WithMessage(
+                $"Attribute value lenght must be between " +
+                $"{CatalogConstants.Attribute.MinValueLength} and " +
+                $"{CatalogConstants.Attribute.MaxValueLength}.");
     }
 }

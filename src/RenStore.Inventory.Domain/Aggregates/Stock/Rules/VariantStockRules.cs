@@ -1,12 +1,10 @@
+using RenStore.Inventory.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Inventory.Domain.Aggregates.Stock.Rules;
 
 internal static class VariantStockRules
 {
-    private const int MaxInStock = 100000;
-    private const int MinInStock = 0;
-    
     /// <summary>
     /// Validates inventory quantity for a size option.
     /// </summary>
@@ -20,8 +18,9 @@ internal static class VariantStockRules
     /// </remarks>
     internal static void InStockValidate(int amount)
     {
-        if(amount is > MaxInStock or < MinInStock)
-            throw new DomainException($"Variant Size amount must be between {MinInStock} and {MaxInStock}.");
+        if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount or < InventoryConstants.VariantStock.MinInventoryStockCount)
+            throw new DomainException(
+                $"Variant Size amount must be between {InventoryConstants.VariantStock.MaxInventoryStockCount} and {InventoryConstants.VariantStock.MinInventoryStockCount}.");
     }
     
     /// <summary>
@@ -37,8 +36,9 @@ internal static class VariantStockRules
     /// </remarks>
     internal static void ChangeCountValidate(int amount)
     {
-        if(amount is > MaxInStock or < 1)
-            throw new DomainException($"Variant Size count must be between {1} and {MaxInStock}.");
+        if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount or < 1)
+            throw new DomainException(
+                $"Variant Size count must be between {InventoryConstants.VariantStock.MinInventoryStockCount} and {InventoryConstants.VariantStock.MaxInventoryStockCount}.");
     }
     
     /// <summary>

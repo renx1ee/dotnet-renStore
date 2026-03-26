@@ -41,6 +41,11 @@ public sealed class VariantStock
     public DateTimeOffset? UpdatedAt { get; private set; }
     
     /// <summary>
+    /// Unique identifier of the variant.
+    /// </summary>
+    public Guid VariantId { get; private set; }
+    
+    /// <summary>
     /// Unique identifier of the variant size.
     /// </summary>
     public Guid SizeId { get; private set; }
@@ -51,19 +56,22 @@ public sealed class VariantStock
 
     public static VariantStock Create(
         DateTimeOffset now,
+        Guid sizeId,
         Guid variantId,
         int initialStock)
     {
         VariantStockRules.ValidateInStock(initialStock);
-
         VariantStockRules.ProductVariantIdValidate(variantId);
+        VariantStockRules.ProductVariantIdValidate(sizeId);
 
         var stockId = Guid.NewGuid();
         var variant = new VariantStock();
         
-        variant.Raise(new StockCreated(
+        variant.Raise(new StockCreatedEvent(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
-            SizeId: variantId,
+            SizeId: sizeId,
+            VariantId: variantId,
             StockId: stockId,
             InitialStock: initialStock));
 
@@ -78,7 +86,8 @@ public sealed class VariantStock
         VariantStockRules.InStockValidate(count);
         VariantStockRules.AddToStockValidation(count);
 
-        Raise(new StockAdded(
+        Raise(new StockAddedEvent(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             StockId: Id,
             Count: count));
@@ -93,7 +102,8 @@ public sealed class VariantStock
         VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
         VariantStockRules.ChangeCountValidate(count);
 
-        Raise(new StockWrittenOff(
+        Raise(new StockWrittenOffEvent(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             StockId: Id,
             Reason: reason,
@@ -108,7 +118,8 @@ public sealed class VariantStock
         VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
         VariantStockRules.ChangeCountValidate(count);
         
-        Raise(new StockSold(
+        Raise(new StockSoldEvent(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             StockId: Id,
             Count: count));
@@ -122,7 +133,8 @@ public sealed class VariantStock
         VariantStockRules.ReturnSoldValidation(count, Sales);
         VariantStockRules.ChangeCountValidate(count);
         
-        Raise(new StockSaleReturned(
+        Raise(new StockSaleReturnedEvent(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             StockId: Id,
             Count: count));
@@ -139,7 +151,8 @@ public sealed class VariantStock
         
         if(InStock == newStock) return;
         
-        Raise(new StockSet(
+        Raise(new StockSetEvent(
+            EventId: Guid.NewGuid(), 
             OccurredAt: now,
             SizeId: Id,
             VariantSizeId: sizeId,
@@ -150,37 +163,38 @@ public sealed class VariantStock
     {
         switch (@event)
         {
-            case StockCreated e:
+            case StockCreatedEvent e:
                 Id = e.StockId;
                 CreatedAt = e.OccurredAt;
                 SizeId = e.SizeId;
+                VariantId = e.VariantId;
                 InStock = e.InitialStock;
                 Sales = 0;
                 break;
             
-            case StockAdded e:
+            case StockAddedEvent e:
                 InStock += e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case StockWrittenOff e:
+            case StockWrittenOffEvent e:
                 InStock -= e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case StockSold e:
+            case StockSoldEvent e:
                 InStock -= e.Count;
                 Sales += e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case StockSaleReturned e:
+            case StockSaleReturnedEvent e:
                 InStock += e.Count;
                 Sales -= e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
             
-            case StockSet e:
+            case StockSetEvent e:
                 InStock = e.NewStock;
                 UpdatedAt = e.OccurredAt;
                 break;

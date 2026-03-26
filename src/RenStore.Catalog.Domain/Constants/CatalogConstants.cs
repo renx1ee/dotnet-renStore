@@ -2,6 +2,15 @@ namespace RenStore.Catalog.Domain.Constants;
 
 public static class CatalogConstants
 {
+    public static class Category
+    {
+        public const int MaxCategoryNameLength        = 100;
+        public const int MinCategoryNameLength        = 2;
+    
+        public const int MaxDescriptionLength         = 500;
+        public const int MinDescriptionLength         = 1;
+    }
+    
     public static class Product
     {
         public const int MaxVariantsCount             = 50;
@@ -63,5 +72,14 @@ public static class CatalogConstants
         public const int MinUrlLength                = 25;
 
         public const int MaxAttributesCount          = 50;
+    }
+
+    public static class Attribute
+    {
+        public const int MaxValueLength = 500;
+        public const int MinValueLength = 1;
+        
+        public const int MaxKeyLength = 100;
+        public const int MinKeyLength = 1;
     }
 }

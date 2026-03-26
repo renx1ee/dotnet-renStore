@@ -1,25 +1,26 @@
+using RenStore.Catalog.Domain.Constants;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Domain.Aggregates.Category.Rules;
 
 public static class CategoryRules 
 {
-    private const int MaxCategoryNameLength = 100;
-    private const int MinCategoryNameLength = 2;
-    
-    private const int MaxDescriptionLength  = 500;
-    private const int MinDescriptionLength  = 1;
-    
     internal static string NormalizeAndValidateName(string name)
     {
         var trimmedName = name.Trim();
         
         if(string.IsNullOrWhiteSpace(trimmedName))
             throw new DomainException("Category name cannot be null or whitespace.");
-        
-        if(trimmedName.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category nameRu length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
 
+        if (trimmedName.Length is < CatalogConstants.Category.MinCategoryNameLength
+                               or > CatalogConstants.Category.MaxCategoryNameLength)
+        {
+            throw new DomainException(
+                $"Category nameRu length must be between " +
+                $"{CatalogConstants.Category.MaxCategoryNameLength} and " +
+                $"{CatalogConstants.Category.MinCategoryNameLength}.");
+        }
+        
         return trimmedName;
     }
     
@@ -30,8 +31,14 @@ public static class CategoryRules
         if(string.IsNullOrWhiteSpace(trimmedNameRu))
             throw new DomainException("Category name ru cannot be null or whitespace.");
         
-        if(trimmedNameRu.Length is < MinCategoryNameLength or > MaxCategoryNameLength)
-            throw new DomainException($"Category nameRu ru length must be between {MaxCategoryNameLength} and {MinCategoryNameLength}.");
+        if(trimmedNameRu.Length is < CatalogConstants.Category.MinCategoryNameLength 
+                                or > CatalogConstants.Category.MaxCategoryNameLength)
+        {
+            throw new DomainException(
+                $"Category nameRu ru length must be between " +
+                $"{CatalogConstants.Category.MaxCategoryNameLength} and " +
+                $"{CatalogConstants.Category.MinCategoryNameLength}.");
+        }
 
         return trimmedNameRu;
     }
@@ -42,8 +49,14 @@ public static class CategoryRules
         
         var trimmedDescription = description.Trim();
         
-        if(trimmedDescription.Length is > MaxDescriptionLength or < MinDescriptionLength)
-            throw new DomainException($"Category description length must be between {MaxDescriptionLength} and {MinDescriptionLength}.");
+        if(trimmedDescription.Length is > CatalogConstants.Category.MaxDescriptionLength 
+                                     or < CatalogConstants.Category.MinDescriptionLength)
+        {
+            throw new DomainException(
+                $"Category description length must be between " +
+                $"{CatalogConstants.Category.MaxDescriptionLength} and " +
+                $"{CatalogConstants.Category.MinDescriptionLength}.");
+        }
 
         return trimmedDescription;
     }
