@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using RenStore.Inventory.Domain.Aggregates.Stock.Events;
 using RenStore.Inventory.Domain.Aggregates.Stock.Rules;
 using RenStore.Inventory.Domain.Enums;
@@ -199,5 +200,18 @@ public sealed class VariantStock
                 UpdatedAt = e.OccurredAt;
                 break;
         }
+    }
+
+    public static VariantStock Rehydrate(IEnumerable<IDomainEvent> history)
+    {
+        var stock = new VariantStock();
+
+        foreach (var @event in history)
+        {
+            stock.Apply(@event);
+            stock.Version++;
+        }
+
+        return stock;
     }
 }
