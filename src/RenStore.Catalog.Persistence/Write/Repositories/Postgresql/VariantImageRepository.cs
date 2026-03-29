@@ -5,7 +5,7 @@ using RenStore.Catalog.Domain.Aggregates.Media;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public sealed class VariantImageRepository
+internal sealed class VariantImageRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IVariantImageRepository   
 {
     private readonly IEventStore _eventStore;

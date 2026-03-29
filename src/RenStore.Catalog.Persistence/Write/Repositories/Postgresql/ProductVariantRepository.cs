@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public sealed class ProductVariantRepository
+internal sealed class ProductVariantRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IProductVariantRepository
 {
     private readonly IEventStore _eventStore;

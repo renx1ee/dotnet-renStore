@@ -5,7 +5,7 @@ using RenStore.Catalog.Domain.Aggregates.Product;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public sealed class ProductRepository
+internal sealed class ProductRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IProductRepository
 {
     private readonly IEventStore _eventStore;

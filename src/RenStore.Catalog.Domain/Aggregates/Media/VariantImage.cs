@@ -1,4 +1,5 @@
 using RenStore.Catalog.Domain.Aggregates.Media.Events;
+using RenStore.Catalog.Domain.Aggregates.Media.Rules;
 using RenStore.Catalog.Domain.Aggregates.Variant.Rules;
 using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -141,6 +142,27 @@ public sealed class VariantImage
             FileSizeBytes: fileSizeBytes));
     }
     
+    public void SetAsMain(DateTimeOffset now)
+    {
+        if(IsMain) return;
+
+        Raise(new ImageMainSetEvent(
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            ImageId: Id));
+    }
+    
+    public void UnsetAsMain(DateTimeOffset now)
+    {
+        if(!IsMain) return;
+
+        Raise(new ImageMainUnsetEvent(
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            VariantId: VariantId,
+            ImageId: Id));
+    }
+    
     public void Delete(
         Guid updatedById,
         string updatedByRole,
@@ -148,7 +170,7 @@ public sealed class VariantImage
     {
         EnsureNotDeleted();
         
-        UpdatedByParametersValidation(
+        VariantImageRules.UpdatedByParametersValidation(
             updatedById: updatedById,
             updatedByRole: updatedByRole);
         
@@ -168,7 +190,7 @@ public sealed class VariantImage
         if(!IsDeleted)
             throw new DomainException("Image was not deleted.");
         
-        UpdatedByParametersValidation(
+        VariantImageRules.UpdatedByParametersValidation(
             updatedById: updatedById,
             updatedByRole: updatedByRole);
         
@@ -177,27 +199,6 @@ public sealed class VariantImage
             UpdatedByRole: updatedByRole,
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
-            ImageId: Id));
-    }
-    
-    public void SetAsMain(DateTimeOffset now)
-    {
-        if(IsMain) return;
-
-        Raise(new ImageMainSetEvent(
-            EventId: Guid.NewGuid(), 
-            OccurredAt: now,
-            ImageId: Id));
-    }
-    
-    public void UnsetAsMain(DateTimeOffset now)
-    {
-        if(!IsMain) return;
-
-        Raise(new ImageMainUnsetEvent(
-            EventId: Guid.NewGuid(), 
-            OccurredAt: now,
-            VariantId: VariantId,
             ImageId: Id));
     }
     
@@ -290,18 +291,5 @@ public sealed class VariantImage
     {
         if (IsDeleted)
             throw new DomainException(message ?? "Entity is deleted.");
-    }
-    
-    private static void UpdatedByParametersValidation(
-        Guid updatedById,
-        string updatedByRole)
-    {
-        if (updatedById == Guid.Empty)
-            throw new DomainException(
-                "Updated By ID cannot be empty guid.");
-
-        if (string.IsNullOrWhiteSpace(updatedByRole))
-            throw new DomainException(
-                "Updated By role cannot be empty string.");
     }
 }

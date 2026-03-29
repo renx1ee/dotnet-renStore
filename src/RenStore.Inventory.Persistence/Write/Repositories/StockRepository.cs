@@ -5,7 +5,7 @@ using RenStore.Inventory.Domain.Aggregates.Stock;
 
 namespace RenStore.Inventory.Persistence.Write.Repositories;
 
-public sealed class StockRepository 
+internal sealed class StockRepository 
     : RenStore.Inventory.Domain.Interfaces.Repository.IStockRepository
 {
     private readonly IEventStore _eventStore;

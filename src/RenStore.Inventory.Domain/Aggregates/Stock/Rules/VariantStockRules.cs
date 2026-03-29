@@ -18,9 +18,14 @@ internal static class VariantStockRules
     /// </remarks>
     internal static void InStockValidate(int amount)
     {
-        if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount or < InventoryConstants.VariantStock.MinInventoryStockCount)
+        if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount 
+                  or < InventoryConstants.VariantStock.MinInventoryStockCount)
+        {
             throw new DomainException(
-                $"Variant Size amount must be between {InventoryConstants.VariantStock.MaxInventoryStockCount} and {InventoryConstants.VariantStock.MinInventoryStockCount}.");
+                $"Variant Size amount must be between " +
+                $"{InventoryConstants.VariantStock.MaxInventoryStockCount} and " +
+                $"{InventoryConstants.VariantStock.MinInventoryStockCount}.");
+        }
     }
     
     /// <summary>
@@ -37,8 +42,12 @@ internal static class VariantStockRules
     internal static void ChangeCountValidate(int amount)
     {
         if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount or < 1)
+        {
             throw new DomainException(
-                $"Variant Size count must be between {InventoryConstants.VariantStock.MinInventoryStockCount} and {InventoryConstants.VariantStock.MaxInventoryStockCount}.");
+                $"Variant Size count must be between " +
+                $"{InventoryConstants.VariantStock.MinInventoryStockCount} and " +
+                $"{InventoryConstants.VariantStock.MaxInventoryStockCount}.");
+        }
     }
     
     /// <summary>
@@ -54,36 +63,56 @@ internal static class VariantStockRules
     internal static void ValidateInStock(int inStock)
     {
         if(inStock < 0)
-            throw new DomainException("InStock cannot be less then 0.");
+            throw new DomainException(
+                "InStock cannot be less then 0.");
     }
 
     internal static void ProductVariantIdValidate(Guid variantId)
     {
         if(variantId == Guid.Empty)
-            throw new DomainException("Variant ID cannto be guid empty.");
+            throw new DomainException(
+                "Variant ID cannot be guid empty.");
     }
     
     internal static void AddToStockValidation(int count)
     {
         if (count <= 0)
-            throw new DomainException("Cannot sell 0 or less products.");
+            throw new DomainException(
+                "Cannot sell 0 or less products.");
     }
 
     internal static void ReturnSoldValidation(int count, int sales)
     {
         if (count <= 0)
-            throw new DomainException("Cannot sell 0 or less products.");
+            throw new DomainException(
+                "Cannot sell 0 or less products.");
         
         if (sales < count)
-            throw new DomainException("Returned quantity exceeds sold quantity.");
+            throw new DomainException(
+                "Returned quantity exceeds sold quantity.");
     }
 
     internal static void RemoveFromStockCommonValidation(int count, int inStock)
     {
         if (count <= 0)
-            throw new DomainException("Cannot sell 0 or less products.");
+            throw new DomainException(
+                "Cannot sell 0 or less products.");
         
         if(count > inStock)
-            throw new DomainException("The count of sells exceed available count.");
+            throw new DomainException(
+                "The count of sells exceed available count.");
+    }
+    
+    internal static void UpdatedByParametersValidation(
+        Guid updatedById,
+        string updatedByRole)
+    {
+        if (updatedById == Guid.Empty)
+            throw new DomainException(
+                "Updated By ID cannot be empty guid.");
+
+        if (string.IsNullOrWhiteSpace(updatedByRole))
+            throw new DomainException(
+                "Updated By role cannot be empty string.");
     }
 }

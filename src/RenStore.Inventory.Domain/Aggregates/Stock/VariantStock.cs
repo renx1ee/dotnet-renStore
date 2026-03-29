@@ -1,8 +1,8 @@
-using System.Runtime.InteropServices;
 using RenStore.Inventory.Domain.Aggregates.Stock.Events;
 using RenStore.Inventory.Domain.Aggregates.Stock.Rules;
 using RenStore.Inventory.Domain.Enums;
 using RenStore.SharedKernal.Domain.Common;
+using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Inventory.Domain.Aggregates.Stock;
 // TODO: unique index в БД на VariantId: unique index в БД на VariantId
@@ -31,6 +31,10 @@ public sealed class VariantStock
     /// </remarks>
     public int Sales { get; private set; }
     
+    public bool IsDeleted { get; private set; }
+    
+    public WriteOffReason? Reason { get; private set; }
+    
     /// <summary>
     /// Date when the entity was created.
     /// </summary>
@@ -40,6 +44,12 @@ public sealed class VariantStock
     /// Date when the entity was updated.
     /// </summary>
     public DateTimeOffset? UpdatedAt { get; private set; }
+    
+    public DateTimeOffset? DeletedAt { get; private set; }
+    
+    public Guid UpdatedById { get; private set; } 
+    
+    public string UpdatedByRole { get; private set; } 
     
     /// <summary>
     /// Unique identifier of the variant.
@@ -83,7 +93,8 @@ public sealed class VariantStock
         DateTimeOffset now,
         int count)
     {
-        // TODO: разобраться с валидацией
+        EnsureNotDeleted();
+        
         VariantStockRules.InStockValidate(count);
         VariantStockRules.AddToStockValidation(count);
 
@@ -99,7 +110,8 @@ public sealed class VariantStock
         WriteOffReason reason,
         int count)
     {
-        // TODO: разобраться с валидацией
+        EnsureNotDeleted();
+        
         VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
         VariantStockRules.ChangeCountValidate(count);
 
@@ -115,7 +127,8 @@ public sealed class VariantStock
         DateTimeOffset now,
         int count)
     {
-        // TODO: разобраться с валидацией
+        EnsureNotDeleted();
+        
         VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
         VariantStockRules.ChangeCountValidate(count);
         
@@ -130,7 +143,8 @@ public sealed class VariantStock
         int count,
         DateTimeOffset now)
     {
-        // TODO: разобраться с валидацией
+        EnsureNotDeleted();
+        
         VariantStockRules.ReturnSoldValidation(count, Sales);
         VariantStockRules.ChangeCountValidate(count);
         
@@ -146,7 +160,8 @@ public sealed class VariantStock
         Guid sizeId,
         int newStock)
     {
-        // TODO: разобраться с валидацией
+        EnsureNotDeleted();
+        
         VariantStockRules.InStockValidate(newStock);
         VariantStockRules.ChangeCountValidate(newStock);
         
@@ -158,6 +173,52 @@ public sealed class VariantStock
             SizeId: Id,
             VariantSizeId: sizeId,
             NewStock: newStock));
+    }
+    
+    public void Delete(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+        
+        VariantStockRules.UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
+        
+        Raise(new StockSoftDeletedEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            SizeId: SizeId,
+            VariantId: VariantId,
+            StockId: Id));
+    }
+
+    public void Restore(
+        Guid updatedById,
+        string updatedByRole,
+        DateTimeOffset now)
+    {
+        if(!IsDeleted)
+        {
+            throw new DomainException(
+                "Image was not deleted.");
+        }
+        
+        VariantStockRules.UpdatedByParametersValidation(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole);
+        
+        Raise(new StockRestoredEvent(
+            UpdatedById: updatedById,
+            UpdatedByRole: updatedByRole,
+            EventId: Guid.NewGuid(), 
+            OccurredAt: now,
+            SizeId: SizeId,
+            VariantId: VariantId,
+            StockId: Id));
     }
     
     protected override void Apply(IDomainEvent @event)
@@ -181,6 +242,7 @@ public sealed class VariantStock
             case StockWrittenOffEvent e:
                 InStock -= e.Count;
                 UpdatedAt = e.OccurredAt;
+                Reason = e.Reason;
                 break;
             
             case StockSoldEvent e:
@@ -199,6 +261,22 @@ public sealed class VariantStock
                 InStock = e.NewStock;
                 UpdatedAt = e.OccurredAt;
                 break;
+            
+            case StockSoftDeletedEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
+                UpdatedAt = e.OccurredAt;
+                DeletedAt = e.OccurredAt;
+                IsDeleted = true;
+                break;
+            
+            case StockRestoredEvent e:
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
+                UpdatedAt = e.OccurredAt;
+                DeletedAt = null;
+                IsDeleted = false;
+                break;
         }
     }
 
@@ -213,5 +291,14 @@ public sealed class VariantStock
         }
 
         return stock;
+    }
+    
+    private void EnsureNotDeleted(string? message = null)
+    {
+        if (IsDeleted)
+        {
+            throw new DomainException(
+                message ?? "Entity is deleted.");
+        }
     }
 }

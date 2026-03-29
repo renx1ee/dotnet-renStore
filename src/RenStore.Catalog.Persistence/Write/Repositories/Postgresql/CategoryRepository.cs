@@ -5,7 +5,7 @@ using RenStore.Catalog.Domain.Aggregates.Category;
 
 namespace RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
-public sealed class CategoryRepository 
+internal sealed class CategoryRepository 
     : RenStore.Catalog.Domain.Interfaces.Repository.ICategoryRepository
 {
     private readonly IEventStore _eventStore;
