@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Application.Abstractions;
+namespace RenStore.Inventory.Application.Abstractions;
 
 public interface ICurrentUserService
 {

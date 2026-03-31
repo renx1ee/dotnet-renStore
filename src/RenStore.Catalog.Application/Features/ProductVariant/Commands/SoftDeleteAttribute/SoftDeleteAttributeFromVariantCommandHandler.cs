@@ -1,4 +1,5 @@
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAttribute;
+using RenStore.Catalog.Application.Service;
 
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveAttribute;
 

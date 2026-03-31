@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using RenStore.Catalog.Application.Abstractions;
+using RenStore.Catalog.Application.Service;
 
 namespace RenStore.Catalog.WebApi.Services;
 
@@ -19,7 +20,7 @@ internal sealed class CurrentUserService : ICurrentUserService
             var claim = _httpContextAccessor.HttpContext!.User
                     .FindFirst(ClaimTypes.NameIdentifier);
 
-            return Guid.NewGuid();
+            /*return Guid.NewGuid();*/
             
             return claim is null ? null : Guid.Parse(claim.Value);
         }
@@ -29,7 +30,7 @@ internal sealed class CurrentUserService : ICurrentUserService
     {
         get
         {
-            return "Admin";
+            /*return "Admin";*/
             
             return _httpContextAccessor.HttpContext!.User
                 .FindFirst(ClaimTypes.Role)!.Value;

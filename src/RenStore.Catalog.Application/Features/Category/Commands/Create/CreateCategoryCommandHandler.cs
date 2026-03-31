@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Service;
+
 namespace RenStore.Catalog.Application.Features.Category.Commands.Create;
 
 internal sealed class CreateCategoryCommandHandler

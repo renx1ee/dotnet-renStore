@@ -11,6 +11,7 @@ public sealed class InventoryDbContext(
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new EventEntityConfiguration());
         modelBuilder.ApplyConfiguration(new VariantReservationReadModelConfiguration());
         modelBuilder.ApplyConfiguration(new VariantStockReadModelConfiguration());
         

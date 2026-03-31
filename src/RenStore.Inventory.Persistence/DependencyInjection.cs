@@ -3,15 +3,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Inventory.Application.Abstractions;
 using RenStore.Inventory.Application.Abstractions.Projections;
+using RenStore.Inventory.Domain.Interfaces.Repository;
 using RenStore.Inventory.Persistence.EventStore;
 using RenStore.Inventory.Persistence.Write.Projections;
+using RenStore.Inventory.Persistence.Write.Repositories;
 
 namespace RenStore.Inventory.Persistence;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInventoryPersistence(
-        this ServiceCollection services,
+        this IServiceCollection services,
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -22,6 +24,9 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IEventStore, SqlEventStore>();
+        
+        services.AddScoped<IStockRepository, StockRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
         
         services.AddScoped<IReservationProjection, ReservationProjection>();
         services.AddScoped<IStockProjection, StockProjection>();

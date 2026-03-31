@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.Application", "src\RenStore.Inventory.Application\RenStore.Inventory.Application.csproj", "{7DD9052C-4BFC-4FEA-9AB8-B1CCA9818901}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.WebApi", "src\RenStore.Inventory.WebApi\RenStore.Inventory.WebApi.csproj", "{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,10 @@ Global
 		{7DD9052C-4BFC-4FEA-9AB8-B1CCA9818901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DD9052C-4BFC-4FEA-9AB8-B1CCA9818901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DD9052C-4BFC-4FEA-9AB8-B1CCA9818901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +199,7 @@ Global
 		{17E5617B-9D80-4EA9-B001-4B59A8D94987} = {663E3E56-E5CC-4CDA-B0D2-23DC5A0479A7}
 		{8BFB2058-0D02-4394-A136-3F9547769984} = {279C902D-4DFE-4EFC-B477-50B791824D3F}
 		{7DD9052C-4BFC-4FEA-9AB8-B1CCA9818901} = {27C677B5-66B3-448A-BACE-857D0B520D93}
+		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475} = {E7F576C7-B064-48DE-BF25-A8F8FCEACD82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {057C7BB5-998A-46BB-97AF-CF22F6A756CA}

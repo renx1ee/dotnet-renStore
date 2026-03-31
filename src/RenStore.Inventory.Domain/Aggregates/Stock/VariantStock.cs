@@ -95,8 +95,7 @@ public sealed class VariantStock
     {
         EnsureNotDeleted();
         
-        VariantStockRules.InStockValidate(count);
-        VariantStockRules.AddToStockValidation(count);
+        VariantStockRules.AddToStockValidation(InStock, count);
 
         Raise(new StockAddedEvent(
             EventId: Guid.NewGuid(), 
@@ -157,7 +156,6 @@ public sealed class VariantStock
     
     public void SetStock(
         DateTimeOffset now,
-        Guid sizeId,
         int newStock)
     {
         EnsureNotDeleted();
@@ -170,8 +168,8 @@ public sealed class VariantStock
         Raise(new StockSetEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
-            SizeId: Id,
-            VariantSizeId: sizeId,
+            SizeId: SizeId,
+            VariantSizeId: VariantId,
             NewStock: newStock));
     }
     
@@ -204,7 +202,7 @@ public sealed class VariantStock
         if(!IsDeleted)
         {
             throw new DomainException(
-                "Image was not deleted.");
+                "Stock was not deleted.");
         }
         
         VariantStockRules.UpdatedByParametersValidation(

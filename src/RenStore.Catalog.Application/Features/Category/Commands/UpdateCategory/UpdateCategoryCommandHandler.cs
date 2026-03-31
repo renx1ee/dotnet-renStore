@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Service;
+
 namespace RenStore.Catalog.Application.Features.Category.Commands.UpdateCategory;
 
 internal sealed class UpdateCategoryCommandHandler

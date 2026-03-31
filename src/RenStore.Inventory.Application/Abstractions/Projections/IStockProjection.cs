@@ -17,43 +17,48 @@ public interface IStockProjection
 
     Task AddToStockAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken);
 
     Task StockWriteOffAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         WriteOffReason reason,
         CancellationToken cancellationToken);
 
     Task SellAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken);
 
-    Task ReturnSaleSeleAsync(
+    Task ReturnSaleAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken);
 
     Task SetStockAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken);
 
     Task SoftDelete(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         CancellationToken cancellationToken);
 
     Task Restore(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
+        CancellationToken cancellationToken);
+
+    Task<bool> IsExistsAsync(
+        Guid variantId,
+        Guid sizeId,
         CancellationToken cancellationToken);
 
     void Remove(VariantStockReadModel stock);

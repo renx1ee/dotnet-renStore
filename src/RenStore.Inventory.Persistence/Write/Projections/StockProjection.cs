@@ -48,12 +48,12 @@ internal sealed class StockProjection
 
     public async Task AddToStockAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
 
         stock.InStock += count;
@@ -62,28 +62,28 @@ internal sealed class StockProjection
     
     public async Task StockWriteOffAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         WriteOffReason reason,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
         
-        stock.Reason = reason; 
+        stock.WriteOffReason = reason; 
         stock.InStock -= count;
         stock.UpdatedAt = now;
     }
     
     public async Task SellAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
         
         stock.InStock -= count;
@@ -91,14 +91,14 @@ internal sealed class StockProjection
         stock.UpdatedAt = now;
     }
     
-    public async Task ReturnSaleSeleAsync(
+    public async Task ReturnSaleAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
         
         stock.InStock += count;
@@ -108,12 +108,12 @@ internal sealed class StockProjection
     
     public async Task SetStockAsync(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         int count,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
         
         stock.InStock = count;
@@ -122,11 +122,11 @@ internal sealed class StockProjection
     
     public async Task SoftDelete(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
 
         stock.IsDeleted = true;
@@ -136,16 +136,30 @@ internal sealed class StockProjection
     
     public async Task Restore(
         DateTimeOffset now,
-        Guid reservationId,
+        Guid stockId,
         CancellationToken cancellationToken)
     {
         var stock = await GetAsync(
-            id: reservationId,
+            id: stockId,
             cancellationToken: cancellationToken);
 
         stock.IsDeleted = false;
         stock.UpdatedAt = now;
         stock.DeletedAt = null;
+    }
+
+    public async Task<bool> IsExistsAsync(
+        Guid variantId,
+        Guid sizeId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _context.Stocks
+            .AnyAsync(x =>
+                x.VariantId == variantId &&
+                x.SizeId == sizeId,
+                cancellationToken);
+
+        return result;
     }
     
     public void Remove(

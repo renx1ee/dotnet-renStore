@@ -185,6 +185,11 @@ public sealed class VariantReservation
                 break;
             
             case VariantReservationRestored e:
+                DeletedAt = null;
+                UpdatedAt = e.OccurredAt;
+                Status = ReservationStatus.Active;
+                UpdatedById = e.UpdatedById;
+                UpdatedByRole = e.UpdatedByRole;
                 break;
         }
     }

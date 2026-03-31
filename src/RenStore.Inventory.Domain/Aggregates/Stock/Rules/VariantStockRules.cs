@@ -41,7 +41,8 @@ internal static class VariantStockRules
     /// </remarks>
     internal static void ChangeCountValidate(int amount)
     {
-        if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount or < 1)
+        if(amount is > InventoryConstants.VariantStock.MaxInventoryStockCount 
+                  or < InventoryConstants.VariantStock.MinInventoryStockCount)
         {
             throw new DomainException(
                 $"Variant Size count must be between " +
@@ -74,11 +75,20 @@ internal static class VariantStockRules
                 "Variant ID cannot be guid empty.");
     }
     
-    internal static void AddToStockValidation(int count)
+    internal static void AddToStockValidation(
+        int currentStock,
+        int count)
     {
         if (count <= 0)
             throw new DomainException(
-                "Cannot sell 0 or less products.");
+                "Cannot add to stock 0 or less count.");
+        
+        if ((currentStock + count) > InventoryConstants.VariantStock.MaxInventoryStockCount)
+        {
+            throw new DomainException(
+                "Overall variant stock must be max: " +
+                $"{InventoryConstants.VariantStock.MaxInventoryStockCount}");
+        }
     }
 
     internal static void ReturnSoldValidation(int count, int sales)

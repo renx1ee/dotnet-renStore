@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Service;
+
 namespace RenStore.Catalog.Application.Features.Product.Commands.Approve;
 
 internal sealed class ApproveProductCommandHandler

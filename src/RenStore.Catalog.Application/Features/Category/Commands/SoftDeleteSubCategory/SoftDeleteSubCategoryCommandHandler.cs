@@ -1,4 +1,5 @@
 using RenStore.Catalog.Application.Features.Category.Commands.DeactivateSubCategory;
+using RenStore.Catalog.Application.Service;
 
 namespace RenStore.Catalog.Application.Features.Category.Commands.SoftDeleteSubCategory;
 

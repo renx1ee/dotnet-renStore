@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Service;
+
 namespace RenStore.Catalog.Application.Behaviors;
 
 internal sealed class SellerVariantAuthorizationBehavior<TRequest, TResponse>

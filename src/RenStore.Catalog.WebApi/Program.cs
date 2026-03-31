@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using RenStore.Catalog.Application;
-using RenStore.Catalog.Application.Abstractions;
+using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Persistence;
 using RenStore.Catalog.WebApi.Services;
 
@@ -40,7 +40,6 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
 }
 
 app.UseSwagger();

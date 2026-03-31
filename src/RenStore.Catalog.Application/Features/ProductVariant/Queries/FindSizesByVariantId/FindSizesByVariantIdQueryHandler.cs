@@ -1,3 +1,4 @@
+using RenStore.Catalog.Application.Service;
 using RenStore.SharedKernal.Domain.Constants;
 
 namespace RenStore.Catalog.Application.Features.ProductVariant.Queries.FindSizesByVariantId;

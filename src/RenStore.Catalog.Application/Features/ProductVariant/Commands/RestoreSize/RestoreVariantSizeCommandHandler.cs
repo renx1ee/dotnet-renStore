@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Service;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreSize;
 
 internal sealed class RestoreVariantSizeCommandHandler

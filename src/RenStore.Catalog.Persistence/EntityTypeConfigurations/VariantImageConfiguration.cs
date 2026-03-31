@@ -66,7 +66,7 @@ public sealed class VariantImageConfiguration
             .IsRequired(false);
         
         builder
-            .Property(x => x.UpdatedByRole)
+            .Property(x => x.UpdatedById)
             .HasColumnName("updated_by_id")
             .IsRequired();
             

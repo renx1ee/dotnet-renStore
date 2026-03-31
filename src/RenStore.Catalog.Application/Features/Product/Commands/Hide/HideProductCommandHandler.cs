@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Service;
+
 namespace RenStore.Catalog.Application.Features.Product.Commands.Hide;
 
 internal sealed class HideProductCommandHandler

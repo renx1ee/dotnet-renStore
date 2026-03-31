@@ -30,7 +30,7 @@ public sealed class ProductConfiguration
             .IsRequired();
         
         builder
-            .Property(x => x.UpdatedByRole)
+            .Property(x => x.UpdatedById)
             .HasColumnName("updated_by_id")
             .IsRequired(false);
             

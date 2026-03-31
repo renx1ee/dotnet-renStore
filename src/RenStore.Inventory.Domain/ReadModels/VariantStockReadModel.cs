@@ -19,7 +19,7 @@ public sealed class VariantStockReadModel
     /// </summary>
     public int Sales { get; set; }
     
-    public WriteOffReason? Reason { get; set; }
+    public WriteOffReason? WriteOffReason { get; set; }
     
     public bool IsDeleted { get; set; }
     
