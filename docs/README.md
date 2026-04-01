@@ -28,18 +28,24 @@ dotnet tool update --global dotnet-ef
 
 ### Using the tools
 
-#### Adding the first migration
+#### Adding the first catalog migration
 ```
-dotnet ef migrations add initial -c ApplicationDbContext --project ./RenStore.Persistence -s "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.WebApi"
-```
-```
-dotnet ef migrations add initial -c ApplicationDbContext --project ./RenStore.Persistence -s "/home/renx1ee/Documents/Projects/C#/ASP.Net Core/ShopDeveloped/RenStore.WebApi"
+ dotnet ef migrations add initial -c CatalogDbContext --project ./RenStore.Catalog.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Catalog.WebApi/RenStore.Catalog.WebApi.csproj"
 ```
 
-#### Migration update
+#### Catalog Migration update
 ```
-dotnet ef database update -c ApplicationDbContext --project ./RenStore.Persistence -s "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.WebApi" --verbose
+dotnet ef database update -c CatalogDbContext --project ./RenStore.Catalog.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Catalog.WebApi/RenStore.Catalog.WebApi.csproj"       
 ```
+
+#### Adding the first inventory migration
 ```
-dotnet ef database update -c ApplicationDbContext --project ./RenStore.Persistence -s "/home/renx1ee/Documents/Projects/C#/ASP.Net Core/ShopDeveloped/RenStore.WebApi"
+dotnet ef migrations add initial -c InventoryDbContext --project ./RenStore.Inventory.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Inventory.WebApi/RenStore.Inventory.WebApi.csproj"
 ```
+
+#### Inventory Migration update
+
+```
+dotnet ef database update -c InventoryDbContext --project ./RenStore.Inventory.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Inventory.WebApi/RenStore.Inventory.WebApi.csproj"
+```
+
