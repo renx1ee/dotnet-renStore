@@ -14,7 +14,6 @@ global using RenStore.Catalog.Application.Features.ProductVariant.Commands.Archi
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.ChangeName;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.Create;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishVariant;
-global using RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveSize;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreSize;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.SetMainImageId;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDelete;

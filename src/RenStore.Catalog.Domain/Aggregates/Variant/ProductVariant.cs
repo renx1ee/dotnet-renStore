@@ -677,6 +677,17 @@ public sealed class ProductVariant
         ProductVariantRules.UpdatedByParametersValidation(
             updatedById: updatedById,
             updatedByRole: updatedByRole);
+
+        foreach (var size in _sizes.Where(x => !x.IsDeleted))
+        {
+            Raise(new VariantSizeRemovedEvent(
+                UpdatedById: updatedById,
+                UpdatedByRole: updatedByRole,
+                EventId: Guid.NewGuid(), 
+                OccurredAt: now,
+                VariantId: Id,
+                SizeId: size.Id));
+        }
         
         Raise(new VariantRemovedEvent(
             UpdatedById: updatedById,

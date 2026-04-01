@@ -12,7 +12,7 @@ using RenStore.Inventory.Persistence;
 namespace RenStore.Inventory.Persistence.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20260401144506_initial")]
+    [Migration("20260401210438_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -69,12 +69,11 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_date");
 
-                    b.Property<Guid>("UpdatedById")
+                    b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uuid")
                         .HasColumnName("updated_by_id");
 
                     b.Property<string>("UpdatedByRole")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("updated_by_role");
@@ -127,12 +126,11 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_date");
 
-                    b.Property<Guid>("UpdatedById")
+                    b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uuid")
                         .HasColumnName("updated_by_id");
 
                     b.Property<string>("UpdatedByRole")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("updated_by_role");
@@ -141,7 +139,7 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("variant_id");
 
-                    b.Property<int>("WriteOffReason")
+                    b.Property<int?>("WriteOffReason")
                         .HasColumnType("integer")
                         .HasColumnName("write_off_reason");
 

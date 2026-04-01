@@ -44,13 +44,13 @@ internal sealed class VariantReservationReadModelConfiguration
         builder
             .Property(x => x.UpdatedById)
             .HasColumnName("updated_by_id")
-            .IsRequired();
+            .IsRequired(false);
             
         builder
             .Property(x => x.UpdatedByRole)
             .HasColumnName("updated_by_role")
             .HasMaxLength(20)
-            .IsRequired();
+            .IsRequired(false);
         
         builder
             .Property(v => v.CreatedAt)

@@ -34,9 +34,10 @@ internal sealed class StockWriteOffCommandHandler
                 request.StockId);
         }
         
-        stock.SetStock(
+        stock.StockWriteOff(
             now: DateTimeOffset.UtcNow,
-            newStock: request.Count);
+            reason: request.Reason,
+            count: request.Count);
 
         await _stockRepository.SaveAsync(stock, cancellationToken);
         

@@ -5,8 +5,12 @@ internal sealed class StockSoftDeleteCommandValidator
 {
     public StockSoftDeleteCommandValidator()
     {
-        RuleFor(x => x.StockId)
+        RuleFor(x => x.VariantId)
             .NotEmpty()
-            .WithMessage("Stock ID cannot be empty guid.");
+            .WithMessage("Variant ID cannot be empty guid.");
+        
+        RuleFor(x => x.SizeId)
+            .NotEmpty()
+            .WithMessage("Size ID cannot be empty guid.");
     }
 }

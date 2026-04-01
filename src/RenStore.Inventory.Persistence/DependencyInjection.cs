@@ -3,8 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Inventory.Application.Abstractions;
 using RenStore.Inventory.Application.Abstractions.Projections;
+using RenStore.Inventory.Application.Abstractions.ReadRepository;
 using RenStore.Inventory.Domain.Interfaces.Repository;
 using RenStore.Inventory.Persistence.EventStore;
+using RenStore.Inventory.Persistence.Read.Repository;
 using RenStore.Inventory.Persistence.Write.Projections;
 using RenStore.Inventory.Persistence.Write.Repositories;
 
@@ -27,6 +29,8 @@ public static class DependencyInjection
         
         services.AddScoped<IStockRepository, StockRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        
+        services.AddScoped<IStockReadRepository, StockReadRepository>();
         
         services.AddScoped<IReservationProjection, ReservationProjection>();
         services.AddScoped<IStockProjection, StockProjection>();

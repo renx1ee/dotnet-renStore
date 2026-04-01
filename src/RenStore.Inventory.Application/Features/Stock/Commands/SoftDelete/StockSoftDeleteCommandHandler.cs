@@ -1,3 +1,5 @@
+using RenStore.Inventory.Application.Abstractions.ReadRepository;
+
 namespace RenStore.Inventory.Application.Features.Stock.Commands.SoftDelete;
 
 internal sealed class StockSoftDeleteCommandHandler
@@ -5,15 +7,18 @@ internal sealed class StockSoftDeleteCommandHandler
 {
     private readonly ILogger<StockSoftDeleteCommandHandler> _logger;
     private readonly IStockRepository _stockRepository;
+    private readonly IStockReadRepository _stockReadRepository;
     private readonly ICurrentUserService _userService;
 
     public StockSoftDeleteCommandHandler(
         ILogger<StockSoftDeleteCommandHandler> logger,
         IStockRepository stockRepository,
+        IStockReadRepository stockReadRepository,
         ICurrentUserService userService)
     {
         _logger = logger;
         _stockRepository = stockRepository;
+        _stockReadRepository = stockReadRepository;
         _userService = userService;
     }
     
@@ -22,19 +27,32 @@ internal sealed class StockSoftDeleteCommandHandler
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "Handling {Command} with StockId: {StockId}",
+            "Handling {Command} with VariantId: {VariantId}, SizeId: {SizeId}",
             nameof(StockSoftDeleteCommand),
-            request.StockId);
+            request.VariantId,
+            request.SizeId);
 
+        var existingStock = await _stockReadRepository.GetAsync(
+            variantId: request.VariantId,
+            sizeId: request.SizeId,
+            cancellationToken: cancellationToken);
+        
+        if (existingStock is null)
+        {
+            throw new NotFoundException(
+                name: typeof(VariantStock),
+                request.VariantId);
+        }
+        
         var stock = await _stockRepository.GetAsync(
-            stockId: request.StockId,
+            stockId: existingStock.Id,
             cancellationToken: cancellationToken);
 
         if (stock is null)
         {
             throw new NotFoundException(
                 name: typeof(VariantStock),
-                request.StockId);
+                existingStock.Id);
         }
 
         if (_userService.UserId is null)
@@ -48,8 +66,9 @@ internal sealed class StockSoftDeleteCommandHandler
         await _stockRepository.SaveAsync(stock, cancellationToken);
         
         _logger.LogInformation(
-            "{Command} handled. StockId: {StockId}",
+            "Handling {Command} with VariantId: {VariantId}, SizeId: {SizeId}",
             nameof(StockSoftDeleteCommand),
-            request.StockId);
+            request.VariantId,
+            request.SizeId);
     }
 }

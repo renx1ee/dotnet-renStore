@@ -169,6 +169,7 @@ public sealed class VariantStock
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             SizeId: SizeId,
+            StockId: Id,
             VariantSizeId: VariantId,
             NewStock: newStock));
     }

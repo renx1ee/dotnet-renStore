@@ -35,9 +35,9 @@ public sealed class VariantStockReadModel
     
     public DateTimeOffset? DeletedAt { get; set; }
     
-    public Guid UpdatedById { get; set; } 
+    public Guid? UpdatedById { get; set; } 
     
-    public string UpdatedByRole { get; set; } 
+    public string? UpdatedByRole { get; set; } 
     
     /// <summary>
     /// Unique identifier of the variant.

@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenStore.Domain", ".\src\Re
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{06E80016-E69A-45D4-A486-F5DFFDB7F562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Tests", "src\RenStore.Tests\RenStore.Tests.csproj", "{98A22EAF-115F-436A-A033-129642242734}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MainOld", "MainOld", "{42102175-7488-4C41-A3C4-1A3764DE2766}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{956FE158-0876-4771-95C4-71CAB8902F1A}"
@@ -73,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.WebApi", "src\RenStore.Inventory.WebApi\RenStore.Inventory.WebApi.csproj", "{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.Messaging", "src\RenStore.Inventory.Messaging\RenStore.Inventory.Messaging.csproj", "{9DDC7D9A-8F03-4BE1-B592-CD183DA0F029}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,10 +87,6 @@ Global
 		{704133C5-85C9-4FC4-AC36-95574ABDF0B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{704133C5-85C9-4FC4-AC36-95574ABDF0B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{704133C5-85C9-4FC4-AC36-95574ABDF0B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98A22EAF-115F-436A-A033-129642242734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98A22EAF-115F-436A-A033-129642242734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98A22EAF-115F-436A-A033-129642242734}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98A22EAF-115F-436A-A033-129642242734}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F6198EB-605F-44E4-8B4D-1065FD32C57A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F6198EB-605F-44E4-8B4D-1065FD32C57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F6198EB-605F-44E4-8B4D-1065FD32C57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -163,6 +159,10 @@ Global
 		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DDC7D9A-8F03-4BE1-B592-CD183DA0F029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DDC7D9A-8F03-4BE1-B592-CD183DA0F029}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DDC7D9A-8F03-4BE1-B592-CD183DA0F029}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DDC7D9A-8F03-4BE1-B592-CD183DA0F029}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +200,7 @@ Global
 		{8BFB2058-0D02-4394-A136-3F9547769984} = {279C902D-4DFE-4EFC-B477-50B791824D3F}
 		{7DD9052C-4BFC-4FEA-9AB8-B1CCA9818901} = {27C677B5-66B3-448A-BACE-857D0B520D93}
 		{7727E1AB-B13F-46EF-8D96-A9F03ABF0475} = {E7F576C7-B064-48DE-BF25-A8F8FCEACD82}
+		{9DDC7D9A-8F03-4BE1-B592-CD183DA0F029} = {663E3E56-E5CC-4CDA-B0D2-23DC5A0479A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {057C7BB5-998A-46BB-97AF-CF22F6A756CA}

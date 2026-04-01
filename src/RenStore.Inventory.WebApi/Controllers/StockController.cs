@@ -1,6 +1,5 @@
 using Asp.Versioning;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RenStore.Inventory.Application.Features.Stock.Commands.AddToStock;
 using RenStore.Inventory.Application.Features.Stock.Commands.Set;
@@ -19,7 +18,7 @@ public sealed class StockController(IMediator mediator) : ControllerBase
     #region Commands
     
     [HttpPatch("{stockId}/add")]
-    [Authorize(Roles = "Seller")]
+    /*[Authorize(Roles = "Seller")]*/
     [ApiVersion(1)]
     public async Task<IActionResult> AddToStock(
         [FromRoute] Guid stockId,
@@ -36,7 +35,7 @@ public sealed class StockController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("{stockId}/write-off")]
-    [Authorize(Roles = "Seller")]
+    /*[Authorize(Roles = "Seller")]*/
     [ApiVersion(1)]
     public async Task<IActionResult> WriteOff(
         [FromRoute] Guid stockId,
@@ -54,7 +53,7 @@ public sealed class StockController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("{stockId}/set")]
-    [Authorize(Roles = "Seller")]
+    /*[Authorize(Roles = "Seller")]*/
     [ApiVersion(1)]
     public async Task<IActionResult> Set(
         [FromRoute] Guid stockId,

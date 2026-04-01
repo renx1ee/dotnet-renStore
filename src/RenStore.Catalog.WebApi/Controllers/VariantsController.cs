@@ -3,6 +3,7 @@ using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddDetails;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.Restore;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAttribute;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteSize;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateDetails;
 
@@ -210,10 +211,17 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 VariantId: variantId,
                 LetterSize: request.LetterSize), 
             cancellationToken);
+
+        return Ok(new 
+        {
+            Id = sizeId,
+            VariantId = variantId
+        });
+        
         // TODO: сделать поиск размера
         return CreatedAtAction(
             actionName: nameof(FindById),
-            routeValues: new { SizeId = sizeId },
+            routeValues: new { sizeId },
             value: new
             {
                 Id = sizeId,

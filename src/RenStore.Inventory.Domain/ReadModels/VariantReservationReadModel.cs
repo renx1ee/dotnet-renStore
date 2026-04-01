@@ -12,8 +12,8 @@ public sealed class VariantReservationReadModel
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset ExpiresAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
-    public Guid UpdatedById { get; private set; }
-    public string UpdatedByRole { get; private set; } = string.Empty;
+    public Guid? UpdatedById { get; private set; }
+    public string? UpdatedByRole { get; private set; } = string.Empty;
     public Guid VariantId { get; set; }
     public Guid SizeId { get; set; }
     public Guid OrderId { get; set; }

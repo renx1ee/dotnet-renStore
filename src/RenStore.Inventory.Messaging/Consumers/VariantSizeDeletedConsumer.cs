@@ -1,6 +1,7 @@
-/*using MassTransit;
-using MediatR;
+using MassTransit;
+using MediatR; 
 using RenStore.Catalog.Contracts.Events;
+using RenStore.Inventory.Application.Features.Stock.Commands.SoftDelete;
 
 namespace RenStore.Inventory.Messaging.Consumers;
 
@@ -20,9 +21,8 @@ internal sealed class VariantSizeDeletedConsumer
     {
         var message = context.Message;
         
-        /*await _mediator.Send(new StockSoftDeleteCommand(
+        await _mediator.Send(new StockSoftDeleteCommand(
             VariantId: message.VariantId,
-            SizeId: message.SizeId,
-            InitialStock: 0));#1#
+            SizeId: message.SizeId));
     }
-}*/
+}

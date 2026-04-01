@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.RemoveSize;
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteSize;
 
 public sealed record SoftDeleteVariantSizeCommand(
     Guid VariantId,

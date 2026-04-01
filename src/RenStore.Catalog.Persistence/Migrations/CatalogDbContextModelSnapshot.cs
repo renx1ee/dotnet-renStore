@@ -116,8 +116,9 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("integer")
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("currency");
 
                     b.Property<DateTimeOffset?>("DeactivatedAt")
@@ -460,20 +461,23 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("model_features");
 
-                    b.Property<int?>("TypeOfPacking")
-                        .HasColumnType("integer")
+                    b.Property<string>("TypeOfPacking")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("type_of_packing");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_date");
 
-                    b.Property<Guid>("UpdatedById")
-                        .HasColumnType("uuid");
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uuid")
+                        .HasColumnName("updated_by_id");
 
                     b.Property<string>("UpdatedByRole")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("updated_by_role");
 
                     b.Property<Guid>("VariantId")
                         .HasColumnType("uuid")
