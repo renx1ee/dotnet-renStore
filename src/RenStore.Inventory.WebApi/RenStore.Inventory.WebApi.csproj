@@ -10,11 +10,18 @@
         <PackageReference Include="Asp.Versioning.Http" Version="8.1.1" />
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RenStore.Inventory.Application\RenStore.Inventory.Application.csproj" />
+      <ProjectReference Include="..\RenStore.Inventory.Messaging\RenStore.Inventory.Messaging.csproj" />
       <ProjectReference Include="..\RenStore.Inventory.Persistence\RenStore.Inventory.Persistence.csproj" />
     </ItemGroup>
 

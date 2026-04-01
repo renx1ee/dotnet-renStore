@@ -11,16 +11,18 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     
     [HttpPost]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> CreateCategory(
-        [FromBody] CreateCategoryRequest request)
+        [FromBody] CreateCategoryRequest request,
+        CancellationToken cancellationToken)
     {
         var categoryId = await _mediator.Send(
             new CreateCategoryCommand(
                 Name: request.Name,
                 NameRu: request.NameRu,
                 IsActive: request.IsActive,
-                Description: request.Description));
+                Description: request.Description), 
+            cancellationToken);
 
         return categoryId == Guid.Empty
             ? BadRequest()
@@ -32,69 +34,79 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     
     [HttpPatch("{categoryId}")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> Update(
         [FromRoute] Guid categoryId,
-        [FromBody] UpdateCategoryRequest request)
+        [FromBody] UpdateCategoryRequest request,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new UpdateCategoryCommand(
                 CategoryId: categoryId,
                 Name: request.Name,
                 NameRu: request.NameRu,
-                Description: request.Description));
+                Description: request.Description), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("{categoryId}/activate")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> Activate(
-        [FromRoute] Guid categoryId)
+        [FromRoute] Guid categoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new ActivateCategoryCommand(
-                CategoryId: categoryId));
+                CategoryId: categoryId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("{categoryId}/deactivate")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> Deactivate(
-        [FromRoute] Guid categoryId)
+        [FromRoute] Guid categoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new DeactivateCategoryCommand(
-                CategoryId: categoryId));
+                CategoryId: categoryId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpDelete("{categoryId}")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> Delete(
-        [FromRoute] Guid categoryId)
+        [FromRoute] Guid categoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new SoftDeleteCategoryCommand(
-                CategoryId: categoryId));
+                CategoryId: categoryId),
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("{categoryId}/restore")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> Restore(
-        [FromRoute] Guid categoryId)
+        [FromRoute] Guid categoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new RestoreCategoryCommand(
-                CategoryId: categoryId));
+                CategoryId: categoryId),
+            cancellationToken);
         
         return NoContent();
     }
@@ -102,10 +114,11 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     
     [HttpPost("{categoryId}/sub-categories")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> CreateSubCategory(
         [FromRoute] Guid categoryId,
-        [FromBody] CreateSubCategoryRequest request)
+        [FromBody] CreateSubCategoryRequest request,
+        CancellationToken cancellationToken)
     {
         var subCategoryId = await _mediator.Send(
             new CreateSubCategoryCommand(
@@ -113,7 +126,8 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
                 Name: request.Name,
                 NameRu: request.NameRu,
                 IsActive: request.IsActive,
-                Description: request.Description));
+                Description: request.Description), 
+            cancellationToken);
 
         return subCategoryId == Guid.Empty
             ? BadRequest()
@@ -134,11 +148,12 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     
     [HttpPatch("{categoryId}/sub-categories/{subCategoryId}")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> UpdateSubCategory(
         [FromRoute] Guid categoryId,
         [FromRoute] Guid subCategoryId,
-        [FromBody] UpdateSubCategoryRequest request)
+        [FromBody] UpdateSubCategoryRequest request,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new UpdateSubCategoryCommand(
@@ -146,67 +161,76 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
                 SubCategoryId: subCategoryId,
                 Name: request.Name,
                 NameRu: request.NameRu,
-                Description: request.Description));
+                Description: request.Description), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("{categoryId}/sub-categories/{subCategoryId}/activate")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> ActivateSubCategory(
         [FromRoute] Guid categoryId,
-        [FromRoute] Guid subCategoryId)
+        [FromRoute] Guid subCategoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new ActivateSubCategoryCommand(
                 CategoryId: categoryId,
-                SubCategoryId: subCategoryId));
+                SubCategoryId: subCategoryId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("{categoryId}/sub-categories/{subCategoryId}/deactivate")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> DeactivateSubCategory(
         [FromRoute] Guid categoryId,
-        [FromRoute] Guid subCategoryId)
+        [FromRoute] Guid subCategoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new DeactivateSubCategoryCommand(
                 CategoryId: categoryId,
-                SubCategoryId: subCategoryId));
+                SubCategoryId: subCategoryId), 
+            cancellationToken);
         
         return NoContent();
     } 
     
     [HttpDelete("{categoryId}/sub-categories/{subCategoryId}")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> DeleteSubCategory(
         [FromRoute] Guid categoryId,
-        [FromRoute] Guid subCategoryId)
+        [FromRoute] Guid subCategoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new SoftDeleteSubCategoryCommand(
                 CategoryId: categoryId,
-                SubCategoryId: subCategoryId));
+                SubCategoryId: subCategoryId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("{categoryId}/sub-categories/{subCategoryId}/restore")]
     [ApiVersion(1)]
-    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")][Authorize]*/
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> RestoreSubCategory(
         [FromRoute] Guid categoryId,
-        [FromRoute] Guid subCategoryId)
+        [FromRoute] Guid subCategoryId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new RestoreSubCategoryCommand(
                 CategoryId: categoryId,
-                SubCategoryId: subCategoryId));
+                SubCategoryId: subCategoryId), 
+            cancellationToken);
         
         return NoContent();
     }
@@ -219,7 +243,8 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     [ApiVersion(1)]
     [AllowAnonymous]
     public async Task<IActionResult> FindCategoryById(
-        [FromRoute] Guid categoryId)
+        [FromRoute] Guid categoryId,
+        CancellationToken cancellationToken)
     {
         return Ok();
     }
@@ -229,7 +254,8 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> FindSubCategoryById(
         [FromRoute] Guid categoryId,
-        [FromRoute] Guid subCategoryId)
+        [FromRoute] Guid subCategoryId,
+        CancellationToken cancellationToken)
     {
         return Ok();
     }

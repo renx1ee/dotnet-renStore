@@ -20,8 +20,8 @@ public sealed class VariantAttributeReadModel
     /// </summary>
     public AttributeValue Value { get; set; }
     
-    public Guid UpdatedById { get; set; } 
-    public string UpdatedByRole { get; set; } 
+    public Guid? UpdatedById { get; set; } 
+    public string? UpdatedByRole { get; set; } 
     
     /// <summary>
     /// Indicates whether this attribute has been soft-deleted.

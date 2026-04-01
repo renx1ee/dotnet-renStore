@@ -1,3 +1,5 @@
+using RenStore.Catalog.Contracts.Events;
+
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddSize;
 
 internal sealed class AddSizeToVariantCommandHandler
@@ -6,15 +8,18 @@ internal sealed class AddSizeToVariantCommandHandler
     private readonly ILogger<AddSizeToVariantCommandHandler> _logger;
     private readonly IProductVariantRepository _variantRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IPublishEndpoint _publishEndpoint;
     
     public AddSizeToVariantCommandHandler(
         ILogger<AddSizeToVariantCommandHandler> logger,
         IProductVariantRepository variantRepository,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _variantRepository = variantRepository;
         _productRepository = productRepository;
+        _publishEndpoint = publishEndpoint;
     }
     
     public async Task<Guid> Handle(
@@ -51,6 +56,12 @@ internal sealed class AddSizeToVariantCommandHandler
             now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);
+
+        await _publishEndpoint.Publish(
+            new VariantSizeCreatedIntegrationEvent(
+                VariantId: request.VariantId,
+                SizeId: sizeId),
+            cancellationToken);
         
         _logger.LogInformation(
             "{Command} handled. VariantId: {VariantId}",

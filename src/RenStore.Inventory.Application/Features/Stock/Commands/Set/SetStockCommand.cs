@@ -1,4 +1,4 @@
-namespace RenStore.Inventory.Application.Features.Stock.Commands.SetStock;
+namespace RenStore.Inventory.Application.Features.Stock.Commands.Set;
 
 public sealed record SetStockCommand(
     Guid StockId,

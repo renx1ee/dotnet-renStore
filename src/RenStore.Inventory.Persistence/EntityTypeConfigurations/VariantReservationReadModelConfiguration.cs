@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Inventory.Domain.ReadModels;
+using RenStore.Inventory.Persistence.EntityTypeConfigurations.Conversions;
+using RenStore.Inventory.Persistence.EntityTypeConfigurations.Converters;
 
 namespace RenStore.Inventory.Persistence.EntityTypeConfigurations;
 
@@ -28,12 +30,16 @@ internal sealed class VariantReservationReadModelConfiguration
         builder
             .Property(x => x.Status)
             .HasColumnName("status")
-            .IsRequired(); // TODO: parsing to enum
+            .HasConversion(
+                r => VariantReservationConversion.ReservationStatusToDatabase(r),
+                r => VariantReservationConversion.ReservationStatusFromDatabase(r))
+            .IsRequired();
         
         builder
             .Property(x => x.CancelReason)
-            .HasColumnName("status")
-            .IsRequired(false); // TODO: parsing to enum
+            .HasColumnName("cancel_reason")
+            .HasConversion<CancelReasonConverter>()
+            .IsRequired(false);
         
         builder
             .Property(x => x.UpdatedById)
@@ -59,7 +65,7 @@ internal sealed class VariantReservationReadModelConfiguration
         builder
             .Property(x => x.ExpiresAt)
             .HasColumnName("expires_date")
-            .IsRequired(false);
+            .IsRequired();
             
         builder
             .Property(x => x.DeletedAt)

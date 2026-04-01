@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.ReadModels;
+using RenStore.Catalog.Persistence.EntityTypeConfigurations.Converters;
+using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
@@ -58,6 +60,19 @@ public sealed class VariantDetailConfiguration
         builder
             .Property(x => x.TypeOfPacking) // TODO: dictionary to database
             .HasColumnName("type_of_packing")
+            .HasConversion<TypeOfPackingConverter>()
+            .HasMaxLength(50)
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.UpdatedById)
+            .HasColumnName("updated_by_id")
+            .IsRequired(false);
+            
+        builder
+            .Property(x => x.UpdatedByRole)
+            .HasColumnName("updated_by_role")
+            .HasMaxLength(20)
             .IsRequired(false);
         
         builder

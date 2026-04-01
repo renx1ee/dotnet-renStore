@@ -24,25 +24,6 @@ public static class DependencyInjection
         {
             options.UseNpgsql(connectionString);
         });
-
-        /*services.AddMassTransit(x =>
-        {
-            /*x.AddConsumer<>();#1#
-            
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(
-                    host: configuration["RabbitMQ:Host"], 
-                    virtualHost: configuration["RabbitMQ:VHost"], 
-                    configure: h =>
-                {
-                    h.Username(configuration["RabbitMQ:Username"]);
-                    h.Password(configuration["RabbitMQ:Password"]);
-                });
-                
-                cfg.ConfigureEndpoints(context);
-            });
-        });*/
         
         services.AddScoped<IEventStore, SqlEventStore>();
         

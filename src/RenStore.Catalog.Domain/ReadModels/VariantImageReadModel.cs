@@ -11,8 +11,8 @@ public sealed class VariantImageReadModel
     public int Weight { get; set; }
     public int Height { get; set; }
     public bool IsDeleted { get; set; }
-    public Guid UpdatedById { get; set; } 
-    public string UpdatedByRole { get; set; }  
+    public Guid? UpdatedById { get; set; } 
+    public string? UpdatedByRole { get; set; }  
     public DateTimeOffset UploadedAt { get; set; } 
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

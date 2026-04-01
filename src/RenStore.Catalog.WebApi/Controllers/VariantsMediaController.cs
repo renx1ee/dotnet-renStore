@@ -13,10 +13,11 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Upload(
         Guid variantId,
         short sortOrder,
-        IFormFile file)
+        IFormFile file,
+        CancellationToken cancellationToken)
     {
         using var memoryStream = new MemoryStream();
-        await file.CopyToAsync(memoryStream);
+        await file.CopyToAsync(memoryStream, cancellationToken);
         memoryStream.Seek(0, SeekOrigin.Begin);
         
         var result = await _mediator.Send(
@@ -26,7 +27,8 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
                 FileName: file.FileName,
                 ContentType: file.ContentType,
                 SortOrder: sortOrder,
-                Stream: memoryStream));
+                Stream: memoryStream), 
+            cancellationToken);
         
         return result == Guid.Empty ? BadRequest() : Created();
     }
@@ -36,14 +38,16 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> Delete(
         Guid variantId,
-        Guid imageId)
+        Guid imageId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new DeleteVariantImageCommand(
                 UserId: User.GetUserId(),
                 Role: User.GetRole(),
                 VariantId: variantId,
-                ImageId: imageId));
+                ImageId: imageId), 
+            cancellationToken);
         
         return NoContent();
     }

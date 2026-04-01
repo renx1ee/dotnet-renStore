@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
+using MassTransit;
 using RenStore.Catalog.Application;
 using RenStore.Catalog.Application.Service;
+using RenStore.Catalog.Contracts.Events;
 using RenStore.Catalog.Persistence;
 using RenStore.Catalog.WebApi.Services;
 
@@ -35,6 +37,31 @@ builder.Services.AddApiVersioning(options =>
         options.GroupNameFormat = "'v'VVV";
         options.SubstituteApiVersionInUrl = true;
     });
+
+builder.Services.AddMassTransit(x =>
+{
+    /*x.AddConsumer<VariantCreatedConsumer>();*/
+    /*x.AddConsumer<VariantDeletedConsumer>();*/
+            
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(
+            host: builder.Configuration["RabbitMQ:Host"], 
+            virtualHost: builder.Configuration["RabbitMQ:VHost"], 
+            configure: h =>
+            {
+                h.Username(builder.Configuration["RabbitMQ:Username"]!);
+                h.Password(builder.Configuration["RabbitMQ:Password"]!);
+            });
+                
+        /*cfg.ReceiveEndpoint("inventory.variant.created", e =>
+        {
+            e.ConfigureConsumer<VariantSizeCreatedEvent>(context);
+        });*/
+                
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

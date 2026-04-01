@@ -12,8 +12,8 @@ public class VariantDetailReadModel
     public string? Equipment { get; set; }
     public string? CaringOfThings { get; set; } 
     public TypeOfPacking? TypeOfPacking { get; set; }
-    public Guid UpdatedById { get; set; } 
-    public string UpdatedByRole { get; set; } 
+    public Guid? UpdatedById { get; set; } 
+    public string? UpdatedByRole { get; set; } 
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public int CountryOfManufactureId { get; set; }

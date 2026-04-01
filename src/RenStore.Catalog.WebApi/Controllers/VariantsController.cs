@@ -19,11 +19,12 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     
     // TODO: restore variant
     [HttpPost("manage/products/{productId:guid}/variants")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Create(
         [FromRoute] Guid productId,
-        [FromBody] CreateVariantRequest request)
+        [FromBody] CreateVariantRequest request,
+        CancellationToken cancellationToken)
     {
         var variantId = await _mediator.Send(
             new CreateProductVariantCommand(
@@ -32,7 +33,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 Name: request.Name,
                 SizeSystem: request.SizeSystem,
                 SizeType: request.SizeType
-                ));
+                ), 
+            cancellationToken);
         
         return CreatedAtAction(
             actionName: nameof(FindById),
@@ -41,106 +43,121 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> SoftDelete(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new SoftDeleteProductVariantCommand(
-                VariantId: variantId));
+                VariantId: variantId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Restore(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new RestoreVariantCommand(
-                VariantId: variantId));
+                VariantId: variantId), 
+            cancellationToken);
         
         return NoContent();
     }
 
     [HttpPatch("manage/variants/{variantId:guid}/publish")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Publish(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new PublishProductVariantCommand(
-                VariantId: variantId));
+                VariantId: variantId), 
+            cancellationToken);
         
         return NoContent();
     }  
     
     [HttpPatch("manage/variants/{variantId:guid}/{imageId:guid}/set-main-image-id")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> SetMainImage(
         [FromRoute] Guid variantId,
-        [FromRoute] Guid imageId)
+        [FromRoute] Guid imageId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new SetVariantMainImageCommand(
                 VariantId: variantId,
-                ImageId: imageId));
+                ImageId: imageId), 
+            cancellationToken);
         
         return NoContent();
     } 
     
     [HttpPatch("manage/variants/{variantId:guid}/archive")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Archive(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new ArchiveProductVariantCommand(
-                VariantId: variantId));
+                VariantId: variantId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/draft")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Draft(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new DraftProductVariantCommand(
-                VariantId: variantId));
+                VariantId: variantId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/change-name")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> ChangeName(
         [FromRoute] Guid variantId,
-        [FromBody] ChangeVariantNameRequest request)
+        [FromBody] ChangeVariantNameRequest request,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new ChangeProductVariantNameCommand(
                 VariantId: variantId,
-                Name: request.Name));
+                Name: request.Name),
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPut("manage/variants/{variantId:guid}/details")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddDetails(
         [FromRoute] Guid variantId,
-        [FromBody] AddVariantDetailsRequest request)
+        [FromBody] AddVariantDetailsRequest request,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new AddVariantDetailsCommand(
@@ -152,17 +169,19 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 DecorativeElements: request.DecorativeElements,
                 Equipment: request.Equipment,
                 CaringOfThings: request.CaringOfThings,
-                TypeOfPacking: request.TypeOfPacking));
+                TypeOfPacking: request.TypeOfPacking), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/update-details")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> UpdateDetails(
         [FromRoute] Guid variantId,
-        [FromBody] UpdateDetailsRequest request)
+        [FromBody] UpdateDetailsRequest request,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new UpdateVariantDetailsCommand(
@@ -173,26 +192,28 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 DecorativeElements: request.DecorativeElements,
                 Equipment: request.Equipment,
                 CaringOfThings: request.CaringOfThings,
-                TypeOfPacking: request.TypeOfPacking));
+                TypeOfPacking: request.TypeOfPacking), cancellationToken);
         
         return NoContent();
     }
     
     [HttpPost("manage/variants/{variantId:guid}/size")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddSize(
         [FromRoute] Guid variantId,
-        [FromBody] AddSizeToVariantRequest request)
+        [FromBody] AddSizeToVariantRequest request,
+        CancellationToken cancellationToken)
     {
         var sizeId = await _mediator.Send(
             new AddSizeToVariantCommand(
                 VariantId: variantId,
-                LetterSize: request.LetterSize));
-        
+                LetterSize: request.LetterSize), 
+            cancellationToken);
+        // TODO: сделать поиск размера
         return CreatedAtAction(
             actionName: nameof(FindById),
-            routeValues: new { sizeId, version = "1" },
+            routeValues: new { SizeId = sizeId },
             value: new
             {
                 Id = sizeId,
@@ -201,12 +222,13 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPost("manage/variants/{variantId:guid}/size/{sizeId:guid}/price")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddPrice(
         [FromRoute] Guid variantId,
         [FromRoute] Guid sizeId,
-        [FromBody] AddPriceToSize request)
+        [FromBody] AddPriceToSize request,
+        CancellationToken cancellationToken)
     {
         var priceId = await _mediator.Send(
             new AddPriceToVariantSizeCommand(
@@ -214,11 +236,12 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 SizeId: sizeId,
                 Currency: request.Currency,
                 ValidFrom: request.ValidFrom,
-                Price: request.Price));
+                Price: request.Price), 
+            cancellationToken);
 
         return CreatedAtAction(
             actionName: nameof(FindById),
-            routeValues: new { priceId, version = "1" },
+            routeValues: new { VariantId = variantId },
             value: new
             {
                 Id = priceId, 
@@ -228,51 +251,57 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/size/{sizeId:guid}/remove")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> RemoveSize(
         [FromRoute] Guid variantId,
-        [FromRoute] Guid sizeId)
+        [FromRoute] Guid sizeId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new SoftDeleteVariantSizeCommand(
                 VariantId: variantId,
-                SizeId: sizeId));
+                SizeId: sizeId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/size/{sizeId:guid}/restore")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> RestoreSize(
         [FromRoute] Guid variantId,
-        [FromRoute] Guid sizeId)
+        [FromRoute] Guid sizeId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new RestoreVariantSizeCommand(
                 VariantId: variantId,
-                SizeId: sizeId));
+                SizeId: sizeId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPost("manage/variants/{variantId:guid}/attribute")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddAttribute(
         [FromRoute] Guid variantId,
-        [FromBody] AddAttributeToVariantRequest request)
+        [FromBody] AddAttributeToVariantRequest request,
+        CancellationToken cancellationToken)
     {
         var attributeId = await _mediator.Send(
             new AddAttributeToVariantCommand(
                 VariantId: variantId,
                 Key: request.Key,
-                Value: request.Value));
+                Value: request.Value),
+            cancellationToken);
         
         return CreatedAtAction(
             actionName: nameof(FindById),
-            routeValues: new { Id = attributeId, version = "1" },
+            routeValues: new { Id = attributeId },
             value: new
             {
                 Id = attributeId, 
@@ -281,49 +310,55 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/attributes/{attributeId:guid}/update")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> UpdateAttribute(
         [FromRoute] Guid variantId,
         [FromRoute] Guid attributeId,
-        [FromBody] UpdateAttributeRequest request)
+        [FromBody] UpdateAttributeRequest request,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new UpdateVariantAttributeCommand(
                 VariantId: variantId,
                 AttributeId: attributeId,
                 Key: request.Key,
-                Value: request.Value));
+                Value: request.Value), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/attributes/{attributeId:guid}/remove")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> RemoveAttribute(
         [FromRoute] Guid variantId,
-        [FromRoute] Guid attributeId)
+        [FromRoute] Guid attributeId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new SoftDeleteAttributeFromVariantCommand(
                 VariantId: variantId,
-                AttributeId: attributeId));
+                AttributeId: attributeId), 
+            cancellationToken);
         
         return NoContent();
     }
     
     [HttpPatch("manage/variants/{variantId:guid}/attributes/{attributeId:guid}/restore")]
-    [Authorize(Roles = Roles.Seller)]
+    /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> RestoreAttribute(
         [FromRoute] Guid variantId,
-        [FromRoute] Guid attributeId)
+        [FromRoute] Guid attributeId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(
             new RestoreAttributeFromVariantCommand(
                 VariantId: variantId,
-                AttributeId: attributeId));
+                AttributeId: attributeId), 
+            cancellationToken);
         
         return NoContent();
     }
@@ -336,11 +371,13 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByIdManage(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
             new FindVariantByIdQuery(
-                VariantId: variantId));
+                VariantId: variantId),
+            cancellationToken);
         
         return result is null ? NotFound() : Ok(result);
     }
@@ -349,11 +386,12 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByArticleManage(
-        [FromRoute] long article)
+        [FromRoute] long article,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
-            new FindVariantByArticleQuery(
-                Article: article));
+            new FindVariantByArticleQuery(Article: article), 
+            cancellationToken);
         
         return result is null ? NotFound() : Ok(result);
     }
@@ -363,6 +401,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByProductIdManage(
         [FromRoute] Guid productId,
+        CancellationToken cancellationToken,
         [FromQuery] ProductVariantSortBy sortBy = ProductVariantSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -376,7 +415,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsDeleted: isDeleted));
+                IsDeleted: isDeleted), 
+            cancellationToken);
         
         return Ok(result);
     }
@@ -387,6 +427,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> FindPriceHistoryManage(
         [FromRoute] Guid variantId, 
         [FromRoute] Guid sizeId,
+        CancellationToken cancellationToken,
         [FromQuery] PriceHistorySortBy sortBy = PriceHistorySortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -401,7 +442,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsActive: isActive));
+                IsActive: isActive), 
+            cancellationToken);
         
         return Ok(result);
     }
@@ -410,7 +452,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindSizesByVariantIdManage(
-        [FromRoute] Guid variantId, 
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken,
         [FromQuery] VariantSizeSortBy sortBy = VariantSizeSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -424,7 +467,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsDeleted: isDeleted));
+                IsDeleted: isDeleted), 
+            cancellationToken);
         
         return Ok(result);
     }
@@ -437,10 +481,12 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindById(
-        [FromRoute] Guid variantId)
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
-            new FindVariantByIdQuery(variantId));
+            new FindVariantByIdQuery(variantId), 
+            cancellationToken);
         
         return result is null ? NotFound() : Ok(result);
     }
@@ -449,10 +495,12 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByArticle(
-        [FromRoute] long article)
+        [FromRoute] long article,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
-            new FindVariantByArticleQuery(Article: article));
+            new FindVariantByArticleQuery(Article: article), 
+            cancellationToken);
         
         return result is null ? NotFound() : Ok(result);
     }
@@ -462,6 +510,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByProductId(
         [FromRoute] Guid productId,
+        CancellationToken cancellationToken,
         [FromQuery] ProductVariantSortBy sortBy = ProductVariantSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -473,7 +522,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 SortBy: sortBy,
                 Page: page,
                 PageCount: pageCount,
-                Descending: descending));
+                Descending: descending), 
+            cancellationToken);
         
         return Ok(result);
     }
@@ -483,14 +533,16 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindPriceHistory(
         [FromRoute] Guid variantId, 
-        [FromRoute] Guid sizeId)
+        [FromRoute] Guid sizeId,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(
             new FindPriceHistoryBySizeIdQuery(
                 VariantId: variantId,
                 SizeId: sizeId,
                 SortBy: PriceHistorySortBy.CreatedAt,
-                Descending: true));
+                Descending: true), 
+            cancellationToken);
         
         return Ok(result);
     }
@@ -500,6 +552,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindSizesByVariantId(
         [FromRoute] Guid variantId, 
+        CancellationToken cancellationToken,
         [FromQuery] VariantSizeSortBy sortBy = VariantSizeSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -512,7 +565,8 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsDeleted: false));
+                IsDeleted: false), 
+            cancellationToken);
         
         return Ok(result);
     }

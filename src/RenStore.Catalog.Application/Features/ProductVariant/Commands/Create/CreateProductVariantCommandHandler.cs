@@ -7,6 +7,7 @@ internal sealed class CreateProductVariantCommandHandler
     private readonly IProductVariantRepository _productVariantRepository;
     private readonly IProductRepository _productRepository;
     
+    
     public CreateProductVariantCommandHandler(
         ILogger<CreateProductVariantCommandHandler> logger,
         IProductRepository productRepository,
@@ -70,9 +71,8 @@ internal sealed class CreateProductVariantCommandHandler
                 url: url);
         
         product.AddVariantReference(variant.Id, now);
-
-        await _productVariantRepository.SaveAsync(variant, cancellationToken);
         
+        await _productVariantRepository.SaveAsync(variant, cancellationToken);
         await _productRepository.SaveAsync(product, cancellationToken);
         
         _logger.LogInformation(

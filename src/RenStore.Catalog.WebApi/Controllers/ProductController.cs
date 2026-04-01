@@ -14,13 +14,14 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> Create(
         [FromRoute] Guid categoryId,
-        [FromRoute] Guid subCategoryId)
+        [FromRoute] Guid subCategoryId,
+        CancellationToken cancellationToken)
     {
         var command = new CreateProductCommand(
             CategoryId: categoryId,
             SubCategoryId: subCategoryId);
         
-        var productId = await _mediator.Send(command);
+        var productId = await _mediator.Send(command, cancellationToken);
 
         return productId == Guid.Empty ? BadRequest() : CreatedAtAction(
             actionName: nameof(FindById),
@@ -32,10 +33,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Publish(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new PublishProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -44,10 +47,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Approve(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new ApproveProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -56,10 +61,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Archive(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new ArchiveProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -68,10 +75,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Hide(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new HideProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -80,10 +89,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Reject(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new RejectProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -92,10 +103,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> ToDraft(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new DraftProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -104,10 +117,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Delete(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         await _mediator.Send(new SoftDeleteProductCommand(
-            ProductId: productId));
+            ProductId: productId), 
+            cancellationToken);
 
         return NoContent();
     }
@@ -120,10 +135,12 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindById(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         var product = await _mediator.Send(
-            new FindProductByIdQuery(productId));
+            new FindProductByIdQuery(productId), 
+            cancellationToken);
         
         return product is null ? NotFound() : Ok(product);
     }
@@ -133,6 +150,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindBySellerId(
         [FromRoute] Guid sellerId,
+        CancellationToken cancellationToken,
         [FromQuery] ProductSortBy sortBy = ProductSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -145,7 +163,8 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsDeleted: false));
+                IsDeleted: false), 
+            cancellationToken);
         
         return !products.Any() ? NotFound() : Ok(products);
     }
@@ -158,11 +177,13 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [Authorize(Roles = "Seller,Moderator,Admin")]
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByIdManage(
-        [FromRoute] Guid productId)
+        [FromRoute] Guid productId,
+        CancellationToken cancellationToken)
     {
         var product = await _mediator.Send(
             new FindProductByIdQuery(
-                ProductId: productId));
+                ProductId: productId), 
+            cancellationToken);
         
         return product is null ? NotFound() : Ok(product);
     }
@@ -172,6 +193,7 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindBySellerIdManage(
         [FromRoute] Guid sellerId,
+        CancellationToken cancellationToken,
         [FromQuery] ProductSortBy sortBy = ProductSortBy.Id,
         [FromQuery] uint page = 1,
         [FromQuery] uint pageCount = 25,
@@ -185,7 +207,8 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsDeleted: isDeleted));
+                IsDeleted: isDeleted), 
+            cancellationToken);
         
         return !products.Any() ? NotFound() : Ok(products);
     }

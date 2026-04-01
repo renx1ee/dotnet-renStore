@@ -1,4 +1,4 @@
-namespace RenStore.Inventory.Application.Features.Stock.Commands.SetStock;
+namespace RenStore.Inventory.Application.Features.Stock.Commands.Set;
 
 internal sealed class SetStockCommandHandler
     : IRequestHandler<SetStockCommand>

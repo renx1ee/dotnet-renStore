@@ -54,8 +54,8 @@ public sealed class ProductVariantReadModel
     /// </summary>
     public SizeType SizeType { get; set; }
     
-    public Guid UpdatedById { get; set; } 
-    public string UpdatedByRole { get; set; } 
+    public Guid? UpdatedById { get; set; } 
+    public string? UpdatedByRole { get; set; } 
     
     /// <summary>
     /// Date when the product was created.

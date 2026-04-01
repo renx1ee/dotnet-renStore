@@ -2,12 +2,14 @@ using System.Text.Json.Serialization;
 using Asp.Versioning;
 using RenStore.Inventory.Application;
 using RenStore.Inventory.Application.Abstractions;
+using RenStore.Inventory.Messaging.Extensions;
 using RenStore.Inventory.Persistence;
 using RenStore.Inventory.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInventoryPersistence(builder.Configuration);
+builder.Services.AddInventoryMessaging(builder.Configuration);
 builder.Services.AddInventoryApplication();
 
 builder.Services.AddHttpContextAccessor();

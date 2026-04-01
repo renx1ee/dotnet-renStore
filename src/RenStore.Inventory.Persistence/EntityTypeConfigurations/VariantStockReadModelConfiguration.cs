@@ -35,7 +35,7 @@ internal sealed class VariantStockReadModelConfiguration
         builder
             .Property(x => x.WriteOffReason)
             .HasColumnName("write_off_reason")
-            .IsRequired();
+            .IsRequired(false);
         
         builder
             .Property(v => v.CreatedAt)
