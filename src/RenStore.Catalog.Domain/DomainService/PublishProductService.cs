@@ -61,13 +61,16 @@ public sealed class PublishProductService : IPublishProductService
             if(images.Count > CatalogConstants.Image.MaxImagesCount)
                 errors.Add($"Images must have max {CatalogConstants.Image.MaxImagesCount} images count.");
             
-            try
+            if(variant.Status != ProductVariantStatus.Deleted)
             {
-                variant.Publish(now);
-            }
-            catch (DomainException e)
-            {
-                errors.Add($"Variant {variant.Id}: {e.Message}");
+                try
+                {
+                    variant.Publish(now);
+                }
+                catch (DomainException e)
+                {
+                    errors.Add($"Variant {variant.Id}: {e.Message}");
+                }
             }
         }
         

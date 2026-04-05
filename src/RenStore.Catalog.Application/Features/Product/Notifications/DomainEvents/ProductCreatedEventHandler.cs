@@ -22,6 +22,7 @@ internal sealed class ProductCreatedEventHandler
             Id = notification.DomainEvent.ProductId,
             SellerId = notification.DomainEvent.SellerId,
             SubCategoryId = notification.DomainEvent.SubCategoryId,
+            CategoryId = notification.DomainEvent.CategoryId,
             Status = notification.DomainEvent.Status,
             CreatedAt = notification.DomainEvent.OccurredAt,
         };

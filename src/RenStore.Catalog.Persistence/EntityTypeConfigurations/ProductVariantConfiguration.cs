@@ -77,14 +77,6 @@ public sealed class ProductVariantConfiguration
             .Property(x => x.DeletedAt)
             .HasColumnName("deleted_date")
             .IsRequired(false);
-        
-        builder
-            .Property(v => v.ProductId)
-            .HasColumnName("product_id");
-
-        builder
-            .Property(v => v.ColorId)
-            .HasColumnName("color_id");
 
         builder
             .Property(x => x.MainImageId)
@@ -115,5 +107,13 @@ public sealed class ProductVariantConfiguration
         builder
             .HasIndex(v => v.NormalizedName)
             .IsUnique();
+        
+        builder
+            .Property(v => v.ProductId)
+            .HasColumnName("product_id");
+
+        builder
+            .Property(v => v.ColorId)
+            .HasColumnName("color_id");
     }
 }

@@ -1,4 +1,4 @@
-/*using System.Text;
+using System.Text;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -327,4 +327,4 @@ public class ProductRepository : IProductRepository
         
         return string.Join("\n", productSql, variantSql, detailSql, clothSql, clothSizeSql, attributeSql, priceSql, sellerSql);
     }
-}*/
+}

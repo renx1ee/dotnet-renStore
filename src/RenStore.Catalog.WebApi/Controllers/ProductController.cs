@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Features.Product.Queries.FindFullPage;
+
 namespace RenStore.Catalog.WebApi.Controllers;
 
 [ApiController]
@@ -167,6 +169,21 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
             cancellationToken);
         
         return !products.Any() ? NotFound() : Ok(products);
+    }
+    
+    [HttpGet("catalog/products/variants/{variantId:guid}/full-page")]
+    [AllowAnonymous]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindFullPage(
+        [FromRoute] Guid variantId,
+        CancellationToken cancellationToken)
+    {
+        var product = await _mediator.Send(
+            new FindFullProductPageQuery(
+                VariantId: variantId), 
+            cancellationToken);
+        
+        return product is null ? NotFound() : Ok(product);
     }
     
     #endregion

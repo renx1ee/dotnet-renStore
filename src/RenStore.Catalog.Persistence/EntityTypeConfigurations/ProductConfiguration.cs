@@ -61,6 +61,11 @@ public sealed class ProductConfiguration
             .IsRequired();
         
         builder
+            .Property(p => p.CategoryId)
+            .HasColumnName("category_id")
+            .IsRequired();
+        
+        builder
             .Property(p => p.SubCategoryId)
             .HasColumnName("sub_category_id")
             .IsRequired();

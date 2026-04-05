@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Persistence.Write.Repositories;
 
-public sealed class ReservationRepository
+internal sealed class ReservationRepository
     :  RenStore.Inventory.Domain.Interfaces.Repository.IReservationRepository
 {
     private readonly IEventStore _eventStore;

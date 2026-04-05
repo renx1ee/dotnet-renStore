@@ -8,7 +8,7 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     
     [HttpPost]
-    [Authorize(Roles = "Seller")]
+    /*[Authorize(Roles = "Seller")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Upload(
         Guid variantId,
@@ -34,7 +34,7 @@ public sealed class VariantsMediaController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("{imageId:guid}")]
-    [Authorize(Roles = "Seller,Moderator,Admin")]
+    /*[Authorize(Roles = "Seller,Moderator,Admin")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> Delete(
         Guid variantId,

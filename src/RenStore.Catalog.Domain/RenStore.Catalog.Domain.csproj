@@ -10,4 +10,8 @@
       <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ReadModels\Product\" />
+    </ItemGroup>
+
 </Project>

@@ -61,39 +61,42 @@ internal sealed class PublishProductCommandHandler
                     name: typeof(Domain.Aggregates.Variant.ProductVariant),
                     variantId);
             }
-            
-            variants.Add(variant);
 
-            var images = new List<VariantImage>();
-
-            foreach (var imageId in variant.ImageIds)
+            if (variant.Status != ProductVariantStatus.Deleted)
             {
-                var image = await _variantImageRepository
-                    .GetAsync(id: imageId, cancellationToken);
-
-                if (image is null)
-                {
-                    throw new NotFoundException(
-                        name: typeof(VariantImage), 
-                        imageId);
-                }
+                variants.Add(variant);
                 
-                if (variant.MainImageId == Guid.Empty)
-                {
-                    image.SetAsMain(now);
+                var images = new List<VariantImage>();
 
-                    if (image.IsMain)
+                foreach (var imageId in variant.ImageIds)
+                {
+                    var image = await _variantImageRepository
+                        .GetAsync(id: imageId, cancellationToken);
+
+                    if (image is null)
                     {
-                        variant.SetMainImageId(
-                            imageId: image.Id, 
-                            now: now);
+                        throw new NotFoundException(
+                            name: typeof(VariantImage), 
+                            imageId);
                     }
+                
+                    if (variant.MainImageId == Guid.Empty)
+                    {
+                        image.SetAsMain(now);
+
+                        if (image.IsMain)
+                        {
+                            variant.SetMainImageId(
+                                imageId: image.Id, 
+                                now: now);
+                        }
+                    }
+            
+                    images.Add(image);
                 }
             
-                images.Add(image);
+                imagesToVariants.Add(variantId, images);
             }
-            
-            imagesToVariants.Add(variantId, images);
         }
         
         _productPublishService.Publish(

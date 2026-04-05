@@ -37,6 +37,8 @@ public sealed class ProductReadModel
     /// </summary>
     public Guid SellerId { get; set; }
     
+    public Guid CategoryId { get; set; }
+    
     /// <summary>
     /// Unique identifier of the sub category.
     /// </summary>

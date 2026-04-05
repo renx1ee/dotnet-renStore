@@ -1,3 +1,4 @@
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -5,6 +6,7 @@ using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Abstractions.Projections;
 using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Domain.Interfaces.Repository;
+using RenStore.Catalog.Persistence.EntityTypeConfigurations.SqlMappers;
 using RenStore.Catalog.Persistence.EventStore;
 using RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 using RenStore.Catalog.Persistence.Write.Projections;
@@ -25,6 +27,8 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
         
+        SqlMapper.AddTypeHandler(new ProductStatusHandler());
+        
         services.AddScoped<IEventStore, SqlEventStore>();
         
         services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -42,6 +46,7 @@ public static class DependencyInjection
         services.AddScoped<IVariantDetailProjection, VariantDetailProjection>();
         services.AddScoped<IVariantImageProjection, VariantImageProjection>();
         
+        services.AddScoped<IFullProductQuery, FullProductQuery>();
         services.AddScoped<IVariantSizeQuery, VariantSizeQuery>();
         services.AddScoped<IVariantAttributeQuery, VariantAttributeQuery>();
         services.AddScoped<IVariantImageQuery, VariantImageQuery>();

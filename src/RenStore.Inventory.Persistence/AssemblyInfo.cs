@@ -1,1 +1,3 @@
-namespace RenStore.Inventory.Persistence;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("RenStore.Inventory.Tests")]
