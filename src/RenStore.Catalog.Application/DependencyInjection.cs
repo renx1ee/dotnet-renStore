@@ -17,6 +17,8 @@ public static class DependencyInjection
                 cfg.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly));
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+
+        services.AddScoped<IVariantUrlService, VariantUrlService>();
         
         services.AddTransient(
             typeof(IPipelineBehavior<,>),

@@ -12,17 +12,17 @@ internal static class ProductDetailRules
     /// <summary>
     /// Validates the country of manufacture identifier.
     /// </summary>
-    /// <param name="countryOfManufactureId">Country identifier to validate</param>
+    /// <param name="countryOfManufacture">Country identifier to validate</param>
     /// <exception cref="DomainException">
     /// Thrown when identifier is zero or negative
     /// </exception>
     /// <remarks>
     /// Used for regulatory compliance and country-of-origin labeling requirements.
     /// </remarks>
-    internal static void CountryOfManufactureValidate(int countryOfManufactureId)
+    internal static void CountryOfManufactureValidate(string countryOfManufacture)
     {
-        if(countryOfManufactureId <= 0)
-            throw new DomainException("Product Detail country of manufacture ID must be more then 0.");
+        if(string.IsNullOrWhiteSpace(countryOfManufacture))
+            throw new DomainException("Product Detail country of manufacture cannot be empty.");
     }
     
     /// <summary>

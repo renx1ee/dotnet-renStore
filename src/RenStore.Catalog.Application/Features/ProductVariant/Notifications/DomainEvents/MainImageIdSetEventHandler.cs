@@ -23,6 +23,6 @@ internal sealed class MainImageIdSetEventHandler
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
 
-        await _variantProjection.SaveChangesAsync(cancellationToken);
+        await _variantProjection.CommitAsync(cancellationToken);
     }
 }

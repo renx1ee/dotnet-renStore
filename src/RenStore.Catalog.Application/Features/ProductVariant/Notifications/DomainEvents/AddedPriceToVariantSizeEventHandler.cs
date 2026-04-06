@@ -30,6 +30,6 @@ internal sealed class AddedPriceToVariantSizeEventHandler
             },
             cancellationToken: cancellationToken);
 
-        await _sizePriceProjection.SaveChangesAsync(cancellationToken);
+        await _sizePriceProjection.CommitAsync(cancellationToken);
     }
 }

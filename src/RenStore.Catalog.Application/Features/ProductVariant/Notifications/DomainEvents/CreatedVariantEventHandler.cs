@@ -33,6 +33,6 @@ internal sealed class CreatedVariantEventHandler
         };
 
         await _variantProjection.AddAsync(variant, cancellationToken);
-        await _variantProjection.SaveChangesAsync(cancellationToken);
+        await _variantProjection.CommitAsync(cancellationToken);
     }
 }

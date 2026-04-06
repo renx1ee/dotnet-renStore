@@ -23,6 +23,6 @@ internal sealed class SubCategoryActivatedEventHandler
             subCategoryId: notification.DomainEvent.SubCategoryId,
             cancellationToken: cancellationToken);
 
-        await _subCategoryProjection.SaveChangesAsync(cancellationToken);
+        await _subCategoryProjection.CommitAsync(cancellationToken);
     }
 }

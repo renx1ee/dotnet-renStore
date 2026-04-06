@@ -7,4 +7,12 @@ public interface IFullProductQuery
     Task<FullProductPageDto?> FindFullAsync(
         Guid variantId,
         CancellationToken cancellationToken);
+
+    Task<FullProductPageDto?> FindFullAsync(
+        string urlSlug,
+        CancellationToken cancellationToken);
+
+    Task<FullProductPageDto?> FindFullAsync(
+        long article,
+        CancellationToken cancellationToken);
 }

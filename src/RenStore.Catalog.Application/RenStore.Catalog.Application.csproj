@@ -9,6 +9,8 @@
     <ItemGroup>
       <Folder Include="Features\Category\Queries\" />
       <Folder Include="Features\ProductVariant\Commands\ChangeColor\" />
+      <Folder Include="Features\ProductVariant\Queries\FindByCategoryId\" />
+      <Folder Include="Features\ProductVariant\Queries\FindBySubCategoryId\" />
       <Folder Include="Features\VariantMedia\Queries\" />
     </ItemGroup>
 
@@ -26,6 +28,7 @@
       <PackageReference Include="MassTransit" Version="8.3.6" />
       <PackageReference Include="MediatR" Version="14.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.4" />
+      <PackageReference Include="Npgsql" Version="9.0.2" />
     </ItemGroup>
 
 </Project>

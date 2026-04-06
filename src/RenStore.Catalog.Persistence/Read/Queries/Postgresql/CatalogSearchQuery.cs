@@ -97,12 +97,3 @@ internal sealed class CatalogSearchQuery
         }
     }
 }
-
-public sealed class CatalogSearchFilter
-{
-    public Guid CategoryId { get; set; }
-    public string Search { get; set; }
-    public decimal MaxPrice { get; set; }
-    public decimal MinPrice { get; set; }
-    public bool? PriceDescending { get; set; }
-}

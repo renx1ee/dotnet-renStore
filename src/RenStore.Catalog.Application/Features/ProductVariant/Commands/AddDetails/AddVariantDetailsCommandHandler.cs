@@ -35,7 +35,7 @@ internal sealed class AddVariantDetailsCommandHandler
         
         variant.AddDetails(
             now: DateTimeOffset.UtcNow,
-            countryOfManufactureId: request.CountryOfManufactureId,
+            countryOfManufacture: request.CountryOfManufacture,
             description: request.Description,
             composition: request.Composition,
             caringOfThings: request.CaringOfThings,

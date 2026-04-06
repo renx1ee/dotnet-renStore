@@ -2,7 +2,7 @@ namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface IProductVariantSizeProjection
 {
-    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task CommitAsync(CancellationToken cancellationToken);
     
     Task<Guid> AddAsync(
         VariantSizeReadModel variant,

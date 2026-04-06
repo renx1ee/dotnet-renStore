@@ -30,6 +30,6 @@ internal sealed class AddedAttributeToVariantEventHandler
             }, 
             cancellationToken: cancellationToken);
 
-        await _attributeProjection.SaveChangesAsync(cancellationToken);
+        await _attributeProjection.CommitAsync(cancellationToken);
     }
 }

@@ -2,7 +2,7 @@ namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface IVariantImageProjection
 {
-    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task CommitAsync(CancellationToken cancellationToken);
     
     Task<Guid> AddAsync(
         VariantImageReadModel image,

@@ -35,6 +35,6 @@ internal sealed class VariantImageUploadedEventHandler
         await _variantImageProjection.AddAsync(
             image: image, cancellationToken: cancellationToken);
 
-        await _variantImageProjection.SaveChangesAsync(cancellationToken);
+        await _variantImageProjection.CommitAsync(cancellationToken);
     }
 }

@@ -25,6 +25,6 @@ internal sealed class VariantNameUpdatedEventHandler
                 now: notification.DomainEvent.OccurredAt,
                 cancellationToken: cancellationToken);
 
-        await _variantProjection.SaveChangesAsync(cancellationToken);
+        await _variantProjection.CommitAsync(cancellationToken);
     }
 }

@@ -23,6 +23,6 @@ public class VariantSizeRestoredEventHandler
             restoredAt: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
 
-        await _variantSizeProjection.SaveChangesAsync(cancellationToken);
+        await _variantSizeProjection.CommitAsync(cancellationToken);
     }
 }

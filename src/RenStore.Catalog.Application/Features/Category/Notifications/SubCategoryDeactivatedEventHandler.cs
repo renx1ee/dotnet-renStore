@@ -23,6 +23,6 @@ internal sealed class SubCategoryDeactivatedEventHandler
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
 
-        await _subCategoryProjection.SaveChangesAsync(cancellationToken);
+        await _subCategoryProjection.CommitAsync(cancellationToken);
     }
 }

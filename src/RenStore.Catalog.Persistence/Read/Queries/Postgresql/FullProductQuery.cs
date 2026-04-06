@@ -28,7 +28,7 @@ internal sealed class FullProductQuery
         {
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
 
-            var sql = GetFullProductSql();
+            var sql = GetFullProductByVariantIdSql();
 
             await using var result = await connection
                 .QueryMultipleAsync(
@@ -43,13 +43,13 @@ internal sealed class FullProductQuery
             if (variant is null || product is null) return null;
             
             var details = await result.ReadFirstOrDefaultAsync<VariantDetailsDto>();
-            var images = (await result.ReadAsync<ProductVariantImageDto>()).ToList();
-            var attributes = (await result.ReadAsync<VariantAttributeDto>()).ToList();
-            var sizes = (await result.ReadAsync<VariantSizeDto>()).ToList();
-            var prices = (await result.ReadAsync<PriceHistoryDto>()).ToList();
-            var otherVariants = (await result.ReadAsync<ProductVariantLinkDto>()).ToList();
+            var images = (await result.ReadAsync<ProductVariantImageDto>(buffered: false)).ToList();
+            var attributes = (await result.ReadAsync<VariantAttributeDto>(buffered: false)).ToList();
+            var sizes = (await result.ReadAsync<VariantSizeDto>(buffered: false)).ToList();
+            var prices = (await result.ReadAsync<PriceHistoryDto>(buffered: false)).ToList();
+            var otherVariants = (await result.ReadAsync<ProductVariantLinkDto>(buffered: false)).ToList();
 
-            var priceDic = prices.ToDictionary(p => p.SizeId);
+            var priceDic = prices.ToDictionary(p => p.SizeId, p => p);
 
             var sizesWithPrices = sizes
                 .Select(s =>
@@ -59,7 +59,7 @@ internal sealed class FullProductQuery
                     ))
                 .ToList();
             
-            var fullPage = new FullProductPageDto()
+            return new FullProductPageDto()
             {
                 Product = product,
                 Variant = variant,
@@ -69,16 +69,97 @@ internal sealed class FullProductQuery
                 SizeWithPrices = sizesWithPrices,
                 OtherVariantsLinks = otherVariants
             };
-
-            return fullPage;
         }
         catch (PostgresException e)
         {
+            _logger.LogError(
+                exception: e, 
+                message: "Database error while fetching full product for VariantId: {VariantId}",
+                args: variantId);
+            
+            throw Wrap(e);
+        }
+    }
+    
+    public async Task<FullProductPageDto?> FindFullAsync(
+        string urlSlug,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(urlSlug))
+            throw new ArgumentOutOfRangeException(nameof(urlSlug));
+        
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+
+            const string variantIdSql =
+                """
+                    SELECT "id"
+                    FROM "product_variants"
+                    WHERE "url" = @Url
+                    AND "status" = 'published'
+                    LIMIT 1;
+                """;
+
+            var variantId = await connection.QueryFirstOrDefaultAsync<Guid>(
+                sql: variantIdSql,
+                param: new { Url = urlSlug });
+
+            return variantId != Guid.Empty
+                ? await FindFullAsync(variantId, cancellationToken)
+                : null;
+        }
+        catch (PostgresException e)
+        {
+            _logger.LogError(
+                exception: e, 
+                message: "Database error while fetching full product for SlugUrl: {SlugUrl}",
+                args: urlSlug);
+            
+            throw Wrap(e);
+        }
+    }
+    
+    public async Task<FullProductPageDto?> FindFullAsync(
+        long article,
+        CancellationToken cancellationToken)
+    {
+        if (article <= 0)
+            throw new ArgumentOutOfRangeException(nameof(article));
+        
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+
+            const string variantIdSql =
+                """
+                    SELECT "id"
+                    FROM "product_variants"
+                    WHERE "article" = @Article
+                    AND "status" = 'published'
+                    LIMIT 1;
+                """;
+
+            var variantId = await connection.QueryFirstOrDefaultAsync<Guid>(
+                sql: variantIdSql,
+                param: new { Article = article });
+
+            return variantId != Guid.Empty
+                ? await FindFullAsync(variantId, cancellationToken)
+                : null;
+        }
+        catch (PostgresException e)
+        {
+            _logger.LogError(
+                exception: e, 
+                message: "Database error while fetching full product for Article: {Article}",
+                args: article);
+            
             throw Wrap(e);
         }
     }
 
-    private static string GetFullProductSql()
+    private static string GetFullProductByVariantIdSql()
     {
         const string productSql =
             @"

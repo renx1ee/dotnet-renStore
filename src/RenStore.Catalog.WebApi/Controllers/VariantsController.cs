@@ -27,7 +27,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         [FromBody] CreateVariantRequest request,
         CancellationToken cancellationToken)
     {
-        var variantId = await _mediator.Send(
+        var response = await _mediator.Send(
             new CreateProductVariantCommand(
                 ProductId: productId,
                 ColorId: request.ColorId,
@@ -38,9 +38,9 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
             cancellationToken);
         
         return CreatedAtAction(
-            actionName: nameof(FindById),
-            routeValues: new { variantId, version = "1" },
-            value: new { Id = variantId });
+            actionName: nameof(FindByUrlSlug),
+            routeValues: new { urlSlug = response.UrlSlug },
+            value: response);
     }
     
     [HttpDelete("manage/variants/{variantId:guid}/")]
@@ -163,7 +163,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         await _mediator.Send(
             new AddVariantDetailsCommand(
                 VariantId: variantId,
-                CountryOfManufactureId: request.CountryOfManufactureId,
+                CountryOfManufacture: request.CountryOfManufacture,
                 Description: request.Description,
                 Composition: request.Composition,
                 ModelFeatures: request.ModelFeatures,
@@ -577,6 +577,28 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
             cancellationToken);
         
         return Ok(result);
+    }
+    // TODO:
+    [HttpGet("catalog/variants/{urlSlug}")]
+    [AllowAnonymous]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindByUrlSlug(
+        [FromRoute] string urlSlug, 
+        CancellationToken cancellationToken)
+    {
+        /*var result = await _mediator.Send(
+            new FindSizesByVariantIdQuery(
+                VariantId: variantId,
+                SortBy: sortBy,
+                Page: page,
+                PageCount: pageCount,
+                Descending: descending,
+                IsDeleted: false), 
+            cancellationToken);
+        
+        return Ok(result);*/
+
+        return NoContent();
     }
     
     #endregion

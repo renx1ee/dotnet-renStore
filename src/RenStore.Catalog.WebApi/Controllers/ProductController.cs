@@ -1,4 +1,6 @@
-using RenStore.Catalog.Application.Features.Product.Queries.FindFullPage;
+using RenStore.Catalog.Application.Features.Product.Queries.FindFullPageByArticle;
+using RenStore.Catalog.Application.Features.Product.Queries.FindFullPageByUrlSlug;
+using RenStore.Catalog.Application.Features.Product.Queries.FindFullPageByVariantId;
 
 namespace RenStore.Catalog.WebApi.Controllers;
 
@@ -179,8 +181,38 @@ public sealed class ProductController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         var product = await _mediator.Send(
-            new FindFullProductPageQuery(
+            new FindFullProductPageByVariantIdQuery(
                 VariantId: variantId), 
+            cancellationToken);
+        
+        return product is null ? NotFound() : Ok(product);
+    }
+    
+    [HttpGet("catalog/products/variants/{article:long}/full-page")]
+    [AllowAnonymous]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindFullPage(
+        [FromRoute] long article,
+        CancellationToken cancellationToken)
+    {
+        var product = await _mediator.Send(
+            new FindFullProductPageByArticleQuery(
+                Article: article), 
+            cancellationToken);
+        
+        return product is null ? NotFound() : Ok(product);
+    }
+    
+    [HttpGet("catalog/products/variants/{urlSlug}/full-page")]
+    [AllowAnonymous]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> FindFullPage(
+        [FromRoute] string urlSlug,
+        CancellationToken cancellationToken)
+    {
+        var product = await _mediator.Send(
+            new FindFullProductPageByUrlSlugQuery(
+                UrlSlug: urlSlug), 
             cancellationToken);
         
         return product is null ? NotFound() : Ok(product);

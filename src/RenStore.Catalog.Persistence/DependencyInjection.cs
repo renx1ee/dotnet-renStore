@@ -5,10 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Abstractions.Projections;
 using RenStore.Catalog.Application.Abstractions.Queries;
+using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Domain.Interfaces.Repository;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.SqlMappers;
 using RenStore.Catalog.Persistence.EventStore;
 using RenStore.Catalog.Persistence.Read.Queries.Postgresql;
+using RenStore.Catalog.Persistence.Services;
 using RenStore.Catalog.Persistence.Write.Projections;
 using RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
 
@@ -28,9 +30,12 @@ public static class DependencyInjection
         });
         
         SqlMapper.AddTypeHandler(new ProductStatusHandler());
+
+        services.AddScoped<IArticleService, ArticleService>();
         
         services.AddScoped<IEventStore, SqlEventStore>();
         
+        services.AddScoped<IColorRepository, ColorRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IProductVariantRepository, ProductVariantRepository>();

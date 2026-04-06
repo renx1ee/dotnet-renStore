@@ -23,6 +23,6 @@ internal sealed class VariantDetailsCreatedEventHandler
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
 
-        await _detailProjection.SaveChangesAsync(cancellationToken);
+        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

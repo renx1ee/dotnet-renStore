@@ -2,7 +2,7 @@ namespace RenStore.Catalog.Application.Abstractions.Projections;
 
 public interface ISubCategoryProjection
 {
-    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task CommitAsync(CancellationToken cancellationToken);
     
     Task<Guid> AddAsync(
         SubCategoryReadModel subCategory,

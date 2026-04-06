@@ -23,6 +23,6 @@ internal sealed class SizeRemovedFromVariantEventHandler
             removedAt: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
 
-        await _sizeProjection.SaveChangesAsync(cancellationToken);
+        await _sizeProjection.CommitAsync(cancellationToken);
     }
 }

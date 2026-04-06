@@ -167,7 +167,7 @@ public sealed class ProductVariant
     
     public void AddDetails(
         DateTimeOffset now,
-        int countryOfManufactureId,
+        string countryOfManufacture,
         string description,
         string composition,
         string? caringOfThings = null,
@@ -180,7 +180,7 @@ public sealed class ProductVariant
             throw new DomainException(
                 "Variant Details already exists.");
         
-        ProductDetailRules.CountryOfManufactureValidate(countryOfManufactureId);
+        CountryOfManufacture.NameValidation(countryOfManufacture);
 
         var trimmedDescription              = ProductDetailRules.DescriptionNormalizedAndValidate(description);
         var trimmedComposition         = ProductDetailRules.CompositionNormalizedAndValidate(composition);
@@ -197,7 +197,7 @@ public sealed class ProductVariant
             OccurredAt: now,
             DetailId: detailId,
             VariantId: Id,
-            CountryOfManufactureId: countryOfManufactureId,
+            CountryOfManufacture: countryOfManufacture,
             ModelFeatures: trimmedModelFeatures,
             DecorativeElements: trimmedDecorativeElements,
             Equipment: trimmedEquipment,
@@ -604,22 +604,20 @@ public sealed class ProductVariant
 
     public void ChangeDetailsCountryOfManufactureId(
         DateTimeOffset now,
-        int countryOfManufactureId)
+        string countryOfManufacture)
     {
         EnsureNotDeleted();
         EnsureDetailsExists();
         
-        if(countryOfManufactureId <= 0)
-            throw new DomainException(
-                "Product Detail country of manufacture ID must be more then 0.");
+        CountryOfManufacture.NameValidation(countryOfManufacture);
         
-        if(_details.CountryOfManufactureId == countryOfManufactureId) return;
+        if(_details.CountryOfManufacture.Name == countryOfManufacture) return;
         
         Raise(new VariantDetailsCountryOfManufactureIdUpdatedEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
             DetailId: _details.Id,
-            CountryOfManufactureId: countryOfManufactureId));
+            CountryOfManufacture: countryOfManufacture));
     }
     
     public void ChangeAttributeKey(
@@ -904,7 +902,7 @@ public sealed class ProductVariant
                 _details = VariantDetail.Create(
                     detailId: e.DetailId,
                     now: e.OccurredAt,
-                    countryOfManufactureId: e.CountryOfManufactureId,
+                    countryOfManufacture: e.CountryOfManufacture,
                     variantId: e.VariantId,
                     description: e.Description,
                     composition: e.Composition,
@@ -961,9 +959,9 @@ public sealed class ProductVariant
                 break;
             
             case VariantDetailsCountryOfManufactureIdUpdatedEvent e:
-                _details.ChangeCountryOfManufactureId(
+                _details.ChangeCountryOfManufacture(
                     now: e.OccurredAt,
-                    countryOfManufactureId: e.CountryOfManufactureId);
+                    countryOfManufacture: e.CountryOfManufacture);
                 UpdatedAt = e.OccurredAt;
                 break;
             

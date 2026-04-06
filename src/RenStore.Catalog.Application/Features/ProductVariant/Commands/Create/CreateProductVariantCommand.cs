@@ -6,5 +6,5 @@ public sealed record CreateProductVariantCommand(
     string Name,
     SizeSystem SizeSystem,
     SizeType SizeType) 
-    : IRequest<Guid>,
+    : IRequest<CreateProductVariantResponse>,
       ISellerProductCommand;

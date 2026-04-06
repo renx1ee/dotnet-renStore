@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Domain.ReadModels;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations;
 using RenStore.Catalog.Persistence.EventStore;
@@ -11,8 +12,13 @@ public sealed class CatalogDbContext(
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasSequence<long>("product_article_seq")
+            .StartsAt(1000)
+            .IncrementsBy(1);
+        
         modelBuilder.ApplyConfiguration(new EventEntityConfiguration());
         
+        modelBuilder.ApplyConfiguration(new ColorConfiguration());
         modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
         modelBuilder.ApplyConfiguration(new VariantSizeConfiguration());        
         modelBuilder.ApplyConfiguration(new VariantPriceHistoryConfiguration());
@@ -28,6 +34,7 @@ public sealed class CatalogDbContext(
 
     public DbSet<EventEntity> Events { get; set; }
     /*public DbSet<Color> Colors { get; set; }*/
+    public DbSet<Color> Colors { get; set; }
     public DbSet<CategoryReadModel> Categories { get; set; }
     public DbSet<SubCategoryReadModel> SubCategories { get; set; }
     public DbSet<ProductReadModel> Products { get; set; }

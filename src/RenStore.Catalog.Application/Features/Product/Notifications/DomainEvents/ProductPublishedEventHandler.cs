@@ -22,6 +22,6 @@ internal sealed class ProductPublishedEventHandler
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
 
-        await _productProjection.SaveChangesAsync(cancellationToken);
+        await _productProjection.CommitAsync(cancellationToken);
     }
 }

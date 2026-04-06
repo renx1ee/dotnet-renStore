@@ -22,6 +22,6 @@ internal sealed class SoftDeletedVariantEventHandler
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
 
-        await _variantProjection.SaveChangesAsync(cancellationToken);
+        await _variantProjection.CommitAsync(cancellationToken);
     }
 }

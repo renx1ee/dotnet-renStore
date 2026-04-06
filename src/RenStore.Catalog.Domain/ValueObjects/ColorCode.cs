@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.Domain.ValueObjects;
 
-public readonly record struct ColorCode
+public sealed record ColorCode
 { 
     public string Value { get; init; }
 

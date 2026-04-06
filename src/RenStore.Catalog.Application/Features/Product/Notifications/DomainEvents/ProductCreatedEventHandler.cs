@@ -28,6 +28,6 @@ internal sealed class ProductCreatedEventHandler
         };
         
         await _productProjection.AddAsync(product, cancellationToken);
-        await _productProjection.SaveChangesAsync(cancellationToken);
+        await _productProjection.CommitAsync(cancellationToken);
     }
 }

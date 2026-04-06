@@ -131,6 +131,7 @@ internal sealed class AddressQuery
                 ");
 
             var parameters = new DynamicParameters();
+            
             parameters.Add("Count", pageRequest.Limit);
             parameters.Add("Offset", pageRequest.Offset);
 

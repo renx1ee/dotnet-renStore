@@ -3,7 +3,7 @@ using RenStore.Catalog.Domain.Enums;
 namespace RenStore.Catalog.WebApi.Requests.Variant;
 
 public sealed record AddVariantDetailsRequest(
-    int CountryOfManufactureId,
+    string CountryOfManufacture,
     string Description,
     string Composition,
     string? CaringOfThings = null,

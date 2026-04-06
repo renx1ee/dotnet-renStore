@@ -12,7 +12,7 @@ internal sealed class CategoryProjection
     public CategoryProjection(CatalogDbContext context) =>
         _context = context ?? throw new ArgumentNullException(nameof(context));
     
-    public async Task SaveChangesAsync(
+    public async Task CommitAsync(
         CancellationToken cancellationToken)
     {
         await _context.SaveChangesAsync(cancellationToken);

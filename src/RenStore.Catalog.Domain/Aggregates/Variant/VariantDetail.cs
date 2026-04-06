@@ -1,4 +1,5 @@
 using RenStore.Catalog.Domain.Enums;
+using RenStore.Catalog.Domain.ValueObjects;
 
 namespace RenStore.Catalog.Domain.Aggregates.Variant;
 
@@ -14,7 +15,7 @@ public sealed class VariantDetail
     public TypeOfPacking? TypeOfPacking { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
-    public int CountryOfManufactureId { get; private set; }
+    public CountryOfManufacture CountryOfManufacture { get; private set; }
     public Guid VariantId { get; private set; }
     
     private VariantDetail() { }
@@ -23,9 +24,9 @@ public sealed class VariantDetail
         Guid detailId,
         DateTimeOffset now,
         Guid variantId,
-        int countryOfManufactureId,
         string description,
         string composition,
+        string countryOfManufacture,
         string? caringOfThings = null,
         TypeOfPacking? typeOfPackaging = null,
         string? modelFeatures = null,
@@ -37,7 +38,7 @@ public sealed class VariantDetail
             Id = detailId,
             CreatedAt = now,
             VariantId = variantId,
-            CountryOfManufactureId = countryOfManufactureId,
+            CountryOfManufacture = new CountryOfManufacture(countryOfManufacture),
             ModelFeatures = modelFeatures,
             DecorativeElements = decorativeElements,
             Equipment = equipment,
@@ -104,11 +105,11 @@ public sealed class VariantDetail
         UpdatedAt = now;
     }
 
-    internal void ChangeCountryOfManufactureId(
+    internal void ChangeCountryOfManufacture(
         DateTimeOffset now,
-        int countryOfManufactureId)
+        string countryOfManufacture)
     {
-        CountryOfManufactureId = countryOfManufactureId;
+        CountryOfManufacture = new CountryOfManufacture(countryOfManufacture);
         UpdatedAt = now;
     }
 }

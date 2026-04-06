@@ -2,7 +2,7 @@ namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.AddDetai
 
 public sealed record AddVariantDetailsCommand(
     Guid VariantId,
-    int CountryOfManufactureId,
+    string CountryOfManufacture,
     string Description,
     string Composition,
     string? CaringOfThings = null,

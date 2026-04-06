@@ -34,6 +34,6 @@ internal sealed class CategoryCreatedEventHandler
             }, 
             cancellationToken: cancellationToken);
 
-        await _categoryProjection.SaveChangesAsync(cancellationToken);
+        await _categoryProjection.CommitAsync(cancellationToken);
     }
 }

@@ -23,6 +23,6 @@ internal sealed class ProductRestoredEventHandler
                 notification.DomainEvent.OccurredAt,
                 cancellationToken: cancellationToken);
 
-        await _productProjection.SaveChangesAsync(cancellationToken);
+        await _productProjection.CommitAsync(cancellationToken);
     }
 }

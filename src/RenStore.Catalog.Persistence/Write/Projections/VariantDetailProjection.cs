@@ -13,7 +13,7 @@ internal sealed class VariantDetailProjection
     public VariantDetailProjection(CatalogDbContext context) =>
         _context = context ?? throw new ArgumentNullException(nameof(context));
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    public async Task CommitAsync(CancellationToken cancellationToken)
     {
         await _context.SaveChangesAsync(cancellationToken);
     }

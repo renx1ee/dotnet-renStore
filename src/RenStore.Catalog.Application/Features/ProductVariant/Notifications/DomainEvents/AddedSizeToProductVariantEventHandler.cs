@@ -30,6 +30,6 @@ internal sealed class AddedSizeToProductVariantEventHandler
             }, 
             cancellationToken);
 
-        await _variantSizeProjection.SaveChangesAsync(cancellationToken);
+        await _variantSizeProjection.CommitAsync(cancellationToken);
     }
 }

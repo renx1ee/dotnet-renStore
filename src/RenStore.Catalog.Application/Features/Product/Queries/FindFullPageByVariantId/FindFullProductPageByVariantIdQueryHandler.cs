@@ -1,15 +1,15 @@
 using RenStore.Catalog.Domain.ReadModels.Product.FullPage;
 
-namespace RenStore.Catalog.Application.Features.Product.Queries.FindFullPage;
+namespace RenStore.Catalog.Application.Features.Product.Queries.FindFullPageByVariantId;
 
-internal sealed class FindFullProductPageQueryHandler
-    : IRequestHandler<FindFullProductPageQuery, FullProductPageDto?>
+internal sealed class FindFullProductPageByVariantIdQueryHandler
+    : IRequestHandler<FindFullProductPageByVariantIdQuery, FullProductPageDto?>
 {
-    private readonly ILogger<FindFullProductPageQueryHandler> _logger;
+    private readonly ILogger<FindFullProductPageByVariantIdQueryHandler> _logger;
     private readonly IFullProductQuery _fullProductQuery;
 
-    public FindFullProductPageQueryHandler(
-        ILogger<FindFullProductPageQueryHandler> logger,
+    public FindFullProductPageByVariantIdQueryHandler(
+        ILogger<FindFullProductPageByVariantIdQueryHandler> logger,
         IFullProductQuery fullProductQuery)
     {
         _logger = logger;
@@ -17,12 +17,12 @@ internal sealed class FindFullProductPageQueryHandler
     }
     
     public async Task<FullProductPageDto?> Handle(
-        FindFullProductPageQuery request, 
+        FindFullProductPageByVariantIdQuery request, 
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
             "Handling {Command} with VariantId: {VariantId}",
-            nameof(FindFullProductPageQuery),
+            nameof(FindFullProductPageByVariantIdQuery),
             request.VariantId);
 
         var fullPage = await _fullProductQuery.FindFullAsync(
@@ -31,7 +31,7 @@ internal sealed class FindFullProductPageQueryHandler
         
         _logger.LogInformation(
             "{Command} handled. VariantId: {VariantId}",
-            nameof(FindFullProductPageQuery),
+            nameof(FindFullProductPageByVariantIdQuery),
             request.VariantId);
 
         return fullPage;

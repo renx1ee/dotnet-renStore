@@ -1,4 +1,4 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RenStore.Catalog.Domain.Entities;
 
@@ -10,55 +10,81 @@ public sealed class ColorConfiguration : IEntityTypeConfiguration<Color>
     {
         builder
             .ToTable("colors");
-        
+
         builder
-            .HasKey(c => c.Id)
-            .HasName("color_id");
+            .HasKey(c => c.Id);
         
         builder
             .Property(c => c.Id)
-            .HasColumnName("color_id");
-        
-        builder
-            .Property(c => c.Key)
-            .HasColumnName("color_name")
-            .HasMaxLength(50)
+            .HasColumnName("id")
             .IsRequired();
         
         builder
-            .HasIndex(c => c.Key)
-            .IsUnique();
+            .Property(c => c.Name)
+            .HasColumnName("name")
+            .HasMaxLength(50)
+            .IsRequired();
         
         builder
             .Property(c => c.NormalizedName)
-            .HasColumnName("normalized_color_name")
+            .HasColumnName("normalized_name")
             .HasMaxLength(50)
             .IsRequired();
+        
+        builder
+            .Property(c => c.NameRu)
+            .HasColumnName("name_ru")
+            .HasMaxLength(50)
+            .IsRequired();
+        
+        builder
+            .Property(c => c.NormalizedNameRu)
+            .HasColumnName("normalized_name_ru")
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder
+            .OwnsOne(x => x.Code, code =>
+            {
+                code
+                    .Property(c => c.Value)
+                    .HasColumnName("color_code")
+                    .HasMaxLength(7)
+                    .IsRequired();
+
+                code
+                    .HasIndex(c => c.Value)
+                    .HasDatabaseName("ux_colors_color_code")
+                    .IsUnique();
+            });
+        
+        builder
+            .Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted")
+            .HasColumnType("boolean")
+            .HasDefaultValue("false")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.CreatedAt)
+            .HasColumnName("created_date")
+            .IsRequired();
+        
+        builder
+            .Property(x => x.UpdatedAt)
+            .HasColumnName("updated_date")
+            .IsRequired(false);
+            
+        builder
+            .Property(x => x.DeletedAt)
+            .HasColumnName("deleted_date")
+            .IsRequired(false);
         
         builder
             .HasIndex(c => c.NormalizedName)
             .IsUnique();
-        
-        builder
-            .Property(c => c.NameRu)
-            .HasColumnName("color_name_ru")
-            .HasMaxLength(50)
-            .IsRequired();
-        
         builder
             .HasIndex(c => c.NameRu)
             .IsUnique();
-
-        builder
-            .Property(c => c.ColorCode)
-            .HasColumnName("color_code")
-            .HasMaxLength(7)
-            .IsRequired(false);
-        
-        builder
-            .Property(c => c.Description)
-            .HasColumnName("color_description")
-            .HasMaxLength(256)
-            .IsRequired(false);
     }
-}*/
+}

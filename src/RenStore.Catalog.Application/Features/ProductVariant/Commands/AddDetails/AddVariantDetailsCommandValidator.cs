@@ -11,9 +11,13 @@ internal sealed class AddVariantDetailsCommandValidator
             .NotEmpty()
             .WithMessage("Variant ID cannot be empty guid.");
         
-        RuleFor(s => s.CountryOfManufactureId)
-            .GreaterThan(0)
-            .WithMessage("Country ID cannot be greater than 0.");
+        RuleFor(s => s.CountryOfManufacture)
+            .MaximumLength(CatalogConstants.ProductDetail.MaxCountryOfManufactureLength)
+            .MinimumLength(CatalogConstants.ProductDetail.MinCountryOfManufactureLength)
+            .WithMessage(
+                "Country of manufacture name lenght must be between " +
+                $"{CatalogConstants.ProductDetail.MaxCountryOfManufactureLength} and " +
+                $"{CatalogConstants.ProductDetail.MinCountryOfManufactureLength} characters.");
         
         RuleFor(p => p.Description)
             .MinimumLength(CatalogConstants.ProductDetail.MinDescriptionLength)

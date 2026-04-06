@@ -102,6 +102,10 @@ public sealed class ProductVariantConfiguration
         
         builder
             .HasIndex(v => v.Article)
+            .IsUnique(); 
+        
+        builder
+            .HasIndex(v => v.Url)
             .IsUnique();
         
         builder
