@@ -26,7 +26,7 @@ internal sealed class CategoryProjection
         
         await _context.Categories.AddAsync(category, cancellationToken);
         
-        return category.Id;
+        return category.CategoryId;
     }
     
     public async Task AddRangeAsync(
@@ -164,7 +164,7 @@ internal sealed class CategoryProjection
     {
         var category = await _context.Categories
             .FirstOrDefaultAsync(x =>
-                x.Id == categoryId,
+                x.CategoryId == categoryId,
                 cancellationToken);
 
         if (category is null)

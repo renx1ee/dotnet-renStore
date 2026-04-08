@@ -21,7 +21,7 @@ internal sealed class FindFullProductPageByVariantIdQueryHandler
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "Handling {Command} with VariantId: {VariantId}",
+            "Handling {Query} with VariantId: {VariantId}",
             nameof(FindFullProductPageByVariantIdQuery),
             request.VariantId);
 
@@ -30,7 +30,7 @@ internal sealed class FindFullProductPageByVariantIdQueryHandler
             cancellationToken: cancellationToken);
         
         _logger.LogInformation(
-            "{Command} handled. VariantId: {VariantId}",
+            "{Query} handled. VariantId: {VariantId}",
             nameof(FindFullProductPageByVariantIdQuery),
             request.VariantId);
 

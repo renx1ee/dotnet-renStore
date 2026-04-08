@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Category\Queries\" />
       <Folder Include="Features\ProductVariant\Commands\ChangeColor\" />
-      <Folder Include="Features\ProductVariant\Queries\FindByCategoryId\" />
       <Folder Include="Features\ProductVariant\Queries\FindBySubCategoryId\" />
       <Folder Include="Features\VariantMedia\Queries\" />
     </ItemGroup>

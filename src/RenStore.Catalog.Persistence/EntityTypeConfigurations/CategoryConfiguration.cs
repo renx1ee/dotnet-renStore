@@ -13,10 +13,10 @@ namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
                 .ToTable("categories");
 
             builder
-                .HasKey(x => x.Id);
+                .HasKey(x => x.CategoryId);
 
             builder
-                .Property(x => x.Id)
+                .Property(x => x.CategoryId)
                 .HasColumnName("id");
         
             builder
@@ -49,7 +49,7 @@ namespace RenStore.Catalog.Persistence.EntityTypeConfigurations
         
             builder
                 .Property(x => x.Description)
-                .HasColumnName("category_description")
+                .HasColumnName("description")
                 .HasColumnType("varchar(500)")
                 .HasMaxLength(500)
                 .IsRequired(false);

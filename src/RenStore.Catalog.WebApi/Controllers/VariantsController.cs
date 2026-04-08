@@ -6,6 +6,7 @@ using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAt
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteSize;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateDetails;
+using RenStore.Catalog.Application.Features.ProductVariant.Queries.SearchVariants;
 
 namespace RenStore.Catalog.WebApi.Controllers;
 
@@ -593,12 +594,36 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
                 Page: page,
                 PageCount: pageCount,
                 Descending: descending,
-                IsDeleted: false), 
+                IsDeletedCategory: false), 
             cancellationToken);
         
         return Ok(result);*/
 
         return NoContent();
+    }
+    
+    [HttpGet("catalog/variants")]
+    [AllowAnonymous]
+    [MapToApiVersion(1)]
+    public async Task<IActionResult> Search(
+        [FromQuery] SearchVariantsRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new SearchVariantsQuery(
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                CategoryId: request.CategoryId,
+                SubCategoryId: request.SubCategoryId,
+                MaxPrice: request.MaxPrice,
+                MinPrice: request.MinPrice,
+                ColorId: request.ColorId,
+                Search: request.Search,
+                SortBy: request.SortBy), 
+            cancellationToken);
+
+        return Ok(result);
     }
     
     #endregion

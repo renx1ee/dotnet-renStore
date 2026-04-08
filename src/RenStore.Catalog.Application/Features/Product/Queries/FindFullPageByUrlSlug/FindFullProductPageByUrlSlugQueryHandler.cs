@@ -21,7 +21,7 @@ internal sealed class FindFullProductPageByUrlSlugQueryHandler
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "Handling {Command} with Article: {Article}",
+            "Handling {Query} with Article: {Article}",
             nameof(FindFullProductPageByUrlSlugQuery),
             request.UrlSlug);
 
@@ -30,7 +30,7 @@ internal sealed class FindFullProductPageByUrlSlugQueryHandler
             cancellationToken: cancellationToken);
         
         _logger.LogInformation(
-            "{Command} handled. Article: {Article}",
+            "{Query} handled. Article: {Article}",
             nameof(FindFullProductPageByUrlSlugQuery),
             request.UrlSlug);
 

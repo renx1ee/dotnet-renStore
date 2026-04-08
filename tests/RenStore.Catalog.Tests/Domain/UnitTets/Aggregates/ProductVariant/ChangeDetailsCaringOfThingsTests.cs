@@ -18,12 +18,13 @@ public sealed class ChangeDetailsCaringOfThingsTests : ProductVariantTestBase
         // Arrange
         var now = DateTimeOffset.UtcNow;
         var expectedResult = "New CaringOfThings";
+        var country = "Samplecountry";
 
         var variant = CreateValidProductVariant();
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: country,
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -61,7 +62,7 @@ public sealed class ChangeDetailsCaringOfThingsTests : ProductVariantTestBase
 
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -95,7 +96,7 @@ public sealed class ChangeDetailsCaringOfThingsTests : ProductVariantTestBase
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",

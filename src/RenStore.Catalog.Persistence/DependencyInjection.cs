@@ -51,6 +51,8 @@ public static class DependencyInjection
         services.AddScoped<IVariantDetailProjection, VariantDetailProjection>();
         services.AddScoped<IVariantImageProjection, VariantImageProjection>();
         
+        services.AddScoped<ICategoryQuery, CategoryQuery>();
+        services.AddScoped<ICatalogQuery, CatalogQuery>();
         services.AddScoped<IFullProductQuery, FullProductQuery>();
         services.AddScoped<IVariantSizeQuery, VariantSizeQuery>();
         services.AddScoped<IVariantAttributeQuery, VariantAttributeQuery>();

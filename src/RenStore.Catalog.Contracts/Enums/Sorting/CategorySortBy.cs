@@ -4,5 +4,6 @@ public enum CategorySortBy
 {
     Id,
     Name,
-    NameRu
+    NameRu,
+    CreatedAt,
 }

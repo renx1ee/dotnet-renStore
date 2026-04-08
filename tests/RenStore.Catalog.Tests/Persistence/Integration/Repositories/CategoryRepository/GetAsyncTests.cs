@@ -1,4 +1,5 @@
-/*using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using RenStore.Catalog.Domain.Aggregates.Category;
 using RenStore.Catalog.Persistence;
 using RenStore.Catalog.Persistence.EventStore;
@@ -6,11 +7,16 @@ using Xunit.Abstractions;
 
 namespace RenStore.Catalog.Tests.Persistence.Integration.Repositories.CategoryRepository;
 
-public class GetAsyncTests : IAsyncLifetime
+[Collection("sequential")]
+public sealed class GetAsyncTests : IAsyncLifetime
 {
-    private readonly ITestOutputHelper testOutputHelper;
-
     private CatalogDbContext _context;
+    private readonly ITestOutputHelper testOutputHelper;
+    
+    public GetAsyncTests(ITestOutputHelper testOutputHelper)
+    {
+        this.testOutputHelper = testOutputHelper;
+    }
     
     public async Task InitializeAsync()
     {
@@ -23,17 +29,14 @@ public class GetAsyncTests : IAsyncLifetime
         await _context.Database.EnsureDeletedAsync();
         await _context.Database.EnsureCreatedAsync();
     }
-
-    public GetAsyncTests(ITestOutputHelper testOutputHelper)
-    {
-        this.testOutputHelper = testOutputHelper;
-    }
     
-    // TODO: firstly, you need to create tests for the LoasAsync in the SqlEventStore 
     [Fact]
     public async Task Should_Getting_Categories_From_Postgres()
     {
         // Arrange
+        var updatedById = Guid.NewGuid();
+        var updatedByRole = "Admin";
+        
         var now1 = DateTimeOffset.UtcNow;
         var category1Name = "Clothes";
         var category1NameRu = "Одежда";
@@ -45,45 +48,49 @@ public class GetAsyncTests : IAsyncLifetime
         var description2 = "Sample testing category description";
 
         var eventStore = new SqlEventStore(_context);
+        var mediatorMock = new Mock<MediatR.IMediator>();
         
-        var repository = new Catalog.Persistence.Write.Projections.CategoryProjection(_context, eventStore);
+        var categoryRepository = new Catalog.Persistence.Write.Repositories.Postgresql
+            .CategoryRepository(eventStore, mediatorMock.Object);
 
-        var list = new List<Category>()
-        {
-            Category.Create(
-                name: category1Name,
-                nameRu: category1NameRu,
-                description: description1,
-                now: now1),
-            
-            Category.Create(
-                name: category2Name,
-                nameRu: category2NameRu,
-                description: description2,
-                now: now2)
-        };
+        var category1 = Category.Create(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole,
+            isActive: true,
+            name: category1Name,
+            nameRu: category1NameRu,
+            description: description1,
+            now: now1);
         
-        testOutputHelper.WriteLine($"Category1 ID before save: {list[0].Id}");
-        testOutputHelper.WriteLine($"Category2 ID before save: {list[1].Id}");
+        var category2 = Category.Create(
+            updatedById: updatedById,
+            updatedByRole: updatedByRole,
+            isActive: false,
+            name: category2Name,
+            nameRu: category2NameRu,
+            description: description2,
+            now: now2);
         
-        await repository.AddRangeAsync(list, CancellationToken.None);
-        var savedResult = await _context.SaveChangesAsync();
         
-        testOutputHelper.WriteLine($"SaveChangesAsync result: {savedResult} entities saved");
+        testOutputHelper.WriteLine($"Category1 ID before save: {category1.Id}");
+        testOutputHelper.WriteLine($"Category2 ID before save: {category2.Id}");
+        
+        await categoryRepository.SaveAsync(category1, CancellationToken.None);
+        await categoryRepository.SaveAsync(category2, CancellationToken.None);
         
         // Act
-        var existingCategory1 = await repository
+        var existingCategory1 = await categoryRepository
             .GetAsync(
-                id: list[0].Id,
+                id: category1.Id,
                 cancellationToken: CancellationToken.None);
         
-        var existingCategory2 = await repository
+        var existingCategory2 = await categoryRepository
             .GetAsync(
-                id: list[1].Id,
+                id: category2.Id,
                 cancellationToken: CancellationToken.None);
         
         // Assert
-        /*Assert.NotNull(existingCategory1); // TODO:
+        Assert.NotNull(existingCategory1); // TODO:
         Assert.Equal(now1, existingCategory1.CreatedAt);
         Assert.Equal(category1Name, existingCategory1.Name);
         Assert.Equal(category1NameRu, existingCategory1.NameRu);
@@ -93,11 +100,27 @@ public class GetAsyncTests : IAsyncLifetime
         Assert.Equal(now2, existingCategory2.CreatedAt);
         Assert.Equal(category2Name, existingCategory2.Name);
         Assert.Equal(category2NameRu, existingCategory2.NameRu);
-        Assert.Equal(description2, existingCategory2.Description);#1#
+        Assert.Equal(description2, existingCategory2.Description);
+    }
+    
+    [Fact]
+    public async Task Should_Return_Null_When_CategoryNotFound()
+    {
+        var eventStore = new SqlEventStore(_context);
+        var mediatorMock = new Mock<MediatR.IMediator>();
+        
+        var categoryRepository = new Catalog.Persistence.Write.Repositories.Postgresql
+            .CategoryRepository(eventStore, mediatorMock.Object);
+        
+        var result = await categoryRepository.GetAsync(
+            Guid.NewGuid(), CancellationToken.None);
+    
+        Assert.Null(result);
     }
 
     public async Task DisposeAsync()
     {
-        await _context.Database.EnsureDeletedAsync();
+        if(_context != null)
+            await _context.Database.EnsureDeletedAsync();
     }
-}*/
+}

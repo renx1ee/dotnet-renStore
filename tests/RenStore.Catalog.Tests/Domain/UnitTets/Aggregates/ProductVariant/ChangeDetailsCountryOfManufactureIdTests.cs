@@ -7,10 +7,9 @@ namespace RenStore.Catalog.Tests.Domain.UnitTets.Aggregates.ProductVariant;
 public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTestBase
 {
     [Theory]
-    [InlineData(12)]
-    [InlineData(52)]
+    [InlineData("Country")]
     public void Should_Raise_CountryOfManufactureIdUpdated_Event(
-        int countryId)
+        string country)
     {
         // Arrange
         var now = DateTimeOffset.UtcNow;
@@ -19,7 +18,7 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -33,17 +32,17 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
         // Act
         variant.ChangeDetailsCountryOfManufactureId(
             now: now,
-            countryOfManufactureId: countryId);
+            countryOfManufacture: country);
 
         var @event = Assert.Single(variant.GetUncommittedEvents());
         var result = Assert.IsType<VariantDetailsCountryOfManufactureIdUpdatedEvent>(@event);
 
         // Assert: event
-        Assert.Equal(countryId, result.CountryOfManufactureId);
+        Assert.Equal(country, result.CountryOfManufacture);
         Assert.Equal(now, result.OccurredAt);
 
         // Assert: state
-        Assert.Equal(countryId, variant.Details.CountryOfManufactureId);
+        Assert.Equal(country, variant.Details.CountryOfManufacture.Name);
         Assert.Equal(now, variant.UpdatedAt);
     }
     
@@ -57,7 +56,7 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -71,17 +70,17 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
         // Act & Assert
         variant.ChangeDetailsCountryOfManufactureId(
             now: now,
-            countryOfManufactureId: variant.Details.CountryOfManufactureId);
+            countryOfManufacture: variant.Details.CountryOfManufacture.Name);
 
         Assert.Empty(variant.GetUncommittedEvents());
     }
     
     [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(-10)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("1")]
     public void Should_Throw_NoRise_Where_IncorrectCountryId(
-        int countryId)
+        string country)
     {
         // Arrange
         var now = DateTimeOffset.UtcNow;
@@ -90,7 +89,7 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -105,6 +104,6 @@ public sealed class ChangeDetailsCountryOfManufactureIdTests : ProductVariantTes
         Assert.Throws<DomainException>(() =>
             variant.ChangeDetailsCountryOfManufactureId(
                 now: now,
-                countryOfManufactureId: countryId));
+                countryOfManufacture: country));
     }
 }

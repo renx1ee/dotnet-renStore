@@ -1,12 +1,13 @@
 namespace RenStore.Catalog.Domain.ReadModels;
 
-public sealed class CatalogHomeItemReadModel
+public sealed class CatalogReadModel
 {
     // Variant
     public Guid VariantId { get; init; }
     public long Article { get; init; }
     public string VariantUrlSlug { get; init; }
     public string Name { get; init; }
+    public DateTimeOffset CreatedDate { get; init; }
     // Image
     public string StoragePath { get; init; }
     public Guid ImageId { get; init; }

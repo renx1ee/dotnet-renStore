@@ -21,7 +21,7 @@ internal sealed class VariantSizeQuery
                 "size_number"  AS Number,
                 "size_system"  AS System,
                 "type"         AS Type,
-                "is_deleted"   AS IsDeleted,
+                "is_deleted"   AS IsDeletedCategory,
                 "created_date" AS CreatedAt,
                 "updated_date" AS UpdatedAt,
                 "deleted_date" AS DeletedAt,
@@ -72,7 +72,7 @@ internal sealed class VariantSizeQuery
                 ");
             
             if (isDeleted.HasValue)
-                sql.Append(" WHERE \"is_deleted\" = @IsDeleted");
+                sql.Append(" WHERE \"is_deleted\" = @IsDeletedCategory");
             
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
                            LIMIT @Count
@@ -170,7 +170,7 @@ internal sealed class VariantSizeQuery
                 """);
             
             if (isDeleted.HasValue)
-                sql.Append(" AND \"is_deleted\" = @IsDeleted");
+                sql.Append(" AND \"is_deleted\" = @IsDeletedCategory");
             
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
                            LIMIT @Count

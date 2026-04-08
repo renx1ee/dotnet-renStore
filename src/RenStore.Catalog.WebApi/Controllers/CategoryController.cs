@@ -1,3 +1,9 @@
+using RenStore.Catalog.Application.Features.Category.Queries.FindCategories;
+using RenStore.Catalog.Application.Features.Category.Queries.FindCategoriesWithSubcategories;
+using RenStore.Catalog.Application.Features.Category.Queries.FindCategoryById;
+using RenStore.Catalog.Application.Features.Category.Queries.FindSubCategories;
+using RenStore.Catalog.Application.Features.Category.Queries.FindSubCategoryById;
+
 namespace RenStore.Catalog.WebApi.Controllers;
 
 [ApiController]
@@ -27,8 +33,8 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
         return categoryId == Guid.Empty
             ? BadRequest()
             : CreatedAtAction(
-                actionName: nameof(FindCategoryById),
-                routeValues: new { categoryId = categoryId},
+                actionName: nameof(FindCategory),
+                routeValues: new { categoryId },
                 value: new { Id = categoryId });
     }
     
@@ -110,7 +116,6 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
         
         return NoContent();
     }
-
     
     [HttpPost("{categoryId}/sub-categories")]
     [ApiVersion(1)]
@@ -132,12 +137,11 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
         return subCategoryId == Guid.Empty
             ? BadRequest()
             : CreatedAtAction(
-                actionName: nameof(FindCategoryById),
+                actionName: nameof(FindSubCategory),
                 routeValues: new
                 {
-                    Id = subCategoryId, 
-                    CategoryId = categoryId, 
-                    Version = "1"
+                    categoryId,
+                    subCategoryId
                 },
                 value: new
                 {
@@ -237,27 +241,202 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
     
     #endregion
 
-    #region Queries
+    #region Queries Manage
 
     [HttpGet("{categoryId}")]
     [ApiVersion(1)]
-    [AllowAnonymous]
-    public async Task<IActionResult> FindCategoryById(
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
+    public async Task<IActionResult> FindCategoryManage(
         [FromRoute] Guid categoryId,
+        [FromQuery] FindCategoryManageRequest request,
         CancellationToken cancellationToken)
     {
-        return Ok();
+        var result = await _mediator.Send(
+            new FindCategoryByIdQuery(
+                CategoryId: categoryId,
+                IncludeDeleted: request.IncludeDeleted),
+            cancellationToken);
+        
+        return result is not null
+            ? Ok(result)
+            : NotFound();
+    }
+    
+    [HttpGet]
+    [ApiVersion(1)]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
+    public async Task<IActionResult> FindCategoriesManage(
+        [FromQuery] FindManageCategoriesRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _mediator.Send(
+            new FindCategoriesQuery(
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                SortBy: request.SortBy,
+                IsDeleted: request.IsDeleted),
+            cancellationToken);
+
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [ApiVersion(1)]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
+    public async Task<IActionResult> FindCategoriesWithSubCategoriesManage(
+        [FromQuery] FindManageCategoriesWithSubCategoriesRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _mediator.Send(
+            new FindCategoriesWithSubcategoriesQuery(
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                SortBy: request.SortBy,
+                IsDeletedCategory: request.IsDeletedCategory,
+                IsDeletedSubCategory: request.IsDeletedSubCategory),
+            cancellationToken);
+
+        return Ok(result);
     }
     
     [HttpGet("{categoryId}/sub-categories/{subCategoryId}")]
     [ApiVersion(1)]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
+    public async Task<IActionResult> FindSubCategoryManage(
+        [FromRoute] Guid categoryId,
+        [FromRoute] Guid subCategoryId,
+        [FromQuery] FindSubCategoryManageRequest request,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new FindSubCategoryByIdQuery(
+                CategoryId: categoryId,
+                SubCategoryId: subCategoryId,
+                IncludeDeleted: request.IncludeDeleted),
+            cancellationToken);
+        
+        return result is not null
+            ? Ok(result)
+            : NotFound();
+    }
+    
+    [HttpGet("{categoryId}/sub-categories")]
+    [ApiVersion(1)]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
+    public async Task<IActionResult> FindSubCategoriesManage(
+        [FromRoute] Guid categoryId,
+        [FromQuery] FindManageSubCategoriesRequest request,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new FindSubCategoriesQuery(
+                CategoryId: categoryId,
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                SortBy: request.SortBy,
+                IsDeleted: request.IsDeleted),
+            cancellationToken);
+
+        return Ok(result);
+    }
+
+    #endregion
+
+    #region Queries Catalog
+    
+    [HttpGet("/api/v{version:apiVersion}/catalog/categories/{categoryId}")]
+    [ApiVersion(1)]
     [AllowAnonymous]
-    public async Task<IActionResult> FindSubCategoryById(
+    public async Task<IActionResult> FindCategory(
+        [FromRoute] Guid categoryId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new FindCategoryByIdQuery(
+                CategoryId: categoryId),
+            cancellationToken);
+        
+        return result is not null
+            ? Ok(result)
+            : NotFound();
+    }
+    
+    [HttpGet("/api/v{version:apiVersion}/catalog/categories")]
+    [ApiVersion(1)]
+    [AllowAnonymous]
+    public async Task<IActionResult> FindCategories(
+        CancellationToken cancellationToken,
+        [FromQuery] FindCatalogCategoriesRequest request)
+    {
+        var result = await _mediator.Send(
+            new FindCategoriesQuery(
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                SortBy: request.SortBy),
+            cancellationToken);
+
+        return Ok(result);
+    }
+    
+    [HttpGet("/api/v{version:apiVersion}/catalog/categories/with-sub-categories")]
+    [ApiVersion(1)]
+    [AllowAnonymous]
+    public async Task<IActionResult> FindCategoriesWithSubCategories(
+        CancellationToken cancellationToken,
+        [FromQuery] FindCatalogCategoriesWithSubCategoriesRequest request)
+    {
+        var result = await _mediator.Send(
+            new FindCategoriesWithSubcategoriesQuery(
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                SortBy: request.SortBy),
+            cancellationToken);
+
+        return Ok(result);
+    }
+    
+    [HttpGet("/api/v{version:apiVersion}/catalog/categories/{categoryId}/sub-categories/{subCategoryId}")]
+    [ApiVersion(1)]
+    [AllowAnonymous]
+    public async Task<IActionResult> FindSubCategory(
         [FromRoute] Guid categoryId,
         [FromRoute] Guid subCategoryId,
         CancellationToken cancellationToken)
     {
-        return Ok();
+        var result = await _mediator.Send(
+            new FindSubCategoryByIdQuery(
+                CategoryId: categoryId,
+                SubCategoryId: subCategoryId),
+            cancellationToken);
+        
+        return result is not null
+            ? Ok(result)
+            : NotFound();
+    }
+    
+    [HttpGet("/api/v{version:apiVersion}/catalog/categories/{categoryId}/sub-categories")]
+    [ApiVersion(1)]
+    [AllowAnonymous]
+    public async Task<IActionResult> FindSubCategories(
+        [FromRoute] Guid categoryId,
+        [FromQuery] FindCatalogSubCategoriesRequest request,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(
+            new FindSubCategoriesQuery(
+                CategoryId: categoryId,
+                Page: request.Page,
+                PageSize: request.PageSize,
+                Descending: request.Descending,
+                SortBy: request.SortBy),
+            cancellationToken);
+
+        return Ok(result);
     }
     
     #endregion

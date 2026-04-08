@@ -20,7 +20,7 @@ internal sealed class CategoryCreatedEventHandler
         await _categoryProjection.AddAsync(
             category: new CategoryReadModel()
             {
-                Id = notification.DomainEvent.CategoryId,
+                CategoryId = notification.DomainEvent.CategoryId,
                 UpdatedById = notification.DomainEvent.UpdatedById,
                 UpdatedByRole = notification.DomainEvent.UpdatedByRole,
                 CreatedAt = notification.DomainEvent.OccurredAt,

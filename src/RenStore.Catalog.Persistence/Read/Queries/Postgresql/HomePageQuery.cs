@@ -1,25 +1,15 @@
-using System.Text;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using RenStore.Catalog.Application.Filters;
 using RenStore.Catalog.Contracts.Enums.Sorting;
 using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
-internal sealed class HomePageQuery
-    : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase,
+internal sealed class HomePageQuery(CatalogDbContext context, ILogger logger) 
+    : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase(context, logger),
       RenStore.Catalog.Application.Abstractions.Queries.IHomePageQuery
 {
-    private readonly Dictionary<CatalogFilterSortBy, string> _sortColumnMapping = new()
-    {
-        { CatalogFilterSortBy.Name, "normalized_name" },
-        { CatalogFilterSortBy.PriceAsc, "price" },
-        { CatalogFilterSortBy.PriceDesc, "price" },
-        { CatalogFilterSortBy.Newest, "created_date" }
-    };
-    
     private const string BaseSqlQuery =
         """
         SELECT
@@ -27,12 +17,14 @@ internal sealed class HomePageQuery
             pv."article"       AS Article,
             pv."url"           AS VariantUrlSlug,
             pv."name"          AS Name,
+            pv."created_date"  AS CreatedDate,
             img."id"           AS ImageId,
             img."storage_path" AS StoragePath,
             -- img."url"       AS ImageUrlSlug,
             price."price"      AS Amount,
             price."currency"   AS Currency
         FROM "product_variants" pv
+        -- image
         LEFT JOIN LATERAL (
             SELECT 
                 pi."id",
@@ -43,6 +35,7 @@ internal sealed class HomePageQuery
             ORDER BY pi."is_main" DESC
             LIMIT 1
         ) img ON true
+        -- price  
         LEFT JOIN LATERAL (
             SELECT 
                 ph."price", 
@@ -61,14 +54,15 @@ internal sealed class HomePageQuery
         AND p."status" = 'published'
         """;
     
-    public HomePageQuery(
-        ILogger<HomePageQuery> logger,
-        CatalogDbContext context)
-        : base(context, logger)
+    private static readonly Dictionary<CatalogFilterSortBy, string> _sortColumnMapping = new()
     {
-    }
-
-    public async Task<IReadOnlyList<CatalogHomeItemReadModel>> FindAllAsync(
+        { CatalogFilterSortBy.Name,      "normalized_name" },
+        { CatalogFilterSortBy.PriceAsc,  "price" },
+        { CatalogFilterSortBy.PriceDesc, "price" },
+        { CatalogFilterSortBy.Newest,    "created_date" }
+    };
+    
+    public async Task<IReadOnlyList<CatalogReadModel>> FindAllAsync(
         CancellationToken cancellationToken,
         uint page = 1,
         uint pageSize = 25,
@@ -79,7 +73,7 @@ internal sealed class HomePageQuery
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
             var pageRequest = BuildPageRequest(page, pageSize, descending);
 
-            var sql = 
+            var sql =
                 $"""
                     {BaseSqlQuery}
                     ORDER BY pv."name" {pageRequest.Direction}
@@ -88,7 +82,7 @@ internal sealed class HomePageQuery
                 """;
 
             var result = await connection
-                .QueryAsync<CatalogHomeItemReadModel>(
+                .QueryAsync<CatalogReadModel>(
                     new CommandDefinition(
                         commandText: sql,
                         parameters: new
@@ -107,70 +101,5 @@ internal sealed class HomePageQuery
             throw Wrap(e);
         }
     }
-    // TODO: 
-    public async Task<IReadOnlyList<CatalogHomeItemReadModel>> FindAsync(
-        CatalogFilter filter,
-        CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            var connection = await GetOpenDbConnectionAsync(cancellationToken);
-            var pageRequest = BuildPageRequest(
-                page: filter.Page, 
-                pageSize: filter.PageSize, 
-                descending: filter.Descending);
-
-            var sql = new StringBuilder();
-            
-            sql.Append(
-                $"""
-                {BaseSqlQuery}
-                """);
-            
-            var parameters = new DynamicParameters();
-
-            if (filter.CategoryId.HasValue)
-            {
-                sql.Append(""" AND p."category_id" = @CategoryId""");
-                parameters.Add("CategoryId", filter.CategoryId);
-            }
-            
-            if (filter.SubCategoryId.HasValue)
-            {
-                sql.Append(""" AND p."sub_category_id" = @SubCategoryId""");
-                parameters.Add("SubCategoryId", filter.SubCategoryId);
-            }
-            
-            sql.Append(
-                $"""
-                ORDER BY pv."name" {pageRequest.Direction}
-                LIMIT @Count
-                OFFSET @Offset; 
-                """);
-            
-            parameters.Add("Count", pageRequest.Limit);
-            parameters.Add("Offset", pageRequest.Offset);
-            
-            var result = await connection
-                .QueryAsync<CatalogHomeItemReadModel>(
-                    new CommandDefinition(
-                        commandText: sql.ToString(),
-                        parameters: parameters,
-                        transaction: CurrentDbTransaction,
-                        commandTimeout: CommandTimeoutSeconds,
-                        cancellationToken: cancellationToken));
-
-            return result.AsList();
-        }
-        catch (PostgresException e)
-        {
-            _logger.LogError(
-                exception: e, 
-                message: "Database error in method: {FindAsync} with {Filter}",
-                nameof(FindAsync),
-                filter);
-
-            throw Wrap(e);
-        }
-    }
+    // TODO: сделать поиск по категории
 }

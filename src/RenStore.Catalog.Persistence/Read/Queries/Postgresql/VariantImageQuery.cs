@@ -27,7 +27,7 @@ internal sealed class VariantImageQuery
                 "deleted_date"       AS DeletedAt,
                 "weight"             AS Weight,
                 "height"             AS Height,
-                "is_deleted"         AS IsDeleted,
+                "is_deleted"         AS IsDeletedCategory,
                 "version"            AS Version,
                 "variant_id"         AS VariantId
             FROM 
@@ -75,7 +75,7 @@ internal sealed class VariantImageQuery
                 ");
             
             if (isDeleted.HasValue)
-                sql.Append(" WHERE \"is_deleted\" = @IsDeleted");
+                sql.Append(" WHERE \"is_deleted\" = @IsDeletedCategory");
             
             if (isMain.HasValue)
                 sql.Append(" AND \"is_main\" = @IsMain");
@@ -178,7 +178,7 @@ internal sealed class VariantImageQuery
                 ");
 
             if (isDeleted.HasValue)
-                sql.Append(" AND \"is_deleted\" = @IsDeleted");
+                sql.Append(" AND \"is_deleted\" = @IsDeletedCategory");
             
             if (isMain.HasValue)
                 sql.Append(" AND \"is_main\" = @IsMain");

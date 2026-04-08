@@ -23,7 +23,7 @@ public sealed class ChangeDetailsCompositionTests : ProductVariantTestBase
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -61,7 +61,7 @@ public sealed class ChangeDetailsCompositionTests : ProductVariantTestBase
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",
@@ -95,7 +95,7 @@ public sealed class ChangeDetailsCompositionTests : ProductVariantTestBase
         
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: 342,
+            countryOfManufacture: "Samplecountry",
             description: "Tests descriptiondescriptiondescrip",
             composition: "Composition fwwfwfwf",
             caringOfThings: "caring of things things v things things",

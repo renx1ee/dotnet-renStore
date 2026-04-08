@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
 using RenStore.Catalog.Persistence;
+using RenStore.Catalog.Tests.Persistence.Integration.Projection;
 using RenStore.Catalog.Tests.Persistence.Integration.Repositories;
 using RenStore.SharedKernal.Domain.Common;
 using RenStore.SharedKernal.Domain.Exceptions;
@@ -14,7 +15,7 @@ public class AppendAsyncTests : IAsyncLifetime
     public async Task InitializeAsync()
     {
         var options = new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseNpgsql(connectionString: CatalogRepositoryTestsBase
+            .UseNpgsql(connectionString: CatalogProjectionTestsBase
                 .BuildConnectionString(Guid.NewGuid()))
             .Options;
 

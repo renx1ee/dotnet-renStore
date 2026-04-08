@@ -20,7 +20,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
     {
         // Arrange
         var now = DateTimeOffset.UtcNow;
-        var countryId = 12;
+        var country = "Samplecountry";
 
         var trimmedDescription = description.Trim();
         var trimmedComposition = composition.Trim();
@@ -31,7 +31,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
         // Act
         variant.AddDetails(
             now: now,
-            countryOfManufactureId: countryId,
+            countryOfManufacture: country,
             description: description,
             composition: composition,
             caringOfThings: caringOfThings,
@@ -68,10 +68,11 @@ public sealed class AddDetailsTests : ProductVariantTestBase
     }
     
     [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("1")]
     public void Should_Throw_Where_IncorrectCountryId(
-        int countryId)
+        string country)
     {
         // Arrange
         var now = DateTimeOffset.UtcNow;
@@ -83,7 +84,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
         Assert.Throws<DomainException>(() => 
             variant.AddDetails(
                 now: now,
-                countryOfManufactureId: countryId,
+                countryOfManufacture: country,
                 description: "Tests descriptiondescriptiondescrip",
                 composition: "Composition fwwfwfwf",
                 caringOfThings: null,
@@ -112,7 +113,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
     {
         // Arrange
         var now = DateTimeOffset.UtcNow;
-        var countryId = 12;
+        var country = "Samplecountry";
         
         var variant = CreateValidProductVariant();
         variant.UncommittedEventsClear();
@@ -121,7 +122,7 @@ public sealed class AddDetailsTests : ProductVariantTestBase
         Assert.Throws<DomainException>(() => 
             variant.AddDetails(
                 now: now,
-                countryOfManufactureId: countryId,
+                countryOfManufacture: country,
                 description: description,
                 composition: composition,
                 caringOfThings: caringOfThings,

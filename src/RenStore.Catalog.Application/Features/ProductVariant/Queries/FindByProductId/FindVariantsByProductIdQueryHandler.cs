@@ -48,7 +48,7 @@ internal sealed class FindVariantsByProductIdQueryHandler
                 cancellationToken: cancellationToken);
 
         if (!variants.Any()) return [];
-
+        // TODO: переделать, вернет не указанное колличество элементов
         var result = _currentUserService.Role switch
         {
             Roles.Admin or Roles.Moderator or Roles.Support =>
