@@ -52,7 +52,7 @@ public class RemoveTests : IAsyncLifetime
         var result = await _context.Details
             .FirstOrDefaultAsync(x => x.Id == resultId);
 
-        Assert.Equal(1, _context.Details.Count());
+        Assert.Equal(1, _context.Details.Sales());
         Assert.NotNull(result);
         Assert.NotEqual(Guid.Empty, resultId);
         Assert.Equal(detail.Id, resultId);
@@ -66,7 +66,7 @@ public class RemoveTests : IAsyncLifetime
         await _context.SaveChangesAsync();
         
         // Assert
-        Assert.Equal(0, _context.Details.Count());
+        Assert.Equal(0, _context.Details.Sales());
     }
     
     [Fact]

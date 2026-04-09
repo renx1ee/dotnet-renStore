@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.ReadModels;
-using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
@@ -101,23 +99,89 @@ public sealed class ProductVariantConfiguration
             .IsRequired();
         
         builder
-            .HasIndex(v => v.Article)
-            .IsUnique(); 
-        
-        builder
-            .HasIndex(v => v.Url)
-            .IsUnique();
-        
-        builder
-            .HasIndex(v => v.NormalizedName)
-            .IsUnique();
-        
-        builder
             .Property(v => v.ProductId)
             .HasColumnName("product_id");
 
         builder
             .Property(v => v.ColorId)
             .HasColumnName("color_id");
+        
+        // denormalization fields
+
+        builder
+            .Property(x => x.DiscountPercents)
+            .HasColumnName("discount_percents")
+            .HasMaxLength(3)
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.SellerIsVerified)
+            .HasColumnName("is_verified_seller")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.InStock)
+            .HasColumnName("in_stock")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.ReviewsCount)
+            .HasColumnName("reviews_count")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.AverageRating)
+            .HasColumnName("average_rating")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.SalesCount)
+            .HasColumnName("sales_count")
+            .IsRequired(false);
+        
+        builder
+            .HasIndex(v => v.Article)
+            .HasDatabaseName("idx_variant_article")
+            .IsUnique(); 
+        
+        builder
+            .HasIndex(v => v.Url)
+            .HasDatabaseName("idx_variant_url")
+            .IsUnique();
+        
+        // TODO: GIN gin_trgm_ops
+        builder
+            .HasIndex(v => v.NormalizedName)
+            .HasDatabaseName("idx_variant_normalized_name");
+        
+        builder
+            .HasIndex(v => v.SalesCount)
+            .HasDatabaseName("idx_sales_count")
+            .IsDescending();
+        
+        builder
+            .HasIndex(v => v.AverageRating)
+            .HasDatabaseName("idx_average_rating")
+            .IsDescending();
+        
+        builder
+            .HasIndex(v => v.ColorId)
+            .HasDatabaseName("idx_color_id");
+        
+        // TODO: сделать индекс на
+        // CREATE INDEX idx_products_published
+        // ON products (id)
+        // WHERE status='published';
+        // 
+        // CREATE INDEX idx_variants_published
+        // ON product_variants (id)
+        // WHERE status='published';
+        // 
+        // В ПРОДУКТ:
+        // CREATE INDEX idx_products_category
+        // ON products (category_id);
+        // 
+        // CREATE INDEX idx_products_subcategory
+        // ON products (sub_category_id);
     }
 }

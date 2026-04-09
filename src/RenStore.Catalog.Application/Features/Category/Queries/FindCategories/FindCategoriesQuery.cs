@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.ReadModels;
+
 namespace RenStore.Catalog.Application.Features.Category.Queries.FindCategories;
 
 public sealed record FindCategoriesQuery(

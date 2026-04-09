@@ -2,7 +2,6 @@ using System.Data;
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Logging;
 
 namespace RenStore.Catalog.Persistence.Read.Base;
 

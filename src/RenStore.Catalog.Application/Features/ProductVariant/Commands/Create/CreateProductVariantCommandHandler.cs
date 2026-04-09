@@ -45,7 +45,7 @@ internal sealed class CreateProductVariantCommandHandler
         //TODO:  нужно убедиться, что SizeType согласован с категорией продукта,
         // иначе можно добавить несовместимый размер.
 
-        var colorExists = await _colorRepository.IsExists(
+        /*var colorExists = await _colorRepository.IsExists(
             colorId: request.ColorId,
             cancellationToken: cancellationToken);
 
@@ -54,7 +54,7 @@ internal sealed class CreateProductVariantCommandHandler
             throw new NotFoundException(
                 name: typeof(Color),
                 request.ColorId);
-        }
+        }*/
 
         var product = await _productRepository
             .GetAsync(request.ProductId, cancellationToken);

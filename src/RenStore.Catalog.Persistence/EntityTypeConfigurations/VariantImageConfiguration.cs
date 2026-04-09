@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 
@@ -98,7 +97,7 @@ public sealed class VariantImageConfiguration
             .HasColumnName("variant_id");
 
         builder
-            .HasIndex(x => new { x.VariantId, x.IsMain })
-            .HasDatabaseName("ux_variant_images_variant_id_is_main");
+            .HasIndex(x => new { x.VariantId, x.IsDeleted, x.IsMain })
+            .HasDatabaseName("ux_variant_images_lookup");
     }
 }

@@ -79,7 +79,7 @@ public class AddRangeAsyncTests : IAsyncLifetime
         await repository.AddRangeAsync(variants, CancellationToken.None);
         await _context.SaveChangesAsync();
         
-        Assert.Equal(2, _context.Variants.Count());
+        Assert.Equal(2, _context.Variants.Sales());
         
         // Assert: variant 1
         var result1 = await _context.Variants

@@ -78,7 +78,7 @@ public class RemoveTests : IAsyncLifetime
         await _context.SaveChangesAsync();
         
         // Assert
-        Assert.Equal(0, _context.Images.Count());
+        Assert.Equal(0, _context.Images.Sales());
     }
     
     [Fact]

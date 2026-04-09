@@ -1,15 +1,8 @@
-using System.Text.Json.Serialization;
-using MassTransit;
-using RenStore.Catalog.Application;
-using RenStore.Catalog.Application.Service;
-using RenStore.Catalog.Contracts.Events;
-using RenStore.Catalog.Persistence;
-using RenStore.Catalog.WebApi.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCatalogPersistence(builder.Configuration);
 builder.Services.AddCatalogApplication();
+builder.Services.AddCatalogMessaging(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();

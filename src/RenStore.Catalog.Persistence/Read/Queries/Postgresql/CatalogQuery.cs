@@ -1,11 +1,3 @@
-using System.Text;
-using Dapper;
-using Microsoft.Extensions.Logging;
-using Npgsql;
-using RenStore.Catalog.Application.Filters;
-using RenStore.Catalog.Contracts.Enums.Sorting;
-using RenStore.Catalog.Domain.ReadModels;
-
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger) 
@@ -47,7 +39,8 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger)
                 ON ph."size_id" = vs."id"
             WHERE vs."variant_id" = pv."id"
             AND ph."is_active" = true
-            -- , ph."created_date" DESC
+            ORDER BY ph."price" ASC,
+                     ph."created_date" DESC
             LIMIT 1
         ) price ON true
         INNER JOIN "products" p 
@@ -58,10 +51,11 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger)
     
     private static readonly Dictionary<CatalogFilterSortBy, string> _sortColumnMapping = new()
     {
-        { CatalogFilterSortBy.Name,      "normalized_name" },
-        { CatalogFilterSortBy.PriceAsc,  "price" },
-        { CatalogFilterSortBy.PriceDesc, "price" },
-        { CatalogFilterSortBy.Newest,    "created_date" }
+        { CatalogFilterSortBy.Popular,   """pv."sales_count" """ },
+        { CatalogFilterSortBy.Rating,    """pv."average_rating" """ },
+        { CatalogFilterSortBy.PriceAsc,  """price."price" """ },
+        { CatalogFilterSortBy.PriceDesc, """price."price" """ },
+        { CatalogFilterSortBy.Newest,    """pv."created_date" """ }
     };
     
     public async Task<IReadOnlyList<CatalogReadModel>> SearchAsync(
@@ -92,7 +86,7 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger)
                 """);
             
             var parameters = new DynamicParameters();
-            parameters.Add("Count", pageRequest.Limit);
+            parameters.Add("Limit", pageRequest.Limit);
             parameters.Add("Offset", pageRequest.Offset);
 
             if (filter.CategoryId.HasValue)
@@ -125,6 +119,52 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger)
                 parameters.Add("ColorId", filter.ColorId);
             }
             
+            if (filter.HasDiscount)
+            {
+                sql.Append("""
+                           AND pv."discount_percents" IS NOT NULL 
+                           AND pv."discount_percents" > 0
+                           """);
+                
+                if (filter.MinDiscountPercents.HasValue)
+                {
+                    sql.Append(""" AND pv."discount_percents" >= @MinDiscountPercents """); //TODO: 
+                    parameters.Add("MinDiscountPercents", filter.MinDiscountPercents);
+                }
+            }
+            // TODO: сделать наличие по конкретным размерам
+            if (filter.IsAvailable.HasValue)
+            {
+                sql.Append(
+                    filter.IsAvailable == true
+                        ? """ AND pv."in_stock" > 0 """ 
+                        : """ AND pv."in_stock" <= 0 """
+                    );
+            }
+            // TODO: 
+            if (filter.MinReviewsCount.HasValue)
+            {
+                sql.Append(""" AND pv."reviews_count" >= @MinReviewsCount """);
+                parameters.Add("MinReviewsCount", filter.MinReviewsCount);
+            }
+            
+            if (filter.MinAverageRating.HasValue)
+            {
+                sql.Append(""" AND pv."average_rating" >= @MinAverageRating """);
+                parameters.Add("MinAverageRating", filter.MinAverageRating);
+            }
+            
+            /*if (filter.SelesCount.HasValue)
+            {
+                sql.Append(""" AND pv."sales_count" = @SelesCount """);
+                parameters.Add("SelesCount", filter.SelesCount);
+            }*/
+            
+            if (filter.OnlyVerifiedSellers)
+            {
+                sql.Append(""" AND pv."is_verified_seller" = true """);
+            }
+            
             if (!string.IsNullOrEmpty(filter.Search))
             {
                 sql.Append(""" AND pv."normalized_name" ILIKE @Name """);
@@ -133,8 +173,8 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger)
             
             sql.Append(
                 $"""
-                ORDER BY "{columnMapping}" {direction}
-                LIMIT @Count
+                ORDER BY {columnMapping} {direction}, pv."id"
+                LIMIT @Limit
                 OFFSET @Offset; 
                 """);
             
@@ -151,12 +191,6 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger)
         }
         catch (PostgresException e)
         {
-            _logger.LogError(
-                exception: e, 
-                message: "Database error in method: {FindAsync} with {Filter}",
-                nameof(SearchAsync),
-                filter);
-
             throw Wrap(e);
         }
     }

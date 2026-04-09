@@ -1,10 +1,8 @@
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Abstractions.Projections;
-using RenStore.Catalog.Application.Abstractions.Queries;
 using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Domain.Interfaces.Repository;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.SqlMappers;

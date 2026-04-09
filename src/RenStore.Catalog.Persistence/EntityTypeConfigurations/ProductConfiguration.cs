@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Catalog.Domain.ReadModels;
-using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations;
 

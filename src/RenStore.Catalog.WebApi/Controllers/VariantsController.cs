@@ -6,6 +6,7 @@ using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteAt
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteSize;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateDetails;
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateName;
 using RenStore.Catalog.Application.Features.ProductVariant.Queries.SearchVariants;
 
 namespace RenStore.Catalog.WebApi.Controllers;

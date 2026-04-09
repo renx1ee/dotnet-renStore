@@ -62,7 +62,7 @@ public class AddRangeAsyncTests : IAsyncLifetime
         await repository.AddRangeAsync(attributes, CancellationToken.None);
         await _context.SaveChangesAsync();
         
-        Assert.Equal(2, _context.Attributes.Count());
+        Assert.Equal(2, _context.Attributes.Sales());
         
         // Assert: attribute 1
         var existingAttribute1 = await _context.Attributes

@@ -1,7 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using RenStore.Catalog.Domain.Enums;
-using RenStore.Catalog.Domain.ReadModels;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 

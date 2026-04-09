@@ -2,8 +2,8 @@ namespace RenStore.Catalog.Contracts.Enums.Sorting;
 
 public enum CatalogFilterSortBy
 {
-    // Popular
-    Name,
+    Popular,
+    Rating,
     PriceAsc,
     PriceDesc,
     Newest

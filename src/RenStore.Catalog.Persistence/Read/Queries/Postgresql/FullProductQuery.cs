@@ -1,8 +1,4 @@
-using Dapper;
-using Microsoft.Extensions.Logging;
-using Npgsql;
 using RenStore.Catalog.Domain.ReadModels.Product.FullPage;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 

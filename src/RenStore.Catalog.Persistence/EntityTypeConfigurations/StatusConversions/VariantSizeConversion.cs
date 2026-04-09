@@ -1,5 +1,3 @@
-using RenStore.Catalog.Domain.Enums;
-
 namespace RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;
 
 internal static class VariantSizeConversion

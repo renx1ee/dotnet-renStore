@@ -1,7 +1,8 @@
-namespace RenStore.Catalog.Domain.ReadModels;
+namespace RenStore.Catalog.Application.ReadModels;
 
-public sealed class GetCategoryReadModel
+public sealed class GetSubCategoryReadModel
 {
+    public Guid SubCategoryId { get; set; }
     public Guid CategoryId { get; set; }
     public string Name { get; set; }
     public string NameRu { get; set; }

@@ -1,11 +1,3 @@
-using System.Text;
-using Dapper;
-using Microsoft.Extensions.Logging;
-using Npgsql;
-using RenStore.Catalog.Application.Common;
-using RenStore.Catalog.Contracts.Enums.Sorting;
-using RenStore.Catalog.Domain.ReadModels;
-
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger) 
@@ -91,7 +83,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
             
             var parameters = new DynamicParameters();
             parameters.Add("Offset", pageRequest.Offset);
-            parameters.Add("Count", pageRequest.Limit);
+            parameters.Add("Sales", pageRequest.Limit);
 
             if (isDeleted.HasValue)
             {
@@ -106,7 +98,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
                  {GetCategorySql()}
                  WHERE 1=1 {whereClause}
                  ORDER BY "{columnMapping}" {pageRequest.Direction}
-                 LIMIT @Count
+                 LIMIT @Sales
                  OFFSET @Offset; 
                  """;
             
@@ -159,7 +151,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
             var whereClauseSubCategory = string.Empty; 
             var parameters = new DynamicParameters(); 
             parameters.Add("Offset", pageRequest.Offset); 
-            parameters.Add("Count", pageRequest.Limit); 
+            parameters.Add("Sales", pageRequest.Limit); 
             
             if (isDeletedCategory.HasValue)
             {
@@ -180,7 +172,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
                  {GetCategorySql()} 
                  WHERE 1=1 {whereClauseCategory} 
                  ORDER BY "{columnMapping}" {pageRequest.Direction} 
-                 LIMIT @Count 
+                 LIMIT @Sales 
                  OFFSET @Offset; 
 
                  {GetSubCategorySql()} 
@@ -189,7 +181,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
                      FROM "categories" 
                      WHERE 1=1 {whereClauseCategory} 
                      ORDER BY "{columnMapping}" {pageRequest.Direction}
-                     LIMIT @Count 
+                     LIMIT @Sales 
                      OFFSET @Offset 
                  )
                  {whereClauseSubCategory};
@@ -306,7 +298,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
             var parameters = new DynamicParameters();
             parameters.Add("Id", categoryId);
             parameters.Add("Offset", pageRequest.Offset);
-            parameters.Add("Count", pageRequest.Limit);
+            parameters.Add("Sales", pageRequest.Limit);
 
             if (isDeleted.HasValue)
             {
@@ -321,7 +313,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger logger)
                  {GetSubCategorySql()}
                  WHERE "category_id" = @Id {whereClause}
                  ORDER BY "{columnMapping}" {pageRequest.Direction}
-                 LIMIT @Count
+                 LIMIT @Sales
                  OFFSET @Offset; 
                  """;
             

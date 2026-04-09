@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using RenStore.SharedKernal.Domain.Common;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.EventStore;
 

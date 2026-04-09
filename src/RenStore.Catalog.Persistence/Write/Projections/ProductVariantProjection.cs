@@ -1,7 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using RenStore.Catalog.Domain.Enums;
-using RenStore.Catalog.Domain.ReadModels;
-using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 
@@ -124,6 +121,78 @@ internal sealed class ProductVariantProjection
         view.UpdatedAt = now;
         view.DeletedAt = now;
         view.Status = ProductVariantStatus.Deleted;
+    }
+    
+    public async Task ChangeDiscountAsync(
+        Guid variantId,
+        int discountPercents,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.DiscountPercents = discountPercents;
+        view.UpdatedAt = now;
+    }
+    
+    public async Task ChangeReviewsCountAsync(
+        Guid variantId,
+        int reviewsCount,
+        double averageRating,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.ReviewsCount = reviewsCount;
+        view.AverageRating = averageRating;
+        view.UpdatedAt = now;
+    }
+    
+    public async Task ChangeSellerVerificationAsync(
+        Guid variantId,
+        bool isVerified,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.SellerIsVerified = isVerified;
+        view.UpdatedAt = now;
+    }
+    
+    public async Task ChangeStockAsync(
+        Guid variantId,
+        int stock,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.InStock = stock;
+        view.UpdatedAt = now;
+    }
+    
+    public async Task ChangeSalesAsync(
+        Guid variantId,
+        int sales,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(variantId);
+        
+        var view = await GetVariantAsync(variantId, cancellationToken);
+
+        view.SalesCount = sales;
+        view.UpdatedAt = now;
     }
     
     public async Task RestoreAsync(

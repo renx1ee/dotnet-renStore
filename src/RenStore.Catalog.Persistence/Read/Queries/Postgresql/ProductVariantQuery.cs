@@ -1,12 +1,3 @@
-using System.Text;
-using Dapper;
-using Microsoft.Extensions.Logging;
-using Npgsql;
-using RenStore.Catalog.Application.Abstractions.Queries;
-using RenStore.Catalog.Contracts.Enums.Sorting;
-using RenStore.Catalog.Domain.ReadModels;
-using RenStore.SharedKernal.Domain.Exceptions;
-
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class ProductVariantQuery
@@ -80,7 +71,7 @@ internal sealed class ProductVariantQuery
                 sql.Append(" WHERE \"status\" = \"is_deleted\"");
 
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Count
+                           LIMIT @Sales
                            OFFSET @Offset;");
             
             var result = await connection
@@ -209,7 +200,7 @@ internal sealed class ProductVariantQuery
                 sql.Append(" AND \"status\" = \"is_deleted\"");
 
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Count
+                           LIMIT @Sales
                            OFFSET @Offset;");
 
             var result = await connection

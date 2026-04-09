@@ -4,6 +4,8 @@ global using Asp.Versioning;
 global using MediatR;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
+global using System.Text.Json.Serialization;
+global using MassTransit;
 
 global using RenStore.Catalog.WebApi.Requests.Variant; 
 
@@ -11,7 +13,6 @@ global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindPr
 global using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindSizesByVariantId;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.AddPrice;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.Archive;
-global using RenStore.Catalog.Application.Features.ProductVariant.Commands.ChangeName;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.Create;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishVariant;
 global using RenStore.Catalog.Application.Features.ProductVariant.Commands.RestoreSize;
@@ -51,3 +52,9 @@ global using RenStore.Catalog.WebApi.Requests.Category;
 
 global using RenStore.Catalog.Application.Features.VariantMedia.Commands.Delete;
 global using RenStore.Catalog.Application.Features.VariantMedia.Commands.Upload;
+
+global using RenStore.Catalog.Application;
+global using RenStore.Catalog.Application.Service;
+global using RenStore.Catalog.Messaging.Extensions;
+global using RenStore.Catalog.Persistence;
+global using RenStore.Catalog.WebApi.Services;

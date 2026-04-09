@@ -80,7 +80,7 @@ public class AddRangeAsyncTests : IAsyncLifetime
         await repository.AddRangeAsync(images, CancellationToken.None);
         await _context.SaveChangesAsync();
         
-        Assert.Equal(2, _context.Images.Count());
+        Assert.Equal(2, _context.Images.Sales());
         
         // Assert: image 1
         var result1 = await _context.Images

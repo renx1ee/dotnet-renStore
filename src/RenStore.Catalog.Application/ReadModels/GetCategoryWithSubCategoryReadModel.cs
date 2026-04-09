@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Domain.ReadModels;
+namespace RenStore.Catalog.Application.ReadModels;
 
 public sealed class GetCategoryWithSubCategoryReadModel
 {

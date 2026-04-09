@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using RenStore.Catalog.Domain.ReadModels;
 
 namespace RenStore.Catalog.Persistence.Write.Projections;
 

@@ -1,3 +1,4 @@
+using RenStore.Catalog.Application.ReadModels;
 using RenStore.Catalog.Application.Service;
 using RenStore.SharedKernal.Domain.Constants;
 

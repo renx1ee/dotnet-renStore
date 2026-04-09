@@ -45,6 +45,37 @@ public interface IProductVariantProjection
         DateTimeOffset now,
         CancellationToken cancellationToken);
 
+    Task ChangeDiscountAsync(
+        Guid variantId,
+        int discountPercents,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task ChangeReviewsCountAsync(
+        Guid variantId,
+        int reviewsCount,
+        double averageRating,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task ChangeSellerVerificationAsync(
+        Guid variantId,
+        bool isVerified,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task ChangeStockAsync(
+        Guid variantId,
+        int stock,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
+    Task ChangeSalesAsync(
+        Guid variantId,
+        int sales,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
+
     Task RestoreAsync(
         Guid variantId,
         DateTimeOffset now,

@@ -60,13 +60,13 @@ public class RemoveRangeTests : IAsyncLifetime
                 composition: composition2),
         };
         
-        Assert.Equal(0, _context.Details.Count());
+        Assert.Equal(0, _context.Details.Sales());
 
         
         await repository.AddRangeAsync(details, CancellationToken.None);
         await _context.SaveChangesAsync();
         
-        Assert.Equal(2, _context.Details.Count());
+        Assert.Equal(2, _context.Details.Sales());
         
         // Assert: detail 1
         var result1 = await _context.Details
@@ -97,7 +97,7 @@ public class RemoveRangeTests : IAsyncLifetime
         await _context.SaveChangesAsync();
         
         // Assert
-        Assert.Equal(0, _context.Details.Count());
+        Assert.Equal(0, _context.Details.Sales());
     }
     
     [Fact]

@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.ChangeName;
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateName;
 
 internal sealed class ChangeProductVariantNameCommandHandler
     : IRequestHandler<ChangeProductVariantNameCommand>

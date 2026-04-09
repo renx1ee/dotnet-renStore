@@ -79,14 +79,14 @@ public class RemoveRangeTests : IAsyncLifetime
         await repository.AddRangeAsync(variants, CancellationToken.None);
         await _context.SaveChangesAsync();
         
-        Assert.Equal(2, _context.Variants.Count());
+        Assert.Equal(2, _context.Variants.Sales());
         
         // Act
         repository.RemoveRange(variants);
         await _context.SaveChangesAsync();
         
         // Assert
-        Assert.Equal(0, _context.Variants.Count());
+        Assert.Equal(0, _context.Variants.Sales());
     }
     
     [Fact]

@@ -63,7 +63,7 @@ public class RemoveRangeTests : IAsyncLifetime
         var existingCategories = await _context.Categories.ToListAsync();
 
         Assert.NotNull(existingCategories);
-        Assert.Equal(2, existingCategories.Count());
+        Assert.Equal(2, existingCategories.Sales());
 
         // Act
         repository.RemoveRange(existingCategories);

@@ -1,9 +1,3 @@
-using Dapper;
-using Microsoft.Extensions.Logging;
-using Npgsql;
-using RenStore.Catalog.Contracts.Enums.Sorting;
-using RenStore.Catalog.Domain.ReadModels;
-
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
 internal sealed class HomePageQuery(CatalogDbContext context, ILogger logger) 
@@ -56,7 +50,6 @@ internal sealed class HomePageQuery(CatalogDbContext context, ILogger logger)
     
     private static readonly Dictionary<CatalogFilterSortBy, string> _sortColumnMapping = new()
     {
-        { CatalogFilterSortBy.Name,      "normalized_name" },
         { CatalogFilterSortBy.PriceAsc,  "price" },
         { CatalogFilterSortBy.PriceDesc, "price" },
         { CatalogFilterSortBy.Newest,    "created_date" }
@@ -77,7 +70,7 @@ internal sealed class HomePageQuery(CatalogDbContext context, ILogger logger)
                 $"""
                     {BaseSqlQuery}
                     ORDER BY pv."name" {pageRequest.Direction}
-                    LIMIT @Count
+                    LIMIT @Sales
                     OFFSET @Offset;
                 """;
 

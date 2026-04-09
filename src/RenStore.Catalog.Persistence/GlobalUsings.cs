@@ -1,0 +1,13 @@
+global using System.Text;
+global using Dapper;
+global using Microsoft.Extensions.Logging;
+global using Npgsql;
+global using RenStore.Catalog.Application.Abstractions.Queries;
+global using RenStore.Catalog.Contracts.Enums.Sorting;
+global using RenStore.Catalog.Domain.ReadModels;
+global using RenStore.SharedKernal.Domain.Exceptions;
+global using RenStore.Catalog.Application.Filters;
+global using RenStore.Catalog.Application.Common;
+global using RenStore.Catalog.Application.ReadModels;
+global using RenStore.Catalog.Domain.Enums;
+global using RenStore.Catalog.Persistence.EntityTypeConfigurations.StatusConversions;

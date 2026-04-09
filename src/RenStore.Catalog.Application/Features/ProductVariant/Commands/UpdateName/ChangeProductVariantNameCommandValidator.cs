@@ -1,6 +1,6 @@
 using RenStore.Catalog.Domain.Constants;
 
-namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.ChangeName;
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateName;
 
 internal sealed class ChangeProductVariantNameCommandValidator
     : AbstractValidator<ChangeProductVariantNameCommand>

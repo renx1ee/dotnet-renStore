@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.Entities;
-using RenStore.Catalog.Domain.ReadModels;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations;
 using RenStore.Catalog.Persistence.EventStore;
 

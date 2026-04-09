@@ -81,4 +81,20 @@ public sealed class ProductVariantReadModel
     /// Unique identifier of the color.
     /// </summary>
     public int ColorId { get; set; }
+    
+    /*public bool HasDiscount { get; set; }*/
+    
+    // denormalization fields
+    
+    public int? DiscountPercents { get; set; }
+    
+    public bool? SellerIsVerified { get; set; }
+    
+    public int? InStock { get; set; }
+    
+    public int? ReviewsCount { get; set; }
+    
+    public double? AverageRating { get; set; }
+    
+    public int? SalesCount { get; set; }
 }
