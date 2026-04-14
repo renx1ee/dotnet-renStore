@@ -4,4 +4,5 @@ public sealed record ReviewsCountChangedIntegrationEvent(
     DateTimeOffset OccurredAt,
     Guid ProductId,
     Guid VariantId,
+    int AverageRating,
     int Count);

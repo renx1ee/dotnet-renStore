@@ -1,7 +1,9 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeSales;
+
 namespace RenStore.Catalog.Messaging.Consumers;
 
 internal sealed class StockSalesChangedConsumer
-    : IConsumer<StockSalesChangedIntegrationEvent>
+    : IConsumer<StockSelesCountChangedIntegrationEvent>
 {
     private readonly IMediator _mediator;
     
@@ -11,8 +13,13 @@ internal sealed class StockSalesChangedConsumer
         _mediator = mediator;
     }
     
-    public async Task Consume(ConsumeContext<StockSalesChangedIntegrationEvent> context)
+    public async Task Consume(ConsumeContext<StockSelesCountChangedIntegrationEvent> context)
     {
-        throw new NotImplementedException();
+        var message = context.Message;
+        
+        await _mediator.Send(new ChangeSalesCountProjectionCommand(
+            VariantId: message.VariantId,
+            OccurredAt: message.OccurredAt,
+            Sales: message.Count));
     }
 }

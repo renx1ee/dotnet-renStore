@@ -68,11 +68,6 @@ internal sealed class FullProductQuery
         }
         catch (PostgresException e)
         {
-            _logger.LogError(
-                exception: e, 
-                message: "Database error while fetching full product for VariantId: {VariantId}",
-                args: variantId);
-            
             throw Wrap(e);
         }
     }
@@ -107,11 +102,6 @@ internal sealed class FullProductQuery
         }
         catch (PostgresException e)
         {
-            _logger.LogError(
-                exception: e, 
-                message: "Database error while fetching full product for SlugUrl: {SlugUrl}",
-                args: urlSlug);
-            
             throw Wrap(e);
         }
     }

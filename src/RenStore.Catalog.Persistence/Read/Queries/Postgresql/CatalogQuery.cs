@@ -1,6 +1,6 @@
 namespace RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 
-internal sealed class CatalogQuery(CatalogDbContext context, ILogger logger) 
+internal sealed class CatalogQuery(CatalogDbContext context, ILogger<CatalogQuery> logger) 
     : RenStore.Catalog.Persistence.Read.Base.DapperQueryBase(context, logger),
       RenStore.Catalog.Application.Abstractions.Queries.ICatalogQuery
 {

@@ -13,6 +13,10 @@ public static class MassTransitExtension
         services.AddMassTransit(x =>
         {
             x.AddConsumer<DiscountAvailabilityChangedConsumer>();
+            x.AddConsumer<ReviewsCountChangedConsumer>();
+            x.AddConsumer<SellerIsVerifiedChangedConsumer>();
+            x.AddConsumer<StockAvailabilityChangedConsumer>();
+            x.AddConsumer<StockSalesChangedConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -25,7 +29,7 @@ public static class MassTransitExtension
                         h.Password(configuration["RabbitMQ:Password"]!);
                     });
                 
-                /*cfg.ReceiveEndpoint("inventory.variant-size.created", e =>
+                cfg.ReceiveEndpoint("inventory.variant-size.created", e =>
                 {
                     e.UseMessageRetry(r => r.Intervals(
                         TimeSpan.FromSeconds(5),
@@ -33,7 +37,7 @@ public static class MassTransitExtension
                         TimeSpan.FromSeconds(30)));
                     
                     e.ConfigureConsumer<DiscountAvailabilityChangedConsumer>(context);
-                });*/
+                });
                 
                 /*cfg.ConfigureEndpoints(context);*/
             });

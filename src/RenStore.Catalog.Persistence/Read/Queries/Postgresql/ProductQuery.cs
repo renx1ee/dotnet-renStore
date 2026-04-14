@@ -8,7 +8,7 @@ internal sealed class ProductQuery
         """
             SELECT
                 "id"              AS Id,
-                "status"::text    AS Status,
+                "status"          AS Status,
                 "created_date"    AS CreatedAt,
                 "updated_date"    AS UpdatedAt,
                 "deleted_date"    AS DeletedAt,

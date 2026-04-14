@@ -15,6 +15,7 @@ builder.Services.AddControllers()
             .Add(new JsonStringEnumConverter());
     });
 
+builder.Services.AddLogging();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -30,31 +31,6 @@ builder.Services.AddApiVersioning(options =>
         options.GroupNameFormat = "'v'VVV";
         options.SubstituteApiVersionInUrl = true;
     });
-
-builder.Services.AddMassTransit(x =>
-{
-    /*x.AddConsumer<VariantCreatedConsumer>();*/
-    /*x.AddConsumer<VariantDeletedConsumer>();*/
-            
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host(
-            host: builder.Configuration["RabbitMQ:Host"], 
-            virtualHost: builder.Configuration["RabbitMQ:VHost"], 
-            configure: h =>
-            {
-                h.Username(builder.Configuration["RabbitMQ:Username"]!);
-                h.Password(builder.Configuration["RabbitMQ:Password"]!);
-            });
-                
-        /*cfg.ReceiveEndpoint("inventory.variant.created", e =>
-        {
-            e.ConfigureConsumer<VariantSizeCreatedEvent>(context);
-        });*/
-                
-        cfg.ConfigureEndpoints(context);
-    });
-});
 
 var app = builder.Build();
 

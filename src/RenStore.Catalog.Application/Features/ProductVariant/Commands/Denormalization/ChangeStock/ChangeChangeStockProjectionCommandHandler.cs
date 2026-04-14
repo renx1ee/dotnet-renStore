@@ -1,5 +1,3 @@
-using RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeSellerVerify;
-
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeStock;
 
 internal sealed class ChangeChangeStockProjectionCommandHandler

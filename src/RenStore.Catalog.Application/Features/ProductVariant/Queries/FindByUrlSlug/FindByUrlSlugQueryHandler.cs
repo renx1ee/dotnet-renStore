@@ -1,18 +1,18 @@
 using RenStore.Catalog.Application.Service;
 using RenStore.SharedKernal.Domain.Constants;
 
-namespace RenStore.Catalog.Application.Features.ProductVariant.Queries.FindByArticle;
+namespace RenStore.Catalog.Application.Features.ProductVariant.Queries.FindByUrlSlug;
 
-internal sealed class FindVariantByArticleQueryHandler
-    : IRequestHandler<FindVariantByArticleQuery, ProductVariantReadModel?>
+internal sealed class FindByUrlSlugQueryHandler
+    : IRequestHandler<FindByUrlSlugQuery, ProductVariantReadModel?>
 {
-    private readonly ILogger<FindVariantByArticleQueryHandler> _logger;
+    private readonly ILogger<FindByUrlSlugQueryHandler> _logger;
     private readonly IProductVariantQuery _variantQuery;
     private readonly IProductQuery _productQuery;
     private readonly ICurrentUserService _currentUserService;
-    
-    public FindVariantByArticleQueryHandler(
-        ILogger<FindVariantByArticleQueryHandler> logger,
+
+    public FindByUrlSlugQueryHandler(
+        ILogger<FindByUrlSlugQueryHandler> logger,
         IProductVariantQuery variantQuery,
         IProductQuery productQuery,
         ICurrentUserService currentUserService)
@@ -22,25 +22,25 @@ internal sealed class FindVariantByArticleQueryHandler
         _productQuery = productQuery;
         _currentUserService = currentUserService;
     }
-    
+
     public async Task<ProductVariantReadModel?> Handle(
-        FindVariantByArticleQuery request, 
+        FindByUrlSlugQuery request,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "Handling {Query} with Article: {Article}",
-            nameof(FindVariantByArticleQuery),
-            request.Article);
+            "Handling {Query} with UrlSlug: {UrlSlug}",
+            nameof(FindByUrlSlugQuery),
+            request.UrlSlug);
 
-        var variant = await _variantQuery.FindByArticleAsync(
-            article: request.Article,
+        var variant = await _variantQuery.FindByUrlSlugAsync(
+            urlSlug: request.UrlSlug,
             cancellationToken: cancellationToken);
 
         if (variant is null) return null;
 
         if (variant.Status == ProductVariantStatus.Published)
             return variant;
-        
+
         /*var product = await _productQuery.GetByIdAsync(
             id: variant.ProductId,
             cancellationToken: cancellationToken);*/
@@ -49,17 +49,17 @@ internal sealed class FindVariantByArticleQueryHandler
         {
             Roles.Admin or Roles.Moderator =>
                 variant,
-            
+
             /*Roles.Seller =>
                 product!.SellerId == _currentUserService.UserId ? variant : null,*/
-            
+
             _ => null
         };
-        
+
         _logger.LogInformation(
-            "{Query} handled. Article: {Article}",
-            nameof(FindVariantByArticleQuery),
-            request.Article);
+            "{Query} handled. UrlSlug: {UrlSlug}",
+            nameof(FindByUrlSlugQuery),
+            request.UrlSlug);
 
         return result;
     }

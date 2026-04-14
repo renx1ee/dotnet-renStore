@@ -15,7 +15,7 @@ internal abstract class DapperQueryBase(
     private const uint MaxPageSize            = 1000;
     protected const int CommandTimeoutSeconds = 30;
 
-    protected readonly ILogger _logger = logger            ?? throw new ArgumentNullException(nameof(logger));
+    protected readonly ILogger _logger         = logger ?? throw new ArgumentNullException(nameof(logger));
     private readonly CatalogDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <summary>

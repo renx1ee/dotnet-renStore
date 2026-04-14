@@ -169,6 +169,38 @@ internal sealed class ProductVariantQuery
         }
     }
     
+    public async Task<ProductVariantReadModel?> FindByUrlSlugAsync(
+        string urlSlug,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(urlSlug))
+            throw new ArgumentOutOfRangeException(nameof(urlSlug));
+        
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+
+            var sql =
+                $@"
+                    {BaseSqlQuery}
+                    WHERE ""url"" = @UrlSlug
+                ";
+
+            return await connection
+                .QueryFirstOrDefaultAsync<ProductVariantReadModel>(
+                    new CommandDefinition(
+                        commandText: sql,
+                        parameters: new { UrlSlug = urlSlug },
+                        commandTimeout: CommandTimeoutSeconds,
+                        transaction: CurrentDbTransaction,
+                        cancellationToken: cancellationToken));
+        }
+        catch (PostgresException e)
+        {
+            throw Wrap(e);
+        }
+    }
+    
     public async Task<IReadOnlyList<ProductVariantReadModel>> FindByProductIdAsync(
         Guid productId,
         CancellationToken cancellationToken,

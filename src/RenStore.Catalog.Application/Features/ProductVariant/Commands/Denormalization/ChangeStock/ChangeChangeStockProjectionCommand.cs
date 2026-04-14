@@ -1,4 +1,4 @@
-namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeSellerVerify;
+namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeStock;
 
 public sealed record ChangeChangeStockProjectionCommand(
     DateTimeOffset OccurredAt,

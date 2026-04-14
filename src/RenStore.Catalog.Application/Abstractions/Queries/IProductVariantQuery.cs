@@ -22,6 +22,10 @@ public interface IProductVariantQuery
         long article,
         CancellationToken cancellationToken);
 
+    Task<ProductVariantReadModel?> FindByUrlSlugAsync(
+        string urlSlug,
+        CancellationToken cancellationToken);
+    
     Task<IReadOnlyList<ProductVariantReadModel>> FindByProductIdAsync(
         Guid productId,
         CancellationToken cancellationToken,

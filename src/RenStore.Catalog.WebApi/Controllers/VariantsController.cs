@@ -7,6 +7,7 @@ using RenStore.Catalog.Application.Features.ProductVariant.Commands.SoftDeleteSi
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateAttribute;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateDetails;
 using RenStore.Catalog.Application.Features.ProductVariant.Commands.UpdateName;
+using RenStore.Catalog.Application.Features.ProductVariant.Queries.FindByUrlSlug;
 using RenStore.Catalog.Application.Features.ProductVariant.Queries.SearchVariants;
 
 namespace RenStore.Catalog.WebApi.Controllers;
@@ -154,7 +155,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
     
-    [HttpPut("manage/variants/{variantId:guid}/details")]
+    [HttpPatch("manage/variants/{variantId:guid}/details")]
     /*[Authorize(Roles = Roles.Seller)]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> AddDetails(
@@ -378,7 +379,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     #region Queries Manage
     
     [HttpGet("manage/variants/{variantId:guid}")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByIdManage(
         [FromRoute] Guid variantId,
@@ -393,7 +394,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpGet("manage/variants/{article:long}")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByArticleManage(
         [FromRoute] long article,
@@ -407,7 +408,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpGet("manage/products/{productId:guid}/variants")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindByProductIdManage(
         [FromRoute] Guid productId,
@@ -432,7 +433,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpGet("manage/variants/{variantId:guid}/sizes/{sizeId:guid}/price-history")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindPriceHistoryManage(
         [FromRoute] Guid variantId, 
@@ -459,7 +460,7 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
     }
     
     [HttpGet("manage/variants/{variantId:guid}/sizes")]
-    [Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]
+    /*[Authorize(Roles = $"{Roles.Seller},{Roles.Admin},{Roles.Moderator}")]*/
     [MapToApiVersion(1)]
     public async Task<IActionResult> FindSizesByVariantIdManage(
         [FromRoute] Guid variantId,
@@ -588,19 +589,14 @@ public sealed class VariantsController(IMediator mediator) : ControllerBase
         [FromRoute] string urlSlug, 
         CancellationToken cancellationToken)
     {
-        /*var result = await _mediator.Send(
-            new FindSizesByVariantIdQuery(
-                VariantId: variantId,
-                SortBy: sortBy,
-                Page: page,
-                PageCount: pageCount,
-                Descending: descending,
-                IsDeletedCategory: false), 
+        var result = await _mediator.Send(
+            new FindByUrlSlugQuery(
+                UrlSlug: urlSlug), 
             cancellationToken);
-        
-        return Ok(result);*/
 
-        return NoContent();
+        return result is not null
+            ? Ok(result)
+            : NotFound();
     }
     
     [HttpGet("catalog/variants")]

@@ -281,7 +281,7 @@ public sealed class CategoryController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet]
+    [HttpGet("with-sub-categories")]
     [ApiVersion(1)]
     /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator}")]*/
     public async Task<IActionResult> FindCategoriesWithSubCategoriesManage(

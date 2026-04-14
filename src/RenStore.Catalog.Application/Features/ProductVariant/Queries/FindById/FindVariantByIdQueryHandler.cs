@@ -41,17 +41,17 @@ internal sealed class FindVariantByIdQueryHandler
         if (variant.Status == ProductVariantStatus.Published)
             return variant;
 
-        var product = await _productQuery.GetByIdAsync(
+        /*var product = await _productQuery.GetByIdAsync(
             id: variant.ProductId,
-            cancellationToken: cancellationToken);
+            cancellationToken: cancellationToken);*/
         
         var result = _currentUserService.Role switch
         {
             Roles.Admin or Roles.Moderator or Roles.Support =>
                 variant,
 
-            Roles.Seller =>
-                product!.SellerId == _currentUserService.UserId ? variant : null,
+            /*Roles.Seller =>
+                product!.SellerId == _currentUserService.UserId ? variant : null,*/
             
             _ => null
         };

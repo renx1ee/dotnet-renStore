@@ -41,11 +41,9 @@ public sealed class Category
     {
         CategoryRules.UpdatedByValidation(updatedById, updatedByRole);
         
-        var trimmedName   = CategoryRules.NormalizeAndValidateName(name);
+        var trimmedName = CategoryRules.NormalizeAndValidateName(name);
         var trimmedNameRu = CategoryRules.NormalizeAndValidateNameRu(nameRu);
-        
         var trimmedDescription = CategoryRules.NormalizeAndValidateDescription(description);
-
         var upperName = trimmedName.ToUpperInvariant();
         var upperNameRu = trimmedNameRu.ToUpperInvariant();
 

@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeSellerVerify;
+
 namespace RenStore.Catalog.Messaging.Consumers;
 
 internal sealed class SellerIsVerifiedChangedConsumer
@@ -13,6 +15,11 @@ internal sealed class SellerIsVerifiedChangedConsumer
     
     public async Task Consume(ConsumeContext<SellerIsVerifiedChangedIntegrationEvent> context)
     {
-        throw new NotImplementedException();
+        var message = context.Message;
+        
+        await _mediator.Send(new ChangeSellerVerificationProjectionCommand(
+            VariantId: message.VariantId,
+            OccurredAt: message.OccurredAt,
+            IsVerified: message.IsVarified));
     }
 }

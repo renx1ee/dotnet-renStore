@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeStock;
+
 namespace RenStore.Catalog.Messaging.Consumers;
 
 internal sealed class StockAvailabilityChangedConsumer
@@ -13,6 +15,11 @@ internal sealed class StockAvailabilityChangedConsumer
     
     public async Task Consume(ConsumeContext<StockAvailabilityChangedIntegrationEvent> context)
     {
-        throw new NotImplementedException();
+        var message = context.Message;
+        
+        await _mediator.Send(new ChangeChangeStockProjectionCommand(
+            VariantId: message.VariantId,
+            OccurredAt: message.OccurredAt,
+            InStock: message.Count));
     }
 }

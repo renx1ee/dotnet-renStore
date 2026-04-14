@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormalization.ChangeReviewsCount;
+
 namespace RenStore.Catalog.Messaging.Consumers;
 
 internal sealed class ReviewsCountChangedConsumer
@@ -13,6 +15,12 @@ internal sealed class ReviewsCountChangedConsumer
     
     public async Task Consume(ConsumeContext<ReviewsCountChangedIntegrationEvent> context)
     {
-        throw new NotImplementedException();
+        var message = context.Message;
+
+        await _mediator.Send(new ChangeReviewsCountProjectionCommand(
+            VariantId: message.VariantId,
+            OccurredAt: message.OccurredAt,
+            AverageRating: message.AverageRating,
+            Count: message.Count));
     }
 }
