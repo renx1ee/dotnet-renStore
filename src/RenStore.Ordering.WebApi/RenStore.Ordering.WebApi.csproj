@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RenStore.Ordering.Application\RenStore.Ordering.Application.csproj" />
+      <ProjectReference Include="..\RenStore.Order.Messaging\RenStore.Order.Messaging.csproj" />
+      <ProjectReference Include="..\RenStore.Order.Persistence\RenStore.Order.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>

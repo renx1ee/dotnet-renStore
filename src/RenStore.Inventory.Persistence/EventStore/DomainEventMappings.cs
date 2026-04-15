@@ -3,7 +3,7 @@ using RenStore.Inventory.Domain.Aggregates.Stock.Events;
 
 namespace RenStore.Inventory.Persistence.EventStore;
 
-public static class DomainEventMappings
+internal static class DomainEventMappings
 {
     public static readonly Dictionary<string, Type> DomainEventsNameToType = new()
     {
