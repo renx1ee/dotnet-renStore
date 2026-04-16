@@ -8,12 +8,16 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RenStore.Ordering.Application\RenStore.Ordering.Application.csproj" />
-      <ProjectReference Include="..\RenStore.Order.Messaging\RenStore.Order.Messaging.csproj" />
-      <ProjectReference Include="..\RenStore.Order.Persistence\RenStore.Order.Persistence.csproj" />
+      <ProjectReference Include="..\RenStore.Ordering.Messaging\RenStore.Ordering.Messaging.csproj" />
+      <ProjectReference Include="..\RenStore.Ordering.Persistence\RenStore.Ordering.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

@@ -71,7 +71,8 @@ public sealed class Order : AggregateRoot
     /// Total cost of all active items in the order.
     /// </summary>
     public decimal TotalAmount =>
-        _items.Where(x => x.IsActive).Sum(x => x.TotalPrice);
+        _items.Where(x => x.IsActive)
+              .Sum(x => x.TotalPrice);
 
     private Order() { }
 

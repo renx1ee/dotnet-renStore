@@ -75,9 +75,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Catalog.Messaging"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Inventory.Contracts", "src\RenStore.Inventory.Contracts\RenStore.Inventory.Contracts.csproj", "{58229D27-3C15-434A-9942-0D28B985BB5A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{80BE0940-AE36-4050-9FB8-E6A526948F2B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{80BE0940-AE36-4050-9FB8-E6A526948F2B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{36424154-C604-43F7-9B4D-BA3FE8BB9771}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{36424154-C604-43F7-9B4D-BA3FE8BB9771}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Ordering.WebApi", "src\RenStore.Ordering.WebApi\RenStore.Ordering.WebApi.csproj", "{5F61A866-9F29-428A-8E29-A4F0B1F31E78}"
 EndProject
@@ -85,9 +85,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Ordering.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Ordering.Domain", "src\RenStore.Ordering.Domain\RenStore.Ordering.Domain.csproj", "{3C42312D-2C73-4491-AC91-EBD698B6EBE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Order.Messaging", "src\RenStore.Order.Messaging\RenStore.Order.Messaging.csproj", "{CAFF52D9-0C67-445F-981A-34AA81EB35AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Ordering.Messaging", "src\RenStore.Ordering.Messaging\RenStore.Ordering.Messaging.csproj", "{CAFF52D9-0C67-445F-981A-34AA81EB35AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Order.Persistence", "src\RenStore.Order.Persistence\RenStore.Order.Persistence.csproj", "{F7AAA85D-E121-4706-8603-B732493F29B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenStore.Ordering.Persistence", "src\RenStore.Ordering.Persistence\RenStore.Ordering.Persistence.csproj", "{F7AAA85D-E121-4706-8603-B732493F29B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

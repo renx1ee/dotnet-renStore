@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace RenStore.Order.Persistence.EventStore;
+namespace RenStore.Order.Persistence;
 
-public class EventSerializer
+internal static class EventSerializer
 {
     public static readonly JsonSerializerOptions Options = new()
     {

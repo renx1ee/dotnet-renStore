@@ -12,9 +12,9 @@ internal sealed class OrderConfiguration
     {
         builder.ToTable("order_details");
 
-        builder.HasKey(x => x.OrderId);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.OrderId)
+        builder.Property(x => x.Id)
             .HasColumnName("order_id")
             .IsRequired();
 

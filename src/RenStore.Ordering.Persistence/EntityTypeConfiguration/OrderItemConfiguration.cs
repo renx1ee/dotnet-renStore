@@ -6,9 +6,9 @@ using RenStore.Order.Persistence.EntityTypeConfiguration.Conversions;
 namespace RenStore.Order.Persistence.EntityTypeConfiguration;
 
 internal sealed class OrderItemProjectionConfiguration
-    : IEntityTypeConfiguration<OrderItemProjection>
+    : IEntityTypeConfiguration<OrderItemReadModel>
 {
-    public void Configure(EntityTypeBuilder<OrderItemProjection> builder)
+    public void Configure(EntityTypeBuilder<OrderItemReadModel> builder)
     {
         builder.ToTable("order_items");
 

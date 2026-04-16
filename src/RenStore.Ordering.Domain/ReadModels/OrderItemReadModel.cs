@@ -6,7 +6,7 @@ namespace RenStore.Order.Domain.ReadModels;
 /// <summary>
 /// Read model for a single order line item.
 /// </summary>
-public sealed class OrderItemProjection
+public sealed class OrderItemReadModel
 {
     public Guid OrderItemId { get; private set; }
     public Guid OrderId { get; private set; }

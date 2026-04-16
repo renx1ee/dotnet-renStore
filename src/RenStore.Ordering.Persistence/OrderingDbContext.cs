@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using RenStore.Order.Domain.Aggregates.Order;
+using RenStore.Order.Domain.ReadModels;
 using RenStore.Order.Persistence.EventStore;
+using RenStore.Order.Persistence.Outbox;
 
 namespace RenStore.Order.Persistence;
 
@@ -15,7 +16,8 @@ public class OrderingDbContext(
         base.OnModelCreating(modelBuilder);
     }
     
-    public DbSet<Domain.Aggregates.Order.Order> Orders { get; set; }
-    public DbSet<OrderItem> OrderItem { get; set; }
+    public DbSet<OrderReadModel> Orders { get; set; }
+    public DbSet<OrderItemReadModel> OrderItem { get; set; }
     public DbSet<EventEntity> Events { get; set; }
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
 }
