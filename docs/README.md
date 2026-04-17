@@ -44,8 +44,17 @@ dotnet ef migrations add initial -c InventoryDbContext --project ./RenStore.Inve
 ```
 
 #### Inventory Migration update
-
 ```
 dotnet ef database update -c InventoryDbContext --project ./RenStore.Inventory.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Inventory.WebApi/RenStore.Inventory.WebApi.csproj"
+```
+
+#### Adding the first ordering migration 
+```
+ dotnet ef migrations add Initial -c OrderingDbContext --project ./RenStore.Ordering.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Ordering.WebApi/RenStore.Ordering.WebApi.csproj"
+```
+
+#### Ordering Migration update
+```
+ dotnet ef database update -c OrderingDbContext --project ./RenStore.Ordering.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Ordering.WebApi/RenStore.Ordering.WebApi.csproj"
 ```
 
