@@ -167,4 +167,30 @@ public static class DomainEventMappings
         { typeof(SubCategoryNameRuChangedEvent),               "sub-category-name-ru-changed" },
         { typeof(SubCategoryRestoredEvent),                    "sub-category-restored" },
     };
+    
+    /// <summary>
+    /// Resolves the event type name for serialization.
+    /// Throws if the event type is not registered — fail fast, no silent data loss.
+    /// </summary>
+    public static string GetEventName(Type eventType)
+    {
+        if (DomainEventsTypeToName.TryGetValue(eventType, out var name))
+            return name;
+
+        throw new InvalidOperationException(
+            $"Domain event type '{eventType.FullName}' is not registered in {nameof(DomainEventMappings)}.");
+    }
+    
+    /// <summary>
+    /// Resolves the CLR type from a persisted event name.
+    /// Throws if the name is unknown — prevents silent deserialization gaps.
+    /// </summary>
+    public static Type GetEventType(string eventName)
+    {
+        if (DomainEventsNameToType.TryGetValue(eventName, out var type))
+            return type;
+        
+        throw new InvalidOperationException(
+            $"Unknown domain event name '{eventName}'. Register it in {nameof(DomainEventMappings)}.");
+    }
 }

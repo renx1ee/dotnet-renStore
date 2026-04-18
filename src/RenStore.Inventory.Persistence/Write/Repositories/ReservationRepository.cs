@@ -1,8 +1,6 @@
 using MediatR;
 using RenStore.Inventory.Application.Abstractions;
-using RenStore.Inventory.Application.Common;
 using RenStore.Inventory.Domain.Aggregates.Reservation;
-using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Persistence.Write.Repositories;
 
@@ -10,14 +8,11 @@ internal sealed class ReservationRepository
     :  RenStore.Inventory.Domain.Interfaces.Repository.IReservationRepository
 {
     private readonly IEventStore _eventStore;
-    private readonly IMediator _mediator;
     
     public ReservationRepository(
-        IEventStore eventStore,
-        IMediator mediator)
+        IEventStore eventStore)
     {
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
-        _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     public async Task<VariantReservation?> GetAsync(
@@ -51,16 +46,5 @@ internal sealed class ReservationRepository
             expectedVersion: reservation.Version,
             events: uncommittedEvents.ToList(),
             cancellationToken: cancellationToken);
-
-        foreach (var domainEvent in uncommittedEvents)
-        {
-            var notificationType = typeof(DomainEventNotification<>)
-                .MakeGenericType(domainEvent.GetType());
-
-            var notification = (IDomainEvent)Activator
-                .CreateInstance(notificationType, domainEvent)!;
-
-            await _mediator.Publish(notification, cancellationToken);
-        }
     }
 }

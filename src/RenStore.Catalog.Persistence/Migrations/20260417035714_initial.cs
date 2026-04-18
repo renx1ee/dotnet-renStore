@@ -78,6 +78,25 @@ namespace RenStore.Catalog.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "outbox_messages",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    event_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    aggregate_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    payload = table.Column<string>(type: "jsonb", nullable: false),
+                    occurred_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    processed_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    error = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    retry_count = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_outbox_messages", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "price_history",
                 columns: table => new
                 {
@@ -299,6 +318,17 @@ namespace RenStore.Catalog.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_outbox_messages_aggregate_id",
+                table: "outbox_messages",
+                column: "aggregate_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_outbox_messages_unprocessed",
+                table: "outbox_messages",
+                columns: new[] { "processed_at", "created_at" },
+                filter: "processed_at IS NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "ux_price_history_size_id_price",
                 table: "price_history",
                 columns: new[] { "size_id", "price" });
@@ -381,6 +411,9 @@ namespace RenStore.Catalog.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "colors");
+
+            migrationBuilder.DropTable(
+                name: "outbox_messages");
 
             migrationBuilder.DropTable(
                 name: "price_history");

@@ -1,4 +1,3 @@
-using MediatR;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Category;
 
@@ -8,14 +7,11 @@ internal sealed class CategoryRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.ICategoryRepository
 {
     private readonly IEventStore _eventStore;
-    private readonly IMediator _mediator;
     
     public CategoryRepository(
-        IEventStore eventStore,
-        IMediator mediator)
+        IEventStore eventStore)
     { 
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
-        _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
     
     public async Task<Category?> GetAsync(
@@ -40,22 +36,14 @@ internal sealed class CategoryRepository
         
         var uncommittedEvents = category.GetUncommittedEvents();
         
+        if (uncommittedEvents.Count == 0)
+            return;
+        
         await _eventStore.AppendAsync(
             aggregateId: category.Id,
             expectedVersion: category.Version,
             events: uncommittedEvents.ToList(),
             cancellationToken);
-        
-        foreach (var domainEvent in uncommittedEvents)
-        {
-            var notificationType = typeof(DomainEventNotification<>)
-                .MakeGenericType(domainEvent.GetType());
-
-            var notification = (INotification)Activator
-                .CreateInstance(notificationType, domainEvent)!;
-            
-            await _mediator.Publish(notification, cancellationToken);
-        }
         
         category.UncommittedEventsClear();
     }

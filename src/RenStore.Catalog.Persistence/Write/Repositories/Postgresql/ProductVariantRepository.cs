@@ -1,4 +1,3 @@
-using MediatR;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Variant;
 using RenStore.SharedKernal.Domain.Common;
@@ -9,14 +8,11 @@ internal sealed class ProductVariantRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IProductVariantRepository
 {
     private readonly IEventStore _eventStore;
-    private readonly IMediator _mediator;
     
     public ProductVariantRepository(
-        IEventStore eventStore,
-        IMediator mediator)
+        IEventStore eventStore)
     { 
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
-        _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
     
     public async Task<ProductVariant?> GetAsync(
@@ -65,23 +61,15 @@ internal sealed class ProductVariantRepository
         ArgumentNullException.ThrowIfNull(productVariant);
         
         var uncommittedEvents = productVariant.GetUncommittedEvents();
-
+        
+        if (uncommittedEvents.Count == 0)
+            return;
+        
         await _eventStore.AppendAsync(
             aggregateId: productVariant.Id,
             expectedVersion: productVariant.Version,
             events: uncommittedEvents.ToList(),
             cancellationToken: cancellationToken);
-
-        foreach (var domainEvent in uncommittedEvents)
-        {
-            var notificationType = typeof(DomainEventNotification<>)
-                .MakeGenericType(domainEvent.GetType());
-
-            var notification = (INotification)Activator
-                .CreateInstance(notificationType, domainEvent)!;
-            
-            await _mediator.Publish(notification, cancellationToken);
-        }
         
         productVariant.UncommittedEventsClear();
     }
@@ -96,9 +84,15 @@ internal sealed class ProductVariantRepository
 
         var allUncommittedEvents = new List<(ProductVariant variant, IReadOnlyCollection<IDomainEvent> events)>();
         
+        if (allUncommittedEvents == null) 
+            throw new ArgumentNullException(nameof(allUncommittedEvents));
+
         foreach (var variant in variants)
         {
             var uncommittedEvents = variant.GetUncommittedEvents();
+            
+            if (uncommittedEvents.Count == 0)
+                return;
             
             await _eventStore.AppendAsync(
                 aggregateId: variant.Id,
@@ -107,22 +101,6 @@ internal sealed class ProductVariantRepository
                 cancellationToken: cancellationToken);
         
             allUncommittedEvents.Add((variant, uncommittedEvents));
-        }
-
-        foreach (var (variant, events) in allUncommittedEvents)
-        {
-            foreach (var domainEvent in events)
-            {
-                var notificationType = typeof(DomainEventNotification<>)
-                    .MakeGenericType(domainEvent.GetType());
-
-                var notification = (INotification)Activator
-                    .CreateInstance(notificationType, domainEvent)!;
-            
-                await _mediator.Publish(notification, cancellationToken);
-            }
-        
-            variant.UncommittedEventsClear();
         }
     }
 }

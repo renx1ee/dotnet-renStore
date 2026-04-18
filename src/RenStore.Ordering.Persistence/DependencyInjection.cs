@@ -26,9 +26,8 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
         
-        // TODO:
-        /*services.Configure<OutboxOptions>(
-            configuration.GetSection(OutboxOptions.SectionName));*/
+        services.Configure<OutboxOptions>(
+            configuration.GetSection(OutboxOptions.SectionName));
         
         services.AddHostedService<OutboxWorker>();
         

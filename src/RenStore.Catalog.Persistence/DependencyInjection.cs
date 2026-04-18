@@ -7,6 +7,7 @@ using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Domain.Interfaces.Repository;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.SqlMappers;
 using RenStore.Catalog.Persistence.EventStore;
+using RenStore.Catalog.Persistence.Outbox;
 using RenStore.Catalog.Persistence.Read.Queries.Postgresql;
 using RenStore.Catalog.Persistence.Services;
 using RenStore.Catalog.Persistence.Write.Projections;
@@ -29,7 +30,14 @@ public static class DependencyInjection
         
         SqlMapper.AddTypeHandler(new ProductStatusHandler());
 
+        services.AddHostedService<OutboxWorker>();
+        
+        // dotnet add package Microsoft.Extensions.Options.ConfigurationExtensions
+        services.Configure<OutboxOptions>(
+            configuration.GetSection(OutboxOptions.SectionName));
+
         services.AddScoped<IArticleService, ArticleService>();
+        services.AddScoped<IOutboxService, OutboxService>();
         
         services.AddScoped<IEventStore, SqlEventStore>();
         

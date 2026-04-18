@@ -12,7 +12,7 @@ namespace RenStore.Inventory.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "catalog_events",
+                name: "inventory_events",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -25,7 +25,26 @@ namespace RenStore.Inventory.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_catalog_events", x => x.id);
+                    table.PrimaryKey("PK_inventory_events", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "outbox_messages",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    event_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    aggregate_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    payload = table.Column<string>(type: "jsonb", nullable: false),
+                    occurred_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    processed_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    error = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    retry_count = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_outbox_messages", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,16 +94,30 @@ namespace RenStore.Inventory.Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "ux_events_aggregate_id_version",
-                table: "catalog_events",
+                table: "inventory_events",
                 columns: new[] { "aggregate_id", "version" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_outbox_messages_aggregate_id",
+                table: "outbox_messages",
+                column: "aggregate_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_outbox_messages_unprocessed",
+                table: "outbox_messages",
+                columns: new[] { "processed_at", "created_at" },
+                filter: "processed_at IS NULL");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "catalog_events");
+                name: "inventory_events");
+
+            migrationBuilder.DropTable(
+                name: "outbox_messages");
 
             migrationBuilder.DropTable(
                 name: "reservations");

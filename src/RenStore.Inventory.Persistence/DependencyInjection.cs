@@ -6,6 +6,7 @@ using RenStore.Inventory.Application.Abstractions.Projections;
 using RenStore.Inventory.Application.Abstractions.ReadRepository;
 using RenStore.Inventory.Domain.Interfaces.Repository;
 using RenStore.Inventory.Persistence.EventStore;
+using RenStore.Inventory.Persistence.Outbox;
 using RenStore.Inventory.Persistence.Read.Repository;
 using RenStore.Inventory.Persistence.Write.Projections;
 using RenStore.Inventory.Persistence.Write.Repositories;
@@ -24,6 +25,11 @@ public static class DependencyInjection
         {
             options.UseNpgsql(connectionString);
         });
+
+        services.AddHostedService<OutboxWorker>();
+        
+        services.Configure<OutboxOptions>(
+            configuration.GetSection(OutboxOptions.SectionName));
 
         services.AddScoped<IEventStore, SqlEventStore>();
         

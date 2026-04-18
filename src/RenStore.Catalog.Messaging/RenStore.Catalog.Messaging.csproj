@@ -7,13 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MassTransit" Version="8.2.0" />
-      <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.0" />
+      <PackageReference Include="MassTransit" Version="8.3.6" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
       <PackageReference Include="MediatR" Version="14.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RenStore.Catalog.Application\RenStore.Catalog.Application.csproj" />
+      <ProjectReference Include="..\RenStore.Catalog.Persistence\RenStore.Catalog.Persistence.csproj" />
       <ProjectReference Include="..\RenStore.Inventory.Contracts\RenStore.Inventory.Contracts.csproj" />
     </ItemGroup>
 

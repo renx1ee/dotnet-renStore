@@ -4,13 +4,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RenStore.Order.Application.Common;
-using RenStore.Order.Persistence.EventStore;
+using RenStore.Catalog.Persistence.EventStore;
 using RenStore.SharedKernal.Domain.Common;
 
-namespace RenStore.Order.Persistence.Outbox;
+namespace RenStore.Catalog.Persistence.Outbox;
 
 /// <summary>
 /// Polls <c>outbox_messages</c> at a fixed interval and publishes
@@ -64,10 +62,10 @@ internal sealed class OutboxWorker : BackgroundService
     private async Task ProcessBatchAsync(CancellationToken cancellationToken)
     {
         using var scope     = _scopeFactory.CreateScope();
-        var context         = scope.ServiceProvider.GetRequiredService<OrderingDbContext>()!;
+        var context         = scope.ServiceProvider.GetRequiredService<CatalogDbContext>()!;
         var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
         var mediator        = scope.ServiceProvider.GetRequiredService<IMediator>();
-
+        
         var messages = await context.OutboxMessages
             .Where(m => 
                 m.ProcessedAt == null && 
@@ -75,7 +73,7 @@ internal sealed class OutboxWorker : BackgroundService
             .OrderBy(m => m.CreatedAt)
             .Take(_options.BatchSize)
             .ToListAsync(cancellationToken);
-
+        
         if (messages.Count == 0) return;
         
         _logger.LogDebug("OutboxWorker processing {Count} messages.", messages.Count);
@@ -128,7 +126,7 @@ internal sealed class OutboxWorker : BackgroundService
                     message.RetryCount);
             }
         }
-
+        
         await context.SaveChangesAsync(cancellationToken);
     }
 }

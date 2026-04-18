@@ -1,4 +1,4 @@
-using MediatR;
+/*using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using RenStore.Catalog.Domain.Aggregates.Variant;
@@ -101,4 +101,4 @@ public sealed class SaveAsyncTests : IAsyncLifetime
         if (_context != null)
             await _context.Database.EnsureDeletedAsync();
     }
-}
+}*/

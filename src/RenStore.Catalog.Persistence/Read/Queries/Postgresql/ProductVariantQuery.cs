@@ -71,7 +71,7 @@ internal sealed class ProductVariantQuery
                 sql.Append(" WHERE \"status\" = \"is_deleted\"");
 
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
             
             var result = await connection
@@ -229,10 +229,15 @@ internal sealed class ProductVariantQuery
                 ");
 
             if (isDeleted.HasValue)
-                sql.Append(" AND \"status\" = \"is_deleted\"");
+            {
+                sql.Append(
+                    isDeleted.Value 
+                        ? " AND \"status\" = 'is_deleted'" 
+                        : " AND \"status\" != 'is_deleted'");
+            }
 
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection

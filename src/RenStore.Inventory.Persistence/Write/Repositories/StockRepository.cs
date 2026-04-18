@@ -1,6 +1,4 @@
-using MediatR;
 using RenStore.Inventory.Application.Abstractions;
-using RenStore.Inventory.Application.Common;
 using RenStore.Inventory.Domain.Aggregates.Stock;
 
 namespace RenStore.Inventory.Persistence.Write.Repositories;
@@ -9,14 +7,10 @@ internal sealed class StockRepository
     : RenStore.Inventory.Domain.Interfaces.Repository.IStockRepository
 {
     private readonly IEventStore _eventStore;
-    private readonly IMediator _mediator;
     
-    public StockRepository(
-        IEventStore eventStore,
-        IMediator mediator)
+    public StockRepository(IEventStore eventStore)
     {
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
-        _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     public async Task<VariantStock?> GetAsync(
@@ -50,16 +44,5 @@ internal sealed class StockRepository
             expectedVersion: stock.Version,
             events: uncommittedEvents.ToList(),
             cancellationToken: cancellationToken);
-
-        foreach (var domainEvent in uncommittedEvents)
-        {
-            var notificationType = typeof(DomainEventNotification<>)
-                .MakeGenericType(domainEvent.GetType());
-
-            var notification = (INotification)Activator
-                .CreateInstance(notificationType, domainEvent)!;
-
-            await _mediator.Publish(notification, cancellationToken);
-        }
     }
 }

@@ -6,11 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RenStore.Order.Application.Common;
-using RenStore.Order.Persistence.EventStore;
+using RenStore.Inventory.Application.Common;
+using RenStore.Inventory.Persistence.EventStore;
 using RenStore.SharedKernal.Domain.Common;
 
-namespace RenStore.Order.Persistence.Outbox;
+namespace RenStore.Inventory.Persistence.Outbox;
 
 /// <summary>
 /// Polls <c>outbox_messages</c> at a fixed interval and publishes
@@ -64,7 +64,7 @@ internal sealed class OutboxWorker : BackgroundService
     private async Task ProcessBatchAsync(CancellationToken cancellationToken)
     {
         using var scope     = _scopeFactory.CreateScope();
-        var context         = scope.ServiceProvider.GetRequiredService<OrderingDbContext>()!;
+        var context         = scope.ServiceProvider.GetRequiredService<InventoryDbContext>()!;
         var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
         var mediator        = scope.ServiceProvider.GetRequiredService<IMediator>();
 

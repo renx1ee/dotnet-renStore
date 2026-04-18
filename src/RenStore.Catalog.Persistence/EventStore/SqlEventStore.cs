@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Persistence.Outbox;
 using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Catalog.Persistence.EventStore;
@@ -19,7 +20,11 @@ public sealed class SqlEventStore
         CancellationToken cancellationToken = default)
     {
         if (aggregateId == Guid.Empty)
-            throw new InvalidOperationException(nameof(aggregateId));
+        {
+            throw new ArgumentException(
+                "AggregateId cannot be empty.",
+                nameof(aggregateId));
+        }
         
         var entities = await _context.Events
             .Where(x => x.AggregateId == aggregateId)
@@ -36,38 +41,49 @@ public sealed class SqlEventStore
         CancellationToken cancellationToken = default) 
     {
         if (aggregateId == Guid.Empty)
-            throw new InvalidOperationException(nameof(aggregateId));
+        {
+            throw new ArgumentException(
+                "AggregateId cannot be empty.",
+                nameof(aggregateId));
+        }
         
         if (expectedVersion < 0)
-            throw new InvalidOperationException(nameof(expectedVersion));
+        {
+            throw new ArgumentException(
+                "Expected version must be greater then or equal 0.",
+                nameof(expectedVersion));
+        }
         
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (events == null || events.Count == 0)  return;
 
         var version = expectedVersion;
-
-        foreach (var domainEvent in events)
-        {
-            version++;
-            
-            var eventEntity = ToEntity(aggregateId, domainEvent, version);
-            
-            await _context.Events.AddAsync(eventEntity, cancellationToken);
-        }
+        var now = DateTimeOffset.UtcNow;
 
         try
         {
+            foreach (var domainEvent in events)
+            {
+                version++;
+                
+                var eventEntity = ToEventEntity(aggregateId, domainEvent, version);
+                var outbox = ToOutboxMessageEntity(aggregateId, domainEvent, now);
+
+                _context.Events.Add(eventEntity);
+                _context.OutboxMessages.Add(outbox);
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
         }
-        catch (DbUpdateException e) 
-            when(IsUniqueViolation(e)) 
-        { 
+        catch (DbUpdateException e)
+            when (IsUniqueViolation(e))
+        {
             throw new ConcurrencyException(
                 $"Concurrency conflict for aggregate {aggregateId}.", e);
         }
     }
 
-    private EventEntity ToEntity(
+    private EventEntity ToEventEntity(
         Guid aggregateId, 
         IDomainEvent domainEvent, 
         int version)
@@ -76,7 +92,8 @@ public sealed class SqlEventStore
                 .TryGetValue(domainEvent.GetType(), out var type))
         {
             throw new InvalidOperationException(
-                $"Event type {domainEvent.GetType()} not registered at in {DomainEventMappings.DomainEventsTypeToName}.");
+                $"Event type {domainEvent.GetType()} not registered at in " +
+                $"{DomainEventMappings.DomainEventsTypeToName}.");
         }
             
         return new EventEntity()
@@ -93,6 +110,34 @@ public sealed class SqlEventStore
             OccurredAtUtc = domainEvent.OccurredAt
         };
     }
+
+    private OutboxMessage ToOutboxMessageEntity(
+        Guid aggregateId, 
+        IDomainEvent domainEvent, 
+        DateTimeOffset now)
+    {
+        if (!DomainEventMappings.DomainEventsTypeToName
+                .TryGetValue(domainEvent.GetType(), out var type))
+        {
+            throw new InvalidOperationException(
+                $"Event type {domainEvent.GetType()} not registered at in " +
+                $"{DomainEventMappings.DomainEventsTypeToName}.");
+        }
+        
+        return new OutboxMessage()
+        {
+            Id = domainEvent.EventId,
+            EventType = type,
+            AggregateId = aggregateId,
+            Payload = JsonSerializer.Serialize(
+                domainEvent, 
+                domainEvent.GetType(),
+                EventSerializer.Options),
+            OccurredAt = domainEvent.OccurredAt,
+            CreatedAt = now,
+            RetryCount = 0
+        };
+    }
     
     private IDomainEvent ToDomainEvent(EventEntity eventEntity)
     {
@@ -103,10 +148,15 @@ public sealed class SqlEventStore
                 $"Unknown event type {eventEntity.EventType}");
         }
         
-        return (IDomainEvent)JsonSerializer.Deserialize(
+        var result = (IDomainEvent)JsonSerializer.Deserialize(
             eventEntity.Payload,
             type!,
             EventSerializer.Options)!;
+
+        if (result is null)
+            throw new InvalidOperationException(nameof(eventEntity));
+        
+        return result;
     }
 
     private static bool IsUniqueViolation(DbUpdateException e)

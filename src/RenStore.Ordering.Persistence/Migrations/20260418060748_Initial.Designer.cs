@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using RenStore.Inventory.Persistence;
+using RenStore.Order.Persistence;
 
 #nullable disable
 
-namespace RenStore.Inventory.Persistence.Migrations
+namespace RenStore.Order.Persistence.Migrations
 {
-    [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(OrderingDbContext))]
+    [Migration("20260418060748_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,32 +25,42 @@ namespace RenStore.Inventory.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RenStore.Inventory.Domain.ReadModels.VariantReservationReadModel", b =>
+            modelBuilder.Entity("RenStore.Order.Domain.ReadModels.OrderItemReadModel", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("OrderItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("order_item_id");
 
-                    b.Property<string>("CancelReason")
-                        .HasColumnType("text")
-                        .HasColumnName("cancel_reason");
+                    b.Property<string>("CancellationReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("cancellation_reason");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
+                        .HasColumnName("created_at");
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
-
-                    b.Property<DateTimeOffset>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expires_date");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("currency");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid")
                         .HasColumnName("order_id");
+
+                    b.Property<decimal>("PriceAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("price_amount");
+
+                    b.Property<string>("ProductNameSnapshot")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("product_name_snapshot");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
@@ -59,93 +72,90 @@ namespace RenStore.Inventory.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("status");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uuid")
-                        .HasColumnName("updated_by_id");
-
-                    b.Property<string>("UpdatedByRole")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("updated_by_role");
+                        .HasColumnName("updated_at");
 
                     b.Property<Guid>("VariantId")
                         .HasColumnType("uuid")
                         .HasColumnName("variant_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderItemId");
 
-                    b.ToTable("reservations", (string)null);
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_order_item_projections_order_id");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_order_item_projections_status");
+
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_order_item_projections_variant_id");
+
+                    b.ToTable("order_items", (string)null);
                 });
 
-            modelBuilder.Entity("RenStore.Inventory.Domain.ReadModels.VariantStockReadModel", b =>
+            modelBuilder.Entity("RenStore.Order.Domain.ReadModels.OrderReadModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("CancellationReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("cancellation_reason");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
+                        .HasColumnName("created_at");
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
-
-                    b.Property<int>("InStock")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0)
-                        .HasColumnName("in_stock");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
-
-                    b.Property<int>("Sales")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0)
-                        .HasColumnName("sales");
-
-                    b.Property<Guid>("SizeId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid")
-                        .HasColumnName("size_id");
+                        .HasColumnName("customer_id");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("shipping_address");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("status");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("total_amount");
+
+                    b.Property<string>("TrackingNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("tracking_number");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uuid")
-                        .HasColumnName("updated_by_id");
-
-                    b.Property<string>("UpdatedByRole")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("updated_by_role");
-
-                    b.Property<Guid>("VariantId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("variant_id");
-
-                    b.Property<int?>("WriteOffReason")
-                        .HasColumnType("integer")
-                        .HasColumnName("write_off_reason");
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
-                    b.ToTable("stocks", (string)null);
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_order_details_customer_id");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_order_details_status");
+
+                    b.ToTable("orders", (string)null);
                 });
 
-            modelBuilder.Entity("RenStore.Inventory.Persistence.EventStore.EventEntity", b =>
+            modelBuilder.Entity("RenStore.Order.Persistence.EventStore.EventEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,10 +194,10 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ux_events_aggregate_id_version");
 
-                    b.ToTable("inventory_events", (string)null);
+                    b.ToTable("ordering_events", (string)null);
                 });
 
-            modelBuilder.Entity("RenStore.Inventory.Persistence.Outbox.OutboxMessage", b =>
+            modelBuilder.Entity("RenStore.Order.Persistence.Outbox.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,6 +252,20 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .HasFilter("processed_at IS NULL");
 
                     b.ToTable("outbox_messages", (string)null);
+                });
+
+            modelBuilder.Entity("RenStore.Order.Domain.ReadModels.OrderItemReadModel", b =>
+                {
+                    b.HasOne("RenStore.Order.Domain.ReadModels.OrderReadModel", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RenStore.Order.Domain.ReadModels.OrderReadModel", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

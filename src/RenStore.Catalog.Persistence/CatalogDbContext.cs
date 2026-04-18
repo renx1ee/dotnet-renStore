@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RenStore.Catalog.Domain.Entities;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations;
 using RenStore.Catalog.Persistence.EventStore;
+using RenStore.Catalog.Persistence.Outbox;
 
 namespace RenStore.Catalog.Persistence;
 
@@ -9,6 +10,19 @@ public sealed class CatalogDbContext(
     DbContextOptions<CatalogDbContext> options) 
     : DbContext(options)
 {
+    public DbSet<EventEntity> Events { get; set; }
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    public DbSet<Color> Colors { get; set; }
+    public DbSet<CategoryReadModel> Categories { get; set; }
+    public DbSet<SubCategoryReadModel> SubCategories { get; set; }
+    public DbSet<ProductReadModel> Products { get; set; }
+    public DbSet<ProductVariantReadModel> Variants { get; set; }
+    public DbSet<VariantAttributeReadModel> Attributes { get; set; }
+    public DbSet<VariantDetailReadModel> Details { get; set; }
+    public DbSet<VariantSizeReadModel> Sizes { get; set; }
+    public DbSet<PriceHistoryReadModel> Prices { get; set; }
+    public DbSet<VariantImageReadModel> Images { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasSequence<long>("product_article_seq")
@@ -16,6 +30,8 @@ public sealed class CatalogDbContext(
             .IncrementsBy(1);
         
         modelBuilder.ApplyConfiguration(new EventEntityConfiguration());
+        
+        modelBuilder.ApplyConfiguration(new OutboxConfiguration());
         
         modelBuilder.ApplyConfiguration(new ColorConfiguration());
         modelBuilder.ApplyConfiguration(new VariantAttributeConfiguration());
@@ -30,17 +46,4 @@ public sealed class CatalogDbContext(
         
         base.OnModelCreating(modelBuilder);
     }
-
-    public DbSet<EventEntity> Events { get; set; }
-    /*public DbSet<Color> Colors { get; set; }*/
-    public DbSet<Color> Colors { get; set; }
-    public DbSet<CategoryReadModel> Categories { get; set; }
-    public DbSet<SubCategoryReadModel> SubCategories { get; set; }
-    public DbSet<ProductReadModel> Products { get; set; }
-    public DbSet<ProductVariantReadModel> Variants { get; set; }
-    public DbSet<VariantAttributeReadModel> Attributes { get; set; }
-    public DbSet<VariantDetailReadModel> Details { get; set; }
-    public DbSet<VariantSizeReadModel> Sizes { get; set; }
-    public DbSet<PriceHistoryReadModel> Prices { get; set; }
-    public DbSet<VariantImageReadModel> Images { get; set; }
 }

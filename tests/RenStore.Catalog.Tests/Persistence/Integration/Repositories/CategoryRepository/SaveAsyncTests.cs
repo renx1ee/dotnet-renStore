@@ -39,7 +39,7 @@ public sealed class SaveAsyncTests : IAsyncLifetime
         var mediatorMock = new Mock<IMediator>();
         
         var categoryRepository = new Catalog.Persistence.Write.Repositories.Postgresql
-            .CategoryRepository(eventStore, mediatorMock.Object);
+            .CategoryRepository(eventStore);
 
         var category = Category.Create(
             updatedById: updatedById,
@@ -79,7 +79,7 @@ public sealed class SaveAsyncTests : IAsyncLifetime
         var mediatorMock = new Mock<IMediator>();
         
         var categoryRepository = new Catalog.Persistence.Write.Repositories.Postgresql
-            .CategoryRepository(eventStore, mediatorMock.Object);
+            .CategoryRepository(eventStore);
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>

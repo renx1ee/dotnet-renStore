@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace RenStore.Catalog.Persistence.EventStore;
+namespace RenStore.Catalog.Persistence;
 
 public static class EventSerializer
 {

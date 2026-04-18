@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Catalog.Messaging.Consumers;
+using RenStore.Catalog.Persistence;
 
 namespace RenStore.Catalog.Messaging.Extensions;
 

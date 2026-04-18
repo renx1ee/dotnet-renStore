@@ -1,4 +1,3 @@
-using MediatR;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Domain.Aggregates.Product;
 
@@ -8,14 +7,11 @@ internal sealed class ProductRepository
     : RenStore.Catalog.Domain.Interfaces.Repository.IProductRepository
 {
     private readonly IEventStore _eventStore;
-    private readonly IMediator _mediator;
     
     public ProductRepository(
-        IEventStore eventStore,
-        IMediator mediator)
+        IEventStore eventStore)
     { 
         _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
-        _mediator = mediator     ?? throw new ArgumentNullException(nameof(mediator));
     }
     
     public async Task<Product?> GetAsync(
@@ -39,23 +35,15 @@ internal sealed class ProductRepository
         ArgumentNullException.ThrowIfNull(product);
 
         var uncommittedEvents = product.GetUncommittedEvents();
+
+        if (uncommittedEvents.Count == 0)
+            return;
         
         await _eventStore.AppendAsync(
             aggregateId: product.Id,
             expectedVersion: product.Version,
             events: uncommittedEvents.ToList(),
             cancellationToken: cancellationToken);
-
-        foreach (var domainEvent in uncommittedEvents)
-        {
-            var notificationType = typeof(DomainEventNotification<>)
-                .MakeGenericType(domainEvent.GetType());
-
-            var notification = (INotification)Activator
-                .CreateInstance(notificationType, domainEvent)!;
-            
-            await _mediator.Publish(notification, cancellationToken);
-        }
         
         product.UncommittedEventsClear();
     }

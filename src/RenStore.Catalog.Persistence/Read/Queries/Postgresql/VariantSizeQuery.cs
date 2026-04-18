@@ -66,7 +66,7 @@ internal sealed class VariantSizeQuery
                 sql.Append(" WHERE \"is_deleted\" = @IsDeletedCategory");
             
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection
@@ -164,7 +164,7 @@ internal sealed class VariantSizeQuery
                 sql.Append(" AND \"is_deleted\" = @IsDeletedCategory");
             
             sql.Append(@$" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection

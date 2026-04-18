@@ -29,7 +29,7 @@ internal sealed class CreateOrderCommandHandler
         
         var now = DateTimeOffset.UtcNow;
 
-        var order = RenStore.Order.Domain.Aggregates.Order.Order.Create(
+        /*var order = RenStore.Order.Domain.Aggregates.Order.Order.Create(
             now: now,
             customerId: request.CustomerId,
             shippingAddress: request.ShippingAddress);
@@ -43,13 +43,15 @@ internal sealed class CreateOrderCommandHandler
             currency:            request.Currency,
             productNameSnapshot: request.ProductNameSnapshot);
 
-        await _orderRepository.SaveAsync(order, cancellationToken);
+        await _orderRepository.SaveAsync(order, cancellationToken);*/
         
         _logger.LogInformation(
             "{Command} handled. CustomerId: {CustomerId}",
             nameof(CreateOrderCommand),
             request.CustomerId);
 
-        return order.Id;
+        /*return order.Id;*/
+
+        return Guid.Empty;
     }
 }

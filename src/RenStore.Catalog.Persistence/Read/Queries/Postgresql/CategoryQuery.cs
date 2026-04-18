@@ -42,7 +42,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
 
             sql.Append(includeDeleted 
                 ? "LIMIT 1;" 
-                : """AND "is_deleted" = false LIMIT 1;""");
+                : """ AND "is_deleted" = false LIMIT 1;""");
             
             var connection = await GetOpenDbConnectionAsync(cancellationToken);
             
@@ -252,7 +252,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
             
             sql.Append(includeDeleted 
                 ? "LIMIT 1;" 
-                : """AND "is_deleted" = false LIMIT 1;""");
+                : """ AND "is_deleted" = false LIMIT 1;""");
 
             return await connection
                 .QueryFirstOrDefaultAsync<GetSubCategoryReadModel>(

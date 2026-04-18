@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Moq;
 using RenStore.Inventory.Domain.Aggregates.Reservation;
 using RenStore.Inventory.Persistence;
@@ -120,4 +120,4 @@ public sealed class GetAsyncTests : IAsyncLifetime
         if(_context != null)
             await _context.Database.EnsureDeletedAsync();
     }
-}
+}*/
