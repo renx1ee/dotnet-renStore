@@ -83,7 +83,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
             
             var parameters = new DynamicParameters();
             parameters.Add("Offset", pageRequest.Offset);
-            parameters.Add("Sales", pageRequest.Limit);
+            parameters.Add("Count", pageRequest.Limit);
 
             if (isDeleted.HasValue)
             {
@@ -98,7 +98,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
                  {GetCategorySql()}
                  WHERE 1=1 {whereClause}
                  ORDER BY "{columnMapping}" {pageRequest.Direction}
-                 LIMIT @Sales
+                 LIMIT @Count
                  OFFSET @Offset; 
                  """;
             
@@ -151,7 +151,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
             var whereClauseSubCategory = string.Empty; 
             var parameters = new DynamicParameters(); 
             parameters.Add("Offset", pageRequest.Offset); 
-            parameters.Add("Sales", pageRequest.Limit); 
+            parameters.Add("Count", pageRequest.Limit); 
             
             if (isDeletedCategory.HasValue)
             {
@@ -172,7 +172,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
                  {GetCategorySql()} 
                  WHERE 1=1 {whereClauseCategory} 
                  ORDER BY "{columnMapping}" {pageRequest.Direction} 
-                 LIMIT @Sales 
+                 LIMIT @Count 
                  OFFSET @Offset; 
 
                  {GetSubCategorySql()} 
@@ -181,7 +181,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
                      FROM "categories" 
                      WHERE 1=1 {whereClauseCategory} 
                      ORDER BY "{columnMapping}" {pageRequest.Direction}
-                     LIMIT @Sales 
+                     LIMIT @Count 
                      OFFSET @Offset 
                  )
                  {whereClauseSubCategory};
@@ -298,7 +298,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
             var parameters = new DynamicParameters();
             parameters.Add("Id", categoryId);
             parameters.Add("Offset", pageRequest.Offset);
-            parameters.Add("Sales", pageRequest.Limit);
+            parameters.Add("Count", pageRequest.Limit);
 
             if (isDeleted.HasValue)
             {
@@ -313,7 +313,7 @@ internal sealed class CategoryQuery(CatalogDbContext context, ILogger<CatalogDbC
                  {GetSubCategorySql()}
                  WHERE "category_id" = @Id {whereClause}
                  ORDER BY "{columnMapping}" {pageRequest.Direction}
-                 LIMIT @Sales
+                 LIMIT @Count
                  OFFSET @Offset; 
                  """;
             

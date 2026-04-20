@@ -62,7 +62,7 @@ internal sealed class PriceHistoryQuery
                 sql.Append(@$" WHERE ""is_active"" = @IsActive");
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset");
 
             var result = await connection
@@ -157,7 +157,7 @@ internal sealed class PriceHistoryQuery
                 sql.Append(@$" AND ""is_active"" = @IsActive");
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset");
 
             var result = await connection

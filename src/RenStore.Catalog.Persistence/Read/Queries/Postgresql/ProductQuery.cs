@@ -60,7 +60,7 @@ internal sealed class ProductQuery
                 sql.Append(" WHERE \"status\" = is_deleted");
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection
@@ -173,7 +173,7 @@ internal sealed class ProductQuery
             }
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection
@@ -230,7 +230,7 @@ internal sealed class ProductQuery
                 sql.Append(" AND \"status\" = \"is_deleted\"");
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection

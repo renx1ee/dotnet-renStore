@@ -14,6 +14,7 @@ public static class MassTransitExtension
         services.AddMassTransit(x =>
         {
             x.AddConsumer<VariantSizeCreatedConsumer>();
+            x.AddConsumer<VariantSizeDeletedConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -26,7 +27,7 @@ public static class MassTransitExtension
                         h.Password(configuration["RabbitMQ:Password"]!);
                     });
                 
-                cfg.ReceiveEndpoint("inventory.variant-size.created", e =>
+                cfg.ReceiveEndpoint("inventory.variant-size-created", e =>
                 {
                     e.UseMessageRetry(r => r.Intervals(
                         TimeSpan.FromSeconds(5),
@@ -36,25 +37,20 @@ public static class MassTransitExtension
                     e.ConfigureConsumer<VariantSizeCreatedConsumer>(context);
                 });
                 
-                /*cfg.ConfigureEndpoints(context);*/
+                cfg.ReceiveEndpoint("inventory.variant-size-deleted", e =>
+                {
+                    e.UseMessageRetry(r => r.Intervals(
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(15),
+                        TimeSpan.FromSeconds(30)));
+                    
+                    e.ConfigureConsumer<VariantSizeDeletedConsumer>(context);
+                });
+                
+                cfg.ConfigureEndpoints(context);
             });
         });
         
         return services;
     }
 }
-
-/*x.AddConsumer<VariantDeletedConsumer>();*/
-/*x.AddConsumer<OrderCreatedConsumer>();*/
-/*x.AddConsumer<OrderDeletedConsumer>();*/
-/*x.AddConsumer<OrderCancelledConsumer>();*/
-
-/*cfg.ReceiveEndpoint("inventory.variant-size.deleted", e =>
-                {
-                    e.ConfigureConsumer<VariantSizeDeletedConsumer>(context);
-                });
-
-                cfg.ReceiveEndpoint("inventory.order.created", e =>
-                {
-                    e.ConfigureConsumer<VariantCreatedConsumer>(context);
-                });*/

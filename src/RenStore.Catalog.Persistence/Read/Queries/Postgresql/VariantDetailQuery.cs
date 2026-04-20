@@ -59,7 +59,7 @@ internal sealed class VariantDetailQuery
                 ");
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection
@@ -145,7 +145,7 @@ internal sealed class VariantDetailQuery
                 ");
 
             sql.Append($@" ORDER BY ""{columnName}"" {pageRequest.Direction}
-                           LIMIT @Sales
+                           LIMIT @Count
                            OFFSET @Offset;");
 
             var result = await connection

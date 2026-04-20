@@ -23,7 +23,6 @@
       <Folder Include="Features\Reservation\Commands\SoftDelete\" />
       <Folder Include="Features\Reservation\Notifications\" />
       <Folder Include="Features\Reservation\Queries\" />
-      <Folder Include="Features\Stock\Queries\" />
     </ItemGroup>
 
 </Project>

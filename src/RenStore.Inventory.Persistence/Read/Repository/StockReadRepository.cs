@@ -4,7 +4,7 @@ using RenStore.Inventory.Domain.ReadModels;
 
 namespace RenStore.Inventory.Persistence.Read.Repository;
 
-public sealed class StockReadRepository : IStockReadRepository
+internal sealed class StockReadRepository : IStockReadRepository
 {
     private readonly InventoryDbContext _context;
 

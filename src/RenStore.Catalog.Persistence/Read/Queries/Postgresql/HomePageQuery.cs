@@ -70,7 +70,7 @@ internal sealed class HomePageQuery(CatalogDbContext context, ILogger logger)
                 $"""
                     {BaseSqlQuery}
                     ORDER BY pv."name" {pageRequest.Direction}
-                    LIMIT @Sales
+                    LIMIT @Count
                     OFFSET @Offset;
                 """;
 
