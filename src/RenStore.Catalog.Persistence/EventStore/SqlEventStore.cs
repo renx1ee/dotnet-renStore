@@ -98,12 +98,12 @@ public sealed class SqlEventStore
             
         return new EventEntity()
         {
-            Id = domainEvent.EventId,
-            AggregateId = aggregateId,
-            Version = version,
-            EventType = type,
+            Id            = domainEvent.EventId,
+            AggregateId   = aggregateId,
+            Version       = version,
+            EventType     = type,
             AggregateType = "catalog", // TODO: временное решение
-            Payload = JsonSerializer.Serialize(
+            Payload       = JsonSerializer.Serialize(
                 domainEvent, 
                 domainEvent.GetType(),
                 EventSerializer.Options),
@@ -134,6 +134,7 @@ public sealed class SqlEventStore
                 domainEvent.GetType(),
                 EventSerializer.Options),
             OccurredAt = domainEvent.OccurredAt,
+            Kind = OutboxMessageKind.Domain,
             CreatedAt = now,
             RetryCount = 0
         };

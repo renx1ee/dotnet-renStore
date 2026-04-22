@@ -30,6 +30,8 @@ public static class DependencyInjection
 
         services.AddHostedService<OutboxWorker>();
         
+        services.AddScoped<IIntegrationOutboxWriter, IntegrationOutboxWriter>();
+        
         services.Configure<OutboxOptions>(
             configuration.GetSection(OutboxOptions.SectionName));
 

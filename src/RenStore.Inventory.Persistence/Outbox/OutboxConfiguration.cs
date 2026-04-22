@@ -30,7 +30,11 @@ internal sealed class OutboxConfiguration
         builder.Property(x => x.Payload)
             .HasColumnName("payload")
             .IsRequired()
-            .HasColumnType("jsonb");        
+            .HasColumnType("jsonb");
+        
+        builder.Property(x => x.Kind)
+            .HasColumnName("kind")
+            .IsRequired();
 
         builder.Property(x => x.OccurredAt)
             .HasColumnName("occurred_at")

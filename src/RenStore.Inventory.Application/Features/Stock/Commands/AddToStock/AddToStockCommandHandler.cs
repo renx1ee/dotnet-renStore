@@ -7,16 +7,13 @@ internal sealed class AddToStockCommandHandler
 {
     private readonly ILogger<AddToStockCommandHandler> _logger;
     private readonly IStockRepository _stockRepository;
-    private readonly IPublishEndpoint _publishEndpoint;
 
     public AddToStockCommandHandler(
         ILogger<AddToStockCommandHandler> logger,
-        IStockRepository stockRepository,
-        IPublishEndpoint publishEndpoint)
+        IStockRepository stockRepository)
     {
         _logger = logger;
         _stockRepository = stockRepository;
-        _publishEndpoint = publishEndpoint;
     }
     
     public async Task Handle(
@@ -44,12 +41,6 @@ internal sealed class AddToStockCommandHandler
             count: request.Count);
 
         await _stockRepository.SaveAsync(stock, cancellationToken);
-        
-        /*await _publishEndpoint.Publish(
-            new VariantSizeCreatedIntegrationEvent(
-                VariantId: request.VariantId,
-                SizeId: sizeId),
-            cancellationToken);*/
         
         _logger.LogInformation(
             "{Command} handled. StockId: {StockId}",

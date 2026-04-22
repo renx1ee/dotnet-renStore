@@ -10,13 +10,14 @@
       <PackageReference Include="Dapper" Version="2.1.72" />
       <PackageReference Include="MassTransit" Version="8.3.6" />
       <PackageReference Include="MediatR" Version="14.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.4" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RenStore.Catalog.Application\RenStore.Catalog.Application.csproj" />
       <ProjectReference Include="..\RenStore.Inventory.Application\RenStore.Inventory.Application.csproj" />
       <ProjectReference Include="..\RenStore.Inventory.Domain\RenStore.Inventory.Domain.csproj" />
     </ItemGroup>

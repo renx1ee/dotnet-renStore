@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RenStore.Inventory.Application.Common;
 using RenStore.Inventory.Persistence.EventStore;
-using RenStore.SharedKernal.Domain.Common;
 
 namespace RenStore.Inventory.Persistence.Outbox;
 
@@ -67,7 +66,7 @@ internal sealed class OutboxWorker : BackgroundService
         var context         = scope.ServiceProvider.GetRequiredService<InventoryDbContext>()!;
         var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
         var mediator        = scope.ServiceProvider.GetRequiredService<IMediator>();
-
+        
         var messages = await context.OutboxMessages
             .Where(m => 
                 m.ProcessedAt == null && 
@@ -75,7 +74,7 @@ internal sealed class OutboxWorker : BackgroundService
             .OrderBy(m => m.CreatedAt)
             .Take(_options.BatchSize)
             .ToListAsync(cancellationToken);
-
+        
         if (messages.Count == 0) return;
         
         _logger.LogDebug("OutboxWorker processing {Count} messages.", messages.Count);
@@ -84,29 +83,40 @@ internal sealed class OutboxWorker : BackgroundService
         {
             try
             {
-                var eventType = DomainEventMappings.GetEventType(message.EventType);
-                var @event = JsonSerializer.Deserialize(message.Payload, eventType, EventSerializer.Options);
-                
-                if(@event is null) 
+                if (message.Kind == OutboxMessageKind.Domain)
                 {
-                    throw new InvalidOperationException(
-                        $"Deserialization returned null for event '{message.EventType}'.");
-                }
-                
-                if (@event is IDomainEvent domainEvent)
-                {
+                    var eventType = DomainEventMappings.GetEventType(message.EventType);
+                    var @event = JsonSerializer.Deserialize(message.Payload, eventType, EventSerializer.Options);
+                    
+                    if(@event is null) 
+                    {
+                        throw new InvalidOperationException(
+                            $"Deserialization returned null for event '{message.EventType}'.");
+                    }
+                    
                     var notificationType = typeof(DomainEventNotification<>)
                         .MakeGenericType(@event.GetType());
 
                     var notification = (INotification)Activator
-                        .CreateInstance(notificationType, domainEvent)!;
+                        .CreateInstance(notificationType, @event)!;
                     
                     await mediator.Publish(notification, cancellationToken);
                 }
                 
-                if (@event is IIntegrationEvent integrationEvent)
-                    await publishEndpoint.Publish(integrationEvent, eventType, cancellationToken);
-                
+                if (message.Kind == OutboxMessageKind.Integration)
+                {
+                    var eventType = IntegrationEventMappings.GetEventType(message.EventType);
+                    var @event = JsonSerializer.Deserialize(message.Payload, eventType, EventSerializer.Options);
+                    
+                    if(@event is null) 
+                    {
+                        throw new InvalidOperationException(
+                            $"Deserialization returned null for event '{message.EventType}'.");
+                    }
+                    
+                    await publishEndpoint.Publish(@event, eventType, cancellationToken);
+                }
+                    
                 message.ProcessedAt = DateTimeOffset.UtcNow;
                 message.Error       = null;
                 
@@ -128,7 +138,7 @@ internal sealed class OutboxWorker : BackgroundService
                     message.RetryCount);
             }
         }
-
+        
         await context.SaveChangesAsync(cancellationToken);
     }
 }

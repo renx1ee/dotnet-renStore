@@ -213,6 +213,10 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("event_type");
 
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer")
+                        .HasColumnName("kind");
+
                     b.Property<DateTimeOffset>("OccurredAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("occurred_at");

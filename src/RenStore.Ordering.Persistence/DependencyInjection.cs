@@ -29,6 +29,8 @@ public static class DependencyInjection
         services.Configure<OutboxOptions>(
             configuration.GetSection(OutboxOptions.SectionName));
         
+        services.AddScoped<IIntegrationOutboxWriter, IntegrationOutboxWriter>();
+        
         services.AddHostedService<OutboxWorker>();
         
         services.AddScoped<IEventStore, SqlEventStore>();

@@ -1,6 +1,3 @@
-using RenStore.Catalog.Application.Abstractions.Queries;
-using RenStore.Catalog.Domain.Enums;
-
 namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.PublishVariant;
 
 internal sealed class PublishProductVariantCommandHandler

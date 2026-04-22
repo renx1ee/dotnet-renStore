@@ -10,20 +10,17 @@ internal sealed class SoftDeleteVariantSizeCommandHandler
     private readonly IProductVariantRepository _variantRepository;
     private readonly IProductRepository _productRepository;
     private readonly ICurrentUserService _userService;
-    private readonly IPublishEndpoint _publishEndpoint;
     
     public SoftDeleteVariantSizeCommandHandler(
         ILogger<SoftDeleteVariantSizeCommandHandler> logger,
         IProductVariantRepository variantRepository,
         IProductRepository productRepository,
-        ICurrentUserService userService,
-        IPublishEndpoint publishEndpoint)
+        ICurrentUserService userService)
     {
         _logger = logger;
         _variantRepository = variantRepository;
         _productRepository = productRepository;
         _userService = userService;
-        _publishEndpoint = publishEndpoint;
     }
     
     public async Task Handle(
@@ -64,12 +61,6 @@ internal sealed class SoftDeleteVariantSizeCommandHandler
             now: DateTimeOffset.UtcNow);
 
         await _variantRepository.SaveAsync(variant, cancellationToken);
-        
-        await _publishEndpoint.Publish(
-            new VariantSizeDeletedIntegrationEvent(
-                VariantId: request.VariantId,
-                SizeId: request.SizeId),
-            cancellationToken);
         
         _logger.LogInformation(
             "{Command} handled. VariantId: {VariantId} SizeId: {SizeId}",

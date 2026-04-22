@@ -36,6 +36,7 @@ namespace RenStore.Inventory.Persistence.Migrations
                     event_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     aggregate_id = table.Column<Guid>(type: "uuid", nullable: false),
                     payload = table.Column<string>(type: "jsonb", nullable: false),
+                    kind = table.Column<int>(type: "integer", nullable: false),
                     occurred_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     processed_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),

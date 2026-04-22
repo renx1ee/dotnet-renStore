@@ -36,6 +36,8 @@ public static class DependencyInjection
         services.Configure<OutboxOptions>(
             configuration.GetSection(OutboxOptions.SectionName));
 
+        services.AddScoped<IIntegrationOutboxWriter, IntegrationOutboxWriter>();
+        
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IOutboxService, OutboxService>();
         

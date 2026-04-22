@@ -27,6 +27,8 @@ public sealed class OutboxMessage
     /// JSON-serialized domain event payload.
     /// </summary>
     public string Payload { get; init; } = string.Empty;
+    
+    public OutboxMessageKind Kind { get; init; }
 
     /// <summary>
     /// When the event occurred in the domain.
@@ -54,4 +56,10 @@ public sealed class OutboxMessage
     /// Worker uses this to apply back-off or dead-letter after a threshold.
     /// </summary>
     public int RetryCount { get; set; }
+}
+
+public enum OutboxMessageKind
+{
+    Domain,
+    Integration
 }

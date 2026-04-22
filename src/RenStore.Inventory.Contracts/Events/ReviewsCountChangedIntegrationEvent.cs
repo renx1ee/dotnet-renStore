@@ -1,3 +1,5 @@
+using RenStore.SharedKernal.Domain.Common;
+
 namespace RenStore.Inventory.Contracts.Events;
 
 public sealed record ReviewsCountChangedIntegrationEvent(
@@ -5,4 +7,5 @@ public sealed record ReviewsCountChangedIntegrationEvent(
     Guid ProductId,
     Guid VariantId,
     int AverageRating,
-    int Count);
+    int Count)
+    : IIntegrationEvent;

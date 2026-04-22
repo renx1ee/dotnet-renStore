@@ -12,7 +12,7 @@ using RenStore.Order.Persistence;
 namespace RenStore.Order.Persistence.Migrations
 {
     [DbContext(typeof(OrderingDbContext))]
-    [Migration("20260418060748_Initial")]
+    [Migration("20260421082537_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -222,6 +222,10 @@ namespace RenStore.Order.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("event_type");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer")
+                        .HasColumnName("kind");
 
                     b.Property<DateTimeOffset>("OccurredAt")
                         .HasColumnType("timestamp with time zone")
