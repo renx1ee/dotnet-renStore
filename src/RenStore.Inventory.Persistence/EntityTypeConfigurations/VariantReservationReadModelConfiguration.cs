@@ -84,6 +84,10 @@ internal sealed class VariantReservationReadModelConfiguration
             .Property(v => v.OrderId)
             .HasColumnName("order_id");
         
+        builder
+            .Property(v => v.StockId)
+            .HasColumnName("stock_id");
+        
         // TODO: indexes
     }
 }

@@ -3,5 +3,7 @@ namespace RenStore.Catalog.Application.Features.ProductVariant.Commands.Denormal
 public sealed record ChangeChangeStockProjectionCommand(
     DateTimeOffset OccurredAt,
     Guid VariantId,
-    int InStock)
+    Guid SizeId,
+    int InStock,
+    int Sales)
     : IRequest;

@@ -25,4 +25,13 @@ internal sealed class StockReadRepository : IStockReadRepository
                     x.SizeId == sizeId,
                 cancellationToken);
     }
+    
+    public async Task<VariantStockReadModel?> GetAsync(
+        Guid stockId,
+        CancellationToken cancellationToken)
+    {
+        return await _context.Stocks
+            .FirstOrDefaultAsync(x => x.Id == stockId,
+                cancellationToken);
+    }
 }

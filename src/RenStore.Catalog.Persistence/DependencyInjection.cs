@@ -3,12 +3,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Abstractions.Projections;
+using RenStore.Catalog.Application.Abstractions.Repository;
 using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Domain.Interfaces.Repository;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.SqlMappers;
 using RenStore.Catalog.Persistence.EventStore;
 using RenStore.Catalog.Persistence.Outbox;
 using RenStore.Catalog.Persistence.Read.Queries.Postgresql;
+using RenStore.Catalog.Persistence.Read.Repository;
 using RenStore.Catalog.Persistence.Services;
 using RenStore.Catalog.Persistence.Write.Projections;
 using RenStore.Catalog.Persistence.Write.Repositories.Postgresql;
@@ -58,6 +60,8 @@ public static class DependencyInjection
         services.AddScoped<IVariantAttributeProjection, VariantAttributeProjection>();
         services.AddScoped<IVariantDetailProjection, VariantDetailProjection>();
         services.AddScoped<IVariantImageProjection, VariantImageProjection>();
+        
+        services.AddScoped<IProductVariantSizeRepository, ProductVariantSizeRepository>();
         
         services.AddScoped<ICategoryQuery, CategoryQuery>();
         services.AddScoped<ICatalogQuery, CatalogQuery>();

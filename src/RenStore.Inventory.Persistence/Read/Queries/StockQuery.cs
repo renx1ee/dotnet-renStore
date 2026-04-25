@@ -185,7 +185,7 @@ internal sealed class StockQuery(InventoryDbContext context, ILogger<StockQuery>
         return """
                SELECT 
                    "id"               AS Id,
-                   "in_stock"         AS InStock,
+                   "in_stock"         AS InStockOverall,
                    "sales"            AS Sales,
                    "write_off_reason" AS WriteOffReason,
                    "created_date"     AS CreatedAt,

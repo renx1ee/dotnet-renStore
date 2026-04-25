@@ -17,9 +17,11 @@ internal sealed class SellerIsVerifiedChangedConsumer
     {
         var message = context.Message;
         
-        await _mediator.Send(new ChangeSellerVerificationProjectionCommand(
-            VariantId: message.VariantId,
-            OccurredAt: message.OccurredAt,
-            IsVerified: message.IsVarified));
+        await _mediator.Send(
+            new ChangeSellerVerificationProjectionCommand(
+                VariantId: message.VariantId,
+                OccurredAt: message.OccurredAt,
+                IsVerified: message.IsVarified),
+            context.CancellationToken);
     }
 }

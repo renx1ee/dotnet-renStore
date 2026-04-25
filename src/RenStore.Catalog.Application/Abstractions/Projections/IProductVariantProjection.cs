@@ -67,11 +67,6 @@ public interface IProductVariantProjection
     Task ChangeStockAsync(
         Guid variantId,
         int stock,
-        DateTimeOffset now,
-        CancellationToken cancellationToken);
-
-    Task ChangeSalesAsync(
-        Guid variantId,
         int sales,
         DateTimeOffset now,
         CancellationToken cancellationToken);

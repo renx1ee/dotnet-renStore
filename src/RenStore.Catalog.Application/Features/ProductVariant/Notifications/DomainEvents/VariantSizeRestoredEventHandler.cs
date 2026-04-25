@@ -22,7 +22,5 @@ public class VariantSizeRestoredEventHandler
             sizeId: notification.DomainEvent.SizeId,
             restoredAt: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _variantSizeProjection.CommitAsync(cancellationToken);
     }
 }

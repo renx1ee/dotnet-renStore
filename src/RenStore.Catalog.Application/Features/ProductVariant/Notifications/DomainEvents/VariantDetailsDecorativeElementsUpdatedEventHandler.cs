@@ -22,7 +22,5 @@ internal sealed class VariantDetailsDecorativeElementsUpdatedEventHandler
             decorativeElements: notification.DomainEvent.DecorativeElements,
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
-
-        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

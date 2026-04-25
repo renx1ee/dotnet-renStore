@@ -22,7 +22,5 @@ internal sealed class VariantDetailsCaringOfThingsUpdatedEventHandler
             caringOfThings: notification.DomainEvent.CaringOfThings,
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
-
-        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

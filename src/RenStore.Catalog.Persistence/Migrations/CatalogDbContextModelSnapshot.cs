@@ -293,9 +293,9 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("discount_percents");
 
-                    b.Property<int?>("InStock")
+                    b.Property<int?>("InStockOverall")
                         .HasColumnType("integer")
-                        .HasColumnName("in_stock");
+                        .HasColumnName("in_stock_overall");
 
                     b.Property<Guid>("MainImageId")
                         .HasColumnType("uuid")
@@ -321,9 +321,9 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("reviews_count");
 
-                    b.Property<int?>("SalesCount")
+                    b.Property<int?>("SalesCountOverall")
                         .HasColumnType("integer")
-                        .HasColumnName("sales_count");
+                        .HasColumnName("sales_count_overall");
 
                     b.Property<bool?>("SellerIsVerified")
                         .HasColumnType("boolean")
@@ -382,7 +382,7 @@ namespace RenStore.Catalog.Persistence.Migrations
                     b.HasIndex("NormalizedName")
                         .HasDatabaseName("idx_variant_normalized_name");
 
-                    b.HasIndex("SalesCount")
+                    b.HasIndex("SalesCountOverall")
                         .IsDescending()
                         .HasDatabaseName("idx_sales_count");
 
@@ -693,6 +693,10 @@ namespace RenStore.Catalog.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_date");
 
+                    b.Property<int?>("InStock")
+                        .HasColumnType("integer")
+                        .HasColumnName("in_stock");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -706,6 +710,10 @@ namespace RenStore.Catalog.Persistence.Migrations
                     b.Property<decimal?>("Number")
                         .HasColumnType("numeric")
                         .HasColumnName("size_number");
+
+                    b.Property<int?>("SalesCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("sales_count");
 
                     b.Property<int>("System")
                         .HasColumnType("integer")

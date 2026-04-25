@@ -21,7 +21,5 @@ internal sealed class VariantImageDeletedEventHandler
             notification.DomainEvent.OccurredAt,
             imageId: notification.DomainEvent.ImageId,
             cancellationToken: cancellationToken);
-
-        await _variantImageProjection.CommitAsync(cancellationToken);
     }
 }

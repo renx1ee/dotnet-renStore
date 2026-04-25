@@ -22,7 +22,5 @@ internal sealed class VariantDetailsTypeOfPackingUpdatedEventHandler
             typeOfPacking: notification.DomainEvent.TypeOfPacking,
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
-
-        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

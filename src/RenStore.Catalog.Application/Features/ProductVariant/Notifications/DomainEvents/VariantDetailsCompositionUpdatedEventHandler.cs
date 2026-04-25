@@ -22,7 +22,5 @@ internal sealed class VariantDetailsCompositionUpdatedEventHandler
             composition: notification.DomainEvent.Composition,
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
-
-        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

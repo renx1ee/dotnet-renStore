@@ -7,22 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RenStore.Inventory.Contracts\RenStore.Inventory.Contracts.csproj" />
       <ProjectReference Include="..\RenStore.Inventory.Domain\RenStore.Inventory.Domain.csproj" />
       <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="12.1.1" />
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-      <PackageReference Include="MassTransit.Abstractions" Version="8.3.6" />
-      <PackageReference Include="MediatR" Version="14.0.0" />
+        <PackageReference Include="FluentValidation" Version="12.1.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+        <PackageReference Include="MassTransit.Abstractions" Version="8.3.6" />
+        <PackageReference Include="MediatR" Version="14.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Reservation\Commands\Create\" />
-      <Folder Include="Features\Reservation\Commands\SoftDelete\" />
       <Folder Include="Features\Reservation\Notifications\" />
-      <Folder Include="Features\Reservation\Queries\" />
     </ItemGroup>
 
 </Project>

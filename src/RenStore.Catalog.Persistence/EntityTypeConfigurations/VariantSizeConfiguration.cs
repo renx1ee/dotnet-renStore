@@ -56,6 +56,16 @@ public sealed class VariantSizeConfiguration
             .IsRequired();
         
         builder
+            .Property(x => x.InStock)
+            .HasColumnName("in_stock")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.SalesCount)
+            .HasColumnName("sales_count")
+            .IsRequired(false);
+        
+        builder
             .Property(x => x.CreatedAt)
             .HasColumnName("created_date")
             .IsRequired();

@@ -170,19 +170,6 @@ internal sealed class ProductVariantProjection
     public async Task ChangeStockAsync(
         Guid variantId,
         int stock,
-        DateTimeOffset now,
-        CancellationToken cancellationToken)
-    {
-        ValidateProductVariantId(variantId);
-        
-        var view = await GetVariantAsync(variantId, cancellationToken);
-
-        view.InStock = stock;
-        view.UpdatedAt = now;
-    }
-    
-    public async Task ChangeSalesAsync(
-        Guid variantId,
         int sales,
         DateTimeOffset now,
         CancellationToken cancellationToken)
@@ -191,7 +178,8 @@ internal sealed class ProductVariantProjection
         
         var view = await GetVariantAsync(variantId, cancellationToken);
 
-        view.SalesCount = sales;
+        view.InStockOverall = stock;
+        view.SalesCountOverall = sales;
         view.UpdatedAt = now;
     }
     

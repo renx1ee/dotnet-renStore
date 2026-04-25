@@ -11,7 +11,9 @@ public sealed class VariantSizeReadModel
     public SizeSystem System { get; set; }
     public bool IsDeleted { get; set; }
     public Guid? UpdatedById { get; set; } 
-    public string? UpdatedByRole { get; set; } 
+    public string? UpdatedByRole { get; set; }
+    public int? InStock { get; set; }
+    public int? SalesCount { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

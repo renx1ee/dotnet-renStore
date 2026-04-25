@@ -261,7 +261,8 @@ internal sealed class ReservationQuery(InventoryDbContext context, ILogger<Reser
                    "deleted_date"    AS DeletedAt,
                    "variant_id"      AS VariantId,
                    "size_id"         AS SizeId,
-                   "order_id"        AS OrderId
+                   "order_id"        AS OrderId,
+                   "stock_id"        AS StockId
                FROM "reservations"
                """;
     }

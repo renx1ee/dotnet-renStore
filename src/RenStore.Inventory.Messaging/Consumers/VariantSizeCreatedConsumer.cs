@@ -20,9 +20,11 @@ internal sealed class VariantSizeCreatedConsumer
     {
         var message = context.Message;
         
-        await _mediator.Send(new CreateStockCommand(
-            VariantId: message.VariantId,
-            SizeId: message.SizeId,
-            InitialStock: 0));
+        await _mediator.Send(
+            new CreateStockCommand(
+                VariantId: message.VariantId,
+                SizeId:    message.SizeId,
+                InitialStock: 0),
+            context.CancellationToken);
     }
 }

@@ -23,7 +23,5 @@ internal sealed class SubCategoryDescriptionChangedEventHandler
             description: notification.DomainEvent.Description,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _subCategoryProjection.CommitAsync(cancellationToken);
     }
 }

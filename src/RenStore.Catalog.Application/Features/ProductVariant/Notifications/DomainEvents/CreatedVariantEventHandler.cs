@@ -17,7 +17,7 @@ internal sealed class CreatedVariantEventHandler
         DomainEventNotification<VariantCreatedEvent> notification, 
         CancellationToken cancellationToken)
     {
-        var variant = new ProductVariantReadModel()
+        await _variantProjection.AddAsync(new ProductVariantReadModel()
         {
             Id = notification.DomainEvent.VariantId,
             ProductId = notification.DomainEvent.ProductId,
@@ -30,9 +30,6 @@ internal sealed class CreatedVariantEventHandler
             Article = notification.DomainEvent.Article,
             Status = notification.DomainEvent.Status,
             Url = notification.DomainEvent.Url
-        };
-
-        await _variantProjection.AddAsync(variant, cancellationToken);
-        await _variantProjection.CommitAsync(cancellationToken);
+        }, cancellationToken);
     }
 }

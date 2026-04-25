@@ -90,11 +90,10 @@ public sealed class ProductVariantReadModel
     
     public bool? SellerIsVerified { get; set; }
     
-    public int? InStock { get; set; }
+    public int? InStockOverall { get; set; }
+    public int? SalesCountOverall { get; set; }
     
     public int? ReviewsCount { get; set; }
     
     public double? AverageRating { get; set; }
-    
-    public int? SalesCount { get; set; }
 }

@@ -11,6 +11,14 @@ public interface IProductVariantSizeProjection
     Task AddRangeAsync(
         IReadOnlyCollection<VariantSizeReadModel> variants,
         CancellationToken cancellationToken);
+    
+    Task ChangeStockAsync(
+        Guid sizeId,
+        Guid variantId,
+        int stock,
+        int sales,
+        DateTimeOffset now,
+        CancellationToken cancellationToken);
 
     Task SoftDeleteAsync(
         Guid variantId,

@@ -1,21 +1,17 @@
+using RenStore.Inventory.Contracts.Events;
+
 namespace RenStore.Inventory.Persistence.Outbox;
 
 public static class IntegrationEventMappings
 {
     public static readonly Dictionary<string, Type> NameToType = new()
     {
-        /*{ "variant-size-created-integration", typeof(VariantSizeCreatedIntegrationEvent) },
-        { "variant-size-deleted-integration", typeof(VariantSizeDeletedIntegrationEvent) },
-        { "product-archived-integration",     typeof(ProductArchivedIntegrationEvent) },
-        { "product-hidden-integration",       typeof(ProductHiddenIntegrationEvent) },*/
+        { "inventory-stock-availability-changed-integration", typeof(StockAvailabilityChangedIntegrationEvent) },
     };
     
     public static readonly Dictionary<Type, string> TypeToName = new()
     {
-        /*{ typeof(VariantSizeCreatedIntegrationEvent), "variant-size-created-integration" },
-        { typeof(VariantSizeDeletedIntegrationEvent), "variant-size-deleted-integration" },
-        { typeof(ProductArchivedIntegrationEvent),    "product-archived-integration" },
-        { typeof(ProductHiddenIntegrationEvent),      "product-hidden-integration" }*/
+        { typeof(StockAvailabilityChangedIntegrationEvent), "inventory-stock-availability-changed-integration" },
     };
 
     /// <summary>

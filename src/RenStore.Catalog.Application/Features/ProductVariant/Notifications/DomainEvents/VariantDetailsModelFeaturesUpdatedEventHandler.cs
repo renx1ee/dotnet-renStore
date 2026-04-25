@@ -22,7 +22,5 @@ internal sealed class VariantDetailsModelFeaturesUpdatedEventHandler
             modelFeatures: notification.DomainEvent.ModelFeatures,
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
-
-        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

@@ -21,8 +21,10 @@ internal sealed class VariantSizeDeletedConsumer
     {
         var message = context.Message;
         
-        await _mediator.Send(new StockSoftDeleteCommand(
-            VariantId: message.VariantId,
-            SizeId: message.SizeId));
+        await _mediator.Send(
+            new StockSoftDeleteCommand(
+                VariantId: message.VariantId,
+                SizeId: message.SizeId),
+            context.CancellationToken);
     }
 }

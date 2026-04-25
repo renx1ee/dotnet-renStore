@@ -21,7 +21,5 @@ internal sealed class AttributeRemovedEventHandler
             attributeId: notification.DomainEvent.AttributeId,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _attributeProjection.CommitAsync(cancellationToken);
     }
 }

@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Http" Version="8.1.1" />
+        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
           <PrivateAssets>all</PrivateAssets>
@@ -19,6 +22,10 @@
       <ProjectReference Include="..\RenStore.Ordering.Application\RenStore.Ordering.Application.csproj" />
       <ProjectReference Include="..\RenStore.Ordering.Messaging\RenStore.Ordering.Messaging.csproj" />
       <ProjectReference Include="..\RenStore.Ordering.Persistence\RenStore.Ordering.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Requests\" />
     </ItemGroup>
 
 </Project>

@@ -29,7 +29,5 @@ internal sealed class AddedAttributeToVariantEventHandler
                 VariantId = notification.DomainEvent.VariantId
             }, 
             cancellationToken: cancellationToken);
-
-        await _attributeProjection.CommitAsync(cancellationToken);
     }
 }

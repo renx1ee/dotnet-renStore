@@ -14,5 +14,6 @@ public sealed record VariantReservationDto
     DateTimeOffset?          DeletedAt,
     Guid                     VariantId,
     Guid                     SizeId,
-    Guid                     OrderId
+    Guid                     OrderId,
+    Guid                     StockId
 );

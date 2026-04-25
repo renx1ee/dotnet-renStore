@@ -33,7 +33,5 @@ internal sealed class CategoryCreatedEventHandler
                 Description = notification.DomainEvent.Description
             }, 
             cancellationToken: cancellationToken);
-
-        await _categoryProjection.CommitAsync(cancellationToken);
     }
 }

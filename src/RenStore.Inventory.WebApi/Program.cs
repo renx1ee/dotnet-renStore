@@ -2,8 +2,10 @@ using System.Text.Json.Serialization;
 using Asp.Versioning;
 using RenStore.Inventory.Application;
 using RenStore.Inventory.Application.Abstractions;
+using RenStore.Inventory.Application.Common;
 using RenStore.Inventory.Messaging.Extensions;
 using RenStore.Inventory.Persistence;
+using RenStore.Inventory.Persistence.Outbox;
 using RenStore.Inventory.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,9 @@ builder.Services.AddInventoryApplication();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+builder.Services.Configure<ReservationOptions>(
+    builder.Configuration.GetSection(OutboxOptions.SectionName));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

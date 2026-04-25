@@ -23,6 +23,7 @@ public sealed class VariantReservation
     public DateTimeOffset? DeletedAt { get; private set; }
     public Guid UpdatedById { get; private set; } 
     public string UpdatedByRole { get; private set; } 
+    public Guid StockId { get; private set; }
     public Guid VariantId { get; private set; }
     public Guid SizeId { get; private set; }
     public Guid OrderId { get; private set; }

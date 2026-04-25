@@ -17,24 +17,20 @@ internal sealed class VariantImageUploadedEventHandler
         DomainEventNotification<ImageCreatedEvent> notification, 
         CancellationToken cancellationToken)
     {
-        var image = new VariantImageReadModel()
-        {
-            Id = notification.DomainEvent.ImageId,
-            OriginalFileName = notification.DomainEvent.OriginalFileName,
-            StoragePath = notification.DomainEvent.StoragePath,
-            FileSizeBytes = notification.DomainEvent.FileSizeBytes,
-            IsMain = notification.DomainEvent.IsMain,
-            SortOrder = notification.DomainEvent.SortOrder,
-            Weight = notification.DomainEvent.Weight,
-            Height = notification.DomainEvent.Height,
-            IsDeleted = false,
-            UpdatedAt = notification.DomainEvent.OccurredAt,
-            VariantId = notification.DomainEvent.VariantId
-        };
-
         await _variantImageProjection.AddAsync(
-            image: image, cancellationToken: cancellationToken);
-
-        await _variantImageProjection.CommitAsync(cancellationToken);
+            image: new VariantImageReadModel()
+            {
+                Id = notification.DomainEvent.ImageId,
+                OriginalFileName = notification.DomainEvent.OriginalFileName,
+                StoragePath = notification.DomainEvent.StoragePath,
+                FileSizeBytes = notification.DomainEvent.FileSizeBytes,
+                IsMain = notification.DomainEvent.IsMain,
+                SortOrder = notification.DomainEvent.SortOrder,
+                Weight = notification.DomainEvent.Weight,
+                Height = notification.DomainEvent.Height,
+                IsDeleted = false,
+                UpdatedAt = notification.DomainEvent.OccurredAt,
+                VariantId = notification.DomainEvent.VariantId
+            }, cancellationToken: cancellationToken);
     }
 }

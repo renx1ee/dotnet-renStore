@@ -1,5 +1,3 @@
-using MassTransit;
-
 namespace RenStore.Inventory.Application.Features.Stock.Commands.AddToStock;
 
 internal sealed class AddToStockCommandHandler

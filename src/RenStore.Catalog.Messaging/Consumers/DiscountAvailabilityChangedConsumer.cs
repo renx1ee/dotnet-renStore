@@ -11,9 +11,11 @@ internal sealed class DiscountAvailabilityChangedConsumer(IMediator mediator)
     {
         var message = context.Message;
         
-        await _mediator.Send(new ChangeDiscountProjectionCommand(
-            VariantId: message.VariantId,
-            OccurredAt: message.OccurredAt,
-            DiscountPercents: message.Count));
+        await _mediator.Send(
+            new ChangeDiscountProjectionCommand(
+                VariantId: message.VariantId,
+                OccurredAt: message.OccurredAt,
+                DiscountPercents: message.Count),
+            context.CancellationToken);
     }
 }

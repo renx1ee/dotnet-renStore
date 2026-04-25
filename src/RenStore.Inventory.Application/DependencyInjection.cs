@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using RenStore.Inventory.Application.Behaviors;
+using RenStore.Inventory.Application.Common;
 
 namespace RenStore.Inventory.Application;
 

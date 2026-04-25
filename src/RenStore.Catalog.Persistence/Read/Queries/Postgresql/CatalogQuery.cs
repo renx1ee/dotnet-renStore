@@ -137,8 +137,8 @@ internal sealed class CatalogQuery(CatalogDbContext context, ILogger<CatalogQuer
             {
                 sql.Append(
                     filter.IsAvailable == true
-                        ? """ AND pv."in_stock" > 0 """ 
-                        : """ AND pv."in_stock" <= 0 """
+                        ? """ AND pv."in_stock_overall" > 0 """ 
+                        : """ AND pv."in_stock_overall" <= 0 """
                     );
             }
             // TODO: 

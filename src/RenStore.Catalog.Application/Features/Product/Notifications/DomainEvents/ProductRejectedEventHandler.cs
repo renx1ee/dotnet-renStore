@@ -21,7 +21,5 @@ internal sealed class ProductRejectedEventHandler
             productId: notification.DomainEvent.ProductId,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _productProjection.CommitAsync(cancellationToken);
     }
 }

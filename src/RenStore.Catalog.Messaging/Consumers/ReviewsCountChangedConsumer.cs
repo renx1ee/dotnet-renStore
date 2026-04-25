@@ -17,10 +17,12 @@ internal sealed class ReviewsCountChangedConsumer
     {
         var message = context.Message;
 
-        await _mediator.Send(new ChangeReviewsCountProjectionCommand(
-            VariantId: message.VariantId,
-            OccurredAt: message.OccurredAt,
-            AverageRating: message.AverageRating,
-            Count: message.Count));
+        await _mediator.Send(
+            new ChangeReviewsCountProjectionCommand(
+                VariantId: message.VariantId,
+                OccurredAt: message.OccurredAt,
+                AverageRating: message.AverageRating,
+                Count: message.Count),
+            context.CancellationToken);
     }
 }

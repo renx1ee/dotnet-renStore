@@ -99,7 +99,7 @@ namespace RenStore.Inventory.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_date");
 
-                    b.Property<int>("InStock")
+                    b.Property<int>("InStockOverall")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0)

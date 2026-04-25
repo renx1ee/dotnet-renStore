@@ -23,7 +23,5 @@ internal sealed class CategoryNameChangedEventHandler
             normalizedName: notification.DomainEvent.NormalizedName,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _categoryProjection.CommitAsync(cancellationToken);
     }
 }

@@ -16,7 +16,6 @@ public static class MassTransitExtension
             x.AddConsumer<ReviewsCountChangedConsumer>();
             x.AddConsumer<SellerIsVerifiedChangedConsumer>();
             x.AddConsumer<StockAvailabilityChangedConsumer>();
-            x.AddConsumer<StockSalesChangedConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -68,16 +67,6 @@ public static class MassTransitExtension
                         TimeSpan.FromSeconds(30)));
                     e.ConfigureConsumer<StockAvailabilityChangedConsumer>(context);
                     /*e.Bind<StockAvailabilityChangedConsumer>();*/
-                });
-            
-                cfg.ReceiveEndpoint("inventory.stock-sales-changed", e =>
-                {
-                    e.UseMessageRetry(r => r.Intervals(
-                        TimeSpan.FromSeconds(5),
-                        TimeSpan.FromSeconds(15),
-                        TimeSpan.FromSeconds(30)));
-                    e.ConfigureConsumer<StockSalesChangedConsumer>(context);
-                    /*e.Bind<StockSalesChangedConsumer>();*/
                 });
                 
                 cfg.ConfigureEndpoints(context);

@@ -120,8 +120,13 @@ public sealed class ProductVariantConfiguration
             .IsRequired(false);
         
         builder
-            .Property(x => x.InStock)
-            .HasColumnName("in_stock")
+            .Property(x => x.InStockOverall)
+            .HasColumnName("in_stock_overall")
+            .IsRequired(false);
+        
+        builder
+            .Property(x => x.SalesCountOverall)
+            .HasColumnName("sales_count_overall")
             .IsRequired(false);
         
         builder
@@ -132,11 +137,6 @@ public sealed class ProductVariantConfiguration
         builder
             .Property(x => x.AverageRating)
             .HasColumnName("average_rating")
-            .IsRequired(false);
-        
-        builder
-            .Property(x => x.SalesCount)
-            .HasColumnName("sales_count")
             .IsRequired(false);
         
         builder
@@ -155,7 +155,7 @@ public sealed class ProductVariantConfiguration
             .HasDatabaseName("idx_variant_normalized_name");
         
         builder
-            .HasIndex(v => v.SalesCount)
+            .HasIndex(v => v.SalesCountOverall)
             .HasDatabaseName("idx_sales_count")
             .IsDescending();
         

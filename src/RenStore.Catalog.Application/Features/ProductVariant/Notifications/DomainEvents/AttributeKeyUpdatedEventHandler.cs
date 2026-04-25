@@ -22,7 +22,5 @@ internal sealed class AttributeKeyUpdatedEventHandler
             key: notification.DomainEvent.Key,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _attributeProjection.CommitAsync(cancellationToken);
     }
 }

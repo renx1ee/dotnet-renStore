@@ -29,8 +29,8 @@ internal sealed class CreateStockCommandHandler
 
         var stockExists = await _stockProjection
             .IsExistsAsync(
-                sizeId: request.SizeId,
-                variantId: request.VariantId,
+                sizeId:            request.SizeId,
+                variantId:         request.VariantId,
                 cancellationToken: cancellationToken);
 
         if (stockExists)
@@ -40,9 +40,9 @@ internal sealed class CreateStockCommandHandler
         }
 
         var stock = VariantStock.Create(
-            now: DateTimeOffset.UtcNow, 
-            sizeId: request.SizeId,
-            variantId: request.VariantId,
+            now:          DateTimeOffset.UtcNow, 
+            sizeId:       request.SizeId,
+            variantId:    request.VariantId,
             initialStock: request.InitialStock);
 
         await _stockRepository.SaveAsync(

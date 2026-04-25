@@ -21,7 +21,5 @@ internal sealed class CategoryDeactivatedEventHandler
             categoryId: notification.DomainEvent.CategoryId,
             now: notification.DomainEvent.OccurredAt,
             cancellationToken: cancellationToken);
-
-        await _categoryProjection.CommitAsync(cancellationToken);
     }
 }

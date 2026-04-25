@@ -17,9 +17,13 @@ internal sealed class StockAvailabilityChangedConsumer
     {
         var message = context.Message;
         
-        await _mediator.Send(new ChangeChangeStockProjectionCommand(
-            VariantId: message.VariantId,
-            OccurredAt: message.OccurredAt,
-            InStock: message.Count));
+        await _mediator.Send(
+            new ChangeChangeStockProjectionCommand(
+                OccurredAt: message.OccurredAt,
+                VariantId:  message.VariantId,
+                SizeId:     message.SizeId,
+                InStock:    message.Count,
+                Sales:      message.Sales),
+            context.CancellationToken);
     }
 }

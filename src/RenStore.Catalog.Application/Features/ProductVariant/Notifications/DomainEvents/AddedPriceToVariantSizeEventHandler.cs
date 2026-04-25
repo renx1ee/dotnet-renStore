@@ -29,7 +29,5 @@ internal sealed class AddedPriceToVariantSizeEventHandler
                 SizeId = notification.DomainEvent.SizeId
             },
             cancellationToken: cancellationToken);
-
-        await _sizePriceProjection.CommitAsync(cancellationToken);
     }
 }

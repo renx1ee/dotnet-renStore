@@ -39,6 +39,26 @@ internal sealed class ProductVariantSizeProjection
         await _context.Sizes.AddRangeAsync(variantsList, cancellationToken);
     }
     
+    public async Task ChangeStockAsync(
+        Guid sizeId,
+        Guid variantId,
+        int stock,
+        int sales,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        ValidateProductVariantId(sizeId);
+        
+        var size = await GetSizeAsync(
+            sizeId: sizeId,
+            variantId: variantId,
+            cancellationToken: cancellationToken);
+
+        size.InStock    = stock;
+        size.SalesCount = sales;
+        size.UpdatedAt  = now;
+    }
+    
     public async Task SoftDeleteAsync(
         Guid variantId,
         Guid sizeId,
@@ -105,8 +125,7 @@ internal sealed class ProductVariantSizeProjection
         if (view is null)
         {
             throw new NotFoundException(
-                name: typeof(VariantSizeReadModel),
-                sizeId);
+                name: typeof(VariantSizeReadModel), sizeId);
         }
 
         return view;

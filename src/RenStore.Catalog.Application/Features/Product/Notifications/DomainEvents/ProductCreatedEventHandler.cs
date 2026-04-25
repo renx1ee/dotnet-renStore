@@ -17,7 +17,7 @@ internal sealed class ProductCreatedEventHandler
         DomainEventNotification<ProductCreatedEvent> notification, 
         CancellationToken cancellationToken)
     {
-        var product = new ProductReadModel()
+        await _productProjection.AddAsync(new ProductReadModel()
         {
             Id = notification.DomainEvent.ProductId,
             SellerId = notification.DomainEvent.SellerId,
@@ -25,9 +25,6 @@ internal sealed class ProductCreatedEventHandler
             CategoryId = notification.DomainEvent.CategoryId,
             Status = notification.DomainEvent.Status,
             CreatedAt = notification.DomainEvent.OccurredAt,
-        };
-        
-        await _productProjection.AddAsync(product, cancellationToken);
-        await _productProjection.CommitAsync(cancellationToken);
+        }, cancellationToken);
     }
 }

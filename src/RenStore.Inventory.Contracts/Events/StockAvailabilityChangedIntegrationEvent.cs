@@ -6,5 +6,6 @@ public sealed record StockAvailabilityChangedIntegrationEvent(
     DateTimeOffset OccurredAt,
     Guid VariantId,
     Guid SizeId,
-    int Count)
+    int Count,
+    int Sales)
     : IIntegrationEvent;

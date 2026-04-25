@@ -8,3 +8,17 @@ public sealed record StockAddedEvent(
     Guid StockId,
     int Count)
     : IDomainEvent;
+
+public sealed record StockDecreasedEvent(
+    Guid EventId,
+    DateTimeOffset OccurredAt,
+    Guid StockId,
+    int Count)
+    : IDomainEvent;
+
+public sealed record StockReservationReturnedEvent(
+    Guid EventId,
+    DateTimeOffset OccurredAt,
+    Guid StockId,
+    int Count)
+    : IDomainEvent;

@@ -22,7 +22,5 @@ internal sealed class VariantDetailsEquipmentUpdatedEventHandler
             equipment: notification.DomainEvent.Equipment,
             detailsId: notification.DomainEvent.DetailId,
             cancellationToken: cancellationToken);
-
-        await _detailProjection.CommitAsync(cancellationToken);
     }
 }

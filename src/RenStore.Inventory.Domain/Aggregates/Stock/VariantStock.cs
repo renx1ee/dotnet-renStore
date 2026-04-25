@@ -168,10 +168,39 @@ public sealed class VariantStock
         Raise(new StockSetEvent(
             EventId: Guid.NewGuid(), 
             OccurredAt: now,
-            SizeId: SizeId,
             StockId: Id,
-            VariantSizeId: VariantId,
             NewStock: newStock));
+    }
+    
+    public void Decrease(
+        int count,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+    
+        VariantStockRules.RemoveFromStockCommonValidation(count, InStock);
+        VariantStockRules.ChangeCountValidate(count);
+    
+        Raise(new StockDecreasedEvent(
+            EventId:   Guid.NewGuid(),
+            OccurredAt: now,
+            StockId:   Id,
+            Count:     count));
+    }
+
+    public void ReturnReservation(
+        int count,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+    
+        VariantStockRules.ChangeCountValidate(count);
+    
+        Raise(new StockReservationReturnedEvent(
+            EventId:    Guid.NewGuid(),
+            OccurredAt: now,
+            StockId:    Id,
+            Count:      count));
     }
     
     public void Delete(
@@ -245,7 +274,6 @@ public sealed class VariantStock
                 break;
             
             case StockSoldEvent e:
-                InStock -= e.Count;
                 Sales += e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
@@ -258,6 +286,16 @@ public sealed class VariantStock
             
             case StockSetEvent e:
                 InStock = e.NewStock;
+                UpdatedAt = e.OccurredAt;
+                break;
+            
+            case StockDecreasedEvent e:
+                InStock -= e.Count;
+                UpdatedAt = e.OccurredAt;
+                break;
+
+            case StockReservationReturnedEvent e:
+                InStock += e.Count;
                 UpdatedAt = e.OccurredAt;
                 break;
             
