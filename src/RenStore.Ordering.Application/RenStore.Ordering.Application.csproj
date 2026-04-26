@@ -25,7 +25,6 @@
     <ItemGroup>
       <Folder Include="Behaviors\" />
       <Folder Include="Features\Order\Notifications\" />
-      <Folder Include="Features\Order\Queries\" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ namespace RenStore.Inventory.Domain.Aggregates.Reservation.Events;
 
 public sealed record VariantReservationConfirmed(
     Guid EventId,
+    Guid Id,
     DateTimeOffset OccurredAt,
     ReservationStatus Status)
     : IDomainEvent;

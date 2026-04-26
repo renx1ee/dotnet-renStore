@@ -10,6 +10,8 @@ using RenStore.Order.Persistence.Write.Projections;
 using RenStore.Order.Persistence.Write.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using RenStore.Order.Application.Abstractions.Queries;
+using RenStore.Order.Persistence.Read.Queries;
 
 namespace RenStore.Order.Persistence;
 
@@ -39,6 +41,9 @@ public static class DependencyInjection
         
         services.AddScoped<IOrderProjection, OrderProjection>();
         services.AddScoped<IOrderItemProjection, OrderItemProjection>();
+        
+        services.AddScoped<IOrderItemQuery, OrderItemQuery>();
+        services.AddScoped<IOrderQuery, OrderQuery>();
         
         return services;
     }

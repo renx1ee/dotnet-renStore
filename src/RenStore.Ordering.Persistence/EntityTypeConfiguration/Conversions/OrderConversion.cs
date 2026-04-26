@@ -38,7 +38,7 @@ internal static class OrderConversion
             OrderItemStatus.Refunded  => "refunded",
             _ => throw new ArgumentOutOfRangeException(nameof(status))
         };
-
+    
     internal static OrderItemStatus OrderItemStatusFromDatabase(string status) =>
         status switch
         {

@@ -80,7 +80,7 @@ public sealed class StockManageController(IMediator mediator) : ControllerBase
 
     #region Queries Manage
 
-    [HttpGet("{stockId}")]
+    [HttpGet("{stockId:guid}")]
     [ApiVersion(1)]
     [Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
     public async Task<IActionResult> FindById(

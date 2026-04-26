@@ -69,6 +69,7 @@ public sealed class VariantReservation
         
         Raise(new VariantReservationCancelledEvent(
             EventId: Guid.NewGuid(),
+            Id: Id,
             OccurredAt: now,
             Status: ReservationStatus.Cancelled,
             CancelReason: reason));
@@ -103,6 +104,7 @@ public sealed class VariantReservation
         
         Raise(new VariantReservationConfirmed(
             EventId: Guid.NewGuid(),
+            Id: Id,
             OccurredAt: now,
             Status: ReservationStatus.Confirmed));
     }

@@ -9,10 +9,10 @@
 
     <ItemGroup>
       <Folder Include="EntityTypeConfiguration\Converters\" />
-      <Folder Include="Read\" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.1.72" />
       <PackageReference Include="MassTransit.Abstractions" Version="8.3.6" />
       <PackageReference Include="MediatR" Version="14.1.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.6" />
