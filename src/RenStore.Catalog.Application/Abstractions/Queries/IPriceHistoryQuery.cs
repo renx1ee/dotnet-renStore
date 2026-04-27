@@ -26,4 +26,8 @@ public interface IPriceHistoryQuery
         uint pageSize = 25,
         bool descending = false,
         bool? isActive = null);
+
+    Task<PriceHistoryReadModel?> FindActiveBySizeIdAsync(
+        Guid sizeId,
+        CancellationToken cancellationToken);
 }

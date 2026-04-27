@@ -1,8 +1,7 @@
-namespace RenStore.Order.Application.Saga.Records;
+namespace RenStore.Order.Application.Saga.Events;
 
 public sealed record VariantPriceReceived(
     Guid CorrelationId,
     decimal PriceAmount,
     string Currency,
-    string ProductNameSnapshot) 
-    : CorrelatedBy<Guid>;
+    string ProductNameSnapshot);

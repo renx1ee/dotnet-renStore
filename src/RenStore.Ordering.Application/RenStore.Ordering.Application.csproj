@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RenStore.Ordering.Contracts\RenStore.Ordering.Contracts.csproj" />
       <ProjectReference Include="..\RenStore.Ordering.Domain\RenStore.Ordering.Domain.csproj" />
       <ProjectReference Include="..\RenStore.SharedKernal.Domain\RenStore.SharedKernal.Domain.csproj" />
     </ItemGroup>
@@ -24,7 +25,8 @@
 
     <ItemGroup>
       <Folder Include="Behaviors\" />
-      <Folder Include="Features\Order\Notifications\" />
+      <Folder Include="Features\Order\Commands\Cancel\" />
+      <Folder Include="Features\Order\Commands\Expire\" />
     </ItemGroup>
 
 </Project>

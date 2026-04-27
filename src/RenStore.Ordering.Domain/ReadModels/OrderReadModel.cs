@@ -7,14 +7,14 @@ namespace RenStore.Order.Domain.ReadModels;
 /// </summary>
 public sealed class OrderReadModel
 {
-    public Guid Id { get; private set; }
-    public Guid CustomerId { get; private set; }
-    public OrderStatus Status { get; private set; }
-    public string ShippingAddress { get; private set; } = string.Empty;
-    public string? TrackingNumber { get; private set; }
-    public string? CancellationReason { get; private set; }
-    public decimal TotalAmount { get; private set; }
-    public DateTimeOffset CreatedAt { get; private set; }
-    public DateTimeOffset? UpdatedAt { get; private set; }
-    public IReadOnlyList<OrderItemReadModel> Items { get; private set; } = [];
+    public Guid Id { get; set; }
+    public Guid CustomerId { get; set; }
+    public OrderStatus Status { get; set; }
+    public string ShippingAddress { get; set; } = string.Empty;
+    public string? TrackingNumber { get; set; }
+    public string? CancellationReason { get; set; }
+    public decimal TotalAmount { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public IReadOnlyList<OrderItemReadModel> Items { get; set; } = [];
 }

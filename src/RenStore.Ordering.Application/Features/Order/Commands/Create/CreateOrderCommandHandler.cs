@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using RenStore.Order.Domain.Interfaces;
+using RenStore.SharedKernal.Domain.Enums;
 
 namespace RenStore.Order.Application.Features.Order.Commands.Create;
 
@@ -27,9 +28,10 @@ internal sealed class CreateOrderCommandHandler
             nameof(CreateOrderCommand),
             request.CustomerId);
         
+        var currency = Enum.Parse<Currency>(request.Currency, ignoreCase: true);
         var now = DateTimeOffset.UtcNow;
 
-        /*var order = RenStore.Order.Domain.Aggregates.Order.Order.Create(
+        var order = RenStore.Order.Domain.Aggregates.Order.Order.Create(
             now: now,
             customerId: request.CustomerId,
             shippingAddress: request.ShippingAddress);
@@ -40,10 +42,10 @@ internal sealed class CreateOrderCommandHandler
             sizeId:              request.SizeId,
             quantity:            request.Quantity,
             priceAmount:         request.PriceAmount,
-            currency:            request.Currency,
+            currency:            currency,
             productNameSnapshot: request.ProductNameSnapshot);
 
-        await _orderRepository.SaveAsync(order, cancellationToken);*/
+        await _orderRepository.SaveAsync(order, cancellationToken);
         
         _logger.LogInformation(
             "{Command} handled. CustomerId: {CustomerId}",

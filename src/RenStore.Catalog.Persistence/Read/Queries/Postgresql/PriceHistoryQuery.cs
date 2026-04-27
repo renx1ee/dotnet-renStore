@@ -182,4 +182,38 @@ internal sealed class PriceHistoryQuery
             throw Wrap(e);
         }
     }
+    
+    public async Task<PriceHistoryReadModel?> FindActiveBySizeIdAsync(
+        Guid sizeId,
+        CancellationToken cancellationToken)
+    {
+        if (sizeId == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(sizeId));
+        
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+
+            var sql = new StringBuilder(
+                $@"
+                    {BaseSqlQuery}
+                    WHERE ""size_id"" = @SizeId
+                    AND ""is_active"" = true
+                    LIMIT 1;
+                ");
+
+            return await connection
+                .QueryFirstOrDefaultAsync<PriceHistoryReadModel>(
+                    new CommandDefinition(
+                        commandText: sql.ToString(),
+                        parameters: new { SizeId = sizeId },
+                        commandTimeout: CommandTimeoutSeconds,
+                        transaction: CurrentDbTransaction,
+                        cancellationToken: cancellationToken));
+        }
+        catch (PostgresException e)
+        {
+            throw Wrap(e);
+        }
+    }
 }

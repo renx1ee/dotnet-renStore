@@ -16,6 +16,7 @@
       <ProjectReference Include="..\RenStore.Catalog.Application\RenStore.Catalog.Application.csproj" />
       <ProjectReference Include="..\RenStore.Catalog.Persistence\RenStore.Catalog.Persistence.csproj" />
       <ProjectReference Include="..\RenStore.Inventory.Contracts\RenStore.Inventory.Contracts.csproj" />
+      <ProjectReference Include="..\RenStore.Ordering.Contracts\RenStore.Ordering.Contracts.csproj" />
     </ItemGroup>
 
 </Project>
