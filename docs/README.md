@@ -58,3 +58,13 @@ dotnet ef database update -c InventoryDbContext --project ./RenStore.Inventory.P
  dotnet ef database update -c OrderingDbContext --project ./RenStore.Ordering.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Ordering.WebApi/RenStore.Ordering.WebApi.csproj"
 ```
 
+#### Adding the first ordering SAGA migration
+```
+ dotnet ef migrations add Initial -c OrderSagaDbContext --project ./RenStore.Ordering.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Ordering.WebApi/RenStore.Ordering.WebApi.csproj"
+```
+
+#### Ordering SAGA Migration update
+```
+dotnet ef database update Initial -c OrderSagaDbContext --project ./RenStore.Ordering.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Ordering.WebApi/RenStore.Ordering.WebApi.csproj"
+```
+
