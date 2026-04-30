@@ -12,6 +12,7 @@ public static class MassTransitExtension
     {
         services.AddMassTransit(x =>
         {
+            x.AddConsumer<GetVariantSizePriceConsumer>();
             x.AddConsumer<DiscountAvailabilityChangedConsumer>();
             x.AddConsumer<ReviewsCountChangedConsumer>();
             x.AddConsumer<SellerIsVerifiedChangedConsumer>();
@@ -27,6 +28,17 @@ public static class MassTransitExtension
                         h.Username(configuration["RabbitMQ:Username"]!);
                         h.Password(configuration["RabbitMQ:Password"]!);
                     });
+                
+                cfg.ReceiveEndpoint("catalog.get-variant-size-price", e =>
+                {
+                    e.UseMessageRetry(r => r.Intervals(
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(15),
+                        TimeSpan.FromSeconds(30)));
+                
+                    e.ConfigureConsumer<GetVariantSizePriceConsumer>(context);
+                    /*e.Bind<DiscountAvailabilityChangedConsumer>();*/
+                });
                 
                 cfg.ReceiveEndpoint("catalog.discount-availability-changed", e =>
                 {

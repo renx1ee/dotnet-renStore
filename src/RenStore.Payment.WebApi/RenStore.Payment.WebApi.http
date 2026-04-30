@@ -1,0 +1,6 @@
+@RenStore.Payment.WebApi_HostAddress = http://localhost:5249
+
+GET {{RenStore.Payment.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -10,7 +10,7 @@ using RenStore.Catalog.Domain.Aggregates.Variant.Events.Variant;
 
 namespace RenStore.Catalog.Persistence.EventStore;
 
-public static class DomainEventMappings
+internal static class DomainEventMappings
 {
     public static readonly Dictionary<string, Type> DomainEventsNameToType = new()
     {

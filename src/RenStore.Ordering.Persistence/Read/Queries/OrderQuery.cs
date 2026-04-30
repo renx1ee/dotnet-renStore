@@ -77,7 +77,7 @@ internal sealed class OrderQuery(OrderingDbContext context, ILogger<OrderQuery> 
             var sql = new StringBuilder(
                 $"""
                 {GetBaseSql()}
-                WHERE "customer_id" = @CustomerId
+                WHERE "customer_id" = @CustomerId   
                 """);
 
             var parameters = new DynamicParameters();
@@ -99,11 +99,12 @@ internal sealed class OrderQuery(OrderingDbContext context, ILogger<OrderQuery> 
                 }
             }
 
-            sql.Append($"""
-                        ORDER BY "{column}" {pageRequest.Direction}
-                        LIMIT @Count
-                        OFFSET @Offset;
-                        """);
+            sql.Append(
+                $"""    
+                ORDER BY "{column}" {pageRequest.Direction}
+                LIMIT @Count
+                OFFSET @Offset;
+                """);
 
             var result = await connection.QueryAsync<OrderReadModel>(
                 new CommandDefinition(

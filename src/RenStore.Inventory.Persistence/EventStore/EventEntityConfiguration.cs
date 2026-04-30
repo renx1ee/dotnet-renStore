@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace RenStore.Inventory.Persistence.EventStore;
 
-public class EventEntityConfiguration
+internal sealed class EventEntityConfiguration
     : IEntityTypeConfiguration<EventEntity>
 {
     public void Configure(EntityTypeBuilder<EventEntity> builder)

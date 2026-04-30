@@ -8,12 +8,15 @@
 
     <ItemGroup>
       <PackageReference Include="MassTransit" Version="8.3.6" />
+      <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.3.6" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
       <PackageReference Include="MediatR" Version="14.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RenStore.Ordering.Application\RenStore.Ordering.Application.csproj" />
       <ProjectReference Include="..\RenStore.Ordering.Contracts\RenStore.Ordering.Contracts.csproj" />
+      <ProjectReference Include="..\RenStore.Ordering.Persistence\RenStore.Ordering.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

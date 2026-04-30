@@ -1,8 +1,8 @@
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using RenStore.Order.Application.Saga.Commands;
-using RenStore.Order.Application.Saga.Events;
+using RenStore.Order.Application.Features.Order.Commands.Create;
+using RenStore.Order.Application.Saga.Contracts.Events;
 
 namespace RenStore.Ordering.Messaging.Consumers;
 

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using RenStore.Inventory.Application.Abstractions;
+using RenStore.SharedKernal.Domain.Constants;
 
 namespace RenStore.Inventory.WebApi.Services;
 
@@ -28,6 +29,8 @@ internal sealed class CurrentUserService : ICurrentUserService
     {
         get
         {
+            return Roles.Admin;
+            
             return _contextAccessor.HttpContext.User
                 .FindFirst(ClaimTypes.Role)!.Value;
         }

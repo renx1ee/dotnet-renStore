@@ -1,24 +1,55 @@
 using Asp.Versioning;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RenStore.Order.Application.Enums;
-using RenStore.Order.Application.Features.Order.Queries.Orders.FindByCustomerId;
 using RenStore.Order.Application.Features.Order.Queries.Orders.FindByOrderById;
 using RenStore.Order.Application.Features.Order.Queries.Orders.GetMyOrders;
-using RenStore.SharedKernal.Domain.Constants;
+using RenStore.Order.Application.Saga.Contracts.Commands;
+using RenStore.Order.Application.Services;
+using RenStore.Ordering.WebApi.Requests;
 
 namespace RenStore.Ordering.WebApi.Controllers;
 
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
-[Authorize(Roles = Roles.Buyer)] 
+/*[Authorize(Roles = Roles.Buyer)] */
 [Route("api/v{version:apiVersion}/orders")]
-public sealed class OrderController(IMediator mediator) : ControllerBase
+public sealed class OrderController(
+    IMediator mediator,
+    IPublishEndpoint publishEndpoint,
+    ICurrentUserService currentUser) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator               = mediator        ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IPublishEndpoint _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
+    private readonly ICurrentUserService _currentUser  = currentUser     ?? throw new ArgumentNullException(nameof(currentUser));
     
     #region Commands
+    
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Create(
+        [FromBody] CreateOrderRequest request,
+        CancellationToken cancellationToken)
+    {
+        var correlationId = NewId.NextGuid(); // MassTransit генератор — лучше чем Guid.NewGuid()
+        
+        if (_currentUser.UserId == Guid.Empty)
+            return Forbid();
+
+        await _publishEndpoint.Publish(
+            new InitiateOrderPlacement(
+                CorrelationId: correlationId,
+                CustomerId:    _currentUser.UserId,
+                VariantId:     request.VariantId,
+                SizeId:        request.SizeId,
+                Quantity:      request.Quantity),
+            cancellationToken)
+            .ConfigureAwait(false);
+        
+        return Accepted(new { CorrelationId = correlationId });
+    }
     
     [HttpPatch]
     [Route("{orderId:guid}/cancel")]

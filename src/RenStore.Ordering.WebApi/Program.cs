@@ -3,6 +3,7 @@ using Asp.Versioning;
 using RenStore.Order.Application;
 using RenStore.Order.Application.Services;
 using RenStore.Order.Persistence;
+using RenStore.Ordering.Messaging.Extensions;
 using RenStore.Ordering.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddOrderingApplication();
 builder.Services.AddOrderingPersistence(builder.Configuration);
+builder.Services.AddInventoryMessaging(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 

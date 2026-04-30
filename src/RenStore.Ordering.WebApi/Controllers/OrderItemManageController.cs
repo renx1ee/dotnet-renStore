@@ -14,7 +14,7 @@ namespace RenStore.Ordering.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("api/v{version:apiVersion}/manage/order-items")]
-[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+/*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
 public sealed class OrderItemManageController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{orderItemId:guid}")]

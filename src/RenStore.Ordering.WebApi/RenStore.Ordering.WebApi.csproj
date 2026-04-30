@@ -27,8 +27,4 @@
       <ProjectReference Include="..\RenStore.Ordering.Persistence\RenStore.Ordering.Persistence.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Requests\" />
-    </ItemGroup>
-
 </Project>

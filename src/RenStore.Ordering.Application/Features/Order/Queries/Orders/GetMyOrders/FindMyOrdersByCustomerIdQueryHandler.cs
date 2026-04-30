@@ -28,7 +28,7 @@ internal sealed class FindMyOrdersByCustomerIdQueryHandler(
 
         var userId = userService.UserId;
 
-        if (userId is null || userId == Guid.Empty)
+        if (userId == Guid.Empty)
             throw new ForbiddenException();
         
         var result = await orderQuery.FindByCustomerIdAsync(

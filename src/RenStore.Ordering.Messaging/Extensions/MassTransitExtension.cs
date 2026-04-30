@@ -1,6 +1,10 @@
-/*using MassTransit;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RenStore.Order.Application.Saga;
+using RenStore.Order.Persistence;
+using RenStore.Ordering.Messaging.Consumers;
 
 namespace RenStore.Ordering.Messaging.Extensions;
 
@@ -12,8 +16,18 @@ public static class MassTransitExtension
     {
         services.AddMassTransit(x =>
         {
-            x.AddConsumer<VariantSizeCreatedConsumer>();
-            x.AddConsumer<VariantSizeDeletedConsumer>();
+            x.AddSagaStateMachine<PlaceOrderSaga, PlaceOrderSagaState>()
+                .EntityFrameworkRepository(r =>
+                {
+                    r.ConcurrencyMode = ConcurrencyMode.Optimistic;
+                    r.AddDbContext<DbContext, OrderingDbContext>((_, b) =>
+                    {
+                        var connectionString = configuration.GetConnectionString("SagaConnection");
+                        b.UseNpgsql(connectionString);
+                    });
+                });
+            
+            x.AddConsumer<CreateOrderConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -33,17 +47,7 @@ public static class MassTransitExtension
                         TimeSpan.FromSeconds(15),
                         TimeSpan.FromSeconds(30)));
                     
-                    e.ConfigureConsumer<VariantSizeCreatedConsumer>(context);
-                });
-                
-                cfg.ReceiveEndpoint("inventory.variant-size-deleted", e =>
-                {
-                    e.UseMessageRetry(r => r.Intervals(
-                        TimeSpan.FromSeconds(5),
-                        TimeSpan.FromSeconds(15),
-                        TimeSpan.FromSeconds(30)));
-                    
-                    e.ConfigureConsumer<VariantSizeDeletedConsumer>(context);
+                    e.ConfigureConsumer<CreateOrderConsumer>(context);
                 });
                 
                 cfg.ConfigureEndpoints(context);
@@ -52,4 +56,4 @@ public static class MassTransitExtension
         
         return services;
     }
-}*/
+}

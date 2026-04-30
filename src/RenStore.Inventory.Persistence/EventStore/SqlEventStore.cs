@@ -6,7 +6,7 @@ using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Inventory.Persistence.EventStore;
 
-public sealed class SqlEventStore
+internal sealed class SqlEventStore
     : RenStore.Inventory.Application.Abstractions.IEventStore
 {
     private readonly InventoryDbContext _context;

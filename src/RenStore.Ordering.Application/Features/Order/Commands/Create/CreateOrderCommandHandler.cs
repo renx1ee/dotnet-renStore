@@ -52,8 +52,6 @@ internal sealed class CreateOrderCommandHandler
             nameof(CreateOrderCommand),
             request.CustomerId);
 
-        /*return order.Id;*/
-
-        return Guid.Empty;
+        return order.Id;
     }
 }

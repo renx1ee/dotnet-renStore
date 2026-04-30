@@ -94,7 +94,7 @@ internal sealed class StockQuery(InventoryDbContext context, ILogger<StockQuery>
             var sql = new StringBuilder(
                 $"""
                  {GetBaseSql()}
-                 WHERE "variant_id" = @VariantId
+                 WHERE "variant_id" = @VariantId    
                  """);
 
             var dynamicParameters = new DynamicParameters();
@@ -108,11 +108,12 @@ internal sealed class StockQuery(InventoryDbContext context, ILogger<StockQuery>
                 dynamicParameters.Add("IsDeleted", isDeleted.Value);
             }
             
-            sql.Append($"""
-                        ORDER BY "{columnMapping}" {pageRequest.Direction}
-                        LIMIT @Count
-                        OFFSET @Offset;
-                        """);
+            sql.Append(
+                $""" 
+                ORDER BY {columnMapping} {pageRequest.Direction}
+                LIMIT @Count
+                OFFSET @Offset;
+                """);
 
             var result =  await connection
                 .QueryAsync<VariantStockDto>(
@@ -151,7 +152,7 @@ internal sealed class StockQuery(InventoryDbContext context, ILogger<StockQuery>
                 $"""
                  {GetBaseSql()}
                  WHERE "variant_id" = @VariantId
-                 AND "size_id"      = @SizeId;
+                 AND "size_id"      = @SizeId
                  """);
             
             var dynamicParameters = new DynamicParameters();
@@ -185,7 +186,7 @@ internal sealed class StockQuery(InventoryDbContext context, ILogger<StockQuery>
         return """
                SELECT 
                    "id"               AS Id,
-                   "in_stock"         AS InStockOverall,
+                   "in_stock"         AS InStock,
                    "sales"            AS Sales,
                    "write_off_reason" AS WriteOffReason,
                    "created_date"     AS CreatedAt,

@@ -1,28 +1,36 @@
 using Microsoft.Extensions.Logging;
-using RenStore.Order.Application.Saga.Commands;
-using RenStore.Order.Application.Saga.Events;
-using RenStore.Ordering.Contracts.Requests;
-
-namespace RenStore.Order.Application.Saga;
+using RenStore.Order.Application.Saga;
+using RenStore.Order.Application.Saga.Contracts.Commands;
+using RenStore.Order.Application.Saga.Contracts.Events;
+using GetShippingAddressRequest = RenStore.Ordering.Contracts.Requests.GetShippingAddressRequest;
 
 public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState>
 {
     private readonly ILogger<PlaceOrderSaga> _logger;
 
-    public State WaitingForExternalData { get; private set; } = null!;
-    public State CreatingOrder          { get; private set; } = null!;
-    public State Completed              { get; private set; } = null!;
-    public State Failed                 { get; private set; } = null!;
+    // States
+    public State ReservingStock       { get; private set; } = null!;
+    public State WaitingForData       { get; private set; } = null!;
+    public State CreatingOrder        { get; private set; } = null!;
+    public State WaitingForPayment    { get; private set; } = null!;
+    public State Completed            { get; private set; } = null!;
+    public State Failed               { get; private set; } = null!;
 
-    public Event<InitiateOrderPlacement> OrderInitiated  { get; private set; } = null!;
-    public Event<VariantPriceReceived>   PriceReceived   { get; private set; } = null!;
-    public Event<VariantPriceFailed>     PriceFailed     { get; private set; } = null!;
-    public Event<ShippingAddressReceived> AddressReceived { get; private set; } = null!;
-    public Event<ShippingAddressFailed>  AddressFailed   { get; private set; } = null!;
-    public Event<OrderCreated>           OrderCreated    { get; private set; } = null!;
-    public Event<OrderCreationFailed>    OrderFailed     { get; private set; } = null!;
+    // Events
+    public Event<InitiateOrderPlacement>  OrderInitiated   { get; private set; } = null!;
+    public Event<StockReserved>           StockReserved    { get; private set; } = null!;
+    public Event<StockReservationFailed>  StockFailed      { get; private set; } = null!;
+    public Event<VariantSnapshotReceived> SnapshotReceived { get; private set; } = null!;
+    public Event<VariantSnapshotFailed>   SnapshotFailed   { get; private set; } = null!;
+    public Event<ShippingAddressReceived> AddressReceived  { get; private set; } = null!;
+    public Event<ShippingAddressFailed>   AddressFailed    { get; private set; } = null!;
+    public Event<OrderCreated>            OrderCreated     { get; private set; } = null!;
+    public Event<OrderCreationFailed>     OrderFailed      { get; private set; } = null!;
+    public Event<PaymentCompleted>        PaymentCompleted { get; private set; } = null!;
+    public Event<PaymentFailed>           PaymentFailed    { get; private set; } = null!;
 
-    public Schedule<PlaceOrderSagaState, SagaTimeout> ResponseTimeout { get; private set; } = null!;
+    public Schedule<PlaceOrderSagaState, SagaTimeout> ExternalDataTimeout { get; private set; } = null!;
+    public Schedule<PlaceOrderSagaState, SagaTimeout> PaymentTimeout      { get; private set; } = null!;
 
     public PlaceOrderSaga(ILogger<PlaceOrderSaga> logger)
     {
@@ -30,36 +38,49 @@ public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState
 
         InstanceState(x => x.CurrentState);
         ConfigureEvents();
-        ConfigureSchedule();
+        ConfigureSchedules();
         ConfigureStateMachine();
     }
 
     private void ConfigureEvents()
     {
-        Event(() => OrderInitiated,  x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
-        Event(() => PriceReceived,   x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
-        Event(() => PriceFailed,     x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
-        Event(() => AddressReceived, x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
-        Event(() => AddressFailed,   x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
-        Event(() => OrderCreated,    x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
-        Event(() => OrderFailed,     x => x.CorrelateById(ctx => ctx.Message.CorrelationId));
+        Event(() => OrderInitiated,   x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => StockReserved,    x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => StockFailed,      x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => SnapshotReceived, x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => SnapshotFailed,   x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => AddressReceived,  x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => AddressFailed,    x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => OrderCreated,     x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => OrderFailed,      x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => PaymentCompleted, x => x.CorrelateById(m => m.Message.CorrelationId));
+        Event(() => PaymentFailed,    x => x.CorrelateById(m => m.Message.CorrelationId));
     }
 
-    private void ConfigureSchedule()
+    private void ConfigureSchedules()
     {
-        Schedule(
-            () => ResponseTimeout,
-            x => x.TimeoutTokenId,
+        // Таймаут ожидания снепшота и адреса — 30 секунд
+        Schedule(() => ExternalDataTimeout,
+            x => x.ExternalDataTimeoutId,
             s =>
             {
                 s.Delay = TimeSpan.FromSeconds(30);
-                s.Received = r => r.CorrelateById(ctx => ctx.Message.CorrelationId);
+                s.Received = r => r.CorrelateById(m => m.Message.CorrelationId);
+            });
+
+        // Таймаут ожидания оплаты — 15 минут
+        Schedule(() => PaymentTimeout,
+            x => x.PaymentTimeoutId,
+            s =>
+            {
+                s.Delay = TimeSpan.FromMinutes(15);
+                s.Received = r => r.CorrelateById(m => m.Message.CorrelationId);
             });
     }
 
     private void ConfigureStateMachine()
     {
-        // ─── Initial → WaitingForExternalData ────────────────────────────────────
+        // ── Initial → ReservingStock ─────────────────────────────────────────────
         Initially(
             When(OrderInitiated)
                 .Then(ctx =>
@@ -70,38 +91,68 @@ public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState
                     ctx.Saga.Quantity   = ctx.Message.Quantity;
 
                     _logger.LogInformation(
-                        "PlaceOrderSaga started. CorrelationId={CorrelationId} CustomerId={CustomerId}",
-                        ctx.Saga.CorrelationId, ctx.Saga.CustomerId);
+                        "PlaceOrderSaga started. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
                 })
-                .PublishAsync(ctx => ctx.Init<GetVariantSizePriceRequest>(new GetVariantSizePriceRequest(
+                .PublishAsync(ctx => ctx.Init<ReserveStockRequest>(new ReserveStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
+                .TransitionTo(ReservingStock));
+
+        // ── ReservingStock ───────────────────────────────────────────────────────
+        During(ReservingStock,
+
+            When(StockReserved)
+                .Then(ctx => _logger.LogInformation(
+                    "Stock reserved. CorrelationId={CorrelationId}",
+                    ctx.Saga.CorrelationId))
+                // Параллельно запрашиваем снепшот и адрес
+                .PublishAsync(ctx => ctx.Init<GetVariantSnapshotRequest>(new GetVariantSnapshotRequest(
                     CorrelationId: ctx.Saga.CorrelationId,
                     VariantId:     ctx.Saga.VariantId,
                     SizeId:        ctx.Saga.SizeId)))
                 .PublishAsync(ctx => ctx.Init<GetShippingAddressRequest>(new GetShippingAddressRequest(
                     CorrelationId: ctx.Saga.CorrelationId,
                     CustomerId:    ctx.Saga.CustomerId)))
-                .Schedule(ResponseTimeout,
+                .Schedule(ExternalDataTimeout,
                     ctx => ctx.Init<SagaTimeout>(new SagaTimeout(ctx.Saga.CorrelationId)))
-                .TransitionTo(WaitingForExternalData));
-        
-        During(WaitingForExternalData,
+                .TransitionTo(WaitingForData),
 
-            When(PriceReceived)
+            When(StockFailed)
+                .Then(ctx =>
+                {
+                    ctx.Saga.FailureReason = $"Stock reservation failed: {ctx.Message.Reason}";
+                    _logger.LogWarning(
+                        "Stock reservation failed. CorrelationId={CorrelationId} Reason={Reason}",
+                        ctx.Saga.CorrelationId, ctx.Message.Reason);
+                })
+                .TransitionTo(Failed)
+                .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    Reason:        ctx.Saga.FailureReason!)))
+                .Finalize());
+
+        // ── WaitingForData ───────────────────────────────────────────────────────
+        During(WaitingForData,
+
+            When(SnapshotReceived)
                 .Then(ctx =>
                 {
                     ctx.Saga.PriceAmount         = ctx.Message.PriceAmount;
                     ctx.Saga.Currency            = ctx.Message.Currency;
                     ctx.Saga.ProductNameSnapshot = ctx.Message.ProductNameSnapshot;
-                    ctx.Saga.PriceReceived       = true;
+                    ctx.Saga.SnapshotReceived    = true;
 
                     _logger.LogDebug(
-                        "Price received. CorrelationId={CorrelationId} Price={Price}",
-                        ctx.Saga.CorrelationId, ctx.Message.PriceAmount);
+                        "Snapshot received. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
                 })
                 .IfElse(
                     ctx => ctx.Saga.AddressReceived,
-                    ready   => ready.Unschedule(ResponseTimeout).TransitionTo(CreatingOrder),
-                    waiting => waiting.TransitionTo(WaitingForExternalData)),
+                    ready   => ready.Unschedule(ExternalDataTimeout).TransitionTo(CreatingOrder),
+                    waiting => waiting.TransitionTo(WaitingForData)),
 
             When(AddressReceived)
                 .Then(ctx =>
@@ -114,24 +165,29 @@ public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState
                         ctx.Saga.CorrelationId);
                 })
                 .IfElse(
-                    ctx => ctx.Saga.PriceReceived,
-                    ready   => ready.Unschedule(ResponseTimeout).TransitionTo(CreatingOrder),
-                    waiting => waiting.TransitionTo(WaitingForExternalData)),
+                    ctx => ctx.Saga.SnapshotReceived,
+                    ready   => ready.Unschedule(ExternalDataTimeout).TransitionTo(CreatingOrder),
+                    waiting => waiting.TransitionTo(WaitingForData)),
 
-            When(PriceFailed)
+            When(SnapshotFailed)
                 .Then(ctx =>
                 {
                     ctx.Saga.FailureReason = $"Catalog service failed: {ctx.Message.Reason}";
                     _logger.LogWarning(
-                        "Price fetch failed. CorrelationId={CorrelationId} Reason={Reason}",
-                        ctx.Saga.CorrelationId, ctx.Message.Reason);
+                        "Snapshot failed. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
                 })
-                .Unschedule(ResponseTimeout)
+                .Unschedule(ExternalDataTimeout)
+                // Компенсация — снимаем резерв
+                .PublishAsync(ctx => ctx.Init<ReleaseStockRequest>(new ReleaseStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
                 .TransitionTo(Failed)
-                .PublishAsync(ctx => ctx
-                    .Init<OrderPlacementFailed>(new OrderPlacementFailed(
-                        CorrelationId: ctx.Saga.CorrelationId,
-                        Reason:        ctx.Saga.FailureReason!)))
+                .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    Reason:        ctx.Saga.FailureReason!)))
                 .Finalize(),
 
             When(AddressFailed)
@@ -139,36 +195,48 @@ public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState
                 {
                     ctx.Saga.FailureReason = $"Delivery service failed: {ctx.Message.Reason}";
                     _logger.LogWarning(
-                        "Address fetch failed. CorrelationId={CorrelationId} Reason={Reason}",
-                        ctx.Saga.CorrelationId, ctx.Message.Reason);
+                        "Address failed. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
                 })
-                .Unschedule(ResponseTimeout)
+                .Unschedule(ExternalDataTimeout)
+                // Компенсация — снимаем резерв
+                .PublishAsync(ctx => ctx.Init<ReleaseStockRequest>(new ReleaseStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
                 .TransitionTo(Failed)
                 .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
                     CorrelationId: ctx.Saga.CorrelationId,
                     Reason:        ctx.Saga.FailureReason!)))
                 .Finalize(),
 
-            When(ResponseTimeout.Received)
+            When(ExternalDataTimeout.Received)
                 .Then(ctx =>
                 {
                     ctx.Saga.FailureReason =
-                        $"Timeout. PriceReceived={ctx.Saga.PriceReceived}, " +
+                        $"Timeout. SnapshotReceived={ctx.Saga.SnapshotReceived}, " +
                         $"AddressReceived={ctx.Saga.AddressReceived}";
                     _logger.LogError(
-                        "Saga timeout. CorrelationId={CorrelationId}",
+                        "External data timeout. CorrelationId={CorrelationId}",
                         ctx.Saga.CorrelationId);
                 })
+                // Компенсация — снимаем резерв
+                .PublishAsync(ctx => ctx.Init<ReleaseStockRequest>(new ReleaseStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
                 .TransitionTo(Failed)
                 .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
                     CorrelationId: ctx.Saga.CorrelationId,
                     Reason:        ctx.Saga.FailureReason!)))
                 .Finalize());
-        
-        // Входим — публикуем команду консьюмеру, который сделает всю работу с БД
+
+        // ── CreatingOrder ────────────────────────────────────────────────────────
         WhenEnter(CreatingOrder, binder => binder
             .Then(ctx => _logger.LogInformation(
-                "Both responses received, sending CreateOrderCommand. CorrelationId={CorrelationId}",
+                "Creating order. CorrelationId={CorrelationId}",
                 ctx.Saga.CorrelationId))
             .PublishAsync(ctx => ctx.Init<CreateOrderCommand>(new CreateOrderCommand(
                 CorrelationId:       ctx.Saga.CorrelationId,
@@ -188,23 +256,97 @@ public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState
                 {
                     ctx.Saga.OrderId = ctx.Message.OrderId;
                     _logger.LogInformation(
-                        "Order created successfully. CorrelationId={CorrelationId} OrderId={OrderId}",
+                        "Order created, waiting for payment. CorrelationId={CorrelationId} OrderId={OrderId}",
                         ctx.Saga.CorrelationId, ctx.Message.OrderId);
                 })
-                .TransitionTo(Completed)
-                .PublishAsync(ctx => ctx.Init<OrderPlacementCompleted>(new OrderPlacementCompleted(
+                // Запрашиваем оплату
+                .PublishAsync(ctx => ctx.Init<ProcessPaymentRequest>(new ProcessPaymentRequest(
                     CorrelationId: ctx.Saga.CorrelationId,
-                    OrderId:       ctx.Saga.OrderId!.Value)))
-                .Finalize(),
+                    OrderId:       ctx.Saga.OrderId!.Value,
+                    CustomerId:    ctx.Saga.CustomerId,
+                    Amount:        ctx.Saga.PriceAmount!.Value,
+                    Currency:      ctx.Saga.Currency!)))
+                .Schedule(PaymentTimeout,
+                    ctx => ctx.Init<SagaTimeout>(new SagaTimeout(ctx.Saga.CorrelationId)))
+                .TransitionTo(WaitingForPayment),
 
             When(OrderFailed)
                 .Then(ctx =>
                 {
                     ctx.Saga.FailureReason = ctx.Message.Reason;
                     _logger.LogError(
-                        "Order creation failed. CorrelationId={CorrelationId} Reason={Reason}",
-                        ctx.Saga.CorrelationId, ctx.Message.Reason);
+                        "Order creation failed. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
                 })
+                // Компенсация — снимаем резерв
+                .PublishAsync(ctx => ctx.Init<ReleaseStockRequest>(new ReleaseStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
+                .TransitionTo(Failed)
+                .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    Reason:        ctx.Saga.FailureReason!)))
+                .Finalize());
+
+        // ── WaitingForPayment ────────────────────────────────────────────────────
+        During(WaitingForPayment,
+
+            When(PaymentCompleted)
+                .Then(ctx => _logger.LogInformation(
+                    "Payment completed. CorrelationId={CorrelationId} OrderId={OrderId}",
+                    ctx.Saga.CorrelationId, ctx.Saga.OrderId))
+                .Unschedule(PaymentTimeout)
+                .TransitionTo(Completed)
+                .PublishAsync(ctx => ctx.Init<OrderPlacementCompleted>(new OrderPlacementCompleted(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    OrderId:       ctx.Saga.OrderId!.Value)))
+                .Finalize(),
+
+            When(PaymentFailed)
+                .Then(ctx =>
+                {
+                    ctx.Saga.FailureReason = $"Payment failed: {ctx.Message.Reason}";
+                    _logger.LogWarning(
+                        "Payment failed. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
+                })
+                .Unschedule(PaymentTimeout)
+                // Компенсация — снимаем резерв и отменяем заказ
+                .PublishAsync(ctx => ctx.Init<ReleaseStockRequest>(new ReleaseStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
+                .PublishAsync(ctx => ctx.Init<CancelOrderCommand>(new CancelOrderCommand(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    OrderId:       ctx.Saga.OrderId!.Value,
+                    Reason:        ctx.Saga.FailureReason!)))
+                .TransitionTo(Failed)
+                .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    Reason:        ctx.Saga.FailureReason!)))
+                .Finalize(),
+
+            When(PaymentTimeout.Received)
+                .Then(ctx =>
+                {
+                    ctx.Saga.FailureReason = "Payment timeout.";
+                    _logger.LogWarning(
+                        "Payment timeout. CorrelationId={CorrelationId}",
+                        ctx.Saga.CorrelationId);
+                })
+                // Компенсация — снимаем резерв и отменяем заказ
+                .PublishAsync(ctx => ctx.Init<ReleaseStockRequest>(new ReleaseStockRequest(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    VariantId:     ctx.Saga.VariantId,
+                    SizeId:        ctx.Saga.SizeId,
+                    Quantity:      ctx.Saga.Quantity)))
+                .PublishAsync(ctx => ctx.Init<CancelOrderCommand>(new CancelOrderCommand(
+                    CorrelationId: ctx.Saga.CorrelationId,
+                    OrderId:       ctx.Saga.OrderId!.Value,
+                    Reason:        "Payment timeout")))
                 .TransitionTo(Failed)
                 .PublishAsync(ctx => ctx.Init<OrderPlacementFailed>(new OrderPlacementFailed(
                     CorrelationId: ctx.Saga.CorrelationId,

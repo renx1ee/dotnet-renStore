@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RenStore.Order.Application.Abstractions.Queries;
 using RenStore.Order.Persistence.Read.Queries;
+using RenStore.Order.Persistence.Saga;
 
 namespace RenStore.Order.Persistence;
 
@@ -21,10 +22,15 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        
         services.AddDbContext<OrderingDbContext>(options =>
         {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            options.UseNpgsql(connectionString);
+        });
+        
+        services.AddDbContext<OrderSagaDbContext>(options =>
+        {
+            var connectionString = configuration.GetConnectionString("SagaConnection");
             options.UseNpgsql(connectionString);
         });
         

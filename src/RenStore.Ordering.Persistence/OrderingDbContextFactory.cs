@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace RenStore.Order.Persistence;
 
-public class OrderingDbContextFactory  : IDesignTimeDbContextFactory<OrderingDbContext>
+public class OrderingDbContextFactory : IDesignTimeDbContextFactory<OrderingDbContext>
 {
     public OrderingDbContext CreateDbContext(string[] args)
     {

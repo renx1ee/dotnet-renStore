@@ -17,7 +17,7 @@ namespace RenStore.Inventory.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("api/v{version:apiVersion}/manage/stocks")]
-[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+/*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
 public sealed class StockManageController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -82,10 +82,10 @@ public sealed class StockManageController(IMediator mediator) : ControllerBase
 
     [HttpGet("{stockId:guid}")]
     [ApiVersion(1)]
-    [Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
     public async Task<IActionResult> FindById(
-        [FromQuery] Guid stockId,
-        [FromBody] FindStockByIdManageRequest request)
+        [FromRoute] Guid stockId,
+        [FromQuery] FindStockByIdManageRequest request)
     {
         var result = await _mediator.Send(
             new FindStockByIdAsyncQuery(
@@ -97,12 +97,12 @@ public sealed class StockManageController(IMediator mediator) : ControllerBase
             : NotFound();
     }
     
-    [HttpGet("variants/{variantId}")]
+    [HttpGet("variants/{variantId:guid}")]
     [ApiVersion(1)]
-    [Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
     public async Task<IActionResult> FindByVariantId(
-        [FromQuery] Guid variantId,
-        [FromBody] FindStockByVariantIdManageRequest request)
+        [FromRoute] Guid variantId,
+        [FromQuery] FindStockByVariantIdManageRequest request)
     {
         var result = await _mediator.Send(
             new FindStockByVariantIdQuery(
@@ -112,13 +112,13 @@ public sealed class StockManageController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet("variants/{variantId}/sizes/{sizeId}")] 
+    [HttpGet("variants/{variantId:guid}/sizes/{sizeId:guid}")] 
     [ApiVersion(1)]
-    [Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+    /*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
     public async Task<IActionResult> FindByVariantIdAndSizeId(
-        [FromQuery] Guid variantId,
-        [FromQuery] Guid sizeId,
-        [FromBody] FindStockByVariantIdAndSizeIdManageRequest request)
+        [FromRoute] Guid variantId,
+        [FromRoute] Guid sizeId,
+        [FromQuery] FindStockByVariantIdAndSizeIdManageRequest request)
     {
         var result = await _mediator.Send(
             new FindStockByVariantIdAndSizeIdQuery(

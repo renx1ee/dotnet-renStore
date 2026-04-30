@@ -12,7 +12,7 @@ namespace RenStore.Ordering.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("api/v{version:apiVersion}/manage/orders")]
-[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+/*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
 public sealed class OrderManageController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

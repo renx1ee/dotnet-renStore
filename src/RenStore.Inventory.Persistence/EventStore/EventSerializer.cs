@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RenStore.Inventory.Persistence.EventStore;
 
-public class EventSerializer
+internal class EventSerializer
 {
     public static readonly JsonSerializerOptions Options = new()
     {
