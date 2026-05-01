@@ -88,6 +88,10 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentRea
             .Property(x => x.FailureReason)
             .HasColumnName("failure_reason")
             .HasMaxLength(500);
+        
+        builder.Property(x => x.LastAttemptId)
+            .HasColumnName("last_attempt_id")
+            .IsRequired(false);
 
         builder
             .Property(x => x.ExpiresAt)

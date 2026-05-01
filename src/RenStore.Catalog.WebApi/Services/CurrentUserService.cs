@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using RenStore.Catalog.Application.Abstractions;
+using RenStore.Catalog.Application.Abstractions.Services;
 using RenStore.Catalog.Application.Service;
 
 namespace RenStore.Catalog.WebApi.Services;

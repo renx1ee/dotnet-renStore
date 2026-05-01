@@ -1,3 +1,4 @@
+using RenStore.Catalog.Application.Abstractions.Services;
 using RenStore.Catalog.Application.Service;
 
 namespace RenStore.Catalog.Application.Features.Product.Commands.Hide;

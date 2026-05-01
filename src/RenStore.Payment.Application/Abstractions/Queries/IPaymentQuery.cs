@@ -29,4 +29,8 @@ public interface IPaymentQuery
         bool             descending = true,
         PaymentStatus?   status = null,
         CancellationToken cancellationToken = default);
+    
+    Task<PaymentReadModel?> FindByExternalPaymentIdAsync(
+        string            externalPaymentId,
+        CancellationToken cancellationToken);
 }

@@ -1,4 +1,5 @@
 using Npgsql;
+using RenStore.Catalog.Application.Abstractions.Services;
 using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Domain.Entities;
 

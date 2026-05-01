@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RenStore.Catalog.Application.Abstractions;
 using RenStore.Catalog.Application.Abstractions.Projections;
 using RenStore.Catalog.Application.Abstractions.Repository;
+using RenStore.Catalog.Application.Abstractions.Services;
 using RenStore.Catalog.Application.Service;
 using RenStore.Catalog.Domain.Interfaces.Repository;
 using RenStore.Catalog.Persistence.EntityTypeConfigurations.SqlMappers;

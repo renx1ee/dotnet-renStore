@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using RenStore.Catalog.Application.Abstractions.Services;
 
 namespace RenStore.Catalog.Application.Service;
 

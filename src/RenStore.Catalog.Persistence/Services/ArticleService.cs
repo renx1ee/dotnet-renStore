@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using RenStore.Catalog.Application.Abstractions.Services;
 
 namespace RenStore.Catalog.Persistence.Services;
 
 internal sealed class ArticleService 
-    : RenStore.Catalog.Application.Service.IArticleService
+    : IArticleService
 {
     private readonly CatalogDbContext _context;
 

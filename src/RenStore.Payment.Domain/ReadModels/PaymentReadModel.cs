@@ -16,6 +16,7 @@ public sealed class PaymentReadModel
     public PaymentMethod   PaymentMethod     { get; set; }
     public string?         ExternalPaymentId { get; set; }
     public string?         FailureReason     { get; set; }
+    public Guid?           LastAttemptId     { get; set; }
     public DateTimeOffset  ExpiresAt         { get; set; }
     public DateTimeOffset? CapturedAt        { get; set; }
     public DateTimeOffset  CreatedAt         { get; set; }

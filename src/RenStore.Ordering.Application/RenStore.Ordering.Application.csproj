@@ -25,7 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Behaviors\" />
       <Folder Include="Features\Order\Commands\Cancel\" />
       <Folder Include="Features\Order\Commands\Expire\" />
     </ItemGroup>

@@ -118,4 +118,15 @@ internal sealed class PaymentProjection : IPaymentProjection
         return payment
             ?? throw new NotFoundException(typeof(PaymentReadModel), paymentId);
     }
+    
+    public async Task SetLastAttemptIdAsync(
+        DateTimeOffset now,
+        Guid           paymentId,
+        Guid           lastAttemptId,
+        CancellationToken cancellationToken)
+    {
+        var payment = await GetPaymentAsync(paymentId, cancellationToken);
+        payment.LastAttemptId = lastAttemptId;
+        payment.UpdatedAt     = now;
+    }
 }

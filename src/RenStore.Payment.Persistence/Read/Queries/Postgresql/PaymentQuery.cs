@@ -214,4 +214,34 @@ internal sealed class PaymentQuery(
             throw Wrap(e);
         }
     }
+    
+    public async Task<PaymentReadModel?> FindByExternalPaymentIdAsync(
+        string            externalPaymentId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(externalPaymentId))
+            throw new ArgumentException(nameof(externalPaymentId));
+
+        try
+        {
+            var connection = await GetOpenDbConnectionAsync(cancellationToken);
+
+            var sql = $"""
+                       {BaseSql}
+                       WHERE "external_payment_id" = @ExternalPaymentId;
+                       """;
+
+            return await connection.QueryFirstOrDefaultAsync<PaymentReadModel>(
+                new CommandDefinition(
+                    sql,
+                    new { ExternalPaymentId = externalPaymentId },
+                    commandTimeout: CommandTimeoutSeconds,
+                    transaction: CurrentDbTransaction,
+                    cancellationToken: cancellationToken));
+        }
+        catch (PostgresException e)
+        {
+            throw Wrap(e);
+        }
+    }
 }

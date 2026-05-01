@@ -1,3 +1,5 @@
+using RenStore.Catalog.Application.Abstractions.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCatalogPersistence(builder.Configuration);

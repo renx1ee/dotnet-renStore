@@ -10,10 +10,17 @@
         <PackageReference Include="Asp.Versioning.Http" Version="8.1.1" />
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8"/>
+        <PackageReference Include="MassTransit" Version="8.3.6" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RenStore.Payment.Application\RenStore.Payment.Application.csproj" />
+      <ProjectReference Include="..\RenStore.Payment.Messaging\RenStore.Payment.Messaging.csproj" />
+      <ProjectReference Include="..\RenStore.Payment.Persistence\RenStore.Payment.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

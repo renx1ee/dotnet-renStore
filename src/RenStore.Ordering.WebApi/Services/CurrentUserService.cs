@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using RenStore.Order.Application.Services;
+using RenStore.Order.Application.Abstractions.Services;
 
 namespace RenStore.Ordering.WebApi.Services;
 

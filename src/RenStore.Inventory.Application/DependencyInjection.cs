@@ -18,6 +18,14 @@ public static class DependencyInjection
             typeof(IPipelineBehavior<,>),
             typeof(LoggingBehavior<,>));
         
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ExceptionHandlingBehavior<,>));
+        
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidateBehavior<,>));
+        
         return services;
     }
 }

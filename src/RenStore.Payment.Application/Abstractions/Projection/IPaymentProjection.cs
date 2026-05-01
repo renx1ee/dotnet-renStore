@@ -45,4 +45,10 @@ public interface IPaymentProjection
         decimal        refundedAmount,
         PaymentStatus  status,
         CancellationToken cancellationToken);
+    
+    Task SetLastAttemptIdAsync(
+        DateTimeOffset now,
+        Guid           paymentId,
+        Guid           lastAttemptId,
+        CancellationToken cancellationToken);
 }

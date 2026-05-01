@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using RenStore.Order.Application;
-using RenStore.Order.Application.Services;
+using RenStore.Order.Application.Abstractions.Services;
 using RenStore.Order.Persistence;
 using RenStore.Ordering.Messaging.Extensions;
 using RenStore.Ordering.WebApi.Services;

@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using RenStore.Order.Application.Abstractions.Queries;
-using RenStore.Order.Application.Services;
+using RenStore.Order.Application.Abstractions.Services;
 using RenStore.Order.Domain.ReadModels;
 using RenStore.SharedKernal.Domain.Exceptions;
 
