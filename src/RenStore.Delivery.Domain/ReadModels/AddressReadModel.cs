@@ -1,23 +1,21 @@
 namespace RenStore.Delivery.Domain.ReadModels;
 
-/// <summary>
-/// Read model, represents the address entity.
-/// Used to display and transmit data without state change logic.
-/// </summary>
-public class AddressReadModel
+public sealed class AddressReadModel
 {
-    public Guid Id { get; init; }
-    public string HouseCode { get; init; } = string.Empty;
-    public string Street { get; init; } = string.Empty;
-    public string BuildingNumber  { get; init; } = string.Empty;
-    public string ApartmentNumber { get; init; } = string.Empty;
-    public string Entrance { get; init; } = string.Empty;
-    public int? Floor { get; init; } = null;
-    public string FullAddress { get; init; } = string.Empty;
-    public DateTimeOffset CreatedAt { get; init; }
-    public DateTimeOffset? UpdatedAt { get; init; } = null; 
-    public bool IsDeleted { get; init; }
-    public string ApplicationUserId { get; init; } = string.Empty;
-    public int CountryId { get; init; }
-    public int CityId { get; init; }
+    public Guid            Id                { get; set; }
+    public Guid            ApplicationUserId { get; set; }
+    public int             CountryId         { get; set; }
+    public int             CityId            { get; set; }
+    public string          Street            { get; set; } = string.Empty;
+    public string          HouseCode         { get; set; } = string.Empty;
+    public string          BuildingNumber    { get; set; } = string.Empty;
+    public string          ApartmentNumber   { get; set; } = string.Empty;
+    public string          Entrance          { get; set; } = string.Empty;
+    public int?            Floor             { get; set; }
+    public string          FullAddressEn     { get; set; } = string.Empty;
+    public string          FullAddressRu     { get; set; } = string.Empty;
+    public bool            IsDeleted         { get; set; }
+    public DateTimeOffset  CreatedAt         { get; set; }
+    public DateTimeOffset? UpdatedAt         { get; set; }
+    public DateTimeOffset? DeletedAt         { get; set; }
 }

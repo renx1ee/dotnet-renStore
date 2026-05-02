@@ -1,49 +1,42 @@
-using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Application.Abstractions;
+using RenStore.Delivery.Domain.Interfaces;
 
 namespace RenStore.Delivery.Persistence.Write.Repositories;
 
-internal sealed class DeliveryOrderRepository
-    (DeliveryDbContext context)
-    : RenStore.Delivery.Domain.Interfaces.IDeliveryOrderRepository
+internal sealed class DeliveryOrderRepository(
+    IEventStore            eventStore)
+    : IDeliveryOrderRepository
 {
-    private readonly DeliveryDbContext _context = context
-                                                     ?? throw new ArgumentNullException(nameof(context));
-
-    public async Task<Guid> AddAsync(
-        DeliveryOrder deliveryOrder,
+    public async Task<Domain.Aggregates.DeliveryOrder.DeliveryOrder?> GetAsync(
+        Guid              id,
         CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(deliveryOrder);
+        if (id == Guid.Empty)
+            throw new ArgumentOutOfRangeException(nameof(id));
 
-        var result = await this._context.DeliveryOrders.AddAsync(deliveryOrder, cancellationToken);
+        var events = await eventStore.LoadAsync(id, cancellationToken);
 
-        return result.Entity.Id;
+        if (events.Count == 0) return null;
+
+        return Domain.Aggregates.DeliveryOrder.DeliveryOrder.Rehydrate(events);
     }
 
-    public async Task AddRangeAsync(
-        IReadOnlyCollection<DeliveryOrder> deliveryOrders,
-        CancellationToken cancellationToken)
+    public async Task SaveAsync(
+        Domain.Aggregates.DeliveryOrder.DeliveryOrder order,
+        CancellationToken                              cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(deliveryOrders);
+        ArgumentNullException.ThrowIfNull(order);
 
-        var deliveriesList = deliveryOrders as IList<DeliveryOrder> ?? deliveryOrders.ToList();
+        var uncommittedEvents = order.GetUncommittedEvents();
 
-        if (deliveriesList.Count == 0) return;
+        if (uncommittedEvents.Count == 0) return;
 
-        await this._context.DeliveryOrders.AddRangeAsync(deliveriesList, cancellationToken);
-    }
+        await eventStore.AppendAsync(
+            aggregateId:     order.Id,
+            expectedVersion: order.Version,
+            events:          uncommittedEvents.ToList(),
+            cancellationToken);
 
-    public void Remove(DeliveryOrder deliveryOrder)
-    {
-        ArgumentNullException.ThrowIfNull(deliveryOrder);
-
-        this._context.DeliveryOrders.Remove(deliveryOrder);
-    }
-    
-    public void RemoveRange(IReadOnlyCollection<DeliveryOrder> deliveryOrderies)
-    {
-        ArgumentNullException.ThrowIfNull(deliveryOrderies);
-
-        this._context.DeliveryOrders.RemoveRange(deliveryOrderies);
+        order.UncommittedEventsClear();
     }
 }

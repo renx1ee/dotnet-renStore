@@ -103,7 +103,6 @@ public sealed class PlaceOrderSaga : MassTransitStateMachine<PlaceOrderSagaState
 
         // ── ReservingStock ───────────────────────────────────────────────────────
         During(ReservingStock,
-
             When(StockReserved)
                 .Then(ctx => _logger.LogInformation(
                     "Stock reserved. CorrelationId={CorrelationId}",

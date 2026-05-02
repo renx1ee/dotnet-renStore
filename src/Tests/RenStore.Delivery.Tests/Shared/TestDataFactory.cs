@@ -1,4 +1,4 @@
-using RenStore.Delivery.Domain.Entities;
+/*using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Persistence;
 
 namespace RenStore.Delivery.Tests.Shared;
@@ -42,4 +42,4 @@ public class TestDataFactory
 
         return city;
     }
-}
+}*/

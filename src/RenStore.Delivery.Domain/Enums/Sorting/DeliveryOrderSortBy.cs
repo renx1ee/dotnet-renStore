@@ -8,5 +8,6 @@ public enum DeliveryOrderSortBy
     Id,
     CreatedAt,
     DeliveredAt,
-    DeletedAt
+    DeletedAt,
+    Status
 }

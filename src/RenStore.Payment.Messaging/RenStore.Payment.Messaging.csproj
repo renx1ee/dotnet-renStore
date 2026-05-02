@@ -12,4 +12,8 @@
       <PackageReference Include="MediatR" Version="14.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RenStore.Payment.Contracts\RenStore.Payment.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>

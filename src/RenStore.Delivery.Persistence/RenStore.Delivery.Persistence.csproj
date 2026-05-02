@@ -12,13 +12,11 @@
 
     <ItemGroup>
       <PackageReference Include="Dapper" Version="2.1.66" />
+      <PackageReference Include="MassTransit" Version="8.3.6" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
       <PackageReference Include="Npgsql" Version="9.0.2" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Read\" />
-      <Folder Include="Write\" />
     </ItemGroup>
 
 </Project>

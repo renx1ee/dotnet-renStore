@@ -11,7 +11,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\" />
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+      <PackageReference Include="MediatR" Version="14.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\DeliveryOrder\Queries\Delivery\" />
+      <Folder Include="Features\DeliveryOrder\Queries\Tracking\" />
     </ItemGroup>
 
 </Project>

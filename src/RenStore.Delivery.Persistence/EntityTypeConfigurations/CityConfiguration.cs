@@ -1,90 +1,65 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RenStore.Delivery.Domain.Entities;
+using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
-public class CityConfiguration : IEntityTypeConfiguration<City>
+internal sealed class CityConfiguration
+    : IEntityTypeConfiguration<CityReadModel>
 {
-    public void Configure(EntityTypeBuilder<City> builder)
+    public void Configure(EntityTypeBuilder<CityReadModel> builder)
     {
-        builder
-            .ToTable("cities");
-        
-        builder
-            .HasKey(x => x.Id);
-        
-        builder
-            .Property(x => x.Id)
+        builder.ToTable("cities");
+
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
             .HasColumnName("city_id")
-            .HasColumnType("int")
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-        
-        builder
-            .Property(x => x.Name)
-            .HasColumnName("city_name")
-            .HasColumnType("varchar(100)")
-            .HasMaxLength(100)
-            .IsRequired();
-        
-        builder
-            .Property(x => x.NormalizedName)
-            .HasColumnName("normalized_city_name")
-            .HasColumnType("varchar(100)")
-            .HasMaxLength(100)
-            .IsRequired();
-        
-        builder
-            .Property(x => x.NameRu)
-            .HasColumnName("city_name_ru")
-            .HasColumnType("varchar(100)")
-            .HasMaxLength(100)
-            .IsRequired();
-        
-        builder
-            .Property(x => x.NormalizedNameRu)
-            .HasColumnName("normalized_city_name_ru")
-            .HasColumnType("varchar(100)")
+            .ValueGeneratedOnAdd();
+
+        builder.Property(x => x.Name)
+            .HasColumnName("name")
             .HasMaxLength(100)
             .IsRequired();
 
-        builder
-            .Property(x => x.IsDeleted)
+        builder.Property(x => x.NameRu)
+            .HasColumnName("name_ru")
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(x => x.NormalizedName)
+            .HasColumnName("normalized_name")
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(x => x.NormalizedNameRu)
+            .HasColumnName("normalized_name_ru")
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(x => x.IsDeleted)
             .HasColumnName("is_deleted")
-            .HasColumnType("boolean")
-            .HasDefaultValueSql("false")
             .IsRequired();
-        
-        builder
-            .Property(x => x.CreatedAt)
-            .HasColumnName("created_date")
-            .HasColumnType("timestamp with time zone")
-            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
-            .IsRequired();
-        
-        builder
-            .Property(x => x.UpdatedAt)
-            .HasColumnName("updated_date")
-            .HasColumnType("timestamp with time zone")
-            .IsRequired(false);
-        
-        builder
-            .Property(x => x.DeletedAt)
-            .HasColumnName("deleted_date")
-            .HasColumnType("timestamp with time zone")
-            .IsRequired(false);
 
-        builder
-            .Property(x => x.CountryId)
-            .HasColumnType("int")
+        builder.Property(x => x.CountryId)
             .HasColumnName("country_id")
             .IsRequired();
-        
-        builder
-            .HasOne(typeof(Country), "_country")
-            .WithMany()
-            .HasForeignKey("CountryId")
+
+        builder.Property(x => x.CreatedAt)
+            .HasColumnName("created_at")
             .IsRequired();
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at");
+
+        builder.Property(x => x.DeletedAt)
+            .HasColumnName("deleted_at");
+
+        builder.HasIndex(x => x.CountryId)
+            .HasDatabaseName("ix_cities_country_id");
+
+        builder.HasIndex(x => new { x.NormalizedName, x.CountryId })
+            .IsUnique()
+            .HasDatabaseName("ix_cities_normalized_name_country_id");
     }
 }

@@ -2,17 +2,16 @@ using RenStore.Delivery.Domain.Enums;
 
 namespace RenStore.Delivery.Domain.ReadModels;
 
-/// <summary>
-/// Read model, represents the delivery tariff entity.
-/// Used to display and transmit data without state change logic.
-/// </summary>
-public class DeliveryTariffReadModel
+public sealed class DeliveryTariffReadModel
 {
-    public Guid Id { get; init; } 
-    public decimal Price { get; init; } 
-    public DeliveryTariffType Type { get; init; }
-    public string Description { get; init; } = string.Empty;
-    public decimal WeightLimitKg { get; init; }
-    public Guid DeliveryOrderId { get; init; }
-    public bool IsDeleted { get; init; }
+    public int                 Id            { get; set; }
+    public decimal             PriceAmount   { get; set; }
+    public string              Currency      { get; set; } = string.Empty;
+    public decimal             WeightLimitKg { get; set; }
+    public DeliveryTariffType  Type          { get; set; }
+    public string              Description   { get; set; } = string.Empty;
+    public bool                IsDeleted     { get; set; }
+    public DateTimeOffset      CreatedAt     { get; set; }
+    public DateTimeOffset?     UpdatedAt     { get; set; }
+    public DateTimeOffset?     DeletedAt     { get; set; }
 }
