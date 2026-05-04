@@ -67,4 +67,13 @@ dotnet ef database update -c InventoryDbContext --project ./RenStore.Inventory.P
 ```
 dotnet ef database update Initial -c OrderSagaDbContext --project ./RenStore.Ordering.Persistence --startup-project "/Users/re/Documents/Projects/C#/RenStore/src/RenStore.Ordering.WebApi/RenStore.Ordering.WebApi.csproj"
 ```
+#### Adding the first delivery migration 
+```
+dotnet ef migrations add Initial --project "./src/RenStore.Delivery.Persistence/RenStore.Delivery.Persistence.csproj" --startup-project "./src/RenStore.Delivery.WebApi/RenStore.Delivery.WebApi.csproj"
+```
+
+#### Delivery Migration update
+```
+dotnet ef database update --project "./src/RenStore.Delivery.Persistence/RenStore.Delivery.Persistence.csproj" --startup-project "./src/RenStore.Delivery.WebApi/RenStore.Delivery.WebApi.csproj"
+```
 
