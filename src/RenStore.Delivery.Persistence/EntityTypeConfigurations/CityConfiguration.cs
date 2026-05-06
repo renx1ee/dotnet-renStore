@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 internal sealed class CityConfiguration
-    : IEntityTypeConfiguration<CityReadModel>
+    : IEntityTypeConfiguration<City>
 {
-    public void Configure(EntityTypeBuilder<CityReadModel> builder)
+    public void Configure(EntityTypeBuilder<City> builder)
     {
         builder.ToTable("cities");
 

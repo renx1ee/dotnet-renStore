@@ -9,8 +9,15 @@
     <ItemGroup>
       <PackageReference Include="MassTransit" Version="8.3.6" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
+      <PackageReference Include="MediatR" Version="14.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RenStore.Delivery.Application\RenStore.Delivery.Application.csproj" />
+      <ProjectReference Include="..\RenStore.Delivery.Contracts\RenStore.Delivery.Contracts.csproj" />
+      <ProjectReference Include="..\RenStore.Delivery.Domain\RenStore.Delivery.Domain.csproj" />
     </ItemGroup>
 
 </Project>

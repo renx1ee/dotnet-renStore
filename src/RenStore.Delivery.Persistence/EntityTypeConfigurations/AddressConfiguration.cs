@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Delivery.Domain.Aggregates.Address;
 using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 internal sealed class AddressConfiguration
-    : IEntityTypeConfiguration<AddressReadModel>
+    : IEntityTypeConfiguration<Address>
 {
-    public void Configure(EntityTypeBuilder<AddressReadModel> builder)
+    public void Configure(EntityTypeBuilder<Address> builder)
     {
         builder.ToTable("addresses");
 
@@ -54,10 +55,13 @@ internal sealed class AddressConfiguration
 
         builder.Property(x => x.Floor)
             .HasColumnName("floor");
+        
+        builder.Property(x => x.Postcode)
+            .HasColumnName("postcode");
 
-        builder.Property(x => x.FullAddressEn)
+        /*builder.Property(x => x.FullAddressEnp)
             .HasColumnName("full_address_en")
-            .HasMaxLength(1000);
+            .HasMaxLength(1000);*/
 
         builder.Property(x => x.FullAddressRu)
             .HasColumnName("full_address_ru")

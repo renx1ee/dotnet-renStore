@@ -22,97 +22,92 @@ namespace RenStore.Delivery.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.Address", b =>
+            modelBuilder.Entity("RenStore.Delivery.Domain.Aggregates.Address.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("address_id")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnName("address_id");
 
                     b.Property<string>("ApartmentNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
                         .HasColumnName("apartment_number");
 
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                        .HasColumnName("application_user_id");
 
                     b.Property<string>("BuildingNumber")
-                        .HasMaxLength(5)
-                        .HasColumnType("varchar(5)")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
                         .HasColumnName("building_number");
 
                     b.Property<int>("CityId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("city_id");
 
                     b.Property<int>("CountryId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("country_id");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnName("created_at");
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
+                        .HasColumnName("deleted_at");
 
                     b.Property<string>("Entrance")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
                         .HasColumnName("entrance");
 
                     b.Property<int?>("Floor")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("floor");
 
+                    b.Property<string>("FullAddressRu")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("full_address_ru");
+
                     b.Property<string>("HouseCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
                         .HasColumnName("house_code");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_deleted")
-                        .HasDefaultValueSql("false");
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Postcode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
                         .HasColumnName("street");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
-                        .HasDatabaseName("idx_address_application_user_id_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("ApplicationUserId"), "btree");
+                        .HasDatabaseName("ix_addresses_user_id");
 
                     b.HasIndex("CityId")
-                        .HasDatabaseName("idx_address_city_id_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CityId"), "btree");
-
-                    b.HasIndex("CountryId")
-                        .HasDatabaseName("idx_address_country_id_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CountryId"), "btree");
-
-                    b.HasIndex("IsDeleted")
-                        .HasDatabaseName("idx_address_is_deleted_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("IsDeleted"), "btree");
+                        .HasDatabaseName("ix_addresses_city_id");
 
                     b.ToTable("addresses", (string)null);
                 });
@@ -121,62 +116,63 @@ namespace RenStore.Delivery.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("city_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CountryId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("country_id");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnName("created_at");
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
+                        .HasColumnName("deleted_at");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_deleted")
-                        .HasDefaultValueSql("false");
+                        .HasColumnName("is_deleted");
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("city_name");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.Property<string>("NameRu")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("city_name_ru");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ru");
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("normalized_city_name");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("normalized_name");
 
                     b.Property<string>("NormalizedNameRu")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("normalized_city_name_ru");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("normalized_name_ru");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CountryId")
+                        .HasDatabaseName("ix_cities_country_id");
+
+                    b.HasIndex("NormalizedName", "CountryId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_cities_normalized_name_country_id");
 
                     b.ToTable("cities", (string)null);
                 });
@@ -185,7 +181,7 @@ namespace RenStore.Delivery.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("country_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -193,94 +189,136 @@ namespace RenStore.Delivery.Persistence.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(2)
-                        .HasColumnType("varchar(2)")
-                        .HasColumnName("country_code");
+                        .HasColumnType("character varying(2)")
+                        .HasColumnName("code");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnName("created_at");
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
+                        .HasColumnName("deleted_at");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_deleted")
-                        .HasDefaultValueSql("false");
+                        .HasColumnName("is_deleted");
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("country_name");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.Property<string>("NameRu")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("country_name_ru");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ru");
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("normalized_country_name");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("normalized_name");
 
                     b.Property<string>("NormalizedNameRu")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("normalized_country_name_ru");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("normalized_name_ru");
 
                     b.Property<string>("PhoneCode")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)")
-                        .HasColumnName("country_phone_code");
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("character varying(4)")
+                        .HasColumnName("phone_code");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("idx_country_code_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Code"), "btree");
+                        .HasDatabaseName("ix_countries_code");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("idx_country_normalized_name_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("NormalizedName"), "btree");
-
-                    b.HasIndex("NormalizedNameRu")
-                        .IsUnique()
-                        .HasDatabaseName("idx_country_normalized_name_ru_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("NormalizedNameRu"), "btree");
+                        .HasDatabaseName("ix_countries_normalized_name");
 
                     b.ToTable("countries", (string)null);
                 });
 
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryOrder", b =>
+            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryTariff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("tariff_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("currency");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<decimal>("PriceAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("price_amount");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("type");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<decimal>("WeightLimitKg")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("weight_limit_kg");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("delivery_tariffs", (string)null);
+                });
+
+            modelBuilder.Entity("RenStore.Delivery.Domain.ReadModels.DeliveryOrderReadModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("delivery_order_id")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnName("delivery_order_id");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnName("created_at");
 
                     b.Property<long?>("CurrentSortingCenterId")
                         .HasColumnType("bigint")
@@ -288,14 +326,14 @@ namespace RenStore.Delivery.Persistence.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
+                        .HasColumnName("deleted_at");
 
                     b.Property<DateTimeOffset?>("DeliveredAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("delivered_date");
+                        .HasColumnName("delivered_at");
 
                     b.Property<int>("DeliveryTariffId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("delivery_tariff_id");
 
                     b.Property<long?>("DestinationSortingCenterId")
@@ -312,128 +350,47 @@ namespace RenStore.Delivery.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
                         .HasColumnName("status");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrentSortingCenterId")
-                        .HasDatabaseName("idx_delivery_order_current_sorting_center_id_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CurrentSortingCenterId"), "btree");
-
-                    b.HasIndex("DeliveryTariffId");
-
-                    b.HasIndex("DestinationSortingCenterId")
-                        .HasDatabaseName("idx_delivery_order_destination_sorting_center_id_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("DestinationSortingCenterId"), "btree");
-
                     b.HasIndex("OrderId")
-                        .HasDatabaseName("idx_delivery_order_order_id_btree");
+                        .HasDatabaseName("ix_delivery_orders_order_id");
 
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("OrderId"), "btree");
-
-                    b.HasIndex("PickupPointId")
-                        .HasDatabaseName("idx_delivery_order_pickup_point_id_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("PickupPointId"), "btree");
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_delivery_orders_status");
 
                     b.ToTable("delivery_orders", (string)null);
                 });
 
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryTariff", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("delivery_tariff_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
-
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("description");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("BOOLEAN")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_deleted");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("type");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted")
-                        .HasDatabaseName("idx_delivery_tariffs_is_deleted_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("IsDeleted"), "btree");
-
-                    b.HasIndex("Type")
-                        .HasDatabaseName("idx_delivery_tariffs_type_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Type"), "btree");
-
-                    b.ToTable("delivery_tariffs", (string)null);
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryTracking", b =>
+            modelBuilder.Entity("RenStore.Delivery.Domain.ReadModels.DeliveryTrackingReadModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("delivery_tracking_history_id")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnName("tracking_id");
 
                     b.Property<string>("CurrentLocation")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("current_location");
-
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_date");
 
                     b.Property<Guid>("DeliveryOrderId")
                         .HasColumnType("uuid")
                         .HasColumnName("delivery_order_id");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted")
-                        .HasDefaultValueSql("false");
-
                     b.Property<string>("Notes")
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
                         .HasColumnName("notes");
 
                     b.Property<DateTimeOffset>("OccurredAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnName("occurred_at");
 
                     b.Property<long?>("PickupPointId")
                         .HasColumnType("bigint")
@@ -445,291 +402,88 @@ namespace RenStore.Delivery.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
                         .HasColumnName("status");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliveryOrderId");
+                    b.HasIndex("DeliveryOrderId")
+                        .HasDatabaseName("ix_delivery_trackings_delivery_order_id");
 
-                    b.HasIndex("PickupPointId");
-
-                    b.HasIndex("SortingCenterId");
-
-                    b.ToTable("delivery_tracking_history", (string)null);
+                    b.ToTable("delivery_trackings", (string)null);
                 });
 
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.PickupPoint", b =>
+            modelBuilder.Entity("RenStore.Delivery.Persistence.EventStore.EventEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("pickup_point_id");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("AggregateId")
+                        .HasColumnType("uuid");
 
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("address_id");
-
-                    b.Property<string>("Code")
+                    b.Property<string>("AggregateType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("code");
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("delete_date");
+                    b.Property<DateTimeOffset>("OccurredAtUtc")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted")
-                        .HasDefaultValueSql("false");
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("idx_pickup_point_code_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Code"), "btree");
-
-                    b.ToTable("pickup_points", (string)null);
+                    b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.SortingCenter", b =>
+            modelBuilder.Entity("RenStore.Delivery.Persistence.Outbox.OutboxMessage", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("sorting_center_id");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("address_id");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("code");
+                    b.Property<Guid>("AggregateId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("delete_date");
+                    b.Property<string>("Error")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted")
-                        .HasDefaultValueSql("false");
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("OccurredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("idx_sorting_center_code_btree");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Code"), "btree");
-
-                    b.ToTable("sorting_centers", (string)null);
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.Address", b =>
-                {
-                    b.HasOne("RenStore.Delivery.Domain.Entities.City", "_city")
-                        .WithMany("Addresses")
-                        .HasForeignKey("CityId");
-
-                    b.HasOne("RenStore.Delivery.Domain.Entities.Country", null)
-                        .WithMany("Addresses")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("RenStore.Delivery.Domain.ValueObjects.FullMultiplyAddress", "_fullAddress", b1 =>
-                        {
-                            b1.Property<Guid>("AddressId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("English")
-                                .IsRequired()
-                                .HasMaxLength(500)
-                                .HasColumnType("varchar(500)")
-                                .HasColumnName("full_address_en");
-
-                            b1.Property<string>("Russian")
-                                .IsRequired()
-                                .HasMaxLength(500)
-                                .HasColumnType("varchar(500)")
-                                .HasColumnName("full_address_ru");
-
-                            b1.HasKey("AddressId");
-
-                            b1.ToTable("addresses");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AddressId");
-                        });
-
-                    b.Navigation("_city");
-
-                    b.Navigation("_fullAddress")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.City", b =>
-                {
-                    b.HasOne("RenStore.Delivery.Domain.Entities.Country", "_country")
-                        .WithMany("Cities")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("_country");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryOrder", b =>
-                {
-                    b.HasOne("RenStore.Delivery.Domain.Entities.DeliveryTariff", "_tariff")
-                        .WithMany("DeliveryOrders")
-                        .HasForeignKey("DeliveryTariffId");
-
-                    b.Navigation("_tariff");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryTariff", b =>
-                {
-                    b.OwnsOne("RenStore.Delivery.Domain.ValueObjects.WeightLimitKg", "WeightLimitKg", b1 =>
-                        {
-                            b1.Property<int>("DeliveryTariffId")
-                                .HasColumnType("integer");
-
-                            b1.Property<decimal>("Kilograms")
-                                .HasPrecision(10, 2)
-                                .HasColumnType("decimal(10,2)")
-                                .HasColumnName("weight_limit_kg");
-
-                            b1.HasKey("DeliveryTariffId");
-
-                            b1.ToTable("delivery_tariffs");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DeliveryTariffId");
-                        });
-
-                    b.OwnsOne("RenStore.SharedKernal.Domain.ValueObjects.Price", "Price", b1 =>
-                        {
-                            b1.Property<int>("DeliveryTariffId")
-                                .HasColumnType("integer");
-
-                            b1.Property<decimal>("InStock")
-                                .HasColumnType("decimal(18,2)")
-                                .HasColumnName("price");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("character varying(3)")
-                                .HasColumnName("currency");
-
-                            b1.HasKey("DeliveryTariffId");
-
-                            b1.ToTable("delivery_tariffs");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DeliveryTariffId");
-                        });
-
-                    b.Navigation("Price")
-                        .IsRequired();
-
-                    b.Navigation("WeightLimitKg")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryTracking", b =>
-                {
-                    b.HasOne("RenStore.Delivery.Domain.Entities.DeliveryOrder", "_deliveryOrder")
-                        .WithMany("TrackingHistory")
-                        .HasForeignKey("DeliveryOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RenStore.Delivery.Domain.Entities.PickupPoint", "_pickupPoint")
-                        .WithMany()
-                        .HasForeignKey("PickupPointId");
-
-                    b.HasOne("RenStore.Delivery.Domain.Entities.SortingCenter", "_sortingCenter")
-                        .WithMany()
-                        .HasForeignKey("SortingCenterId");
-
-                    b.Navigation("_deliveryOrder");
-
-                    b.Navigation("_pickupPoint");
-
-                    b.Navigation("_sortingCenter");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.PickupPoint", b =>
-                {
-                    b.HasOne("RenStore.Delivery.Domain.Entities.Address", "_address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("_address");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.SortingCenter", b =>
-                {
-                    b.HasOne("RenStore.Delivery.Domain.Entities.Address", "_address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("_address");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.City", b =>
-                {
-                    b.Navigation("Addresses");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.Country", b =>
-                {
-                    b.Navigation("Addresses");
-
-                    b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryOrder", b =>
-                {
-                    b.Navigation("TrackingHistory");
-                });
-
-            modelBuilder.Entity("RenStore.Delivery.Domain.Entities.DeliveryTariff", b =>
-                {
-                    b.Navigation("DeliveryOrders");
+                    b.ToTable("OutboxMessages");
                 });
 #pragma warning restore 612, 618
         }

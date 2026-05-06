@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.Enums;
 using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 internal sealed class DeliveryTariffConfiguration
-    : IEntityTypeConfiguration<DeliveryTariffReadModel>
+    : IEntityTypeConfiguration<DeliveryTariff>
 {
-    public void Configure(EntityTypeBuilder<DeliveryTariffReadModel> builder)
+    public void Configure(EntityTypeBuilder<DeliveryTariff> builder)
     {
         builder.ToTable("delivery_tariffs");
 

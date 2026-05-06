@@ -33,7 +33,5 @@ internal sealed class DeliveryOrderCreatedEventHandler(
             Status          = DeliveryStatus.Placed,
             OccurredAt      = e.OccurredAt
         }, cancellationToken);
-
-        await orderProjection.CommitAsync(cancellationToken);
     }
 }

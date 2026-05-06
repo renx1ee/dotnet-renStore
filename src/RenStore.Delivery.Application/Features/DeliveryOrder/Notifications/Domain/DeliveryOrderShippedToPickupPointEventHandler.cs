@@ -29,7 +29,5 @@ internal sealed class DeliveryOrderShippedToPickupPointEventHandler(
             PickupPointId   = e.PickupPointId,
             OccurredAt      = e.OccurredAt
         }, cancellationToken);
-
-        await orderProjection.CommitAsync(cancellationToken);
     }
 }

@@ -14,6 +14,7 @@ public sealed class AddressReadModel
     public int?            Floor             { get; set; }
     public string          FullAddressEn     { get; set; } = string.Empty;
     public string          FullAddressRu     { get; set; } = string.Empty;
+    public string          Postcode          { get; set; } = string.Empty;
     public bool            IsDeleted         { get; set; }
     public DateTimeOffset  CreatedAt         { get; set; }
     public DateTimeOffset? UpdatedAt         { get; set; }

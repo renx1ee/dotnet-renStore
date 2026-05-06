@@ -12,7 +12,7 @@ internal sealed class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Guid? UserId
+    public Guid UserId
     {
         get
         {
@@ -21,7 +21,7 @@ internal sealed class CurrentUserService : ICurrentUserService
 
             return Guid.NewGuid();
             
-            return claim is null ? null : Guid.Parse(claim.Value);
+            return claim is null ? Guid.Empty : Guid.Parse(claim.Value);
         }
     }
 

@@ -66,6 +66,15 @@ internal sealed class DeliveryOrderProjection(
         order.Status      = DeliveryStatus.Delivered;
         order.DeliveredAt = now;
     }
+    
+    public async Task SetTrackingNumberAsync(
+        string         trackingNumber,
+        Guid           deliveryOrderId,
+        CancellationToken cancellationToken)
+    {
+        var order = await GetAsync(deliveryOrderId, cancellationToken);
+        order.TrackingNumber = trackingNumber;
+    }
 
     public async Task SetDeletedAsync(
         DateTimeOffset now,

@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using RenStore.Delivery.Persistence;
 
-namespace RenStore.Inventory.Persistence;
+namespace RenStore.Delivery.Persistence;
 
 public class DeliveryDbContextFactory : IDesignTimeDbContextFactory<DeliveryDbContext>
 {

@@ -1,3 +1,4 @@
+using RenStore.Delivery.Domain.Aggregates.Address;
 using RenStore.SharedKernal.Domain.Exceptions;
 
 namespace RenStore.Delivery.Domain.Entities;

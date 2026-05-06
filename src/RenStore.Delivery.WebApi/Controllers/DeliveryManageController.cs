@@ -1,10 +1,16 @@
-/*using Asp.Versioning;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.ArriveAtSortingCenter;
+using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.DeleteDeliveryOrder;
 using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.MarkAsAssembling;
+using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.MarkAsAwaitingPickup;
 using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.MarkAsDelivered;
+using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.Return;
+using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.ShipToPickupPoint;
 using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.ShipToSortingCenter;
+using RenStore.Delivery.Application.Features.DeliveryOrder.Commands.SortAtSortingCenter;
 using RenStore.Delivery.Application.Features.DeliveryOrder.Queries.Delivery.FindAllDeliveryOrders;
 using RenStore.Delivery.Application.Features.DeliveryOrder.Queries.Delivery.FindDeliveryOrderById;
 using RenStore.Delivery.Application.Features.DeliveryOrder.Queries.Tracking.FindTrackingByDeliveryOrderId;
@@ -18,7 +24,7 @@ namespace RenStore.Delivery.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("api/v{version:apiVersion}/manage/delivery")]
-[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]
+/*[Authorize(Roles = $"{Roles.Admin},{Roles.Moderator},{Roles.Support}")]*/
 public sealed class DeliveryManageController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator
@@ -182,7 +188,7 @@ public sealed class DeliveryManageController(IMediator mediator) : ControllerBas
     }
 
     [HttpDelete("{deliveryOrderId:guid}")]
-    [Authorize(Roles = Roles.Admin)]
+    /*[Authorize(Roles = Roles.Admin)]*/
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete(
         [FromRoute] Guid deliveryOrderId,
@@ -194,4 +200,4 @@ public sealed class DeliveryManageController(IMediator mediator) : ControllerBas
 
         return NoContent();
     }
-}*/
+}

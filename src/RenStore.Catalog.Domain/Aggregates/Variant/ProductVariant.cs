@@ -1,3 +1,4 @@
+using RenStore.Catalog.Domain.Aggregates.Variant.Entities;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Attribute;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Details;
 using RenStore.Catalog.Domain.Aggregates.Variant.Events.Images;

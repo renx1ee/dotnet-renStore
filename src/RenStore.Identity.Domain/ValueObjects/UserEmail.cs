@@ -4,19 +4,16 @@ namespace RenStore.Identity.Domain.ValueObjects;
 
 public sealed record UserEmail
 {
-    private const int MaxTotalLength = 254;
-    private const int MinLenght = 6;
-    private const int MaxLocalLength = 64;
+    private const int MaxTotalLength  = 254;
+    private const int MinLenght       = 6;
+    private const int MaxLocalLength  = 64;
     private const int MaxDomainLength = 255;
     
-    public string Email { get; }
-    public string NormalizedEmail { get; }
+    public string Value { get; }
 
-    private UserEmail(
-        string email)
+    private UserEmail(string value)
     {
-        Email = email;
-        NormalizedEmail = email.ToUpperInvariant();
+        Value = value;
     }
 
     public static UserEmail Create(string email)
@@ -27,9 +24,11 @@ public sealed record UserEmail
         email = email.Trim();
         
         if(email.Length is < MinLenght or > MaxTotalLength)
+        {
             throw new DomainException(
                 $"Email length must be between {MinLenght} and {MaxTotalLength}.");
-
+        }
+        
         var parts = email.Split('@');
 
         if (parts.Length != 2)
@@ -38,18 +37,20 @@ public sealed record UserEmail
         var local = parts[0];
         var domain = parts[1];
         
-        if(local.Length == 0 || local.Length > MaxLocalLength)
-            throw new DomainException("Invalid local email part length.");
+        if (string.IsNullOrWhiteSpace(local))
+            throw new DomainException("Invalid local part.");
+
+        if (string.IsNullOrWhiteSpace(domain))
+            throw new DomainException("Invalid domain.");
+
+        if (!domain.Contains('.'))
+            throw new DomainException("Invalid domain.");
         
-        if(domain.Length == 0 || domain.Length > MaxDomainLength)
-            throw new DomainException("Invalid domain email part length.");
-        
-        if(!domain.Contains('.') ||
-            domain.StartsWith('.') || 
-            domain.EndsWith('.') || 
-            domain.Contains(".."))
-            throw new DomainException("Email must contains a dot.");
+        var normalized =
+            $"{local.ToLowerInvariant()}@{domain.ToLowerInvariant()}";
         
         return new UserEmail(email);
     }
+    
+    public override string ToString() => Value;
 }

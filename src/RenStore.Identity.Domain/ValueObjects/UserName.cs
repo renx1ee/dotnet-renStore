@@ -9,6 +9,7 @@ public sealed class UserName : IEquatable<UserName>
     
     public string FirstName { get; }
     public string LastName { get; }
+    public string FullName  => $"{FirstName} {LastName}";
 
     private UserName(
         string firstname, 

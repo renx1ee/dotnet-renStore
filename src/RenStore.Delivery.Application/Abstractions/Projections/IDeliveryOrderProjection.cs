@@ -35,6 +35,11 @@ public interface IDeliveryOrderProjection
         Guid           deliveryOrderId,
         CancellationToken cancellationToken);
 
+    Task SetTrackingNumberAsync(
+        string trackingNumber,
+        Guid deliveryOrderId,
+        CancellationToken cancellationToken);
+
     Task SetDeletedAsync(
         DateTimeOffset now,
         Guid           deliveryOrderId,

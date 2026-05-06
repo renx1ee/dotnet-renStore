@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Persistence.EntityTypeConfigurations;
 
 internal sealed class CountryConfiguration
-    : IEntityTypeConfiguration<CountryReadModel>
+    : IEntityTypeConfiguration<Country>
 {
-    public void Configure(EntityTypeBuilder<CountryReadModel> builder)
+    public void Configure(EntityTypeBuilder<Country> builder)
     {
         builder.ToTable("countries");
 

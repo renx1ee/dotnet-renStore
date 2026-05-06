@@ -2,10 +2,8 @@ namespace RenStore.Identity.Domain.Enums;
 
 public enum ApplicationUserStatus
 {
-    UnderReview,
+    UnderReview, // после регистрации, до подтверждения email
     IsActive,
     Locked,
-    IsBanned,
-    IsFreezed,
     IsDeleted
 }

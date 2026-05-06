@@ -1,103 +1,104 @@
+// Domain/Entities/DeliveryTariff.cs
 using RenStore.Delivery.Domain.Enums;
-using RenStore.Delivery.Domain.ValueObjects;
 using RenStore.SharedKernal.Domain.Exceptions;
-using RenStore.SharedKernal.Domain.ValueObjects;
 
 namespace RenStore.Delivery.Domain.Entities;
 
 /// <summary>
-/// Represents a delivery tariff physical entity with life cycle and invariants.
+/// Тариф доставки. Справочная сущность.
+/// Для Почты России тип = RussianPost.
 /// </summary>
-public class DeliveryTariff
+public sealed class DeliveryTariff
 {
-    private readonly List<DeliveryOrder> _orders = new();
-    
-    public int Id { get; private set; } 
-    public Price Price { get; private set; } // TODO: написат тесты
-    public WeightLimitKg WeightLimitKg { get; private set; }
-    public DeliveryTariffType Type { get; private set; }
-    public string Description { get; private set; } = string.Empty;
-    public bool IsDeleted { get; private set; }
-    public DateTimeOffset CreatedAt { get; private set; }
+    public int                Id            { get; private set; }
+    public decimal            PriceAmount   { get; private set; }
+    public string             Currency      { get; private set; } = string.Empty;
+    public decimal            WeightLimitKg { get; private set; }
+    public DeliveryTariffType Type          { get; private set; }
+    public string             Description   { get; private set; } = string.Empty;
+    public bool               IsDeleted     { get; private set; }
+
+    public DateTimeOffset  CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
     public DateTimeOffset? DeletedAt { get; private set; }
-    public IReadOnlyList<DeliveryOrder> DeliveryOrders => _orders.AsReadOnly();
-    
+
     private DeliveryTariff() { }
-    
-    /// <summary>
-    /// Create a new Delivery Tariff insuring all invariants are satisfied.
-    /// </summary>
-    /// <exception cref="DomainException">if the Delivery Tariff parameters are null or empty, or any IDs are less 0.</exception>
+
     public static DeliveryTariff Create(
-        Price price,
+        decimal            priceAmount,
+        string             currency,
+        decimal            weightLimitKg,
         DeliveryTariffType type,
-        string description,
-        WeightLimitKg weightLimitKg,
-        DateTimeOffset now)
+        string             description,
+        DateTimeOffset     now)
     {
-        var tariff = new DeliveryTariff()
+        if (priceAmount < 0)
+            throw new DomainException("Price cannot be negative.");
+
+        if (string.IsNullOrWhiteSpace(currency))
+            throw new DomainException("Currency cannot be empty.");
+
+        if (weightLimitKg <= 0)
+            throw new DomainException("WeightLimitKg must be greater than 0.");
+
+        return new DeliveryTariff
         {
-            Price = price ?? throw new DomainException("Price cannot be null."),
-            Type = type,
-            WeightLimitKg = weightLimitKg ?? throw new DomainException("Weight limit must be greater then zero."),
-            CreatedAt = now
+            PriceAmount   = priceAmount,
+            Currency      = currency.Trim().ToUpperInvariant(),
+            WeightLimitKg = weightLimitKg,
+            Type          = type,
+            Description   = description?.Trim() ?? string.Empty,
+            IsDeleted     = false,
+            CreatedAt     = now
         };
-
-        if (!string.IsNullOrWhiteSpace(description))
-            tariff.Description = description;
-
-        return tariff;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <exception cref="DomainException"></exception>
-    public void ChangePrice(
-        Price newPrice,
-        DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-        
-        Price = newPrice ?? throw new DomainException("Price cannot be null.");
-        
-        UpdatedAt = now;
-    }
-    
-    public void ChangeWeightLimitKg(
-        WeightLimitKg weightLimitKg,
-        DateTimeOffset now)
-    {
-        EnsureNotDeleted();
-        
-        WeightLimitKg = weightLimitKg ?? throw new DomainException("Weight limit is requered.");
-        UpdatedAt = now;
-    }
-
-    public void ChangeDescription(
-        string description,
-        DateTimeOffset now)
+    public void ChangePrice(decimal priceAmount, string currency, DateTimeOffset now)
     {
         EnsureNotDeleted();
 
-        if (Description == description) return;
-        
-        Description = description ?? string.Empty;
-        UpdatedAt = now;
+        if (priceAmount < 0)
+            throw new DomainException("Price cannot be negative.");
+
+        if (string.IsNullOrWhiteSpace(currency))
+            throw new DomainException("Currency cannot be empty.");
+
+        PriceAmount = priceAmount;
+        Currency    = currency.Trim().ToUpperInvariant();
+        UpdatedAt   = now;
     }
-    
+
+    public void ChangeWeightLimit(decimal weightLimitKg, DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+
+        if (weightLimitKg <= 0)
+            throw new DomainException("WeightLimitKg must be greater than 0.");
+
+        WeightLimitKg = weightLimitKg;
+        UpdatedAt     = now;
+    }
+
+    public void ChangeDescription(string description, DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+
+        Description = description?.Trim() ?? string.Empty;
+        UpdatedAt   = now;
+    }
+
     public void Delete(DateTimeOffset now)
     {
         EnsureNotDeleted();
-        
+
         IsDeleted = true;
         DeletedAt = now;
+        UpdatedAt = now;
     }
 
     private void EnsureNotDeleted()
     {
-        if(IsDeleted) 
-            throw new DomainException("Delivery tariff already deleted.");
+        if (IsDeleted)
+            throw new DomainException("Cannot modify deleted tariff.");
     }
 }

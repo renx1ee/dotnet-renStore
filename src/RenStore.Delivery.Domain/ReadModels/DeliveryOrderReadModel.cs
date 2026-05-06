@@ -11,6 +11,9 @@ public sealed class DeliveryOrderReadModel
     public long?           CurrentSortingCenterId     { get; set; }
     public long?           DestinationSortingCenterId { get; set; }
     public long?           PickupPointId              { get; set; }
+    public string?         TrackingNumber             { get; set; } 
+    public string?         CurrentLocation            { get; set; } 
+    public string?         PickupPostcode             { get; set; }
     public DateTimeOffset  CreatedAt                  { get; set; }
     public DateTimeOffset? DeliveredAt                { get; set; }
     public DateTimeOffset? DeletedAt                  { get; set; }

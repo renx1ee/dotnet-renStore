@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RenStore.Delivery.Domain.Aggregates.Address;
 using RenStore.Delivery.Domain.Entities;
 using RenStore.Delivery.Domain.ReadModels;
 using RenStore.Delivery.Persistence.EntityTypeConfigurations;
@@ -9,14 +10,14 @@ namespace RenStore.Delivery.Persistence;
 
 public sealed class DeliveryDbContext(DbContextOptions<DeliveryDbContext> options) : DbContext(options)
 {
-    public DbSet<DeliveryOrderReadModel>    DeliveryOrders    => Set<DeliveryOrderReadModel>();
-    public DbSet<DeliveryTrackingReadModel> DeliveryTrackings => Set<DeliveryTrackingReadModel>();
-    public DbSet<CountryReadModel>          Countries         => Set<CountryReadModel>();
-    public DbSet<CityReadModel>             Cities            => Set<CityReadModel>();
-    public DbSet<AddressReadModel>          Addresses         => Set<AddressReadModel>();
-    public DbSet<DeliveryTariffReadModel>   DeliveryTariffs   => Set<DeliveryTariffReadModel>();
     public DbSet<EventEntity>               Events            => Set<EventEntity>();
     public DbSet<OutboxMessage>             OutboxMessages    => Set<OutboxMessage>();
+    public DbSet<DeliveryOrderReadModel>    DeliveryOrders    => Set<DeliveryOrderReadModel>();
+    public DbSet<DeliveryTrackingReadModel> DeliveryTrackings => Set<DeliveryTrackingReadModel>();
+    public DbSet<Country>                   Countries         => Set<Country>();
+    public DbSet<City>                      Cities            => Set<City>();
+    public DbSet<Address>                   Addresses         => Set<Address>();
+    public DbSet<DeliveryTariff>            DeliveryTariffs   => Set<DeliveryTariff>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

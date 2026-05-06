@@ -52,6 +52,21 @@ internal sealed class DeliveryOrderConfiguration
 
         builder.Property(x => x.DeletedAt)
             .HasColumnName("deleted_at");
+        
+        builder.Property(x => x.TrackingNumber)
+            .HasColumnName("tracking_number")
+            .HasMaxLength(64);
+
+        builder.Property(x => x.CurrentLocation)
+            .HasColumnName("current_location")
+            .HasMaxLength(500);
+
+        builder.Property(x => x.PickupPostcode)
+            .HasColumnName("pickup_postcode")
+            .HasMaxLength(6);
+
+        builder.HasIndex(x => x.TrackingNumber)
+            .HasDatabaseName("ix_delivery_orders_tracking_number");
 
         builder.HasIndex(x => x.OrderId)
             .HasDatabaseName("ix_delivery_orders_order_id");

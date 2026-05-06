@@ -28,7 +28,5 @@ internal sealed class DeliveryOrderAssemblingEventHandler(
             Status          = DeliveryStatus.AssemblingBySeller,
             OccurredAt      = e.OccurredAt
         }, cancellationToken);
-
-        await orderProjection.CommitAsync(cancellationToken);
     }
 }

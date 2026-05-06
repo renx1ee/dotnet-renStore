@@ -7,12 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Aggregates\User\Events\" />
       <Folder Include="Constants\" />
       <Folder Include="DomainServices\" />
       <Folder Include="DTOs\" />
-      <Folder Include="Interfaces\" />
-      <Folder Include="ReadModels\" />
     </ItemGroup>
 
     <ItemGroup>

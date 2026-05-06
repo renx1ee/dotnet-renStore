@@ -12,7 +12,7 @@ namespace RenStore.Delivery.WebApi.Controllers;
 [ApiController]
 [ApiVersion(1, Deprecated = false)]
 [Route("api/v{version:apiVersion}/delivery")]
-[Authorize(Roles = Roles.Buyer)]
+/*[Authorize(Roles = Roles.Buyer)]*/
 public sealed class DeliveryOrderController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator

@@ -37,14 +37,22 @@ public static class DependencyInjection
         services.AddScoped<IEventStore, SqlEventStore>();
         services.AddScoped<IEventStore, SqlEventStore>();
 
+        services.AddScoped<IAddressQuery, AddressQuery>();
+        services.AddScoped<IDeliveryTariffQuery, DeliveryTariffQuery>();
         services.AddScoped<ICountryQuery, CountryQuery>();
         services.AddScoped<ICityQuery, CityQuery>();
         services.AddScoped<IDeliveryOrderQuery, DeliveryOrderQuery>();
         services.AddScoped<IDeliveryTrackingQuery, DeliveryTrackingQuery>();
         
-        services.AddScoped<IDeliveryOrderProjection, DeliveryOrderProjection>();
         services.AddScoped<IDeliveryTrackingProjection, DeliveryTrackingProjection>();
+        services.AddScoped<IDeliveryOrderProjection, DeliveryOrderProjection>();
         
+        // Entities
+        services.AddScoped<ICityRepository, CityRepository>();
+        services.AddScoped<ICountryRepository, CountryRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<IDeliveryTariffRepository, DeliveryTariffRepository>();
+        // Aggregates
         services.AddScoped<IDeliveryOrderRepository, DeliveryOrderRepository>();
         
         return services;

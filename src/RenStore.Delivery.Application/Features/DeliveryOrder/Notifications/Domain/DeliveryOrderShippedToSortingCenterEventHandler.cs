@@ -31,7 +31,5 @@ internal sealed class DeliveryOrderShippedToSortingCenterEventHandler(
             SortingCenterId = e.DestinationSortingCenterId,
             OccurredAt      = e.OccurredAt
         }, cancellationToken);
-
-        await orderProjection.CommitAsync(cancellationToken);
     }
 }

@@ -21,6 +21,7 @@ public sealed class DeliveryOrder : AggregateRoot
     public long?          CurrentSortingCenterId     { get; private set; }
     public long?          DestinationSortingCenterId { get; private set; }
     public long?          PickupPointId              { get; private set; }
+    public string?        TrackingNumber             { get; set; }
     public DateTimeOffset CreatedAt                  { get; private set; }
     public DateTimeOffset? DeliveredAt               { get; private set; }
     public DateTimeOffset? DeletedAt                 { get; private set; }
@@ -124,7 +125,7 @@ public sealed class DeliveryOrder : AggregateRoot
 
         if (Status != DeliveryStatus.Sorted)
             throw new DomainException("Cannot ship to pickup point — must be Sorted.");
-
+        
         if (pickupPointId <= 0)
             throw new DomainException("Pickup Point Id cannot be 0 or less.");
 
@@ -152,6 +153,22 @@ public sealed class DeliveryOrder : AggregateRoot
             PickupPointId:   pickupPointId));
     }
 
+    public void AssignTrackingNumber(
+        string trackingNumber,
+        DateTimeOffset now)
+    {
+        EnsureNotDeleted();
+
+        if (string.IsNullOrWhiteSpace(trackingNumber))
+            throw new DomainException("Tracking number cannot be empty string.");
+
+        Raise(new DeliveryOrderTrackingNumberAssignedEvent(
+            EventId:         Guid.NewGuid(),
+            OccurredAt:      now,
+            DeliveryOrderId: Id,
+            TrackingNumber:  trackingNumber));
+    }
+    
     public void MarkAsDelivered(DateTimeOffset now)
     {
         EnsureNotDeleted();

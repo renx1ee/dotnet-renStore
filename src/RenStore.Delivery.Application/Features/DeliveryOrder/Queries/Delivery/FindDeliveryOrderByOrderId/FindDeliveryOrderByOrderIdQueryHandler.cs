@@ -1,4 +1,3 @@
-using RenStore.Delivery.Application.Abstractions.Queries;
 using RenStore.Delivery.Domain.ReadModels;
 
 namespace RenStore.Delivery.Application.Features.DeliveryOrder.Queries.Delivery.FindDeliveryOrderByOrderId;

@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RenStore.Delivery.Domain\RenStore.Delivery.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,7 @@
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RenStore.Delivery.Messaging.Consumers;
 
 namespace RenStore.Delivery.Messaging.Extensions;
 
@@ -12,6 +13,10 @@ public static class MassTransitExtension
     {
         services.AddMassTransit(x =>
         {
+            x.AddConsumer<OrderPlacementCompletedConsumer>();
+            x.AddConsumer<OrderCancelledConsumer>();
+            /*x.AddConsumer<PublishDeliveryStatusChangedConsumer>();*/
+            
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(
@@ -22,6 +27,26 @@ public static class MassTransitExtension
                         h.Username(configuration["RabbitMQ:Username"]!);
                         h.Password(configuration["RabbitMQ:Password"]!);
                     });
+                
+                cfg.ReceiveEndpoint("delivery-order-placement-completed", e =>
+                {
+                    e.UseMessageRetry(r => r.Intervals(
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(15),
+                        TimeSpan.FromSeconds(30)));
+                    
+                    e.ConfigureConsumer<OrderPlacementCompletedConsumer>(context);
+                });
+                
+                cfg.ReceiveEndpoint("delivery-order-cancelled", e =>
+                {
+                    e.UseMessageRetry(r => r.Intervals(
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(15),
+                        TimeSpan.FromSeconds(30)));
+                    
+                    e.ConfigureConsumer<OrderCancelledConsumer>(context);
+                });
                 
                 cfg.ConfigureEndpoints(context);
             });
